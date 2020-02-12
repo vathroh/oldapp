@@ -529,6 +529,7 @@ class ComposerStaticInit8659da8d9bee60bbb992f85efebf2bac
         'App\\User' => __DIR__ . '/../..' . '/app/User.php',
         'App\\google_folder' => __DIR__ . '/../..' . '/app/google_folder.php',
         'App\\jenisDokumen' => __DIR__ . '/../..' . '/app/jenisDokumen.php',
+        'App\\jenisdokumenksm' => __DIR__ . '/../..' . '/app/jenisdokumenksm.php',
         'App\\jenisfoto' => __DIR__ . '/../..' . '/app/jenisfoto.php',
         'App\\kabupaten' => __DIR__ . '/../..' . '/app/kabupaten.php',
         'App\\kegiatanksm' => __DIR__ . '/../..' . '/app/kegiatanksm.php',

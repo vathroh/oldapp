@@ -43,6 +43,7 @@ return array(
     'App\\User' => $baseDir . '/app/User.php',
     'App\\google_folder' => $baseDir . '/app/google_folder.php',
     'App\\jenisDokumen' => $baseDir . '/app/jenisDokumen.php',
+    'App\\jenisdokumenksm' => $baseDir . '/app/jenisdokumenksm.php',
     'App\\jenisfoto' => $baseDir . '/app/jenisfoto.php',
     'App\\kabupaten' => $baseDir . '/app/kabupaten.php',
     'App\\kegiatanksm' => $baseDir . '/app/kegiatanksm.php',

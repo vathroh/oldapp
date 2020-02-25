@@ -1,9 +1,5 @@
 <?php
 
-use Facade\FlareClient\Http\Response;
-use Illuminate\http\Request;
-use Symfony\Component\Console\Input\Input;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -21,27 +17,21 @@ Route::get('/', function () {
 
 
 Auth::routes();
-Route::get('/home', 'HomeController@index')->name('home');
+// Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', 'DocumentsController@index')->name('home');
 
 //User Management Control
 Route::namespace('Admin')->prefix('admin')->name('admin.')->middleware('can:manage-users')->group(function () {
     Route::resource('/users', 'UsersController', ['except' => ['show', 'create', 'store']]);
 });
 
-// Upload to Google Drive
-// Route::get('/upload', 'GoogleDriveController@index');
-// Route::post('/upload', 'GoogleDriveController@UploadFoto0')->name('upload');
-Route::post('/upload', function (Request $request) {
-    $request->file("thing")->store("1smwHooFqkLU5T7G2ucvJt_qhcGFqq92q", "google");
-    return redirect('home');
-})->name("upload");
-
 Route::get('/doc', 'DocumentsController@index');
 Route::get('/table', 'DocumentsController@table');
 Route::get('/create', 'DocumentsController@create');
+Route::get('/hello', 'RekapController@index');
+
 // Route::get('/doc/{document}', 'DocumentsController@show');
 Route::get('/drop', 'VillagesController@index');
-
 
 Route::get('/ajax', 'VillagesController@kab');
 Route::get('/ajaxkab', 'VillagesController@ksm_kab');
@@ -49,8 +39,8 @@ Route::get('/ajaxksm', 'VillagesController@ksm_ksm');
 Route::get('/ajaxfotoksm', 'VillagesController@foto_ksm');
 Route::get('/ajaxfoto', 'VillagesController@fotokab');
 Route::get('/ajaxfotokegiatan', 'VillagesController@fotokegiatan');
-
 Route::get('/dokumen', 'VillagesController@jenisDokumen');
+
 Route::get('/dashboard', 'DashboardController@index');
 Route::get('/inputyear', 'DashboardController@create');
 

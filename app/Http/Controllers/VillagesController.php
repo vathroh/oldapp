@@ -8,6 +8,7 @@ use App\kabupaten;
 use App\ksm;
 use App\jenisDokumen;
 use App\kegiatanksm;
+use App\isidok;
 
 
 class VillagesController extends Controller
@@ -82,7 +83,7 @@ class VillagesController extends Controller
 
         // $ksm = jenisDokumen::all();
         $kode_kel = $request->get('jenisDokumen_ksm');
-        $ksm = jenisDokumen::where('parent',  $kode_kel)->get('JenisDokumen');
+        $ksm = isidok::where('parent',  $kode_kel)->get('JenisDokumen');
         return response()->json($ksm);
     }
 

@@ -34,7 +34,6 @@ $(document).ready(function () {
 
         var kode_kel = $("#ksm_kelurahan").val();
 
-
         $.get('/ajaxksm?kode_kel=' + kode_kel, function (data) {
             console.log(data);
             $("#ksm_ksm").empty();
@@ -61,7 +60,6 @@ $(document).ready(function () {
         } else {
             hide();
         }
-
     });
 
     function hide() {
@@ -70,7 +68,6 @@ $(document).ready(function () {
         macamDokumen_ksm.style.visibility = 'hidden';
         label_macamDokumen_ksm.style.visibility = 'hidden';
         macamDokumen_ksm.append('<option value=""></option>');
-
         dropchainDokumen();
     }
 

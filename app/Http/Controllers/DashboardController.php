@@ -54,19 +54,19 @@ class DashboardController extends Controller
             $f = Storage::disk('google')->directories($rootFolder);
             $g = count($f);
 
+
             for ($x = 0; $x < $g; $x++) {
-                if (google_folder::where('id_folder', $f[$x])->doesntExist()) {
+                $idChildFolder = substr($f[$x], 34, 33);
+                if (google_folder::where('id_folder', $idChildFolder)->doesntExist()) {
                     $i = Storage::disk('google')->getAdapter()->getMetadata($f[$x]);
-                    $h = substr($i["path"], 34, 33);
-                    $j = substr($i["path"], 0, 33);
 
                     $google_folder = new google_folder;
                     google_folder::create([
                         'kode_folder' => $request->tahun,
-                        'parent_folder' => $j,
-                        'id_folder' => $h,
+                        'parent_folder' => $rootFolder,
+                        'id_folder' => $idChildFolder,
                         'nama_folder' => $i["name"],
-                        'path_folder' => 'OPT-1' . ' / ' . $i["name"]
+                        'path_folder' => 'OPT-1' . '/' . $i["name"]
                     ]);
                 }
             }

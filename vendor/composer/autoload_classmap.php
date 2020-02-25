@@ -7,6 +7,8 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
+    'App\\CustomFunctions\\DocInfo' => $baseDir . '/app/CustomFunctions/DocInfo.php',
+    'App\\CustomFunctions\\FolderInfo' => $baseDir . '/app/CustomFunctions/FolderInfo.php',
     'App\\Document' => $baseDir . '/app/Document.php',
     'App\\Exceptions\\Handler' => $baseDir . '/app/Exceptions/Handler.php',
     'App\\Http\\Controllers\\Admin\\UsersController' => $baseDir . '/app/Http/Controllers/Admin/UsersController.php',
@@ -23,6 +25,7 @@ return array(
     'App\\Http\\Controllers\\DynamicDependent' => $baseDir . '/app/Http/Controllers/DynamicDependent.php',
     'App\\Http\\Controllers\\GoogleDriveController' => $baseDir . '/app/Http/Controllers/GoogleDriveController.php',
     'App\\Http\\Controllers\\HomeController' => $baseDir . '/app/Http/Controllers/HomeController.php',
+    'App\\Http\\Controllers\\RekapController' => $baseDir . '/app/Http/Controllers/RekapController.php',
     'App\\Http\\Controllers\\VillagesController' => $baseDir . '/app/Http/Controllers/VillagesController.php',
     'App\\Http\\Controllers\\google_foldersController' => $baseDir . '/app/Http/Controllers/google_foldersController.php',
     'App\\Http\\Kernel' => $baseDir . '/app/Http/Kernel.php',

@@ -2,13 +2,22 @@
 
 @section('content')
 
+@if(session('status'))
+<div class="alert alert-success">
+    <h1>
+        {{ session('status') }}
+    </h1>
+</div>
+@endif
+
+
 <div class="card text-center">
     <div class="card-header">
         <div class="row">
             <div class="col text-center">
-                <a href="{{ url('/create') }}" class="btn btn-primary">Upload Dokumen/Foto</a>
-                <a href="{{ url('/doc') }}" class="btn btn-primary">Bentuk Card</a>
-                <a href="{{ url('/table') }}" class="btn btn-primary">Bentuk Tabel</a>
+                <a href="{{ url('/create') }}" class="btn btn-primary">UPLOAD</a>
+                <a href="{{ url('/doc') }}" class="btn btn-primary">FOTO</a>
+                <a href="{{ url('/table') }}" class="btn btn-primary">DOKUMEN</a>
             </div>
         </div>
     </div>

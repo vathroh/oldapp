@@ -493,6 +493,8 @@ class ComposerStaticInit8659da8d9bee60bbb992f85efebf2bac
 
     public static $classMap = array (
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
+        'App\\CustomFunctions\\DocInfo' => __DIR__ . '/../..' . '/app/CustomFunctions/DocInfo.php',
+        'App\\CustomFunctions\\FolderInfo' => __DIR__ . '/../..' . '/app/CustomFunctions/FolderInfo.php',
         'App\\Document' => __DIR__ . '/../..' . '/app/Document.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
         'App\\Http\\Controllers\\Admin\\UsersController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/UsersController.php',
@@ -509,6 +511,7 @@ class ComposerStaticInit8659da8d9bee60bbb992f85efebf2bac
         'App\\Http\\Controllers\\DynamicDependent' => __DIR__ . '/../..' . '/app/Http/Controllers/DynamicDependent.php',
         'App\\Http\\Controllers\\GoogleDriveController' => __DIR__ . '/../..' . '/app/Http/Controllers/GoogleDriveController.php',
         'App\\Http\\Controllers\\HomeController' => __DIR__ . '/../..' . '/app/Http/Controllers/HomeController.php',
+        'App\\Http\\Controllers\\RekapController' => __DIR__ . '/../..' . '/app/Http/Controllers/RekapController.php',
         'App\\Http\\Controllers\\VillagesController' => __DIR__ . '/../..' . '/app/Http/Controllers/VillagesController.php',
         'App\\Http\\Controllers\\google_foldersController' => __DIR__ . '/../..' . '/app/Http/Controllers/google_foldersController.php',
         'App\\Http\\Kernel' => __DIR__ . '/../..' . '/app/Http/Kernel.php',

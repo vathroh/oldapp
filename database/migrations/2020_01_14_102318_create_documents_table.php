@@ -15,6 +15,7 @@ class CreateDocumentsTable extends Migration
     {
         Schema::create('documents', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('folder_id');
             $table->string('file_id');
             $table->string('file_name');
             $table->string('file_extension');
@@ -28,6 +29,7 @@ class CreateDocumentsTable extends Migration
             $table->string('desa');
             $table->string('kecamatan');
             $table->string('kabupaten');
+            $table->text('comments');
             $table->string('link');
             $table->timestamps();
         });

@@ -35,6 +35,8 @@ class DocumentsController extends Controller
             ->paginate(9);
         $google_folders = google_folder::all();
         return view('document.index', compact(['documents', 'google_folders']));
+        // $documents1 = DB::table('documents')->where('tipe_dokumen', 'PDF')->count();
+        // return $documents1;
     }
 
     public function table()
@@ -101,6 +103,15 @@ class DocumentsController extends Controller
         }
         $newGoogleFolder = new FolderInfo;
         $newGoogleFolder->CreateAndSaveGoogleDriveFolder($parent_folder_code,  $new_folder_name, $new_folder_request);
+
+        // Create KEGIATAN KSM
+        $parent_folder_code .= $new_folder_request;
+        $new_folder_request = $request->foto_kegiatan;
+        $new_folder_name = $new_folder_request;
+        //Create and Save Google Drive Folder Kelurahan
+        $newGoogleFolder = new FolderInfo;
+        $newGoogleFolder->CreateAndSaveGoogleDriveFolder($parent_folder_code,  $new_folder_name, $new_folder_request);
+
 
         // Save File
         $kd_kel = $request->foto_kelurahan;

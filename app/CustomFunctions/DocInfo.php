@@ -19,6 +19,8 @@ class DocInfo
         $fileExtension = $files->getClientOriginalExtension();
         $fileSize = $files->getClientSize();
         $fileName .= ' ' . $nama_desa . ' ' . $nama_kabupaten;
+        $noUrut = Document::where('file_name', $fileName)->count() + 1;
+        $fileName .= "(" . $noUrut . ")";
         // return $nama_desa;
 
         if (google_folder::where('path_folder', $new_folder_path)->exists()) {

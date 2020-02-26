@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\google_folder;
 use App\Document;
+use App\kegiatanksmnew;
+use App\kegiatanksm;
 
 
 class DashboardController extends Controller
@@ -72,6 +74,13 @@ class DashboardController extends Controller
             }
         }
         return redirect('/dashboard');
+    }
+
+    public function coba()
+    {
+        $kegiatanksmnew = kegiatanksmnew::all();
+        $kegiatanksm = kegiatanksm::all();
+        return view('dashboard.coba', compact(['kegiatanksmnew', 'kegiatanksm']));
     }
 
     /**

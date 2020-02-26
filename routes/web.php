@@ -43,6 +43,7 @@ Route::get('/dokumen', 'VillagesController@jenisDokumen');
 
 Route::get('/dashboard', 'DashboardController@index');
 Route::get('/inputyear', 'DashboardController@create');
+Route::get('/coba', 'DashboardController@coba');
 
 Route::post('/inputyear', 'DashboardController@store');
 Route::post('/drop', 'VillagesController@kab');

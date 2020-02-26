@@ -98,7 +98,6 @@ $(document).ready(function () {
         $.get('/ajaxfoto?foto_kabupaten=' + kode_kab, function (data) {
             console.log(data);
             $("#foto_kelurahan").empty();
-            $("#foto_kelurahan").append('<option value="">PILIH KELURAHAN</option>');
             $.each(data, function (index, fotokelurahanObj) {
                 $("#foto_kelurahan").append('<option value="' + fotokelurahanObj.KD_KEL + '">' + fotokelurahanObj.NAMA_DESA + '</option>');
             });

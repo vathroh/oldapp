@@ -61,6 +61,22 @@ class DocumentsController extends Controller
         return view('document.create', compact(['kabupaten', 'tahun']));
     }
 
+    public function foto()
+    {
+        $kabupaten = kabupaten::all();
+        $villages = village::all();
+        $tahun = tahun::all();
+        return view('document.foto', compact(['kabupaten', 'tahun']));
+    }
+
+    public function ksm()
+    {
+        $kabupaten = kabupaten::all();
+        $villages = village::all();
+        $tahun = tahun::all();
+        return view('document.ksm', compact(['kabupaten', 'tahun']));
+    }
+
     /**
      * Store a newly created resource in storage.
      *

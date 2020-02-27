@@ -17,29 +17,26 @@
                 </div>
             </div>
             <div class="card-body">
-
                 <div class="row" style="margin-top: 50px">
                     <div class="col">
-                        <form method="post" action="/doc" enctype="multipart/form-data">
-
+                        <form method="post" action="/ksm" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group">
                                 <label for="kabupaten">
-                                    <h4>Tahun Kegiatan</h4>
+                                    <h4>Tahun Kegiatan KSM</h4>
                                 </label>
-                                <select name="tahunBKM" id="tahunBKM" class="form-control input-lg dynamic" required>
+                                <select name="tahunKSM" id="tahunKSM" class="form-control input-lg dynamic" required>
                                     <option value="">TAHUN</option>
                                     @foreach($tahun as $thn)
                                     <option value="{{$thn->tahun}}">{{$thn->tahun}}</option>
                                     @endforeach
                                 </select>
                             </div>
-
                             <div class="form-group">
-                                <label for="kabupaten">
+                                <label for="ksm_kabupaten">
                                     <h4>Pilih Kabupaten</h4>
                                 </label>
-                                <select name="kabupaten" id="kabupaten" class="form-control input-lg dynamic" required>
+                                <select name="ksm_kabupaten" id="ksm_kabupaten" class="form-control input-lg dynamic" required>
                                     <option value="">KABUPATEN</option>
                                     @foreach($kabupaten as $kab)
                                     <option value="{{$kab->kode_kab}}">{{$kab->nama_kab}}</option>
@@ -47,30 +44,47 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="kelurahan">
+                                <label for="ksm_kelurahan">
                                     <h4>Pilih Kelurahan</h4>
                                 </label>
-                                <select name="kelurahan" id="kelurahan" class="form-control input-lg dynamic" required>
+                                <select name="ksm_kelurahan" id="ksm_kelurahan" class="form-control input-lg dynamic" required>
                                     <option value="">KELURAHAN</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="jenisDokumen">
+                                <label for="ksm_ksm">
+                                    <h4>Pilih KSM</h4>
+                                </label>
+                                <select name="ksm_ksm" id="ksm_ksm" class="form-control input-lg dynamic" required>
+                                    <option value="0">KSM</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="jenisDokumen_ksm">
                                     <h4>Pilih Dokumen</h4>
                                 </label>
-                                <select name="jenisDokumen" id="jenisDokumen" class="form-control input-lg dynamic" required>
-                                    <option value="">PILIH DOKUMEN YANG AKAN DIUPLOAD</option>
-                                    <option value="PRA DESAIN">PRA DESAIN</option>
-                                    <option value="BERITA ACARA PEMAKETAN">BERITA ACARA PEMAKETAN</option>
-                                    <option value="PEMBENTUKAN KPP">PEMBENTUKAN KPP</option>
-                                    <option value="RENCANA KERJA KPP">RENCANA KERJA KPP</option>
-                                    <option value="PENCAIRAN TAHAP 1">PENCAIRAN TAHAP 1</option>
-                                    <option value="PENCAIRAN TAHAP 2">PENCAIRAN TAHAP 2</option>
-                                    <option value="LPJ BKM">LPJ BKM</option>
+                                <select name="jenisDokumen_ksm" id="jenisDokumen_ksm" class="form-control input-lg dynamic" required>
+                                    <option value="">DOKUMEN YANG AKAN DIUPLOAD</option>
+                                    <option value="1">DOKUMEN TEKNIS</option>
+                                    <option value="2">RENCANA KERJA KSM</option>
+                                    <option value="3">MP2K</option>
+                                    <option value="4">OJT</option>
+                                    <option value="5">PELATIHAN KSM</option>
+                                    <option value="6">PENGADAAN</option>
+                                    <option value="7">LPJ KSM</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label id="label_macamDokumen_ksm" for="macamDokumen_ksm">
+                                    <h4>Pilih Dokumen</h4>
+                                </label>
+                                <select name="macamDokumen_ksm" id="macamDokumen_ksm" class="form-control input-lg dynamic" required>
+                                    <option value=""></option>
                                 </select>
                             </div>
                             <div class="custom-file my-3">
-                                <input type="file" class="form-control" id="file" name="file" required>
+                                <input type="file" class="form-control" id="file_ksm" name="file_ksm" required>
                             </div>
                             <div class="text-center">
                                 <a href="/home"><button type="button" class="btn btn-primary mt-5">Batal</button></a>
@@ -79,6 +93,7 @@
                         </form>
                     </div>
                 </div>
+                <!-- Akhir KSM ================================================================================ -->
             </div>
         </div>
     </div>

@@ -8,6 +8,7 @@ $(document).ready(function () {
         $.get('/ajax?kode_kab=' + kode_kab, function (data) {
             console.log(data);
             $("#kelurahan").empty();
+            $("#kelurahan").append('<option value=" "> PILIH KELURAHAN </option>');
             $.each(data, function (index, kelurahanObj) {
                 $("#kelurahan").append('<option value="' + kelurahanObj.KD_KEL + '">' + kelurahanObj.NAMA_DESA + '</option>');
             });
@@ -98,6 +99,7 @@ $(document).ready(function () {
         $.get('/ajaxfoto?foto_kabupaten=' + kode_kab, function (data) {
             console.log(data);
             $("#foto_kelurahan").empty();
+            $("#foto_kelurahan").append('<option value=" "> PILIH KELURAHAN </option>');
             $.each(data, function (index, fotokelurahanObj) {
                 $("#foto_kelurahan").append('<option value="' + fotokelurahanObj.KD_KEL + '">' + fotokelurahanObj.NAMA_DESA + '</option>');
             });
@@ -151,6 +153,7 @@ $(document).ready(function () {
         $.get('/ajaxfotokegiatan?foto_ksm=' + foto_ksm, function (data) {
             console.log(data);
             $("#foto_kegiatan").empty();
+            $("#foto_kegiatan").append('<option value=" "> PILIH KEGIATAN </option>');
             $.each(data, function (index, fotokegiatanObj) {
                 $("#foto_kegiatan").append('<option value="' + fotokegiatanObj.KEGIATAN + ' ' + fotokegiatanObj.RTRW + ' ">' + fotokegiatanObj.KEGIATAN + ' di ' + fotokegiatanObj.RTRW + '</option>');
             });

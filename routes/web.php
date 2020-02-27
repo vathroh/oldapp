@@ -28,6 +28,8 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->middleware('can:mana
 Route::get('/doc', 'DocumentsController@index');
 Route::get('/table', 'DocumentsController@table');
 Route::get('/create', 'DocumentsController@create');
+Route::get('/ksm', 'DocumentsController@ksm');
+Route::get('/foto', 'DocumentsController@foto');
 Route::get('/hello', 'RekapController@index');
 
 // Route::get('/doc/{document}', 'DocumentsController@show');

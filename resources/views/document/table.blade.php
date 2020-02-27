@@ -14,9 +14,12 @@
     <div class="card-header">
         <div class="row">
             <div class="col text-center">
-                <a href="{{ url('/create') }}" class="btn btn-primary">UPLOAD</a>
-                <a href="{{ url('/doc') }}" class="btn btn-primary">FOTO</a>
-                <a href="{{ url('/table') }}" class="btn btn-primary">DOKUMEN</a>
+                <a class="btn btn-primary" href="/doc">. F o t o .</a>
+                <a class="btn btn-primary" href="/table">.Dokumen.</a>
+                <br><br>
+                <a class="btn btn-primary" href="/create">Upload Dok BKM</a>
+                <a class="btn btn-primary" href="/ksm">Upload Dok KSM</a>
+                <a class="btn btn-primary" href="/foto">Upload Foto</a>
             </div>
         </div>
     </div>

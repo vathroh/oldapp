@@ -17,6 +17,7 @@
             <div class="col text-center">
                 <a class="btn btn-primary" href="/doc">. F o t o .</a>
                 <a class="btn btn-primary" href="/table">.Dokumen.</a>
+                <a class="btn btn-primary" href="/rekap">.R e k a p.</a>
                 <br><br>
                 <a class="btn btn-primary" href="/create">Upload Dok BKM</a>
                 <a class="btn btn-primary" href="/ksm">Upload Dok KSM</a>
@@ -27,11 +28,12 @@
     <div class="card-body">
         <div class="row justify-content-center">
             <div class="col-lg-8 md-12">
+
                 @foreach( $documents as $document )
                 <div class="card my-3">
                     <img src="https://drive.google.com/uc?export=view&id={{ $document->file_id }}" class="card-img-top" alt="...">
                     <div class="card-body">
-                        <h4>{{ $document->desa }}, {{ $document->kabupaten }}</h4>
+                        <h4>{{ $document->nama_desa }} , {{ $document->nama_kab }}</h4>
                         <p class="card-text">{{ $document->file_name }} telah diupload pada tanggal {{ $document->created_at }}</p>
                         <p class="card-text"><a href="{{ $document->link }}" class="" target="_blank">Klik disini</a> untuk melihat</p>
                     </div>

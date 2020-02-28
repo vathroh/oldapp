@@ -30,7 +30,7 @@ Route::get('/table', 'DocumentsController@table');
 Route::get('/create', 'DocumentsController@create');
 Route::get('/ksm', 'DocumentsController@ksm');
 Route::get('/foto', 'DocumentsController@foto');
-Route::get('/hello', 'RekapController@index');
+Route::get('/rekap', 'RekapController@index');
 
 // Route::get('/doc/{document}', 'DocumentsController@show');
 Route::get('/drop', 'VillagesController@index');

@@ -3,8 +3,6 @@
 namespace App\CustomFunctions;
 
 use App\google_folder;
-use App\village;
-use App\ksm;
 use Illuminate\Support\Facades\Storage;
 
 class FolderInfo

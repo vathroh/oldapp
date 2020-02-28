@@ -15,7 +15,9 @@ class CreateKegiatanksmTable extends Migration
     {
         Schema::create('kegiatanksm', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('TAHUN');
             $table->string('KD_KSM');
+            $table->string('KD_KEGIATAN');
             $table->string('KEGIATAN');
             $table->string('RTRW');
             $table->timestamps();

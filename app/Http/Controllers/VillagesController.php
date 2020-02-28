@@ -59,7 +59,7 @@ class VillagesController extends Controller
         $villages = village::all();
         $ksm = ksm::all();
         $kode_kel = $request->get('kode_kel');
-        $ksm = ksm::where('KD_KEL',  $kode_kel)->get('NAMA_KSM');
+        $ksm = ksm::where('KD_KEL',  $kode_kel)->get(['NAMA_KSM', 'KD_KSM']);
         return response()->json($ksm);
     }
 
@@ -74,7 +74,7 @@ class VillagesController extends Controller
     {
 
         $kode_ksm = $request->get('foto_ksm');
-        $ksm = kegiatanksm::where('KD_KSM',  $kode_ksm)->get(['KEGIATAN', 'RTRW']);
+        $ksm = kegiatanksm::where('KD_KSM',  $kode_ksm)->get(['KD_KEGIATAN', 'KEGIATAN', 'RTRW']);
         return response()->json($ksm);
     }
 

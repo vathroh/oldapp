@@ -16,6 +16,7 @@
             <div class="col text-center">
                 <a class="btn btn-primary" href="/doc">. F o t o .</a>
                 <a class="btn btn-primary" href="/table">.Dokumen.</a>
+                <a class="btn btn-primary" href="/rekap">.R e k a p.</a>
                 <br><br>
                 <a class="btn btn-primary" href="/create">Upload Dok BKM</a>
                 <a class="btn btn-primary" href="/ksm">Upload Dok KSM</a>
@@ -32,7 +33,6 @@
                         <tr>
                             <th scope="col">No</th>
                             <th scope="col">Desa/Kelurahan</th>
-                            <th scope="col">Kecamatan</th>
                             <th scope="col">Kabupaten</th>
                             <th scope="col">Jenis Dokumen</th>
                             <th scope="col">Lihat File</th>
@@ -42,9 +42,8 @@
                         @foreach( $documents->sortByDesc('created_at') as $document )
                         <tr>
                             <th scope="row">{{ $loop->iteration }}</th>
-                            <td>{{ $document->desa }}</td>
-                            <td>{{ $document->kecamatan }}</td>
-                            <td>{{ $document->kabupaten }}</td>
+                            <td>{{ $document->nama_desa }}</td>
+                            <td>{{ $document->nama_kab }}</td>
                             <td>{{ $document->jenis_dokumen }}</td>
                             <td><a href="{{ $document->link }}" target="_blank">Lihat File</a></td>
                         </tr>

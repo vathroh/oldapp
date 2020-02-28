@@ -9,6 +9,7 @@
                     <div class="col">
                         <a class="btn btn-primary" href="/doc">. F o t o .</a>
                         <a class="btn btn-primary" href="/table">.Dokumen.</a>
+                        <a class="btn btn-primary" href="/rekap">.R e k a p.</a>
                         <br><br>
                         <a class="btn btn-primary" href="/create">Upload Dok BKM</a>
                         <a class="btn btn-primary" href="/ksm">Upload Dok KSM</a>
@@ -115,4 +116,5 @@
         </div>
     </div>
 </div>
+
 @endsection

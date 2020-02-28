@@ -3,11 +3,18 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\CustomFunctions\Rekap;
 use App\Document;
+use App\kabupaten;
+use App\village;
+use App\ksm;
 
 class RekapController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -16,10 +23,13 @@ class RekapController extends Controller
 
     public function index()
     {
-        $documents = DB::table('documents')->where('kabupaten', 'WONOSBO')->get('id');
-
-
-        dd($documents);
+        $documents = Document::All();
+        $kabupaten = kabupaten::all();
+        $kelurahan = village::all();
+        $ksm = ksm::all();
+        return view('rekap.index', compact(['documents', 'kabupaten', 'kelurahan', 'ksm']));
+        // $itung = new Rekap;
+        // echo $itung->RekapKegiatan();
     }
 
     /**

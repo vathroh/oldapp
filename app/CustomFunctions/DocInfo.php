@@ -6,10 +6,11 @@ use Illuminate\Support\Facades\Storage;
 use App\Document;
 use App\google_folder;
 use App\village;
+use Illuminate\Support\Facades\DB;
 
 class DocInfo
 {
-    public function SafeFile($KodeKegiatan, $files, $fileName, $JenisDokumen, $kd_kel, $kd_kab, $new_folder_name, $parent_folder_code, $tipedokumen)
+    public function SafeFile($KodeKegiatan, $files, $fileName, $JenisDokumen, $Kodeksm, $kd_kel, $kd_kab, $new_folder_name, $parent_folder_code, $tipedokumen)
     {
         $nama_desa = village::where('KD_KEL', $kd_kel)->get('NAMA_DESA')[0]['NAMA_DESA'];
         $nama_kabupaten = village::where('KD_KAB', $kd_kab)->get('NAMA_KAB')[0]['NAMA_KAB'];
@@ -17,7 +18,12 @@ class DocInfo
         $new_folder_path = $parent_folder_path . '/' . $new_folder_name;
         $fileExtension = $files->getClientOriginalExtension();
         $fileName .= ' ' . $nama_desa . ' ' . $nama_kabupaten;
-        $noUrut = Document::where('file_name', $fileName)->count() + 1;
+
+        $JmlFile = DB::table('documents')
+            ->where('kode_kegiatan', $KodeKegiatan)
+            ->where('jenis_dokumen', $JenisDokumen)
+            ->count();
+        $noUrut = $JmlFile + 1;
         $newFileName = $fileName . "(" . $noUrut . ")";
         // return $nama_desa;
 
@@ -41,6 +47,9 @@ class DocInfo
                     $document->uploaded_by =  '-';
                     $document->scope = '-';
                     $document->kode_kegiatan = $KodeKegiatan;
+                    $document->kode_ksm = $Kodeksm;
+                    $document->kode_kel = $kd_kel;
+                    $document->kode_kab = $kd_kab;
                     $document->nama_desa = $nama_desa;
                     $document->nama_kab = $nama_kabupaten;
                     $document->Comments = '-';

@@ -42,7 +42,7 @@ class DashboardController extends Controller
      */
     public function store(Request $request, Document $document)
     {
-        $rootFolder = '1smwHooFqkLU5T7G2ucvJt_qhcGFqq92q';
+        $rootFolder = config('app.rootGoogleFolder');
         if (tahun::where('tahun', $request->tahun)->exists()) {
             return redirect('/dashboard');
         } else {

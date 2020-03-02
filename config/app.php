@@ -120,6 +120,7 @@ return [
     */
 
     'key' => env('APP_KEY'),
+    'rootGoogleFolder' => env('GOOGLE_FOLDER_ID'),
 
     'cipher' => 'AES-256-CBC',
 

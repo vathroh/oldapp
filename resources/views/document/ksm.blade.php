@@ -80,7 +80,7 @@
                                 <label id="label_macamDokumen_ksm" for="macamDokumen_ksm">
                                     <h4>Pilih Dokumen</h4>
                                 </label>
-                                <select name="macamDokumen_ksm" id="macamDokumen_ksm" class="form-control input-lg dynamic" required>
+                                <select name="macamDokumen_ksm" id="macamDokumen_ksm" class="form-control input-lg dynamic">
                                     <option value=""></option>
                                 </select>
                             </div>

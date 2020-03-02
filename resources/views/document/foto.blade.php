@@ -116,5 +116,8 @@
         </div>
     </div>
 </div>
+@endsection
 
+@section('script')
+<script src="{{ asset('js/chainedDropDownfoto.js') }}" defer></script>
 @endsection

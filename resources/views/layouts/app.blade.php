@@ -92,8 +92,7 @@
             </div>
         </main>
     </div>
-    <script src="{{ asset('js/chainedDropDown.js') }}" defer></script>
-    <script src="{{ asset('js/chainedDropDownksm.js') }}" defer></script>
+    @yield('script')
 </body>
 
 </html>

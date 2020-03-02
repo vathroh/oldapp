@@ -98,7 +98,8 @@
         </div>
     </div>
 </div>
+@endsection
 
-
-
+@section('script')
+<script src="{{ asset('js/chainedDropDownksm.js') }}" defer></script>
 @endsection

@@ -14,6 +14,7 @@ use App\village;
 use App\ksm;
 use App\tahun;
 use App\jenisfoto;
+use App\kegiatanksm;
 
 class DocumentsController extends Controller
 {
@@ -125,7 +126,7 @@ class DocumentsController extends Controller
 
         // Create KEGIATAN KSM
         $parent_folder_code .= $new_folder_request;
-        $new_folder_request = $request->foto_kegiatan;
+        $new_folder_request = kegiatanksm::where('KD_KEGIATAN', $request->foto_kegiatan)->get('KEGIATAN')[0]['KEGIATAN'] . ' ' . kegiatanksm::where('KD_KEGIATAN', $request->foto_kegiatan)->get('RTRW')[0]['RTRW'];
         $new_folder_name = $new_folder_request;
         //Create and Save Google Drive Folder KEGIATAN KSM
         $newGoogleFolder = new FolderInfo;
@@ -177,7 +178,7 @@ class DocumentsController extends Controller
         $JenisDokumen = $request->jenisDokumen;
         $parent_folder_code .= $request->kelurahan;
         $new_folder_code = $parent_folder_code;
-        // Create and Save Google Drive Folder Kelurahan
+        // Create and Save PENCAIRAN / PERENCANAAN folder
         $newGoogleFolder = new FolderInfo;
         $newGoogleFolder->CreateAndSavePencairanPerencanaanFolder($parent_folder_code, $JenisDokumen, $new_folder_code);
 
@@ -198,55 +199,54 @@ class DocumentsController extends Controller
 
     public function storeKSM(Request $request)
     {
-        // // Folder kabupaten
-        // $tahun = $request->tahunKSM;
-        // $parent_folder_code = $request->tahunKSM;
-        // $new_folder_request = $request->ksm_kabupaten;
-        // $new_folder_name = $new_folder_request . ' ' . village::where('KD_KAB', $new_folder_request)->get('NAMA_KAB')[0]['NAMA_KAB'];
-        // //Create and Save Google Drive Folder Kabupaten
-        // $newGoogleFolder = new FolderInfo;
-        // $newGoogleFolder->CreateAndSaveGoogleDriveFolder($parent_folder_code,  $new_folder_name, $new_folder_request);
+        // Folder kabupaten
+        $tahun = $request->tahunKSM;
+        $parent_folder_code = $request->tahunKSM;
+        $new_folder_request = $request->ksm_kabupaten;
+        $new_folder_name = $new_folder_request . ' ' . village::where('KD_KAB', $new_folder_request)->get('NAMA_KAB')[0]['NAMA_KAB'];
+        //Create and Save Google Drive Folder Kabupaten
+        $newGoogleFolder = new FolderInfo;
+        $newGoogleFolder->CreateAndSaveGoogleDriveFolder($parent_folder_code,  $new_folder_name, $new_folder_request);
 
-        // // Kelurahan
-        // $parent_folder_code .= $request->ksm_kabupaten;
-        // $new_folder_request = $request->ksm_kelurahan;
-        // $new_folder_name = $new_folder_request . ' ' . village::where('KD_KEL', $request->ksm_kelurahan)->get('NAMA_DESA')[0]['NAMA_DESA'];
-        // //Create and Save Google Drive Folder Kelurahan
-        // $newGoogleFolder = new FolderInfo;
-        // $newGoogleFolder->CreateAndSaveGoogleDriveFolder($parent_folder_code,  $new_folder_name, $new_folder_request);
+        // Kelurahan
+        $parent_folder_code .= $request->ksm_kabupaten;
+        $new_folder_request = $request->ksm_kelurahan;
+        $new_folder_name = $new_folder_request . ' ' . village::where('KD_KEL', $request->ksm_kelurahan)->get('NAMA_DESA')[0]['NAMA_DESA'];
+        //Create and Save Google Drive Folder Kelurahan
+        $newGoogleFolder = new FolderInfo;
+        $newGoogleFolder->CreateAndSaveGoogleDriveFolder($parent_folder_code,  $new_folder_name, $new_folder_request);
 
-        // // KSM
-        // $parent_folder_code .= $request->ksm_kelurahan;
-        // $new_folder_request = $request->ksm_ksm;
-        // $new_folder_name = $new_folder_request;
-        // $nama_ksm = $new_folder_request;
-        // //Create and Save Google Drive Folder KSM
-        // $newGoogleFolder = new FolderInfo;
-        // $newGoogleFolder->CreateAndSaveGoogleDriveFolder($parent_folder_code,  $new_folder_name, $new_folder_request);
+        // KSM
+        $parent_folder_code .= $request->ksm_kelurahan;
+        $new_folder_request = $request->ksm_ksm;
+        $new_folder_name = $new_folder_request;
+        $nama_ksm = $new_folder_request;
+        //Create and Save Google Drive Folder KSM
+        $newGoogleFolder = new FolderInfo;
+        $newGoogleFolder->CreateAndSaveGoogleDriveFolder($parent_folder_code,  $new_folder_name, $new_folder_request);
 
-        // //Create KEGIATAN KSM folder
-        // $noDokumen = $request->jenisDokumen_ksm;
-        // $parent_folder_code .= $request->ksm_ksm;
-        // $new_folder_name = jenisDokumen::where('NO', $noDokumen)->get('nama_folder')[0]['nama_folder'];
-        // $new_folder_request = $new_folder_name;
-        // $newGoogleFolder = new FolderInfo;
-        // $newGoogleFolder->CreateAndSaveGoogleDriveFolder($parent_folder_code,  $new_folder_name, $new_folder_request);
+        //Create KEGIATAN KSM folder
+        $noDokumen = $request->jenisDokumen_ksm;
+        $parent_folder_code .= $request->ksm_ksm;
+        $new_folder_name = jenisDokumen::where('NO', $noDokumen)->get('nama_folder')[0]['nama_folder'];
+        $new_folder_request = $new_folder_name;
+        $newGoogleFolder = new FolderInfo;
+        $newGoogleFolder->CreateAndSaveGoogleDriveFolder($parent_folder_code,  $new_folder_name, $new_folder_request);
 
-        // //Save File
-        // $kd_kel = $request->ksm_kelurahan;
-        // $kd_kab = $request->ksm_kabupaten;
-        // $files = $request->file('file_ksm');
-        // $JenisDokumen = jenisDokumen::where('NO', $noDokumen)->get('JenisDokumen')[0]['JenisDokumen'];
-        // $itemDokumen = $request->macamDokumen_ksm . ' ';
-        // $fileName = $itemDokumen . $JenisDokumen . ' KSM ' . $nama_ksm;
-        // $tipedokumen = 'PDF';
-        // $SaveFile = new DocInfo;
-        // $Kodeksm = $request->ksm_ksm;
-        // $KodeKegiatan = $request->ksm_ksm . $JenisDokumen;
-        // $SaveFile->SafeFile($KodeKegiatan, $files, $fileName, $JenisDokumen, $Kodeksm, $kd_kel, $kd_kab, $new_folder_name, $parent_folder_code, $tipedokumen);
-        // // ==================================================== Selesai =============================================== //
-        // return redirect('/table')->with('status', 'Dokumen sudah diupload.');
-        echo "dalala";
+        //Save File
+        $kd_kel = $request->ksm_kelurahan;
+        $kd_kab = $request->ksm_kabupaten;
+        $files = $request->file('file_ksm');
+        $JenisDokumen = jenisDokumen::where('NO', $noDokumen)->get('JenisDokumen')[0]['JenisDokumen'];
+        $itemDokumen = $request->macamDokumen_ksm . ' ';
+        $fileName = $itemDokumen . $JenisDokumen . ' KSM ' . $nama_ksm;
+        $tipedokumen = 'PDF';
+        $SaveFile = new DocInfo;
+        $Kodeksm = $request->ksm_ksm;
+        $KodeKegiatan = $request->ksm_ksm . $JenisDokumen;
+        $SaveFile->SafeFile($KodeKegiatan, $files, $fileName, $JenisDokumen, $Kodeksm, $kd_kel, $kd_kab, $new_folder_name, $parent_folder_code, $tipedokumen);
+        // ==================================================== Selesai =============================================== //
+        return redirect('/table')->with('status', 'Dokumen sudah diupload.');
     }
 
     /**

@@ -42,7 +42,7 @@ class DashboardController extends Controller
      */
     public function store(Request $request, Document $document)
     {
-        $rootFolder = config('app.rootGoogleFolder');
+        $rootFolder = "1smwHooFqkLU5T7G2ucvJt_qhcGFqq92q";
         if (tahun::where('tahun', $request->tahun)->exists()) {
             return redirect('/dashboard');
         } else {
@@ -74,13 +74,6 @@ class DashboardController extends Controller
             }
         }
         return redirect('/dashboard');
-    }
-
-    public function coba()
-    {
-        $kegiatanksmnew = kegiatanksmnew::all();
-        $kegiatanksm = kegiatanksm::all();
-        return view('dashboard.coba', compact(['kegiatanksmnew', 'kegiatanksm']));
     }
 
     /**

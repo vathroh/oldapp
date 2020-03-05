@@ -41,7 +41,7 @@
                 @endforeach
             </div>
         </div>
-        <div class="row">
+        <div class="row text-center">
             <div class="col justify-content-center">
                 <span>{{ $documents->links() }}</span>
             </div>

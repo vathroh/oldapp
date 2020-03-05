@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\CustomFunctions\Rekap;
 use App\Document;
 use App\kabupaten;
+use App\kegiatanksm;
 use App\village;
 use App\ksm;
 
@@ -40,6 +41,40 @@ class RekapController extends Controller
         // $itung = new Rekap;
         // echo $itung->RekapKegiatan();
     }
+
+    public function rekapKel($kab)
+    {
+        $documents = Document::All();
+        $kabupaten = kabupaten::all();
+        $kelurahan = village::where('KD_KAB', $kab)->get();
+        return view('rekap.kelurahan', compact(['documents', 'kabupaten', 'kelurahan']));
+        // $itung = new Rekap;
+        // echo $itung->RekapKegiatan();
+    }
+
+    public function rekapKSM($kel)
+    {
+        $documents = Document::All();
+        $kabupaten = kabupaten::all();
+        $kelurahan = village::all();
+        $ksm = ksm::where('KD_KEL', $kel)->get();
+        return view('rekap.ksm', compact(['documents', 'kabupaten', 'kelurahan', 'ksm']));
+        // $itung = new Rekap;
+        // echo $itung->RekapKegiatan();
+    }
+
+    public function rekapKegiatan($ksm)
+    {
+        $documents = Document::All();
+        $kabupaten = kabupaten::all();
+        $kelurahan = village::all();
+        $ksm_ = ksm::all();
+        $kegiatan = kegiatanksm::where('KD_KSM', $ksm)->get();
+        return view('rekap.kegiatan', compact(['documents', 'kabupaten', 'kelurahan', 'ksm_', 'kegiatan']));
+        // $itung = new Rekap;
+        // echo $itung->RekapKegiatan();
+    }
+
 
     /**
      * Show the form for creating a new resource.

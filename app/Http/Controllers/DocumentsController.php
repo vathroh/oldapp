@@ -143,11 +143,11 @@ class DocumentsController extends Controller
 
 
         // Save File
-        $KodeKegiatan = $request->foto_ksm . $request->foto_kegiatan;
+        $KodeKegiatan = $request->foto_kegiatan;
         $kd_kel = $request->foto_kelurahan;
         $kd_kab = $request->foto_kabupaten;
         $files = $request->file('file_foto');
-        $Kodeksm = "";
+        $Kodeksm = $request->foto_ksm;
         $JenisDokumen = $jenisDokumenFoto;
         $tipedokumen = 'IMAGE';
         $SaveFile = new DocInfo;

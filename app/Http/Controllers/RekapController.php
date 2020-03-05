@@ -32,6 +32,15 @@ class RekapController extends Controller
         // echo $itung->RekapKegiatan();
     }
 
+    public function rekapKab()
+    {
+        $documents = Document::All();
+        $kabupaten = kabupaten::all();
+        return view('rekap.kabupaten', compact(['documents', 'kabupaten']));
+        // $itung = new Rekap;
+        // echo $itung->RekapKegiatan();
+    }
+
     /**
      * Show the form for creating a new resource.
      *

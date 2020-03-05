@@ -31,6 +31,7 @@ Route::get('/create', 'DocumentsController@create');
 Route::get('/ksm', 'DocumentsController@ksm');
 Route::get('/foto', 'DocumentsController@foto');
 Route::get('/rekap', 'RekapController@index');
+Route::get('/rekapKab', 'RekapController@rekapKab');
 
 // Route::get('/doc/{document}', 'DocumentsController@show');
 Route::get('/drop', 'VillagesController@index');

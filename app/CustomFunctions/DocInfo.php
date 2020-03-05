@@ -24,7 +24,7 @@ class DocInfo
             ->where('jenis_dokumen', $JenisDokumen)
             ->count();
         $noUrut = $JmlFile + 1;
-        $newFileName = $fileName . "(" . $noUrut . ")";
+        $newFileName = $fileName . "(" . $noUrut . ")" . '.' . $fileExtension;
         // return $nama_desa;
 
         if (google_folder::where('path_folder', $new_folder_path)->exists()) {

@@ -32,9 +32,10 @@ Route::get('/ksm', 'DocumentsController@ksm');
 Route::get('/foto', 'DocumentsController@foto');
 Route::get('/rekap', 'RekapController@index');
 Route::get('/rekapKab', 'RekapController@rekapKab');
-Route::get('/rekapKel/{kabupaten}', 'RekapController@rekapKel');
-Route::get('/rekapKSM/{kelurahan}', 'RekapController@rekapKSM');
-Route::get('/rekapKegiatan/{KSM}', 'RekapController@rekapKegiatan');
+Route::get('/rekapKel/{kabupaten}', 'RekapController@rekapKelCentang');
+Route::get('/rekapKSM/{kelurahan}', 'RekapController@rekapKSMCentang');
+Route::get('/rekapKegiatan/{KSM}', 'RekapController@rekapKegiatanCentang');
+Route::get('/rekapKegiatanCentang/{kegiatan}', 'RekapController@jmlKegiatanKSM');
 
 // Route::get('/doc/{document}', 'DocumentsController@show');
 Route::get('/drop', 'VillagesController@index');

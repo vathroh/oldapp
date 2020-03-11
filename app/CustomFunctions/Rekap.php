@@ -3,6 +3,8 @@
 namespace App\CustomFunctions;
 
 use Illuminate\Support\Facades\DB;
+use App\kegiatanksm;
+use App\Document;
 
 class Rekap
 {
@@ -11,7 +13,8 @@ class Rekap
         $kd_kel,
         $kd_ksm,
         $kd_keg,
-        $item_keg;
+        $item_keg,
+        $ksm;
 
     public function RekapKab($tahun, $kd_kab)
     {

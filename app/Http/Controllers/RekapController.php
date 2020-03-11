@@ -9,6 +9,7 @@ use App\kabupaten;
 use App\kegiatanksm;
 use App\village;
 use App\ksm;
+use League\CommonMark\Block\Element\Document as ElementDocument;
 
 class RekapController extends Controller
 {
@@ -38,107 +39,67 @@ class RekapController extends Controller
         $documents = Document::All();
         $kabupaten = kabupaten::all();
         return view('rekap.kabupaten', compact(['documents', 'kabupaten']));
-        // $itung = new Rekap;
-        // echo $itung->RekapKegiatan();
     }
 
-    public function rekapKel($kab)
+    public function rekapKelCentang($kab)
     {
         $documents = Document::All();
-        $kabupaten = kabupaten::all();
         $kelurahan = village::where('KD_KAB', $kab)->get();
-        return view('rekap.kelurahan', compact(['documents', 'kabupaten', 'kelurahan']));
-        // $itung = new Rekap;
-        // echo $itung->RekapKegiatan();
+        $ksm = ksm::where('KD_KAB', $kab)->get();
+        $jmlksm = $ksm->count();
+
+        for ($j = 0; $j < $jmlksm; $j++) {
+            $kegiatan = kegiatanksm::where('KD_KAB', $kab)->get();
+            $jmlkeg = kegiatanksm::where('KD_KAB', $kab)->count();
+
+            for ($i = 0; $i < $jmlkeg; $i++) {
+                $kodekeg = $kegiatan[$i]['KD_KEGIATAN'];
+                $jmlfoto0keg = $documents->where('kode_kegiatan', $kodekeg)->where('jenis_dokumen', 'FOTO 0%')->count();
+                if ($jmlfoto0keg > 0) {
+                    $kegiatan[$i]['FOTO_0'] = 1;
+                } else {
+                    $kegiatan[$i]['FOTO_0'] = 0;
+                }
+            }
+
+            $kodeksm = $ksm[$j]['KD_KSM'];
+            $jmlkegiatanperksm = $kegiatan->where('KD_KSM', $kodeksm)->count();
+            $jmlfoto0ksm = $kegiatan->where('KD_KSM', $kodeksm)->where('FOTO_0', '1')->count();
+
+            if ($jmlfoto0ksm >= $jmlkegiatanperksm) {
+                $ksm[$j]['FOTO_0'] = 1;
+            } else {
+                $ksm[$j]['FOTO_0'] = 0;
+            }
+        }
+
+        return view('rekap.kelurahan', compact(['documents', 'kelurahan', 'ksm', 'kegiatan']));
     }
 
-    public function rekapKSM($kel)
+    public function rekapKSMCentang($kel)
     {
         $documents = Document::All();
-        $kabupaten = kabupaten::all();
-        $kelurahan = village::all();
         $ksm = ksm::where('KD_KEL', $kel)->get();
-        return view('rekap.ksm', compact(['documents', 'kabupaten', 'kelurahan', 'ksm']));
-        // $itung = new Rekap;
-        // echo $itung->RekapKegiatan();
+        $kegiatan = kegiatanksm::where('KD_KEL', $kel)->get();
+        $jmlkeg = kegiatanksm::where('KD_KEL', $kel)->count();
+
+        for ($i = 0; $i < $jmlkeg; $i++) {
+            $kodekeg = $kegiatan[$i]['KD_KEGIATAN'];
+            $jmlfoto0keg = $documents->where('kode_kegiatan', $kodekeg)->where('jenis_dokumen', 'FOTO 0%')->count();
+            if ($jmlfoto0keg > 0) {
+                $kegiatan[$i]['FOTO_0'] = 1;
+            } else {
+                $kegiatan[$i]['FOTO_0'] = 0;
+            }
+        }
+
+        return view('rekap.ksm', compact(['documents', 'ksm', 'kegiatan']));
     }
 
-    public function rekapKegiatan($ksm)
+    public function rekapKegiatanCentang($ksm)
     {
         $documents = Document::All();
-        $kabupaten = kabupaten::all();
-        $kelurahan = village::all();
-        $ksm_ = ksm::all();
         $kegiatan = kegiatanksm::where('KD_KSM', $ksm)->get();
-        return view('rekap.kegiatan', compact(['documents', 'kabupaten', 'kelurahan', 'ksm_', 'kegiatan']));
-        // $itung = new Rekap;
-        // echo $itung->RekapKegiatan();
-    }
-
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        return view('rekap.kegiatan', compact(['documents', 'kegiatan']));
     }
 }

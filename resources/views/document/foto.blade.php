@@ -95,7 +95,7 @@
                                         </label>
                                         <select name="TitikFoto" id="TitikFoto" class="form-control input-lg dynamic" required>
                                             <option>Pilih Titik Lokasi</option>
-                                            <?php for ($i = 1; $i <= 15; $i++) { ?>
+                                            <?php for ($i = 1; $i <= 20; $i++) { ?>
                                                 <option value="Titik <?php echo $i; ?>">Titik <?php echo $i; ?></option>
                                             <?php } ?>
                                         </select>

@@ -26,7 +26,6 @@
         <thead>
             <tr class="text-center">
                 <th rowspan="2">NO</th>
-                <th rowspan="2">KSM</th>
                 <th rowspan="2">KEGIATAN</th>
                 <th rowspan="2">RT / RW</th>
                 <th colspan="5">FOTO KEGIATAN</th>
@@ -43,8 +42,7 @@
             @foreach ($kegiatan as $keg)
             <tr>
                 <th scope="row">{{$loop->iteration}}</th>
-                <td>{{$keg->KD_KSM}}</a></td>
-                <td>{{$keg->KEGIATAN}}</a></td>
+                <td><a href="/rekapKegiatanCentang/{{$keg->KD_KEGIATAN}}">{{$keg->KEGIATAN}}</a></td>
                 <td>{{$keg->RTRW}}</a></td>
                 <td>{{$documents->where('kode_kegiatan', $keg->KD_KEGIATAN)->where('jenis_dokumen', 'FOTO 0%')->count()}} </td>
                 <td>{{$documents->where('kode_kegiatan', $keg->KD_KEGIATAN)->where('jenis_dokumen', 'FOTO 25%')->count()}} </td>
@@ -54,7 +52,7 @@
             </tr>
             @endforeach
             <tr>
-                <td colspan="4">JUMLAH</td>
+                <td colspan="3">JUMLAH</td>
                 <td>{{$documents->where('kode_ksm', $keg->KD_KSM)->where('jenis_dokumen', 'FOTO 0%')->count()}} </td>
                 <td>{{$documents->where('kode_ksm', $keg->KD_KSM)->where('jenis_dokumen', 'FOTO 25%')->count()}} </td>
                 <td>{{$documents->where('kode_ksm', $keg->KD_KSM)->where('jenis_dokumen', 'FOTO 50%')->count()}} </td>

@@ -63,31 +63,13 @@
                 <td>{{$documents->where('kode_kel', $kel->KD_KEL)->where('jenis_dokumen', 'DOKUMENTASI MP2K')->count()}} </td>
                 <td>{{$documents->where('kode_kel', $kel->KD_KEL)->where('jenis_dokumen', 'DOKUMENTASI OJT')->count()}} </td>
                 <td>{{$documents->where('kode_kel', $kel->KD_KEL)->where('jenis_dokumen', 'DOKUMENTASI PELATIHAN')->count()}} </td>
-                <td>{{$documents->where('kode_kel', $kel->KD_KEL)->where('jenis_dokumen', 'FOTO 0%')->count()}} </td>
+                <td>{{$ksm->where('KD_KEL',$kel->KD_KEL)->where('FOTO_0','1')->count() }} / {{ $ksm->where('KD_KEL',$kel->KD_KEL)->count()}} </td>
                 <td>{{$documents->where('kode_kel', $kel->KD_KEL)->where('jenis_dokumen', 'FOTO 25%')->count()}} </td>
                 <td>{{$documents->where('kode_kel', $kel->KD_KEL)->where('jenis_dokumen', 'FOTO 50%')->count()}} </td>
                 <td>{{$documents->where('kode_kel', $kel->KD_KEL)->where('jenis_dokumen', 'FOTO 75%')->count()}} </td>
                 <td>{{$documents->where('kode_kel', $kel->KD_KEL)->where('jenis_dokumen', 'FOTO 100%')->count()}} </td>
             </tr>
             @endforeach
-            <tr>
-                <td colspan="2">JUMLAH</td>
-                <td>{{$documents->where('kode_kab', $kel->KD_KAB)->where('jenis_dokumen', 'DOKUMEN TEKNIS')->count()}} </td>
-                <td>{{$documents->where('kode_kab', $kel->KD_KAB)->where('jenis_dokumen', 'RENCANA KERJA')->count()}} </td>
-                <td>{{$documents->where('kode_kab', $kel->KD_KAB)->where('jenis_dokumen', 'MP2K')->count()}} </td>
-                <td>{{$documents->where('kode_kab', $kel->KD_KAB)->where('jenis_dokumen', 'OJT')->count()}} </td>
-                <td>{{$documents->where('kode_kab', $kel->KD_KAB)->where('jenis_dokumen', 'PELATIHAN')->count()}} </td>
-                <td>{{$documents->where('kode_kab', $kel->KD_KAB)->where('jenis_dokumen', 'DOKUMEN PENGADAAN')->count()}} </td>
-                <td>{{$documents->where('kode_kab', $kel->KD_KAB)->where('jenis_dokumen', 'LPJ')->count()}} </td>
-                <td>{{$documents->where('kode_kab', $kel->KD_KAB)->where('jenis_dokumen', 'DOKUMENTASI MP2K')->count()}} </td>
-                <td>{{$documents->where('kode_kab', $kel->KD_KAB)->where('jenis_dokumen', 'DOKUMENTASI OJT')->count()}} </td>
-                <td>{{$documents->where('kode_kab', $kel->KD_KAB)->where('jenis_dokumen', 'DOKUMENTASI PELATIHAN')->count()}} </td>
-                <td>{{$documents->where('kode_kab', $kel->KD_KAB)->where('jenis_dokumen', 'FOTO 0%')->count()}} </td>
-                <td>{{$documents->where('kode_kab', $kel->KD_KAB)->where('jenis_dokumen', 'FOTO 25%')->count()}} </td>
-                <td>{{$documents->where('kode_kab', $kel->KD_KAB)->where('jenis_dokumen', 'FOTO 50%')->count()}} </td>
-                <td>{{$documents->where('kode_kab', $kel->KD_KAB)->where('jenis_dokumen', 'FOTO 75%')->count()}} </td>
-                <td>{{$documents->where('kode_kab', $kel->KD_KAB)->where('jenis_dokumen', 'FOTO 100%')->count()}} </td>
-            </tr>
         </tbody>
     </table>
 </div>

@@ -7,11 +7,14 @@ use App\Document;
 use App\google_folder;
 use App\village;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+
 
 class DocInfo
 {
-    public function SafeFile($KodeKegiatan, $files, $fileName, $JenisDokumen, $Kodeksm, $kd_kel, $kd_kab, $new_folder_name, $parent_folder_code, $tipedokumen)
+    public function SafeFile($KodeKegiatan, $files, $fileName, $JenisDokumen, $Kodeksm, $kd_kel, $kd_kab, $new_folder_name, $parent_folder_code, $tipedokumen, $titik)
     {
+        $user = Auth::user()->email;
         $nama_desa = village::where('KD_KEL', $kd_kel)->get('NAMA_DESA')[0]['NAMA_DESA'];
         $nama_kabupaten = village::where('KD_KAB', $kd_kab)->get('NAMA_KAB')[0]['NAMA_KAB'];
         $parent_folder_path = google_folder::where('kode_folder', $parent_folder_code)->get('path_folder')[0]['path_folder'];
@@ -44,8 +47,9 @@ class DocInfo
                     $document->file_extension =  $fileExtension;
                     $document->tipe_dokumen =  $tipedokumen;
                     $document->jenis_dokumen =  $JenisDokumen;
-                    $document->uploaded_by =  '-';
+                    $document->uploaded_by = $user;
                     $document->scope = '-';
+                    $document->titik = $titik;
                     $document->kode_kegiatan = $KodeKegiatan;
                     $document->kode_ksm = $Kodeksm;
                     $document->kode_kel = $kd_kel;

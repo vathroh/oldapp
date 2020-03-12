@@ -3,13 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\CustomFunctions\Rekap;
 use App\Document;
 use App\kabupaten;
 use App\kegiatanksm;
 use App\village;
 use App\ksm;
-use League\CommonMark\Block\Element\Document as ElementDocument;
 
 class RekapController extends Controller
 {

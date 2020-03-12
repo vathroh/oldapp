@@ -1,16 +1,27 @@
 @extends('layouts.app')
 
 @section('content')
-
+@if(session('status'))
+<div class="alert alert-success">
+    <h1>
+        {{ session('status') }}
+    </h1>
+</div>
+@endif
 <div class="container">
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/rekapKab">All</a></li>
-            <li class="breadcrumb-item"><a href="#">Kabupaten</a></li>
-            <li class="breadcrumb-item"><a href="/rekapKSM/{{$kelurahan[0]['KD_KEL']}}"> {{ $kelurahan[0]['NAMA_DESA'] }} </a></li>
-            <li class="breadcrumb-item active" aria-current="page">KSM {{$ksm[0]['NAMA_KSM'] }} </li>
-        </ol>
-    </nav>
+    <div class="row">
+        <div class="col text-center">
+            <a class="btn btn-primary" href="/doc">. F o t o .</a>
+            <a class="btn btn-primary" href="/table">.Dokumen.</a>
+            <a class="btn btn-primary" href="/rekapKAb">.R e k a p.</a>
+            <br><br>
+            <a class="btn btn-primary" href="/create">Upload Dok BKM</a>
+            <a class="btn btn-primary" href="/.">Upload Dok KSM</a>
+            <a class="btn btn-primary" href="/foto">Upload Foto</a>
+        </div>
+    </div>
+
+
     <table class="table table-striped table-dark table-bordered mt-3">
         <thead>
             <tr class="text-center">
@@ -32,14 +43,14 @@
             @foreach ($kegiatan as $keg)
             <tr>
                 <th scope="row">{{$loop->iteration}}</th>
-                <td>{{$ksm[0]['NAMA_KSM']}}</a></td>
+                <td>{{$keg->KD_KSM}}</a></td>
                 <td>{{$keg->KEGIATAN}}</a></td>
                 <td>{{$keg->RTRW}}</a></td>
-                <td><a href="/viewfotokegiatan={{$keg->KD_KEGIATAN}}">{{$documents->where('kode_kegiatan', $keg->KD_KEGIATAN)->where('jenis_dokumen', 'FOTO 0%')->count()}} </a></td>
-                <td><a href="/viewfotokegiatan={{$keg->KD_KEGIATAN}}">{{$documents->where('kode_kegiatan', $keg->KD_KEGIATAN)->where('jenis_dokumen', 'FOTO 25%')->count()}} </a></td>
-                <td><a href="/viewfotokegiatan={{$keg->KD_KEGIATAN}}">{{$documents->where('kode_kegiatan', $keg->KD_KEGIATAN)->where('jenis_dokumen', 'FOTO 50%')->count()}} </a></td>
-                <td><a href="/viewfotokegiatan={{$keg->KD_KEGIATAN}}">{{$documents->where('kode_kegiatan', $keg->KD_KEGIATAN)->where('jenis_dokumen', 'FOTO 75%')->count()}} </a></td>
-                <td><a href="/viewfotokegiatan={{$keg->KD_KEGIATAN}}">{{$documents->where('kode_kegiatan', $keg->KD_KEGIATAN)->where('jenis_dokumen', 'FOTO 100%')->count()}} </a></td>
+                <td>{{$documents->where('kode_kegiatan', $keg->KD_KEGIATAN)->where('jenis_dokumen', 'FOTO 0%')->count()}} </td>
+                <td>{{$documents->where('kode_kegiatan', $keg->KD_KEGIATAN)->where('jenis_dokumen', 'FOTO 25%')->count()}} </td>
+                <td>{{$documents->where('kode_kegiatan', $keg->KD_KEGIATAN)->where('jenis_dokumen', 'FOTO 50%')->count()}} </td>
+                <td>{{$documents->where('kode_kegiatan', $keg->KD_KEGIATAN)->where('jenis_dokumen', 'FOTO 75%')->count()}} </td>
+                <td>{{$documents->where('kode_kegiatan', $keg->KD_KEGIATAN)->where('jenis_dokumen', 'FOTO 100%')->count()}} </td>
             </tr>
             @endforeach
             <tr>

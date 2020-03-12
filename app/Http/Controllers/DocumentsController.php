@@ -91,6 +91,7 @@ class DocumentsController extends Controller
     public function storeFoto(Request $request)
     {
         // Folder kabupaten
+        $titik = $request->TitikFoto;
         $tahun = $request->tahunFOTO;
         $parent_folder_code =  $tahun;
         $new_folder_request = $request->foto_kabupaten;
@@ -151,7 +152,7 @@ class DocumentsController extends Controller
         $JenisDokumen = $jenisDokumenFoto;
         $tipedokumen = 'IMAGE';
         $SaveFile = new DocInfo;
-        $SaveFile->SafeFile($KodeKegiatan, $files, $fileName, $JenisDokumen, $Kodeksm, $kd_kel, $kd_kab, $new_folder_name, $parent_folder_code, $tipedokumen);
+        $SaveFile->SafeFile($KodeKegiatan, $files, $fileName, $JenisDokumen, $Kodeksm, $kd_kel, $kd_kab, $new_folder_name, $parent_folder_code, $tipedokumen, $titik);
 
         return redirect('/doc')->with('status', 'Foto sudah diupload.');
     }
@@ -159,6 +160,7 @@ class DocumentsController extends Controller
     public function store(Request $request)
     {
         // Folder kabupaten
+        $titik = "-";
         $parent_folder_code = $request->tahunBKM;
         $new_folder_request = $request->kabupaten;
         $new_folder_name = $new_folder_request . ' ' . village::where('KD_KAB', $new_folder_request)->get('NAMA_KAB')[0]['NAMA_KAB'];
@@ -192,7 +194,7 @@ class DocumentsController extends Controller
         $Kodeksm = "-";
         $KodeKegiatan = $request->kelurahan . $JenisDokumen;
         $SaveFile = new DocInfo;
-        $SaveFile->SafeFile($KodeKegiatan, $files, $fileName, $JenisDokumen,  $Kodeksm, $kd_kel, $kd_kab, $new_folder_name, $parent_folder_code, $tipedokumen);
+        $SaveFile->SafeFile($KodeKegiatan, $files, $fileName, $JenisDokumen,  $Kodeksm, $kd_kel, $kd_kab, $new_folder_name, $parent_folder_code, $tipedokumen, $titik);
 
         return redirect('/table')->with('status', 'Dokumen sudah diupload.');
     }
@@ -200,6 +202,7 @@ class DocumentsController extends Controller
     public function storeKSM(Request $request)
     {
         // Folder kabupaten
+        $titik = "-";
         $tahun = $request->tahunKSM;
         $parent_folder_code = $request->tahunKSM;
         $new_folder_request = $request->ksm_kabupaten;
@@ -244,7 +247,7 @@ class DocumentsController extends Controller
         $SaveFile = new DocInfo;
         $Kodeksm = $request->ksm_ksm;
         $KodeKegiatan = $request->ksm_ksm . $JenisDokumen;
-        $SaveFile->SafeFile($KodeKegiatan, $files, $fileName, $JenisDokumen, $Kodeksm, $kd_kel, $kd_kab, $new_folder_name, $parent_folder_code, $tipedokumen);
+        $SaveFile->SafeFile($KodeKegiatan, $files, $fileName, $JenisDokumen, $Kodeksm, $kd_kel, $kd_kab, $new_folder_name, $parent_folder_code, $tipedokumen, $titik);
         // ==================================================== Selesai =============================================== //
         return redirect('/table')->with('status', 'Dokumen sudah diupload.');
     }

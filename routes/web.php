@@ -30,12 +30,24 @@ Route::get('/table', 'DocumentsController@table');
 Route::get('/create', 'DocumentsController@create');
 Route::get('/ksm', 'DocumentsController@ksm');
 Route::get('/foto', 'DocumentsController@foto');
+
 Route::get('/rekap', 'RekapController@index');
+
+//Rekap Foto ==
 Route::get('/rekapKab', 'RekapController@rekapKab');
 Route::get('/rekapKel/{kabupaten}', 'RekapController@rekapKelCentang');
 Route::get('/rekapKSM/{kelurahan}', 'RekapController@rekapKSMCentang');
 Route::get('/rekapKegiatan/{KSM}', 'RekapController@rekapKegiatanCentang');
 Route::get('/rekapKegiatanCentang/{kegiatan}', 'RekapController@jmlKegiatanKSM');
+
+//Rekap KSM
+Route::get('/rekapdokumenksm', 'rekapKSMController@ksmKab');
+
+//Rekap BKM
+Route::get('/rekapdokumenbkm', 'rekapBKMController@bkmKab');
+
+//foto
+Route::get('/viewfotokegiatan={kegiatan}', 'fotoviewController@kegiatan');
 
 // Route::get('/doc/{document}', 'DocumentsController@show');
 Route::get('/drop', 'VillagesController@index');

@@ -11,6 +11,8 @@
     </ol>
 </nav>
 
+<h3 class="text-center align-content-center">{{ $kelurahan[0]['NAMA_DESA'] }} Tahun 2019</h3>
+
 <table class="table table-striped table-dark table-bordered mt-3">
     <thead>
         <tr class="text-center">
@@ -35,14 +37,14 @@
         <tr>
             <th scope="row">{{$loop->iteration}}</th>
             <td><a href="/rekapKegiatan/{{$ksm1->KD_KSM}}">{{$ksm1->NAMA_KSM}}</a></td>
-            <td>{{$documents->where('kode_ksm', $ksm1->KD_KSM)->where('jenis_dokumen', 'DOKUMENTASI MP2K')->count()}} </td>
-            <td>{{$documents->where('kode_ksm', $ksm1->KD_KSM)->where('jenis_dokumen', 'DOKUMENTASI OJT')->count()}} </td>
-            <td>{{$documents->where('kode_ksm', $ksm1->KD_KSM)->where('jenis_dokumen', 'DOKUMENTASI PELATIHAN')->count()}} </td>
-            <td>{{ $kegiatan->where('KD_KSM',$ksm1->KD_KSM)->where('FOTO_0','1')->count() }} dari {{ $kegiatan->where('KD_KSM',$ksm1->KD_KSM)->count() }}</td>
-            <td>{{ $kegiatan->where('KD_KSM',$ksm1->KD_KSM)->where('FOTO_25','1')->count() }} dari {{ $kegiatan->where('KD_KSM',$ksm1->KD_KSM)->count() }}</td>
-            <td>{{ $kegiatan->where('KD_KSM',$ksm1->KD_KSM)->where('FOTO_50','1')->count() }} dari {{ $kegiatan->where('KD_KSM',$ksm1->KD_KSM)->count() }}</td>
-            <td>{{ $kegiatan->where('KD_KSM',$ksm1->KD_KSM)->where('FOTO_75','1')->count() }} dari {{ $kegiatan->where('KD_KSM',$ksm1->KD_KSM)->count() }}</td>
-            <td>{{ $kegiatan->where('KD_KSM',$ksm1->KD_KSM)->where('FOTO_100','1')->count() }} dari {{ $kegiatan->where('KD_KSM',$ksm1->KD_KSM)->count() }}</td>
+            <td class="text-center">{{$documents->where('kode_ksm', $ksm1->KD_KSM)->where('jenis_dokumen', 'DOKUMENTASI MP2K')->count()}} <br>file</td>
+            <td class="text-center">{{$documents->where('kode_ksm', $ksm1->KD_KSM)->where('jenis_dokumen', 'DOKUMENTASI OJT')->count()}} <br>file</td>
+            <td class="text-center">{{$documents->where('kode_ksm', $ksm1->KD_KSM)->where('jenis_dokumen', 'DOKUMENTASI PELATIHAN')->count()}} <br>file</td>
+            <td class="text-center">{{$ksm1->FOTO_0}} dari {{ $ksm1->JML_KEG }} <br>kegiatan</td>
+            <td class="text-center">{{$ksm1->FOTO_25}} dari {{ $ksm1->JML_KEG }} <br>kegiatan</td>
+            <td class="text-center">{{$ksm1->FOTO_50}} dari {{ $ksm1->JML_KEG }} <br>kegiatan</td>
+            <td class="text-center">{{$ksm1->FOTO_75}} dari {{ $ksm1->JML_KEG }} <br>kegiatan</td>
+            <td class="text-center">{{$ksm1->FOTO_100}} dari {{ $ksm1->JML_KEG }} <br>kegiatan</td>
         </tr>
         @endforeach
     </tbody>

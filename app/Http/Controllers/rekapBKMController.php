@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Document;
 use App\kabupaten;
+use App\kegiatanksm;
 use App\ksm;
 use App\village;
 use Illuminate\Http\Request;
@@ -17,7 +18,12 @@ class rekapBKMController extends Controller
      */
     public function index()
     {
-        //
+        $documents = Document::All();
+        $kabupaten = kabupaten::all();
+        $kelurahan = village::all();
+        $ksm = ksm::all();
+        $kegiatan = kegiatanksm::paginate(10);
+        return view('rekapBKM.index', compact(['documents', 'kabupaten', 'kelurahan', 'ksm']));
     }
     public function bkmKab()
     {

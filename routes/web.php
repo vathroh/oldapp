@@ -46,8 +46,12 @@ Route::get('/rekapdokumenksm', 'rekapKSMController@ksmKab');
 //Rekap BKM
 Route::get('/rekapdokumenbkm', 'rekapBKMController@bkmKab');
 
-//foto
+// Rekap foto
 Route::get('/viewfotokegiatan={kegiatan}', 'fotoviewController@kegiatan');
+
+// Kurang Upload foto
+Route::get('/kurangupload', 'kuranguploadController@index');
+Route::post('/kurangupload', 'kuranguploadController@perkegiatan');
 
 // Route::get('/doc/{document}', 'DocumentsController@show');
 Route::get('/drop', 'VillagesController@index');

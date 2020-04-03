@@ -7,6 +7,9 @@
         <li class="breadcrumb-item active" aria-current="page"> {{ $kelurahan[0]['NAMA_KAB'] }} </li>
     </ol>
 </nav>
+
+<h3 class="text-center">{{ $kelurahan[0]['NAMA_KAB'] }} Tahun 2019</h3>
+
 <table class="table table-striped table-dark table-bordered mt-3">
     <thead>
         <tr class="text-center">
@@ -30,14 +33,14 @@
         <tr>
             <th scope="row">{{$loop->iteration}}</th>
             <td><a href="/rekapKSM/{{$kel->KD_KEL}}">{{$kel->NAMA_DESA}}</a></td>
-            <td>{{$ksm->where('KD_KEL',$kel->KD_KEL)->where('FOTO_MP2K','1')->count() }} dari {{ $ksm->where('KD_KEL',$kel->KD_KEL)->count()}} </td>
-            <td>{{$ksm->where('KD_KEL',$kel->KD_KEL)->where('FOTO_OJT','1')->count() }} dari {{ $ksm->where('KD_KEL',$kel->KD_KEL)->count()}} </td>
-            <td>{{$ksm->where('KD_KEL',$kel->KD_KEL)->where('FOTO_PELATIHAN','1')->count() }} dari {{ $ksm->where('KD_KEL',$kel->KD_KEL)->count()}} </td>
-            <td>{{$ksm->where('KD_KEL',$kel->KD_KEL)->where('FOTO_0','1')->count() }} dari {{ $ksm->where('KD_KEL',$kel->KD_KEL)->count()}} </td>
-            <td>{{$ksm->where('KD_KEL',$kel->KD_KEL)->where('FOTO_25','1')->count() }} dari {{ $ksm->where('KD_KEL',$kel->KD_KEL)->count()}} </td>
-            <td>{{$ksm->where('KD_KEL',$kel->KD_KEL)->where('FOTO_50','1')->count() }} dari {{ $ksm->where('KD_KEL',$kel->KD_KEL)->count()}} </td>
-            <td>{{$ksm->where('KD_KEL',$kel->KD_KEL)->where('FOTO_75','1')->count() }} dari {{ $ksm->where('KD_KEL',$kel->KD_KEL)->count()}} </td>
-            <td>{{$ksm->where('KD_KEL',$kel->KD_KEL)->where('FOTO_100','1')->count() }} dari {{ $ksm->where('KD_KEL',$kel->KD_KEL)->count()}} </td>
+            <td class="text-center">{{$kel->MP2K}} dari {{$kel->JML_KSM}}<br>KSM</td>
+            <td class="text-center">{{$kel->OJT}} dari {{$kel->JML_KSM}}<br>KSM</td>
+            <td class="text-center">{{$kel->PELATIHAN_KSM}} dari {{$kel->JML_KSM}}<br>KSM</td>
+            <td class="text-center">{{$kel->FOTO_0}} dari {{$kel->JML_KEG}} <br>kegiatan</td>
+            <td class="text-center">{{$kel->FOTO_25}} dari {{$kel->JML_KEG}} <br>kegiatan</td>
+            <td class="text-center">{{$kel->FOTO_50}} dari {{$kel->JML_KEG}} <br>kegiatan</td>
+            <td class="text-center">{{$kel->FOTO_75}} dari {{$kel->JML_KEG}} <br>kegiatan</td>
+            <td class="text-center">{{$kel->FOTO_100}} dari {{$kel->JML_KEG}} <br>kegiatan</td>
         </tr>
         @endforeach
     </tbody>

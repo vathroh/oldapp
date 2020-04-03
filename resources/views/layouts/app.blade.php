@@ -17,6 +17,8 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -64,6 +66,14 @@
                                 <a class="dropdown-item" href="/rekapdokumenbkm">Dokumen BKM</a>
                                 <a class="dropdown-item" href="/rekapdokumenksm">Dokumen KSM</a>
                                 <a class="dropdown-item" href="/rekapKab">Foto</a>
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Kekurangan Upload
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item" href="/kurangupload">Foto</a>
                             </div>
                         </li>
                     </ul>

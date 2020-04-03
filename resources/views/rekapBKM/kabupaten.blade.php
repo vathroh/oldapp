@@ -32,13 +32,13 @@
         <tr>
             <th scope="row">{{$loop->iteration}}</th>
             <td>{{$kab->nama_kab}}</td>
-            <td class="text-center">{{$documents->where('kode_kab', $kab->KD_KAB)->where('jenis_dokumen', 'PRA DESAIN')->count()}} </td>
-            <td class="text-center">{{$documents->where('kode_kab', $kab->KD_KAB)->where('jenis_dokumen', 'BA PEMAKETAN')->count()}} </td>
-            <td class="text-center">{{$documents->where('kode_kab', $kab->KD_KAB)->where('jenis_dokumen', 'PEMBENTUKAN KPP')->count()}} </td>
-            <td class="text-center">{{$documents->where('kode_kab', $kab->KD_KAB)->where('jenis_dokumen', 'RENCANA KERJA KPP')->count()}} </td>
-            <td class="text-center">{{$documents->where('kode_kab', $kab->KD_KAB)->where('jenis_dokumen', 'PENCAIRAN TAHAP 1')->count()}} </td>
-            <td class="text-center">{{$documents->where('kode_kab', $kab->KD_KAB)->where('jenis_dokumen', 'PENCAIRAN TAHAP 2')->count()}} </td>
-            <td class="text-center">{{$documents->where('kode_kab', $kab->KD_KAB)->where('jenis_dokumen', 'LPJ BKM')->count()}} </td>
+            <td class="text-center">{{$documents->where('kode_kab', $kab->kode_kab)->where('jenis_dokumen', 'PRA DESAIN')->count()}} </td>
+            <td class="text-center">{{$documents->where('kode_kab', $kab->kode_kab)->where('jenis_dokumen', 'BA PEMAKETAN')->count()}} </td>
+            <td class="text-center">{{$documents->where('kode_kab', $kab->kode_kab)->where('jenis_dokumen', 'PEMBENTUKAN KPP')->count()}} </td>
+            <td class="text-center">{{$documents->where('kode_kab', $kab->kode_kab)->where('jenis_dokumen', 'RENCANA KERJA KPP')->count()}} </td>
+            <td class="text-center">{{$documents->where('kode_kab', $kab->kode_kab)->where('jenis_dokumen', 'PENCAIRAN TAHAP 1')->count()}} </td>
+            <td class="text-center">{{$documents->where('kode_kab', $kab->kode_kab)->where('jenis_dokumen', 'PENCAIRAN TAHAP 2')->count()}} </td>
+            <td class="text-center">{{$documents->where('kode_kab', $kab->kode_kab)->where('jenis_dokumen', 'LPJ BKM')->count()}} </td>
         </tr>
         @endforeach
         <tr>

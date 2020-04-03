@@ -2,6 +2,7 @@
 
 @section('content')
 
+<h3 class="text-center">Tahun 2019</h3>
 
 <table class="table table-striped table-dark table-bordered mt-3">
     <thead>
@@ -30,14 +31,14 @@
             @endphp
             <th scope="row">{{$loop->iteration}}</th>
             <td><a href="/rekapKel/{{$kab->kode_kab}}">{{$namakab}}</a></td>
-            <td class="text-center">{{$documents->where('kode_kab', $kab->kode_kab)->where('jenis_dokumen', 'DOKUMENTASI MP2K')->count()}} </td>
-            <td class="text-center">{{$documents->where('kode_kab', $kab->kode_kab)->where('jenis_dokumen', 'DOKUMENTASI OJT')->count()}} </td>
-            <td class="text-center">{{$documents->where('kode_kab', $kab->kode_kab)->where('jenis_dokumen', 'DOKUMENTASI PELATIHAN')->count()}} </td>
-            <td class="text-center">{{$documents->where('kode_kab', $kab->kode_kab)->where('jenis_dokumen', 'FOTO 0%')->count()}} </td>
-            <td class="text-center">{{$documents->where('kode_kab', $kab->kode_kab)->where('jenis_dokumen', 'FOTO 25%')->count()}} </td>
-            <td class="text-center">{{$documents->where('kode_kab', $kab->kode_kab)->where('jenis_dokumen', 'FOTO 50%')->count()}} </td>
-            <td class="text-center">{{$documents->where('kode_kab', $kab->kode_kab)->where('jenis_dokumen', 'FOTO 75%')->count()}} </td>
-            <td class="text-center">{{$documents->where('kode_kab', $kab->kode_kab)->where('jenis_dokumen', 'FOTO 100%')->count()}} </td>
+            <td class="text-center">{{$documents->where('kode_kab', $kab->kode_kab)->where('jenis_dokumen', 'DOKUMENTASI MP2K')->count()}} file</td>
+            <td class="text-center">{{$documents->where('kode_kab', $kab->kode_kab)->where('jenis_dokumen', 'DOKUMENTASI OJT')->count()}} file</td>
+            <td class="text-center">{{$documents->where('kode_kab', $kab->kode_kab)->where('jenis_dokumen', 'DOKUMENTASI PELATIHAN')->count()}} file</td>
+            <td class="text-center">{{$documents->where('kode_kab', $kab->kode_kab)->where('jenis_dokumen', 'FOTO 0%')->count()}} file</td>
+            <td class="text-center">{{$documents->where('kode_kab', $kab->kode_kab)->where('jenis_dokumen', 'FOTO 25%')->count()}} file</td>
+            <td class="text-center">{{$documents->where('kode_kab', $kab->kode_kab)->where('jenis_dokumen', 'FOTO 50%')->count()}} file</td>
+            <td class="text-center">{{$documents->where('kode_kab', $kab->kode_kab)->where('jenis_dokumen', 'FOTO 75%')->count()}} file</td>
+            <td class="text-center">{{$documents->where('kode_kab', $kab->kode_kab)->where('jenis_dokumen', 'FOTO 100%')->count()}} file</td>
         </tr>
         @endforeach
         <tr>

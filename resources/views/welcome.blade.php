@@ -88,7 +88,7 @@
             </div>
             <img src="{{ asset('img/logo_kotaku.jpeg') }}" alt="logo kotaku" style="width:250px;">
             <!-- <h1>OSP-1 JAWA TENGAH-1</h1> -->
-            <h4 style="margin-top: 50px"><a href="/pengumuman-rekrutmen-2020">Pengumuman Rekrutmen 2020</a> | <a href="/contact">Contact Person Korkot/Askot Mandiri</a></h4>
+            <h4 style="margin-top: 50px"><a href="/pengumuman-rekrutmen-2020" target="_blank">Pengumuman Rekrutmen 2020</a> | <a href="/contact" target="_blank">Contact Person Korkot/Askot Mandiri</a></h4>
 
             <!-- <div class="links">
                     <a href="https://laravel.com/docs">Docs</a>

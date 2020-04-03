@@ -68,6 +68,10 @@ Route::get('/dashboard', 'DashboardController@index');
 Route::get('/inputyear', 'DashboardController@create');
 Route::get('/coba', 'DashboardController@coba');
 
+// Rekrutmen
+Route::get('/pengumuman-rekrutmen-2020', 'BinakarirController@index');
+Route::get('/contact', 'BinakarirController@contact');
+
 Route::post('/inputyear', 'DashboardController@store');
 Route::post('/drop', 'VillagesController@kab');
 Route::post('/doc', 'DocumentsController@store');

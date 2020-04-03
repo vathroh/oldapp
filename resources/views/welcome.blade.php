@@ -61,7 +61,7 @@
         }
 
         .m-b-md {
-            margin-bottom: 30px;
+            margin-bottom: 40px;
         }
     </style>
 </head>
@@ -86,9 +86,9 @@
             <div class="title m-b-md">
 
             </div>
-            <img src="{{ asset('img/logo_kotaku.jpeg') }}" alt="logo kotaku" style="width:300px;height:345px;">
-            <h1>OSP-1 JAWA TENGAH-1</h1>
-            <p>Program Kota Tanpa Kumuh (KOTAKU)</p>
+            <img src="{{ asset('img/logo_kotaku.jpeg') }}" alt="logo kotaku" style="width:250px;">
+            <!-- <h1>OSP-1 JAWA TENGAH-1</h1> -->
+            <h4 style="margin-top: 50px"><a href="/pengumuman-rekrutmen-2020">Pengumuman Rekrutmen 2020</a> | <a href="/contact">Contact Person Korkot/Askot Mandiri</a></h4>
 
             <!-- <div class="links">
                     <a href="https://laravel.com/docs">Docs</a>

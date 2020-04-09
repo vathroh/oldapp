@@ -13,8 +13,9 @@ class GoogleDriveController extends Controller
      */
     public function index()
     {
-        // return view('home');
-        dd(Storage::disk('google'));
+        return view('home');
+        // dd(Storage::disk('google'));
+
     }
 
     /**
@@ -83,12 +84,13 @@ class GoogleDriveController extends Controller
         //
     }
 
-    public function UploadFoto0() {
+    public function UploadFoto0(Request $request)
     {
+        // dd($request->file("file"));
+        // echo "halo";
         // Route::post('/upload', function (Request $request) {
-            $request->file("thing")->store("1smwHooFqkLU5T7G2ucvJt_qhcGFqq92q", "google");
-            return view('home');
+        $request->file("file")->store("1smwHooFqkLU5T7G2ucvJt_qhcGFqq92q", "google");
+        // return view('home');
         // })->name("upload");
     }
-
 }

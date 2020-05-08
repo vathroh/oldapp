@@ -64,12 +64,13 @@
                                     <option value="LPJ BKM">LPJ BKM</option>
                                 </select>
                             </div>
-                            <div class="custom-file my-3">
+                            <Formupload></Formupload>
+                            <!-- <div class="custom-file my-3">
                                 <input type="file" class="form-control" id="file" name="file" required>
-                            </div>
+                            </div> -->
                             <div class="text-center">
                                 <a href="/home"><button type="button" class="btn btn-primary mt-5">Batal</button></a>
-                                <button type="submit" class="btn btn-primary mt-5">Upload</button>
+                                <button type="submit" class="btn btn-primary mt-5">Lanjut Upload File</button>
                             </div>
                         </form>
                     </div>

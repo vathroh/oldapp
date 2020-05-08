@@ -33,6 +33,16 @@ Route::get('/table', 'DocumentsController@table');
 Route::get('/bkm', 'DocumentsController@create');
 Route::get('/ksm', 'DocumentsController@ksm');
 Route::get('/foto', 'DocumentsController@foto');
+Route::get('/upload', 'DocumentsController@upload');
+
+Route::get('/docbkm', 'DocumentsController@docbkm');
+Route::post('/uploaddoc', 'DocumentsController@uploaddoc');
+
+
+// Vue Depemndent List
+Route::get('/tahun', 'DocumentsController@years');
+Route::get('/kabupaten', 'DocumentsController@kabupaten');
+// Route::get('/kelurahan/{regency}', 'DocumentsController@kelurahan');
 
 Route::get('/rekap', 'RekapController@index');
 

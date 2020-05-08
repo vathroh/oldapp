@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use League\Flysystem\File;
 
 class DocsController extends Controller
 {
@@ -13,7 +15,7 @@ class DocsController extends Controller
      */
     public function index()
     {
-        //
+        return view('document.upload1');
     }
 
     /**
@@ -34,7 +36,20 @@ class DocsController extends Controller
      */
     public function store(Request $request)
     {
-        return $request;
+        $file = $request->file('file');
+
+        $path = Storage::disk('local')->path("chunks/{$file->getClientOriginalName()}");
+
+        File::append($path, $file->get());
+
+        if ($request->has('is_last') && $request->boolean('is_last')) {
+            $name = basename($path, '.part');
+
+            File::move($path, "/path/to/public/someid/{$name}");
+        }
+
+
+        return response()->json(['uploaded' => true]);
     }
 
     /**

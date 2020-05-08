@@ -29,6 +29,7 @@ class ComposerStaticInit8659da8d9bee60bbb992f85efebf2bac
         '801c31d8ed748cfa537fa45402288c95' => __DIR__ . '/..' . '/psy/psysh/src/functions.php',
         'b6ec61354e97f32c0ae683041c78392a' => __DIR__ . '/..' . '/scrivo/highlight.php/HighlightUtilities/functions.php',
         'ed962a97bd972bc82007176b647d4e36' => __DIR__ . '/..' . '/facade/ignition/src/helpers.php',
+        '17d016dc52a631c1e74d2eb8fdd57342' => __DIR__ . '/..' . '/laravel/helpers/src/helpers.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -514,6 +515,7 @@ class ComposerStaticInit8659da8d9bee60bbb992f85efebf2bac
         'App\\Http\\Controllers\\DynamicDependent' => __DIR__ . '/../..' . '/app/Http/Controllers/DynamicDependent.php',
         'App\\Http\\Controllers\\GoogleDriveController' => __DIR__ . '/../..' . '/app/Http/Controllers/GoogleDriveController.php',
         'App\\Http\\Controllers\\HomeController' => __DIR__ . '/../..' . '/app/Http/Controllers/HomeController.php',
+        'App\\Http\\Controllers\\PostController' => __DIR__ . '/../..' . '/app/Http/Controllers/PostController.php',
         'App\\Http\\Controllers\\RekapController' => __DIR__ . '/../..' . '/app/Http/Controllers/RekapController.php',
         'App\\Http\\Controllers\\VillagesController' => __DIR__ . '/../..' . '/app/Http/Controllers/VillagesController.php',
         'App\\Http\\Controllers\\fotoviewController' => __DIR__ . '/../..' . '/app/Http/Controllers/fotoviewController.php',
@@ -529,6 +531,7 @@ class ComposerStaticInit8659da8d9bee60bbb992f85efebf2bac
         'App\\Http\\Middleware\\TrimStrings' => __DIR__ . '/../..' . '/app/Http/Middleware/TrimStrings.php',
         'App\\Http\\Middleware\\TrustProxies' => __DIR__ . '/../..' . '/app/Http/Middleware/TrustProxies.php',
         'App\\Http\\Middleware\\VerifyCsrfToken' => __DIR__ . '/../..' . '/app/Http/Middleware/VerifyCsrfToken.php',
+        'App\\Image' => __DIR__ . '/../..' . '/app/Image.php',
         'App\\Post' => __DIR__ . '/../..' . '/app/Post.php',
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',
         'App\\Providers\\AuthServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AuthServiceProvider.php',

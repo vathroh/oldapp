@@ -16,5 +16,14 @@
 </template>
 
 <script>
-export default {};
+export default {
+  methods: {
+    create() {
+      const formData = new formData();
+      formData.append("title", this.$refs.title.value);
+      formData.append("body", this.$refs.body.value);
+      formData.append("user_id", this.userId);
+    }
+  }
+};
 </script>

@@ -15,6 +15,12 @@ use App\ksm;
 use App\tahun;
 use App\jenisfoto;
 use App\kegiatanksm;
+use App\Image;
+use Illuminate\Auth\Middleware\Authenticate;
+use Illuminate\Support\Facades\Auth;
+use PhpParser\Node\Expr\List_;
+use Illuminate\Support\Facades\Storage;
+use SebastianBergmann\Environment\Console;
 
 class DocumentsController extends Controller
 {
@@ -62,6 +68,125 @@ class DocumentsController extends Controller
         $villages = village::all();
         $tahun = tahun::all();
         return view('document.create', compact(['kabupaten', 'tahun']));
+    }
+
+    public function upload()
+    {
+        $images = Image::latest()->get();
+        return view('document.upload', compact('images'));
+    }
+
+    public function years()
+    {
+        $years = tahun::orderBy('tahun', 'ASC')->get();
+        return response()->json($years);
+    }
+
+    public function kabupaten()
+    {
+        $regencies = kabupaten::all();
+        return response()->json($regencies);
+    }
+
+
+
+    public function uploaddoc(Request $request)
+    {
+        // Folder kabupaten
+        $titik = "-";
+        $parent_folder_code = $request->tahunBKM;
+        $new_folder_request = $request->kabupaten;
+        $new_folder_name = $new_folder_request . ' ' . village::where('KD_KAB', $new_folder_request)->get('NAMA_KAB')[0]['NAMA_KAB'];
+        //Create and Save Google Drive Folder Kabupaten
+        $newGoogleFolder = new FolderInfo;
+        $newGoogleFolder->CreateAndSaveGoogleDriveFolder($parent_folder_code,  $new_folder_name, $new_folder_request);
+
+        // Kelurahan
+        $parent_folder_code .= $request->kabupaten;
+        $new_folder_request = $request->kelurahan;
+        $new_folder_name = $new_folder_request . ' ' . village::where('KD_KEL', $request->kelurahan)->get('NAMA_DESA')[0]['NAMA_DESA'];
+        //Create and Save Google Drive Folder Kelurahan
+        $newGoogleFolder = new FolderInfo;
+        $newGoogleFolder->CreateAndSaveGoogleDriveFolder($parent_folder_code,  $new_folder_name, $new_folder_request);
+
+        //Create PENCAIRAN / PERENCANAAN folder
+        $JenisDokumen = $request->jenisDokumen;
+        $parent_folder_code .= $request->kelurahan;
+        $new_folder_code = $parent_folder_code;
+        // Create and Save PENCAIRAN / PERENCANAAN folder
+        $newGoogleFolder = new FolderInfo;
+        $newGoogleFolder->CreateAndSavePencairanPerencanaanFolder($parent_folder_code, $JenisDokumen, $new_folder_code);
+
+
+        //Save File
+        $kd_kel = $request->kelurahan;
+        $kd_kab = $request->kabupaten;
+        $files = $request->file('file');
+        $new_folder_name = jenisDokumen::where('jenisDokumen', $JenisDokumen)->get('nama_folder')[0]['nama_folder'];
+        $fileName = $JenisDokumen . ' ';
+        $tipedokumen = 'PDF';
+        $Kodeksm = "-";
+        $KodeKegiatan = $request->kelurahan . $JenisDokumen;
+
+        $parent_folder_path = google_folder::where('kode_folder', $parent_folder_code)->get('path_folder')[0]['path_folder'];
+        $new_folder_path = $parent_folder_path . '/' . $new_folder_name;
+        $saved_folder_id = google_folder::where('path_folder', $new_folder_path)->get('id_folder')[0]['id_folder'];
+
+        $request->validate([
+            'file_name.*' => 'required|mimes:pdf',
+        ]);
+
+        if ($request->hasFile('file_name')) {
+            $images = $request->file('file_name');
+            foreach ($images as $image) {
+                $originalFileName = $image->getClientOriginalName();
+                $fileExtension = $image->getClientOriginalExtension();
+                $fileNameOnly = pathinfo($originalFileName, PATHINFO_FILENAME);
+                $fileName = str_slug($fileNameOnly) . "-" . time() . "." . $fileExtension;
+
+                Storage::disk('google')->putFileAs($saved_folder_id, $image, $fileName);
+            }
+        }
+
+
+        return response()->json([
+            'uploaded' => true,
+            'nama file' => $fileName,
+            'ekstensi' => $fileExtension,
+        ]);
+    }
+
+    protected function uploadFiles($request, $saved_folder_id)
+    {
+
+        $uploadedImages = [];
+        if ($request->hasFile('file_name')) {
+            $images = $request->file('file_name');
+            foreach ($images as $image) {
+                // $uploadedImages[] = $this->uploadFile($image, $saved_folder_id);
+                $originalFileName = $image->getClientOriginalName();
+                $fileExtension = $image->getClientOriginalExtension();
+                $fileNameOnly = pathinfo($originalFileName, PATHINFO_FILENAME);
+                $fileName = str_slug($fileNameOnly) . "-" . time() . "." . $fileExtension;
+
+                $uploadedFileName =  Storage::disk('google')->putFileAs($saved_folder_id, $image, $fileName);
+                return [$uploadedFileName, $fileNameOnly];
+            }
+        }
+        return $uploadedImages;
+    }
+
+    protected function uploadFile($image, $saved_folder_id)
+    {
+
+
+        $originalFileName = $image->getClientOriginalName();
+        $fileExtension = $image->getClientOriginalExtension();
+        $fileNameOnly = pathinfo($originalFileName, PATHINFO_FILENAME);
+        $fileName = str_slug($fileNameOnly) . "-" . time() . "." . $fileExtension;
+
+        $uploadedFileName =  Storage::disk('google')->putFileAs($saved_folder_id, $image, $fileName);
+        return [$uploadedFileName, $fileNameOnly];
     }
 
     public function foto()
@@ -139,6 +264,8 @@ class DocumentsController extends Controller
         $new_folder_request = $request->TitikFoto;
         $new_folder_name = $new_folder_request;
         //Create and Save Google Drive Folder TITIK
+
+
         $newGoogleFolder = new FolderInfo;
         $newGoogleFolder->CreateAndSaveGoogleDriveFolder($parent_folder_code,  $new_folder_name, $new_folder_request);
 
@@ -180,6 +307,7 @@ class DocumentsController extends Controller
         $JenisDokumen = $request->jenisDokumen;
         $parent_folder_code .= $request->kelurahan;
         $new_folder_code = $parent_folder_code;
+
         // Create and Save PENCAIRAN / PERENCANAAN folder
         $newGoogleFolder = new FolderInfo;
         $newGoogleFolder->CreateAndSavePencairanPerencanaanFolder($parent_folder_code, $JenisDokumen, $new_folder_code);
@@ -197,6 +325,11 @@ class DocumentsController extends Controller
         $SaveFile->SafeFile($KodeKegiatan, $files, $fileName, $JenisDokumen,  $Kodeksm, $kd_kel, $kd_kab, $new_folder_name, $parent_folder_code, $tipedokumen, $titik);
 
         return redirect('/table')->with('status', 'Dokumen sudah diupload.');
+    }
+
+    public function bkm()
+    {
+        return view('document.upload');
     }
 
     public function storeKSM(Request $request)

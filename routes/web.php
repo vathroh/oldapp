@@ -73,6 +73,7 @@ Route::get('/ajax', 'VillagesController@kab');
 Route::get('/ajaxkab', 'VillagesController@ksm_kab');
 Route::get('/ajaxksm', 'VillagesController@ksm_ksm');
 Route::get('/ajaxfotoksm', 'VillagesController@foto_ksm');
+Route::get('/ajaxfototahun', 'VillagesController@tahunFOTO');
 Route::get('/ajaxfoto', 'VillagesController@fotokab');
 Route::get('/ajaxfotokegiatan', 'VillagesController@fotokegiatan');
 Route::get('/dokumen', 'VillagesController@jenisDokumen');

@@ -69,52 +69,53 @@
                                 </select>
                             </div>
 
-                            <div class="form-group">
-                                <label for="foto_ksm">
-                                    <h4>Pilih KSM</h4>
-                                </label>
-                                <select name="foto_ksm" id="foto_ksm" class="form-control input-lg dynamic" required>
-                                    <option value="0"></option>
-                                </select>
-                            </div>
 
                             <div class="row" id="lokasirtdantitik">
                                 <div class="col">
-                                    <div class="form-group">
-                                        <label for="foto_kegiatan">
-                                            <h4>Pilih KEGIATAN</h4>
-                                        </label>
-                                        <select name="foto_kegiatan" id="foto_kegiatan" class="form-control input-lg dynamic" required>
-                                            <option value="0"></option>
-                                        </select>
-                                    </div>
+                                   <div class="form-group">
+                                    <label for="foto_ksm">
+                                        <h4>Pilih KSM</h4>
+                                    </label>
+                                    <select name="foto_ksm" id="foto_ksm" class="form-control input-lg dynamic" required>
+                                        <option value="0"></option>
+                                    </select>
+                                </div>
 
-                                    <div class="form-group">
-                                        <label for="TitikFoto">
-                                            <h4>Pilih Titik Lokasi</h4>
-                                        </label>
-                                        <select name="TitikFoto" id="TitikFoto" class="form-control input-lg dynamic" required>
-                                            <option>Pilih Titik Lokasi</option>
-                                            <?php for ($i = 1; $i <= 20; $i++) { ?>
-                                                <option value="Titik <?php echo $i; ?>">Titik <?php echo $i; ?></option>
-                                            <?php } ?>
-                                        </select>
-                                    </div>
+                                <div class="form-group">
+                                    <label for="foto_kegiatan">
+                                        <h4>Pilih KEGIATAN</h4>
+                                    </label>
+                                    <select name="foto_kegiatan" id="foto_kegiatan" class="form-control input-lg dynamic" required>
+                                        <option value="0"></option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="TitikFoto">
+                                        <h4>Pilih Titik Lokasi</h4>
+                                    </label>
+                                    <select name="TitikFoto" id="TitikFoto" class="form-control input-lg dynamic" required>
+                                        <option>Pilih Titik Lokasi</option>
+                                        <?php for ($i = 1; $i <= 20; $i++) { ?>
+                                            <option value="Titik <?php echo $i; ?>">Titik <?php echo $i; ?></option>
+                                        <?php } ?>
+                                    </select>
                                 </div>
                             </div>
-                            <div class="custom-file my-3">
-                                <input type="file" class="form-control" id="file_foto" name="file_foto" required>
-                            </div>
-                            <div class="text-center">
-                                <a href="/home"><button type="button" class="btn btn-primary mt-5">Batal</button></a>
-                                <button type="submit" class="btn btn-primary mt-5">Upload</button>
-                            </div>
-                        </form>
-                    </div>
+                        </div>
+                        <div class="custom-file my-3">
+                            <input type="file" class="form-control" id="file_foto" name="file_foto" required>
+                        </div>
+                        <div class="text-center">
+                            <a href="/home"><button type="button" class="btn btn-primary mt-5">Batal</button></a>
+                            <button type="submit" class="btn btn-primary mt-5">Upload</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
+</div>
 </div>
 @endsection
 

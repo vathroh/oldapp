@@ -1,4 +1,18 @@
 $(document).ready(function () {
+    tahunFOTO
+    $("#tahunFOTO").change(function () {
+        var tahunFOTO = $("#tahunFOTO").val();
+
+        $.get('/ajaxfototahun?tahunFOTO=' + tahunFOTO, function (data) {
+           console.log(data);
+           $("#foto_kabupaten").empty();
+           $("#foto_kabupaten").append('<option value="">' + '</option>');
+           $.each(data, function (index, foto_kabupatenObj) {
+                $("#foto_kabupaten").append('<option value="' + foto_kabupatenObj.kode_kab + '">' + foto_kabupatenObj.nama_kab + '</option>');
+            });
+       });
+
+    });
     $("#foto_kabupaten").change(function () {
         var kode_kab = $("#foto_kabupaten").val();
 

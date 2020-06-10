@@ -15,6 +15,7 @@ class CreateDocumentsTable extends Migration
     {
         Schema::create('documents', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('year');
             $table->string('folder_id');
             $table->string('file_id');
             $table->string('file_name');

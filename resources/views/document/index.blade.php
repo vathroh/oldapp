@@ -15,13 +15,13 @@
     <div class="card-header">
         <div class="row">
             <div class="col text-center">
-                <a class="btn btn-primary" href="/doc">. F o t o .</a>
+<!--                 <a class="btn btn-primary" href="/doc">. F o t o .</a>
                 <a class="btn btn-primary" href="/table">.Dokumen.</a>
                 <a class="btn btn-primary" href="/rekapKab">.R e k a p.</a>
                 <br><br>
                 <a class="btn btn-primary" href="/create">Upload Dok BKM</a>
                 <a class="btn btn-primary" href="/ksm">Upload Dok KSM</a>
-                <a class="btn btn-primary" href="/foto">Upload Foto</a>
+                <a class="btn btn-primary" href="/foto">Upload Foto</a> -->
             </div>
         </div>
     </div>

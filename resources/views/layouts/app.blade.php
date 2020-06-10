@@ -52,9 +52,9 @@
                                 Upload
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <a class="dropdown-item" href="/bkm">Dokumen BKM</a>
-                                <a class="dropdown-item" href="/ksm">Dokumen KSM</a>
-                                <a class="dropdown-item" href="/foto">Foto</a>
+<!--                                 <a class="dropdown-item" href="/bkm">Dokumen BKM</a>
+                                <a class="dropdown-item" href="/ksm">Dokumen KSM</a> -->
+                                <a class="dropdown-item" href="/foto">Upload Foto</a>
                             </div>
                         </li>
                         <li class="nav-item dropdown">

@@ -18,10 +18,9 @@
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-    <link rel="icon" href="/favicon.ico" type="image/x-icon">
-
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    @yield('head')
 </head>
 
 <body>
@@ -53,9 +52,9 @@
                                 Upload
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <a class="dropdown-item" href="/create">Dokumen BKM</a>
-                                <a class="dropdown-item" href="/ksm">Dokumen KSM</a>
-                                <a class="dropdown-item" href="/foto">Foto</a>
+<!--                                 <a class="dropdown-item" href="/bkm">Dokumen BKM</a>
+                                <a class="dropdown-item" href="/ksm">Dokumen KSM</a> -->
+                                <a class="dropdown-item" href="/foto">Upload Foto</a>
                             </div>
                         </li>
                         <li class="nav-item dropdown">
@@ -70,7 +69,7 @@
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Kekurangan Upload
+                                kurang Upload
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                 <a class="dropdown-item" href="/kurangupload">Foto</a>

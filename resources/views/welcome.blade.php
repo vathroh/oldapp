@@ -93,7 +93,7 @@
             <div class="container">
                 <div class="row3">
                     <div class="col-md-offset-2 col-md-8 col-sm-12">
-                        <div><img class="logo" src="images/logo kotaku.png" style="width:100px" class="img-responsive wow fadeInUp">
+                        <div><img class="logo" src="images/logo kotaku.jpeg" style="width:100px" class="img-responsive wow fadeInUp">
                         </div>
                         <div class="home-thumb">
                             <h1 class="wow fadeInUp" data-wow-delay="0.5s">O S P - 1 <br>Jawa Tengah - 1</h1>
@@ -114,6 +114,7 @@
                         <tr>
                             <th class="text-center" scope="col">#</th>
                             <th class="text-center" scope="col">Perihal</th>
+                            <th class="text-center" scope="col">Tanggal</th>
                             <th class="text-center" scope="col">Lampiran-1</th>
                             <th class="text-center" scope="col">Lampiran-2</th>
                             <th class="text-center" scope="col">Keterangan</th>
@@ -123,6 +124,7 @@
                         <tr>
                             <th scope="row">1</th>
                             <td>Pengumuman Seleksi Personil Kotaku Provinsi Jawa Tengah Tahun 2020</td>
+                            <td>3 April 2020</td>
                             <td><a href="/pengumuman-rekrutmen-2020" target="_blank">Surat Keputusan Kepala Balai Prasarana Permukiman Wilayah Jawa Tengah No. 170/KPTS/CbM/2020</a></td>
                             <td><a href="/contact" target="_blank">Contact Person Korkot/Askot Mandiri OSP-1 Jawa Tengah-1</a></td>
                             <td>Bagi Peserta yang dinyatakan lolos harap segera menghubungi Contact Person Korkot / Askot Mandiri tempat bertugas. </td>
@@ -223,7 +225,7 @@
                     </svg>
 
                     <div class="wow fadeInUp col-md-9 col-sm-10">
-                        <h2>OSP 1 Jawa Tengah</h2>
+                        <h2>OSP-1 Jawa Tengah-1</h2>
                         <div class="wow fadeInUp" data-wow-delay="0.3s">
                             <p>Wilayah Dampingan: Wonosobo, Grobogan, Blora, Rembang, Pati, Kudus, Jepara, Demak, Semarang, Temanggung,
                                 Kendal, Batang, Pekalongan, Pemalang, Tegal, Brebes, Kota Salatiga, Kota Semarang, Kota Pekalongan dan
@@ -242,10 +244,9 @@
                             Kota Semarang
                         </p>
                         <ul class="social-icon">
-                            <li><a href="#" class="fa fa-facebook wow bounceIn" data-wow-delay="0.9s"></a></li>
-                            <li><a href="#" class="fa fa-twitter wow bounceIn" data-wow-delay="1.2s"></a></li>
-                            <li><a href="#" class="fa fa-behance wow bounceIn" data-wow-delay="1.4s"></a></li>
-                            <li><a href="#" class="fa fa-dribbble wow bounceIn" data-wow-delay="1.6s"></a></li>
+                            <li><a href="https://www.facebook.com/kotakujateng1/" target="_blank" class="fa fa-facebook wow bounceIn" data-wow-delay="0.9s"></a></li>
+                            <li><a href="https://twitter.com/kotakujateng1/" target="_blank" class="fa fa-twitter wow bounceIn" data-wow-delay="1.2s"></a></li>
+                            <li><a href="https://www.instagram.com/kotakujateng1/" target="_blank" class="fa fa-instagram wow bounceIn" data-wow-delay="1.4s"></a></li>
                         </ul>
                     </div>
 

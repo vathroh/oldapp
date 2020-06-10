@@ -19,8 +19,8 @@
  * Service definition for SecurityCommandCenter (v1).
  *
  * <p>
- * Cloud Security Command Center API provides access to temporal views of assets
- * and findings within an organization.</p>
+ * Security Command Center API provides access to temporal views of assets and
+ * findings within an organization.</p>
  *
  * <p>
  * For more information about this service, see the API
@@ -37,6 +37,7 @@ class Google_Service_SecurityCommandCenter extends Google_Service
 
   public $organizations;
   public $organizations_assets;
+  public $organizations_notificationConfigs;
   public $organizations_operations;
   public $organizations_sources;
   public $organizations_sources_findings;
@@ -116,6 +117,14 @@ class Google_Service_SecurityCommandCenter extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
+                'orderBy' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'readTime' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
                 'compareDuration' => array(
                   'location' => 'query',
                   'type' => 'string',
@@ -124,25 +133,17 @@ class Google_Service_SecurityCommandCenter extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'pageToken' => array(
+                'fieldMask' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'fieldMask' => array(
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
-                ),
-                'readTime' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'orderBy' => array(
-                  'location' => 'query',
-                  'type' => 'string',
                 ),
               ),
             ),'runDiscovery' => array(
@@ -169,6 +170,82 @@ class Google_Service_SecurityCommandCenter extends Google_Service
                   'type' => 'string',
                 ),
                 'startTime' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+              ),
+            ),
+          )
+        )
+    );
+    $this->organizations_notificationConfigs = new Google_Service_SecurityCommandCenter_Resource_OrganizationsNotificationConfigs(
+        $this,
+        $this->serviceName,
+        'notificationConfigs',
+        array(
+          'methods' => array(
+            'create' => array(
+              'path' => 'v1/{+parent}/notificationConfigs',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'parent' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'configId' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+              ),
+            ),'delete' => array(
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'DELETE',
+              'parameters' => array(
+                'name' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'get' => array(
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'name' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'list' => array(
+              'path' => 'v1/{+parent}/notificationConfigs',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'parent' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                ),
+              ),
+            ),'patch' => array(
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'PATCH',
+              'parameters' => array(
+                'name' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'updateMask' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -370,23 +447,11 @@ class Google_Service_SecurityCommandCenter extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'fieldMask' => array(
+                'readTime' => array(
                   'location' => 'query',
                   'type' => 'string',
-                ),
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'pageSize' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
                 ),
                 'orderBy' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'readTime' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -397,6 +462,18 @@ class Google_Service_SecurityCommandCenter extends Google_Service
                 'filter' => array(
                   'location' => 'query',
                   'type' => 'string',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'fieldMask' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
                 ),
               ),
             ),'patch' => array(

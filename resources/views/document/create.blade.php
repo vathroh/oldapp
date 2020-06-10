@@ -7,13 +7,7 @@
             <div class="card-header">
                 <div class="row text-center">
                     <div class="col">
-                        <a class="btn btn-primary" href="/doc">. F o t o .</a>
-                        <a class="btn btn-primary" href="/table">.Dokumen.</a>
-                        <a class="btn btn-primary" href="/rekapKab">.R e k a p.</a>
-                        <br><br>
-                        <a class="btn btn-primary" href="/create">Upload Dok BKM</a>
-                        <a class="btn btn-primary" href="/ksm">Upload Dok KSM</a>
-                        <a class="btn btn-primary" href="/foto">Upload Foto</a>
+                        <h3>UPLOAD DOKUMEN BKM</h3>
                     </div>
                 </div>
             </div>
@@ -21,14 +15,14 @@
 
                 <div class="row" style="margin-top: 50px">
                     <div class="col">
-                        <form method="post" action="/doc" enctype="multipart/form-data">
+                        <form method="post" action="/bkm" enctype="multipart/form-data">
 
                             @csrf
                             <div class="form-group">
                                 <label for="kabupaten">
                                     <h4>Tahun Kegiatan</h4>
                                 </label>
-                                <select name="tahunBKM" id="tahunBKM" class="form-control input-lg dynamic" required>
+                                <select name="tahunBKM" id="tahunBKM" class="form-control input-lg dynamic">
                                     <option value="">TAHUN</option>
                                     @foreach($tahun as $thn)
                                     <option value="{{$thn->tahun}}">{{$thn->tahun}}</option>
@@ -70,12 +64,13 @@
                                     <option value="LPJ BKM">LPJ BKM</option>
                                 </select>
                             </div>
-                            <div class="custom-file my-3">
+                            <Formupload></Formupload>
+                            <!-- <div class="custom-file my-3">
                                 <input type="file" class="form-control" id="file" name="file" required>
-                            </div>
+                            </div> -->
                             <div class="text-center">
                                 <a href="/home"><button type="button" class="btn btn-primary mt-5">Batal</button></a>
-                                <button type="submit" class="btn btn-primary mt-5">Upload</button>
+                                <button type="submit" class="btn btn-primary mt-5">Lanjut Upload File</button>
                             </div>
                         </form>
                     </div>

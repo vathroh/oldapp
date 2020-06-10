@@ -87,6 +87,14 @@ class VillagesController extends Controller
         return response()->json($ksm);
     }
 
+    public function tahunFOTO(Request $request)
+    {
+
+        $tahunFOTO = $request->get('tahunFOTO');
+        $kab = kabupaten::where('year',  $tahunFOTO)->get(['kode_kab', 'nama_kab']);;
+        return response()->json($kab);
+    }
+
     public function fotokab(Request $request)
     {
 

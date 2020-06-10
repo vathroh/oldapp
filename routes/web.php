@@ -25,11 +25,24 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->middleware('can:mana
     Route::resource('/users', 'UsersController', ['except' => ['show', 'create', 'store']]);
 });
 
+Route::get('/blog/dashboard', 'Blog\UserController@index');
+
 Route::get('/doc', 'DocumentsController@index');
 Route::get('/table', 'DocumentsController@table');
-Route::get('/create', 'DocumentsController@create');
+// Route::get('/create', 'DocumentsController@create');
+Route::get('/bkm', 'DocumentsController@create');
 Route::get('/ksm', 'DocumentsController@ksm');
 Route::get('/foto', 'DocumentsController@foto');
+Route::get('/upload', 'DocumentsController@upload');
+
+Route::get('/docbkm', 'DocumentsController@docbkm');
+Route::post('/uploaddoc', 'DocumentsController@uploaddoc');
+
+
+// Vue Depemndent List
+Route::get('/tahun', 'DocumentsController@years');
+Route::get('/kabupaten', 'DocumentsController@kabupaten');
+// Route::get('/kelurahan/{regency}', 'DocumentsController@kelurahan');
 
 Route::get('/rekap', 'RekapController@index');
 
@@ -60,6 +73,7 @@ Route::get('/ajax', 'VillagesController@kab');
 Route::get('/ajaxkab', 'VillagesController@ksm_kab');
 Route::get('/ajaxksm', 'VillagesController@ksm_ksm');
 Route::get('/ajaxfotoksm', 'VillagesController@foto_ksm');
+Route::get('/ajaxfototahun', 'VillagesController@tahunFOTO');
 Route::get('/ajaxfoto', 'VillagesController@fotokab');
 Route::get('/ajaxfotokegiatan', 'VillagesController@fotokegiatan');
 Route::get('/dokumen', 'VillagesController@jenisDokumen');
@@ -74,6 +88,6 @@ Route::get('/contact', 'BinakarirController@contact');
 
 Route::post('/inputyear', 'DashboardController@store');
 Route::post('/drop', 'VillagesController@kab');
-Route::post('/doc', 'DocumentsController@store');
+Route::post('/bkm', 'DocumentsController@store');
 Route::post('/ksm', 'DocumentsController@storeKSM');
 Route::post('/foto', 'DocumentsController@storeFoto');

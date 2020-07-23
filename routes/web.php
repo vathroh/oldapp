@@ -91,3 +91,7 @@ Route::post('/drop', 'VillagesController@kab');
 Route::post('/bkm', 'DocumentsController@store');
 Route::post('/ksm', 'DocumentsController@storeKSM');
 Route::post('/foto', 'DocumentsController@storeFoto');
+
+
+//KPP
+Route::resource('/kpp', 'kppController');

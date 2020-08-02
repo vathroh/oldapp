@@ -18,88 +18,45 @@ h3{
 .mainbar{
 	position: absolute;
 	padding: 30px;
-	width: 100%;
+	width: 90%;
 	justify-content: center;
 	align-items: center;
 	align-content: center;
 }
 
-.mainbar .logo img{
-	width: 100px;
-}
-
-.logo {
-	margin: 30px;
-	text-align: center;
-}
-
 .data-group {
+	
+	border: 1px solid black;
+	border-radius: 5px;
 	margin-top: 30px;
+	padding: 20px 100px;
 	display: flex;
 	flex-direction: column;
 }
 
-.data-group-title {
-	padding: 5px 10px;
-	background-color: #baffcd;
-	font-weight: bold;
-	font-size: 16px;
+.data-group h5{
+padding: 30px 0;
 }
-
 
 .form-group{
 	display: flex;
-	width: 100%;
 }
 
 .form-group label{
 	flex:1;
-	padding-left: 10px;
+
 }
 
 .form-group input{
 	flex:2;
-	color: #000;
-	background-color: transparent;
-	border:0;
-	border-bottom: 1px solid #000;
-}
-
-.data-group-label1{
-	margin-left: 100px;
-	width: 70px;
-}
-
-.data-group-isi1{
-	width: 50px;
-	border: 1px solid #000;
-	text-align: center;
-}
-
-.form-group .data-group-isi{
-	flex:2;
-	display: flex;
-	color: #000;
-	background-color: transparent;
-	border:0;
-}
-
-.data-group-isi form{
-	display: flex;
-}
-
-.data-group-isi form .input{
-	width: 250px;
-}
-
-.data-group-isi form .isifile{
-	width: 200px;
+	color: #fff;
+	background-color: rgba(0,0,0,0.8);
 }
 
 .form-group select{
 	flex:2;
 	color: #fff;
-	background-color: rgba(0,0,0,0.3);
+	background-color: rgba(0,0,0,0.8);
 }
 
 .document-group {

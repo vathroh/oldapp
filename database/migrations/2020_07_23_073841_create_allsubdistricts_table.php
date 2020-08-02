@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDokumenBKMTable extends Migration
+class CreateAllsubdistrictsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,11 @@ class CreateDokumenBKMTable extends Migration
      */
     public function up()
     {
-        Schema::create('_dokumen_b_k_m', function (Blueprint $table) {
+        Schema::create('allsubdistricts', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('kode_kab');
+            $table->string('kode_kec');
+            $table->string('nama_kec');
             $table->timestamps();
         });
     }
@@ -26,6 +29,6 @@ class CreateDokumenBKMTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('_dokumen_b_k_m');
+        Schema::dropIfExists('allsubdistricts');
     }
 }

@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class kppdata extends Model
+class allvillage extends Model
 {
-    protected $guarded = ['id'];
+    //
 }

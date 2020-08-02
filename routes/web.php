@@ -78,6 +78,11 @@ Route::get('/ajaxfoto', 'VillagesController@fotokab');
 Route::get('/ajaxfotokegiatan', 'VillagesController@fotokegiatan');
 Route::get('/dokumen', 'VillagesController@jenisDokumen');
 
+
+//KPP Dropdown
+Route::get('/kppkecamatan', 'dropdownController@kecamatan');
+Route::get('/kppkelurahan', 'dropdownController@kelurahan');
+
 Route::get('/dashboard', 'DashboardController@index');
 Route::get('/inputyear', 'DashboardController@create');
 Route::get('/coba', 'DashboardController@coba');
@@ -92,6 +97,17 @@ Route::post('/bkm', 'DocumentsController@store');
 Route::post('/ksm', 'DocumentsController@storeKSM');
 Route::post('/foto', 'DocumentsController@storeFoto');
 
-
 //KPP
 Route::resource('/kpp', 'kppController');
+Route::resource('/kpp/struktur-organisasi', 'kpp\strukturOrganisasiController');
+Route::resource('/kpp/anggaran-dasar', 'kpp\anggaranDasarController');
+Route::resource('/kpp/anggaran-rumah-tangga', 'kpp\anggaranRumahTanggaController');
+Route::resource('/kpp/surat-keputusan', 'kpp\suratKeputusanController');
+Route::resource('/kpp/rencana-kerja', 'kpp\rencanaKerjaController');
+Route::resource('/kpp/pertemuan-rutin', 'kpp\pertemuanRutinController');
+Route::resource('/kpp/administrasi-rutin', 'kpp\administrasiRutinController');
+Route::resource('/kpp/buku-inventaris-kegiatan', 'kpp\bukuInventarisKegiatanController');
+Route::resource('/kpp/biaya-operasional', 'kpp\biayaOperasionalController');
+Route::resource('/kpp/pengecekan-fisik', 'kpp\pengecekanFisikController');
+Route::resource('/kpp/kegiatan-pemeliharaan-fisik', 'kpp\kegiatanPemeliharaanFisikController');
+Route::resource('/kpp/keterangan-lain-lain', 'kpp\keteranganLainController');

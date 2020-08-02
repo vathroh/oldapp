@@ -3,11 +3,20 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\kabupaten;
+use Illuminate\Support\Facades\Auth;
+use App\alldistrict;
+use App\allsubdistrict;
+use App\allvillage;
 use App\kppdata;
+use App\bkmdata;
+use App\User;
 
 class kppController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
 
     /**
      * Display a listing of the resource.
@@ -16,8 +25,12 @@ class kppController extends Controller
      */
     public function index()
     {
-        $kabupaten=kabupaten::get();
-        return view('kpp.input', compact('kabupaten'));
+        $kelurahan=allvillage::get();
+        $kabupaten=alldistrict::get();
+        $kppdatas=kppdata::get();
+        $user=User::get();
+        // return view('kpp.index', compact('kabupaten'));
+        return view('kpp.index', compact(['kabupaten' ,'kelurahan', 'kppdatas', 'user']));
     }
 
     /**
@@ -25,10 +38,22 @@ class kppController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        $kabupaten=kabupaten::get();
-        return view('kpp.input', compact('kabupaten'));
+        $kelurahan=allvillage::get();
+        $kabupaten=alldistrict::get();
+        $kppdatas=kppdata::get();
+        $bkmdatas=bkmdata::get();
+        $user=User::get();
+        
+        if (kppdata::where('kode_desa', $request->kelurahan)->doesntExist()) {
+            return view('kpp.create', compact(['request', 'bkmdatas', 'kelurahan']));
+
+        } else {
+
+            $id=kppdata::where('kode_desa', $request->kelurahan)->get()[0]['id'];
+            return redirect('/kpp/'.$id);
+        }
     }
 
     /**
@@ -39,44 +64,18 @@ class kppController extends Controller
      */
     public function store(Request $request)
     {
-               kppdata::create([
-
+        kppdata::create([
             'kode_desa'=>$request->kelurahan,
-            'lokasi_bdi/bpm'=>$request->lokasi_bdi,
-            'kode_kpp'=>$request->kode_kpp,
+            'lokasi_bdi_bpm'=>$request->lokasi_bdi,
             'nama_kpp'=>$request->nama_kpp,
-            'anggota_laki-laki'=>$request->anggota_laki-laki,
-            'anggota_perempuan'=>$request->anggota_perempuan,
+            'anggota_pria'=>$request->anggota_pria,
+            'anggota_wanita'=>$request->anggota_wanita,
             'anggota_miskin'=>$request->anggota_miskin,
-            'tanggal_pembentukan/revitalisasi'=>$request->tanggal_pembentukan/revitalisasi,
+            'user_id' => Auth::user()->id
+        ]);
 
-
-            'scan_dok_pembentukan/revitalisasi'=>$request->dok_pembentukan/revitalisasi,
-            'struktur_organisasi'=>$request->struktur_organisasi,
-            'scan_struktur_organisasi'=>$struktur_organisasi,
-            'ad-art/sk'=>$request->scan_ad-art/sk,
-            'scan_ad-art/sk'=>$request->scan_ad-art/sk,
-
-
-            
-            'rencana_kerja'=>$request->rencana_kerja,
-            
-            'scan_rencana_kerja'=>$request->kelurahan,
-            'pertemuan_rutin'=>$request->kelurahan,
-            'foto_pertemuan_rutin'=>$request->kelurahan,
-            'buku_inventaris_kegiatan'=>$request->kelurahan,
-            'scan_buku_inventaris_kegiatan'=>$request->kelurahan,
-            'administrasi_rutin'=>$request->kelurahan,
-            'scan_administrasi_rutin'=>$request->kelurahan,
-            'sumber_dana_operasional'=>$request->kelurahan,
-            'nilai_bop'=>$request->kelurahan,
-            'kegiatan_pengecekan'=>$request->kelurahan,
-            'foto_kegiatan_pengecekan'=>$request->kelurahan,
-            'kegiatan_perbaikan'=>$request->kelurahan,
-            'sumber_dana_perbaikan'=>$request->kelurahan,
-            'nilai_perbaikan'=>$request->kelurahan,
-            'keterangan_lain_lain'=>$request->kelurahan
-            ]);
+        $id=kppdata::where('kode_desa', $request->kelurahan)->get()[0]['id'];
+        return redirect('/kpp/'.$id);
     }
 
     /**
@@ -87,7 +86,16 @@ class kppController extends Controller
      */
     public function show($id)
     {
-        //
+        $kppdata=kppdata::where('id', $id)->get()[0];
+        $kelurahan=allvillage::where('KD_KEL', $kppdata->kode_desa)->get()[0];
+        $bkmdata=bkmdata::where('kelurahan_id', $kppdata->kode_desa)->get()[0];;
+
+        // $kabupaten=kabupaten::get();
+        // $user=User::get();
+
+        // dd($kelurahan);
+
+        return view('kpp.show', compact(['kppdata', 'kelurahan', 'bkmdata']));
     }
 
     /**
@@ -122,5 +130,49 @@ class kppController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function storebackup(Request $request)
+    {
+
+        // dd($request->anggaran_dasar);
+
+        kppdata::create([
+
+            'kode_desa'=>$request->kelurahan,
+            'lokasi_bdi/bpm'=>$request->lokasi_bdi,
+            'nama_kpp'=>$request->nama_kpp,
+            'anggota_pria'=>$request->anggota_pria,
+            'anggota_wanita'=>$request->anggota_wanita,
+            'anggota_miskin'=>$request->anggota_miskin,
+            'struktur_organisasi'=>$request->struktur_organisasi,
+        // 'scan_struktur_organisasi'=>$request->struktur_organisasi,
+            'anggaran_dasar'=>$request->anggaran_dasar,
+        // 'scan_anggaran_dasar'=>$request->scan_anggaran_dasar,
+            'anggaran_rumah_tangga'=>$request->anggaran_rumah_tangga,
+        // 'scan_anggaran_rumah_tangga'=>$request->scan_anggaran_rumah_tangga,
+            'surat_keputusan'=>$request->surat_keputusan,
+        // 'scan_surat_keputusan'=>$request->scan_surat_keputusan,
+            'rencana_kerja'=>$request->rencana_kerja,
+        // 'scan_rencana_kerja'=>$request->scan_rencana_kerja,
+            'pertemuan_rutin'=>$request->pertemuan_rutin,
+        // 'foto_pertemuan_rutin'=>$request->foto_pertemuan_rutin,
+            'administrasi_rutin'=>$request->administrasi_rutin,
+        // 'scan_administrasi_rutin'=>$request->scan_administrasi_rutin, 
+            'buku_inventaris_kegiatan'=>$request->buku_inventaris_kegiatan,
+        // 'scan_buku_inventaris_kegiatan'=>$request->scan_buku_inventaris_kegiatan,
+            'bop'=>$request->biaya_operasional,
+            'sumber_dana_operasional'=>$request->sumber_dana,
+            'nilai_bop'=>$request->nilai_bop,        
+            'kegiatan_pengecekan'=>$request->pengecekan_fisik,
+            'foto_kegiatan_pengecekan'=>$request->foto_pengecekan_fisik,
+            'tanggal_kegiatan_perbaikan'=>$request->tanggal_kegiatan_pemeliharaan_fisik,
+            'sumber_dana_perbaikan'=>$request->sumber_dana_kegiatan_pemeliharaan_fisik,
+            'nilai_perbaikan'=>$request->jumlah_dana_kegiatan_pemeliharaan_fisik,
+            'keterangan_lain_lain'=>$request->keterangan_tambahan,
+            'user_id' => Auth::user()->id
+        ]);
+
+        return redirect('/kpp');
     }
 }

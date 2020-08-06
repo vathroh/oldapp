@@ -27,10 +27,11 @@ class kppController extends Controller
     {
         $kelurahan=allvillage::get();
         $kabupaten=alldistrict::get();
-        $kppdatas=kppdata::get();
+        $bkmdatas=bkmdata::get();
+        $kppdatas=kppdata::paginate(5);
         $user=User::get();
-        // return view('kpp.index', compact('kabupaten'));
-        return view('kpp.index', compact(['kabupaten' ,'kelurahan', 'kppdatas', 'user']));
+        
+        return view('kpp.index', compact(['kabupaten' ,'kelurahan', 'kppdatas', 'user', 'bkmdatas']));
     }
 
     /**
@@ -47,7 +48,7 @@ class kppController extends Controller
         $user=User::get();
         
         if (kppdata::where('kode_desa', $request->kelurahan)->doesntExist()) {
-            return view('kpp.create', compact(['request', 'bkmdatas', 'kelurahan']));
+            return view('kpp.create', compact(['request', 'bkmdatas', 'kelurahan', 'kabupaten']));
 
         } else {
 
@@ -89,13 +90,9 @@ class kppController extends Controller
         $kppdata=kppdata::where('id', $id)->get()[0];
         $kelurahan=allvillage::where('KD_KEL', $kppdata->kode_desa)->get()[0];
         $bkmdata=bkmdata::where('kelurahan_id', $kppdata->kode_desa)->get()[0];;
+        $kabupaten=alldistrict::get();
 
-        // $kabupaten=kabupaten::get();
-        // $user=User::get();
-
-        // dd($kelurahan);
-
-        return view('kpp.show', compact(['kppdata', 'kelurahan', 'bkmdata']));
+        return view('kpp.show', compact(['kppdata', 'kelurahan', 'bkmdata', 'kabupaten']));
     }
 
     /**
@@ -109,8 +106,9 @@ class kppController extends Controller
         $kppdata=kppdata::find($id);
         $kelurahan=allvillage::where('KD_KEL', $kppdata->kode_desa)->get();
         $bkmdata=bkmdata::where('kelurahan_id', $kppdata->kode_desa)->get();
+        $kabupaten=alldistrict::get();
 
-        return view('kpp.edit', compact(['kppdata', 'bkmdata', 'kelurahan']));
+        return view('kpp.edit', compact(['kppdata', 'bkmdata', 'kelurahan', 'kabupaten']));
     }
 
     /**

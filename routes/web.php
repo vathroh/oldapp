@@ -12,13 +12,13 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('landing');
 });
 
 
 Auth::routes();
 // Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/home', 'DocumentsController@index')->name('home');
+Route::get('/home', 'kppController@index')->name('home');
 
 //User Management Control
 Route::namespace('Admin')->prefix('admin')->name('admin.')->middleware('can:manage-users')->group(function () {

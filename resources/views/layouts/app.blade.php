@@ -38,10 +38,10 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav">
-                        <li class="nav-item active">
+                        <!-- <li class="nav-item active">
                             <a class="nav-link" href="/home">Home <span class="sr-only">(current)</span></a>
-                        </li>
-                        <li class="nav-item">
+                        </li> -->
+                        <!-- <li class="nav-item">
                             <a class="nav-link" href="/home">Foto <span class="sr-only">(current)</span></a>
                         </li>
                         <li class="nav-item">
@@ -51,10 +51,10 @@
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Upload
                             </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink"> -->
 <!--                                 <a class="dropdown-item" href="/bkm">Dokumen BKM</a>
                                 <a class="dropdown-item" href="/ksm">Dokumen KSM</a> -->
-                                <a class="dropdown-item" href="/foto">Upload Foto</a>
+                                <!-- <a class="dropdown-item" href="/foto">Upload Foto</a>
                             </div>
                         </li>
                         <li class="nav-item dropdown">
@@ -74,7 +74,7 @@
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                 <a class="dropdown-item" href="/kurangupload">Foto</a>
                             </div>
-                        </li>
+                        </li> -->
                     </ul>
 
                     <!-- Right Side Of Navbar -->

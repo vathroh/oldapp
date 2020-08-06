@@ -1,6 +1,4 @@
 <div class="document_item keterangan_tambahan">
-
-	<label for="keterangan_tambahan">Keterangan Lain-Lain</label>
 	<textarea readonly class="form-control" id="keterangan_tambahan" name="keterangan_tambahan" rows="7">{{$kppdata->keterangan_lain_lain}}</textarea readonly>
 </div>
 	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#keterangan_lain_lain_modal">

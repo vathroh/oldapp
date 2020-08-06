@@ -106,7 +106,11 @@ class kppController extends Controller
      */
     public function edit($id)
     {
-        //
+        $kppdata=kppdata::find($id);
+        $kelurahan=allvillage::where('KD_KEL', $kppdata->kode_desa)->get();
+        $bkmdata=bkmdata::where('kelurahan_id', $kppdata->kode_desa)->get();
+
+        return view('kpp.edit', compact(['kppdata', 'bkmdata', 'kelurahan']));
     }
 
     /**
@@ -118,7 +122,15 @@ class kppController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        kppdata::where('id', $id)->update([
+            'lokasi_bdi_bpm'=>$request->lokasi_bdi,
+            'nama_kpp'=>$request->nama_kpp,
+            'anggota_pria'=>$request->anggota_pria,
+            'anggota_wanita'=>$request->anggota_wanita,
+            'anggota_miskin'=>$request->anggota_miskin,
+        ]);
+
+        return redirect ('/kpp/' . $id);
     }
 
     /**

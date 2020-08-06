@@ -1,4 +1,4 @@
-@extends('layouts.master1')
+@extends('layouts.master2')
 
 @section('head')
 <link href="{{ asset('css/kpp/style.css') }}" rel="stylesheet">
@@ -10,6 +10,11 @@
 <div class="wrapper">
 
     <div class="mainbar">
+
+        <div class="nav">
+            <a href="/kpp/{{$kppdata->id}}/edit"><button type="button" class="btn btn-primary">Edit</button></a>
+        </div>
+
         <div class="logo">
             <img src="{{ asset('img/logo_kotaku.jpeg') }}">
         </div>

@@ -2,6 +2,7 @@
 
 @section('head')
 <link href="{{ asset('css/kpp/style1.css') }}" rel="stylesheet">
+    
 @endsection
 
 @section('content')
@@ -15,7 +16,10 @@
 
         <!-- Button trigger modal -->
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-          Input Data Baru
+          Input Data
+      </button>
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+        Edit Data
       </button>
 
       <table class="table table-hover table-bordered">

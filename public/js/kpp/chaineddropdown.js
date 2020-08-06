@@ -8,6 +8,7 @@ $(document).ready(function () {
         $.get('/kppkecamatan?kode_kab=' + kode_kab, function (data) {
             console.log(data);
             $("#kecamatan").empty();
+            $("#kecamatan").append('<option value="">Kecamatan</option>');
             $.each(data, function (index, kecamatanObj) {
                 $("#kecamatan").append('<option value="' + kecamatanObj.kode_kec + '">' + kecamatanObj.nama_kec + '</option>');
             });

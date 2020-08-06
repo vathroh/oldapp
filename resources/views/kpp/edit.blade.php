@@ -14,42 +14,35 @@
         <h3>UPDATE DATA KPP</h3>
 
 
-        @php
-        $nama_desa=$kelurahan[0]->where('KD_KEL',$request->kelurahan)->get()[0]['NAMA_DESA'];
-        $nama_kecamatan = $kelurahan[0]->where('KD_KEL',$request->kelurahan)->get()[0]['NAMA_KEC'];
-        $nama_kabupaten = $kelurahan[0]->where('KD_KEL',$request->kelurahan)->get()[0]['NAMA_KAB'];
-        $nama_bkm=$bkmdatas[0]->where('kelurahan_id', $request->kelurahan)->get()[0]['bkm'];
-        @endphp
 
 
-        <form method="post" action="/kpp" enctype="multipart/form-data">
-
+        <form method="post" action="/kpp/{{$kppdata->id}}" enctype="multipart/form-data">
+            @method('patch')
             @csrf
-                    <input type="text" class="form-control" id="kelurahan" name="kelurahan" value="{{ $request->kelurahan }}" readonly style="color: transparent; border: none">
 
             <div class="data-group data-lokasi">
                 <div class="form-group">
                     <label for="kabupaten">
                         Kabupaten
                     </label>
-                    <input type="text" class="form-control" id="kabupaten" name="kabupaten" value="{{ $nama_kabupaten }}" readonly>
+                    <input type="text" class="form-control" id="kabupaten" name="kabupaten" value="{{ $kelurahan[0]->NAMA_KAB }}" readonly>
                     
                 </div>
                 <div class="form-group">
                     <label for="kecamatan">Kecamatan</label>
-                    <input type="text" class="form-control" id="kecamatan" name="kecamatan" value="{{ $nama_kecamatan }}" readonly>
+                    <input type="text" class="form-control" id="kecamatan" name="kecamatan" value="{{ $kelurahan[0]->NAMA_KEC }}" readonly>
                 </div>
                 <div class="form-group">
                     <label for="nama_kelurahan">
                         Kelurahan
                     </label>
-                    <input type="text" class="form-control" id="nama_kelurahan" name="nama_kelurahan" value="{{ $nama_desa }}" readonly>
+                    <input type="text" class="form-control" id="nama_kelurahan" name="nama_kelurahan" value="{{ $kelurahan[0]->NAMA_DESA }}" readonly>
                 </div>
                 <div class="form-group">
                     <label for="nama_BKM">
                         Nama BKM
                     </label>
-                    <input type="text" class="form-control" id="nama_BKM" name="nama_BKM" value="{{ $nama_bkm }}" readonly>
+                    <input type="text" class="form-control" id="nama_BKM" name="nama_BKM" value="{{ $bkmdata[0]->bkm }}" readonly>
                 </div>
             </div>
 
@@ -60,29 +53,29 @@
                     <label for="lokasi_bdi">
                         lokasi BDI/BPM
                     </label>
-                    <input type="text" class="form-control" id="lokasi_bdi" name="lokasi_bdi">
+                    <input type="text" class="form-control" id="lokasi_bdi" name="lokasi_bdi" value="{{ $kppdata->lokasi_bdi_bpm }}">
                 </div>
                 <div class="form-group">
                     <label for="nama_kpp">Nama KPP</label>
-                    <input type="text" class="form-control" id="nama_kpp" name="nama_kpp">
+                    <input type="text" class="form-control" id="nama_kpp" name="nama_kpp" value="{{ $kppdata->nama_kpp }}">
                 </div>
                 <div class="form-group">
                     <label for="anggota_pria">Jumlah Anggota pria</label>
-                    <input type="text" class="form-control" id="anggota_pria" name="anggota_pria">
+                    <input type="text" class="form-control" id="anggota_pria" name="anggota_pria" value="{{ $kppdata->anggota_pria }}">
                 </div>
                 <div class="form-group">
                     <label for="anggota_wanita">Jumlah Anggota wanita</label>
-                    <input type="text" class="form-control" id="anggota_wanita" name="anggota_wanita">
+                    <input type="text" class="form-control" id="anggota_wanita" name="anggota_wanita" value="{{ $kppdata->anggota_wanita }}">
                 </div>
                 <div class="form-group">
                     <label for="anggota_miskin">Jumlah Anggota Miskin</label>
-                    <input type="text" class="form-control" id="anggota_miskin" name="anggota_miskin">
+                    <input type="text" class="form-control" id="anggota_miskin" name="anggota_miskin" value="{{ $kppdata->anggota_miskin }}">
                 </div>
             </div>
 
             <div class="text-center">
                 <a href="/kpp"><button type="button" class="btn btn-primary mt-5">Batal</button></a>
-                <button type="submit" class="btn btn-primary mt-5">Selanjutnya</button>
+                <button type="submit" class="btn btn-primary mt-5">Simpan</button>
             </div>
         </form>
     </div>

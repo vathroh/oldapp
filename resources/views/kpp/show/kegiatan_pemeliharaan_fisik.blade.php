@@ -1,6 +1,4 @@
-<div class="document_item kegiatan_pemeliharaan_fisik">
-	<h6>kegiatan_pemeliharaan_fisik</h6>
-</div>
+
 <div class="form-group">
 	<label for="sumber_dana">Tanggal</label>
 	<input type="text" class="form-control" id="sumber_dana" name="sumber_dana" value="{{$kppdata->tanggal_kegiatan_perbaikan}}" readonly>
@@ -36,9 +34,12 @@
 				<form method="post" action="/kpp/kegiatan-pemeliharaan-fisik/{{$kppdata->id}}" enctype="multipart/form-data">
 					@method('patch')
 					@csrf
+						<div class="dates">
 					<div class="form-group">
+  
 						<label for="sumber_dana">Tanggal</label>
-						<input type="text" class="form-control" id="tanggal_kegiatan_perbaikan" name="tanggal_kegiatan_perbaikan" value="{{$kppdata->tanggal_kegiatan_perbaikan}}" >
+						<input type="text" class="form-control" id="usr1" name="tanggal_kegiatan_perbaikan" value="{{$kppdata->tanggal_kegiatan_perbaikan}}" >
+  </div>
 					</div>
 					<div class="form-group">
 						<label for="nilai_bop">Sumber Dana</label>

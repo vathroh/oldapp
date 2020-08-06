@@ -11,8 +11,8 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
-    <script src="{{ asset('js/jquery-3.4.1.min.js') }}" defer></script>
+    <!-- <script src="{{ asset('js/app.js') }}" defer></script> -->
+    <!-- <script src="{{ asset('js/jquery-3.4.1.min.js') }}" defer></script> -->
     <script src="https://kit.fontawesome.com/e3a45180d4.js" crossorigin="anonymous"></script>
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -20,10 +20,22 @@
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script type="text/javascript" src="{{ asset('datepicker/bootstrap-datepicker.js') }}"></script>
+    <link rel="stylesheet" type="text/css" href="{{ asset('datepicker/bootstrap-datepicker.css') }}" >
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     @yield('head')
 
+    <script>
 
+            $(function() {
+
+            $('.dates #usr1').datepicker({
+                'format': 'yyyy-mm-dd',
+                'autoclose': true
+            });
+        });
+            </script>
 </head>
 
 <body>

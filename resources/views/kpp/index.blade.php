@@ -55,6 +55,7 @@
           $nama_desa=$kelurahan[0]->where('KD_KEL',$kppdata->kode_desa)->get()[0]['NAMA_DESA'];
           $nama_kecamatan = $kelurahan[0]->where('KD_KEL',$kppdata->kode_desa)->get()[0]['NAMA_KEC'];
           $nama_kabupaten = $kelurahan[0]->where('KD_KEL',$kppdata->kode_desa)->get()[0]['NAMA_KAB'];
+	  $bkm_name = $bkmdatas[0]->where('kelurahan_id', $kppdata->kode_desa)->get()[0]['bkm'];
           $uploader=$user[0]->where('id', $kppdata->user_id)->get()[0]['name'];
 
 
@@ -66,7 +67,7 @@
             <td>{{ $nama_kabupaten }}</td>
             <td>{{ $nama_kecamatan }}</td>
             <td><a href="/kpp/{{ $kppdata->id }}">{{ $nama_desa }} </a></td>
-            <td>{{ $bkmdatas[0]->bkm }}</td>
+            <td>{{ $bkm_name }}</td>
             <td>{{ $kppdata->lokasi_bdi_bpm }}</td>
             <td></td>
             <td>{{ $kppdata->nama_kpp }}</td>

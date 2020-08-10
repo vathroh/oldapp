@@ -572,6 +572,7 @@ class ComposerStaticInit8659da8d9bee60bbb992f85efebf2bac
         'App\\kegiatanksmnew' => __DIR__ . '/../..' . '/app/kegiatanksmnew.php',
         'App\\kppdata' => __DIR__ . '/../..' . '/app/kppdata.php',
         'App\\ksm' => __DIR__ . '/../..' . '/app/ksm.php',
+        'App\\pengurus_kpp' => __DIR__ . '/../..' . '/app/pengurus_kpp.php',
         'App\\tahun' => __DIR__ . '/../..' . '/app/tahun.php',
         'App\\village' => __DIR__ . '/../..' . '/app/village.php',
         'Carbon\\Carbon' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Carbon.php',

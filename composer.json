@@ -10,6 +10,7 @@
     "require": {
         "php": "^7.2",
         "fideloper/proxy": "^4.0",
+        "goodnesskay/laravelpdfviewer": "^1.0",
         "google/apiclient": "^2.4",
         "laravel/framework": "^6.2",
         "laravel/helpers": "^1.2",

@@ -9,6 +9,7 @@ use App\allsubdistrict;
 use App\allvillage;
 use App\kppdata;
 use App\bkmdata;
+use App\pengurus_kpp;
 use App\User;
 
 class kppController extends Controller
@@ -29,9 +30,10 @@ class kppController extends Controller
         $kabupaten=alldistrict::get();
         $bkmdatas=bkmdata::get();
         $kppdatas=kppdata::paginate(5);
+        $pengurus_kpps=pengurus_kpp::get();
         $user=User::get();
         
-        return view('kpp.index', compact(['kabupaten' ,'kelurahan', 'kppdatas', 'user', 'bkmdatas']));
+        return view('kpp.index', compact(['kabupaten' ,'kelurahan', 'kppdatas', 'user', 'bkmdatas', 'pengurus_kpps']));
     }
 
     /**
@@ -75,6 +77,10 @@ class kppController extends Controller
             'user_id' => Auth::user()->id
         ]);
 
+        pengurus_kpp::create([
+            'kelurahan_id'=>$request->kelurahan,
+        ]);
+
         $id=kppdata::where('kode_desa', $request->kelurahan)->get()[0]['id'];
         return redirect('/kpp/'.$id);
     }
@@ -89,10 +95,11 @@ class kppController extends Controller
     {
         $kppdata=kppdata::where('id', $id)->get()[0];
         $kelurahan=allvillage::where('KD_KEL', $kppdata->kode_desa)->get()[0];
-        $bkmdata=bkmdata::where('kelurahan_id', $kppdata->kode_desa)->get()[0];;
+        $bkmdata=bkmdata::where('kelurahan_id', $kppdata->kode_desa)->get()[0];
         $kabupaten=alldistrict::get();
+        $pengurus_kpp=pengurus_kpp::where('kelurahan_id', $kppdata->kode_desa)->get()->first();
 
-        return view('kpp.show', compact(['kppdata', 'kelurahan', 'bkmdata', 'kabupaten']));
+        return view('kpp.show', compact(['kppdata', 'kelurahan', 'bkmdata', 'kabupaten', 'pengurus_kpp']));
     }
 
     /**

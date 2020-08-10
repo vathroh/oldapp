@@ -84,6 +84,7 @@ return array(
     'App\\kegiatanksmnew' => $baseDir . '/app/kegiatanksmnew.php',
     'App\\kppdata' => $baseDir . '/app/kppdata.php',
     'App\\ksm' => $baseDir . '/app/ksm.php',
+    'App\\pengurus_kpp' => $baseDir . '/app/pengurus_kpp.php',
     'App\\tahun' => $baseDir . '/app/tahun.php',
     'App\\village' => $baseDir . '/app/village.php',
     'Carbon\\Carbon' => $vendorDir . '/nesbot/carbon/src/Carbon/Carbon.php',

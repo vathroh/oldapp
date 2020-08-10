@@ -38,6 +38,14 @@
       </a></div>
       <div class="sidebar-wrapper">
         <ul class="nav">
+          @can('manage-users')
+          <li class="nav-item active  ">
+            <a class="nav-link" href="{{ route('admin.users.index') }}">
+              <i class="material-icons">dashboard</i>
+              <p>Profil</p>
+            </a>
+          </li>
+          @endcan
           <li class="nav-item active  ">
             <a class="nav-link" href="/kpp">
               <i class="material-icons">dashboard</i>

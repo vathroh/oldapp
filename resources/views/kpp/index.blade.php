@@ -19,6 +19,8 @@
             <th rowspan="2">LOKASI BDI/BPM</th>
             <th rowspan="2">KODE KPP</th>
             <th rowspan="2">NAMA KPP</th>
+            <th rowspan="2">KETUA KPP</th>
+            <th rowspan="2">KONTAK KETUA KPP</th>
             <th colspan="3">JUMLAH ANGGOTA</th>
             <th rowspan="2">STRUKTUR ORGANISASI</th>
             <th colspan="3">DASAR LEMBAGA</th>
@@ -54,6 +56,9 @@
           $nama_kecamatan = $kelurahan[0]->where('KD_KEL',$kppdata->kode_desa)->get()[0]['NAMA_KEC'];
           $nama_kabupaten = $kelurahan[0]->where('KD_KEL',$kppdata->kode_desa)->get()[0]['NAMA_KAB'];
           $uploader=$user[0]->where('id', $kppdata->user_id)->get()[0]['name'];
+
+
+          $pengurus_kpp = $pengurus_kpps[0]->where('kelurahan_id', $kppdata->kode_desa)->get()[0];
           @endphp
 
           <tr>
@@ -65,6 +70,8 @@
             <td>{{ $kppdata->lokasi_bdi_bpm }}</td>
             <td></td>
             <td>{{ $kppdata->nama_kpp }}</td>
+            <td>{{ $pengurus_kpp->ketua_kpp }}</td>
+            <td>{{ $pengurus_kpp->ketua_kpp_hp }}</td>
             <td>{{ $kppdata->anggota_pria }} Orang</td>
             <td>{{ $kppdata->anggota_wanita }} Orang</td>
             <td>{{ $kppdata->anggota_miskin }} Orang</td>
@@ -77,7 +84,7 @@
             <td>{{ $kppdata->administrasi_rutin }}</td>
             <td>{{ $kppdata->buku_inventaris_kegiatan }}</td>
             <td>{{ $kppdata->sumber_dana_operasional }}</td>
-            <td>{{ $kppdata->nilai_bop }}</td>
+            <td class="nomer2">{{ $kppdata->nilai_bop }}</td>
             <td>{{ $kppdata->kegiatan_pengecekan }}</td>
             <td>{{ $kppdata->tanggal_kegiatan_perbaikan }}</td>
             <td>{{ $kppdata->sumber_dana_perbaikan }}</td>
@@ -96,4 +103,20 @@
       </div>
     </div>
   </div>
+
+
+  <script src="{{ asset('js/cleave.js') }}"></script>
+<script>
+
+var cleave = new Cleave('.nomer2', {
+    numeral: true,
+    numeralThousandsGroupStyle: 'thousand'
+});
+
+var cleave = new Cleave('.nomer3', {
+    numeral: true,
+    numeralThousandsGroupStyle: 'thousand'
+});
+
+</script>
   @endsection

@@ -19,7 +19,7 @@
             ALAMAT
         </div>
         <div class="form-group">
-            <label for="kelurahan">       
+            <label for="kelurahan">
                 DESA/KELURAHAN 
             </label>
             <input type="text" name="nama_kelurahan" id="nama_kelurahan" value="{{$kelurahan->NAMA_DESA}}" readonly>
@@ -40,9 +40,23 @@
             <label for="lokasi_bdi">
                 LOKASI BDI/BPM
             </label>
-            <input type="text" class="form-control" id="lokasi_bdi" name="lokasi_bdi" value="{{ $kppdata->lokasi_bdi_bpm }}" readonly>
+            <input type="text" id="lokasi_bdi" name="lokasi_bdi" value="{{ $kppdata->lokasi_bdi_bpm }}" readonly>
         </div>
     </div>
+
+
+    <div class="data-group kepengurusan">
+        <div class="data-group-title">
+            KEPENGURUSAN
+        </div>
+
+        <div class="document-group">
+            @include('kpp.show.pengurus')
+        </div>
+
+        
+    </div>
+
 
     <div class="data-group jumlah-anggota">
         <div class="data-group-title">
@@ -161,11 +175,39 @@
 </div>
 
 
+<script src="{{ asset('js/cleave.js') }}"></script>
+<script>
 
+
+    var cleave = new Cleave('.halo', {
+        numeral: true,
+        numeralThousandsGroupStyle: 'thousand'
+    });
+
+    var cleave = new Cleave('.halo1', {
+        numeral: true,
+        numeralThousandsGroupStyle: 'thousand'
+    });
+
+    var cleave = new Cleave('.nomer', {
+        numeral: true,
+        numeralThousandsGroupStyle: 'thousand'
+    });
+
+    var cleave = new Cleave('.nomer1', {
+        numeral: true,
+        numeralThousandsGroupStyle: 'thousand'
+    });
+
+
+
+
+</script>
 
 @endsection
 
 @section('script')
 <script src="{{ asset('js/bootstrap.min.js') }}" defer></script>
 <script src="{{ asset('js/jquery.form.min.js') }}" defer></script>
+
 @endsection

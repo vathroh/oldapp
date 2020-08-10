@@ -9,7 +9,7 @@
 </div>
 <div class="form-group">
 	<label for="nilai_bop">Jumlah Dana</label>
-	<input type="text" class="form-control" id="nilai_bop" name="nilai_bop" value="{{$kppdata->nilai_perbaikan}}" readonly>
+	<input type="text" class="halo" id="nilai_perbaikan" name="nilai_perbaikan" value="{{$kppdata->nilai_perbaikan}}" readonly>
 </div>
 
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#kegiatan_pemeliharaan_fisik_modal">
@@ -24,7 +24,7 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">Biaya Operasional</h5>
+				<h5 class="modal-title" id="exampleModalLabel">Biaya Perbaikan Infrastruktur</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
@@ -34,12 +34,12 @@
 				<form method="post" action="/kpp/kegiatan-pemeliharaan-fisik/{{$kppdata->id}}" enctype="multipart/form-data">
 					@method('patch')
 					@csrf
-						<div class="dates">
-					<div class="form-group">
-  
-						<label for="sumber_dana">Tanggal</label>
-						<input type="text" class="form-control" id="usr1" name="tanggal_kegiatan_perbaikan" value="{{$kppdata->tanggal_kegiatan_perbaikan}}" >
-  </div>
+					<div class="dates">
+						<div class="form-group">
+
+							<label for="sumber_dana">Tanggal</label>
+							<input type="date" class="form-control" id="usr1" name="tanggal_kegiatan_perbaikan" value="{{$kppdata->tanggal_kegiatan_perbaikan}}" >
+						</div>
 					</div>
 					<div class="form-group">
 						<label for="nilai_bop">Sumber Dana</label>
@@ -47,7 +47,7 @@
 					</div>
 					<div class="form-group">
 						<label for="nilai_bop">Jumlah Dana</label>
-						<input type="text" class="form-control" id="nilai_perbaikan" name="nilai_perbaikan" value="{{$kppdata->nilai_perbaikan}}" >
+						<input type="text" class="nomer" id="nilai_perbaikan" name="nilai_perbaikan" value="{{$kppdata->nilai_perbaikan}}">
 					</div>
 					<br>
 					<button type="submit" class="btn btn-primary mt-5">Simpan</button>

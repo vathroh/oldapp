@@ -8,7 +8,7 @@
 </div>
 <div class="form-group">
     <label for="nilai_bop">Nilai BOP</label>
-    <input type="text" class="form-control" id="nilai_bop" name="nilai_bop" value="{{$kppdata->nilai_bop}}" readonly>
+    <input type="text" class="halo1" id="nilai_bop" name="nilai_bop" value="{{$kppdata->nilai_bop}}" readonly>
 </div>
 
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#biaya_operasional_modal">
@@ -47,7 +47,7 @@
                 </div>
                 <div class="form-group">
                     <label for="nilai_bop">Nilai BOP</label>
-                    <input type="text" class="form-control" id="nilai_bop" name="nilai_bop" value="{{$kppdata->nilai_bop}}">
+                    <input type="text" class="nomer1" id="nilai_bop" name="nilai_bop" value="{{$kppdata->nilai_bop}}">
                 </div>
                 <br>
                 <button type="submit" class="btn btn-primary mt-5">Simpan</button>
@@ -56,3 +56,6 @@
     </div>
 </div>
 </div>
+
+
+

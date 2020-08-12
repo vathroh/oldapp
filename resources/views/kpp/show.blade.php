@@ -42,26 +42,7 @@
             </label>
             <input type="text" id="lokasi_bdi" name="lokasi_bdi" value="{{ $kppdata->lokasi_bdi_bpm }}" readonly>
         </div>
-    </div>
 
-
-    <div class="data-group kepengurusan">
-        <div class="data-group-title">
-            KEPENGURUSAN
-        </div>
-
-        <div class="document-group">
-            @include('kpp.show.pengurus')
-        </div>
-
-        
-    </div>
-
-
-    <div class="data-group jumlah-anggota">
-        <div class="data-group-title">
-            JUMLAH ANGGOTA
-        </div>
         <div class="form-group">
             <label>JUMLAH ANGGOTA</label>
             <div class="data-group-isi">
@@ -89,7 +70,17 @@
             <a href="/kpp/{{$kppdata->id}}/edit"><button type="button" class="btn btn-primary">Edit</button></a>
         </div>
     </div>
+    <div class="data-group kepengurusan">
+        <div class="data-group-title">
+            KEPENGURUSAN
+        </div>
 
+        <div class="document-group">
+            @include('kpp.show.pengurus')
+        </div>
+
+        
+    </div>
 
     <div class="data-group document">
         <div class="data-group-title">

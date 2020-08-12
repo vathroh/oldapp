@@ -58,12 +58,12 @@
 	  $bkm_name = $bkmdatas[0]->where('kelurahan_id', $kppdata->kode_desa)->get()[0]['bkm'];
           $uploader=$user[0]->where('id', $kppdata->user_id)->get()[0]['name'];
 
-
+          $no=1;  
           $pengurus_kpp = $pengurus_kpps[0]->where('kelurahan_id', $kppdata->kode_desa)->get()[0];
           @endphp
 
           <tr>
-            <th scope="row">{{ $loop->iteration }}</th>
+            <th scope="row">{{ (($kppdatas->currentPage()-1) *10 ) + $loop->iteration }}</th>
             <td>{{ $nama_kabupaten }}</td>
             <td>{{ $nama_kecamatan }}</td>
             <td><a href="/kpp/{{ $kppdata->id }}">{{ $nama_desa }} </a></td>
@@ -93,6 +93,9 @@
             <td>{{ $kppdata->keterangan_lain_lain }}</td>
             <td>{{ $uploader }}</td>
             </tr>
+            @php
+            $no++;
+            @endphp
             @endforeach
           </tbody>
         </table>

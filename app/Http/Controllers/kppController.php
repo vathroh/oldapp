@@ -26,12 +26,16 @@ class kppController extends Controller
      */
     public function index()
     {
+        $user=User::get();
         $kelurahan=allvillage::get();
         $kabupaten=alldistrict::get();
         $bkmdatas=bkmdata::get();
-        $kppdatas=kppdata::paginate(5);
+        if(Auth::user()->id==2){
+            $kppdatas=kppdata::orderByDesc('updated_at')->paginate(10);
+        }else{
+            $kppdatas=kppdata::where('user_id', Auth::user()->id)->orderByDesc('updated_at')->paginate(10);
+        }
         $pengurus_kpps=pengurus_kpp::get();
-        $user=User::get();
         
         return view('kpp.index', compact(['kabupaten' ,'kelurahan', 'kppdatas', 'user', 'bkmdatas', 'pengurus_kpps']));
     }

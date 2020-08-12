@@ -30,7 +30,7 @@ class kppController extends Controller
         $kelurahan=allvillage::get();
         $kabupaten=alldistrict::get();
         $bkmdatas=bkmdata::get();
-        if(Auth::user()->id==2){
+        if(Auth::user()->id==3){
             $kppdatas=kppdata::orderByDesc('updated_at')->paginate(10);
         }else{
             $kppdatas=kppdata::where('user_id', Auth::user()->id)->orderByDesc('updated_at')->paginate(10);

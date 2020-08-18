@@ -2,12 +2,12 @@
 
 @section('content')
     @php
-    $file = $kppdata[0]['scan_struktur_organisasi']; 
+    $file = $kppdata[0]['scan_anggaran_rumah_tangga']; 
     @endphp<div class="card">
 
     <div class="card-header card-header-primary">
         <h4 class="card-title ">KPP {{ $kppdata[0]['nama_kpp'] }}</h4>
-        <p class="card-category"> Struktur Organisasi </p>
+        <p class="card-category"> Anggaran Rumah Tangga </p>
     </div>
 
     <div class="card-body">

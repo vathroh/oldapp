@@ -15,10 +15,10 @@
         <div class="isifile">
           @php
           if(is_null($kppdata->scan_anggaran_rumah_tangga)){
-          echo "File Kosong";
+          echo "File belum diupload";
           }else{
           @endphp
-          <button type="submit" class="btn btn-primary">File sudah diupload</button>
+          <p>File sudah diupload <a href="/kpp/anggaran-rumah-tangga/{{$kppdata->id}}">Lihat</a></p> 
           @php
           }
           @endphp

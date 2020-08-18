@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePengurusKppsTable extends Migration
+class CreateKppPertemuansTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,13 @@ class CreatePengurusKppsTable extends Migration
      */
     public function up()
     {
-        Schema::create('pengurus_kpps', function (Blueprint $table) {
+        Schema::create('kpp_pertemuans', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('kelurahan_id');
-            $table->string('ketua')->nullabe();
-            $table->string('ketua_hp')->nullabe();
-            $table->string('sekretaris')->nullabe();
-            $table->string('sekretaris_hp')->nullabe();
-            $table->string('bendahara')->nullabe();
-            $table->string('bendahara_hp')->nullabe();
-            $table->bigIncrements('user_id')->nullabe();
+            $table->date('tanggal');
+            $table->string('pokok_bahasan');
+            $table->string('keterangan');
+            $table->bigIncrements('inputby_id')->nullabe();
             $table->bigIncrements('editedby_id')->nullabe();
             $table->timestamps();
         });
@@ -35,6 +32,6 @@ class CreatePengurusKppsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pengurus_kpps');
+        Schema::dropIfExists('kpp_pertemuans');
     }
 }

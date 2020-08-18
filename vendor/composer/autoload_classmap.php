@@ -83,6 +83,7 @@ return array(
     'App\\kabupaten' => $baseDir . '/app/kabupaten.php',
     'App\\kegiatanksm' => $baseDir . '/app/kegiatanksm.php',
     'App\\kegiatanksmnew' => $baseDir . '/app/kegiatanksmnew.php',
+    'App\\kpp_pertemuan' => $baseDir . '/app/kpp_pertemuan.php',
     'App\\kppdata' => $baseDir . '/app/kppdata.php',
     'App\\ksm' => $baseDir . '/app/ksm.php',
     'App\\pengurus_kpp' => $baseDir . '/app/pengurus_kpp.php',

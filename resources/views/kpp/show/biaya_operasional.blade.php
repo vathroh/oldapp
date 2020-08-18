@@ -1,19 +1,30 @@
 <div class="document_item biaya_operasional">
     <h6>Biaya Operasional  KPP</h6>
     <input type="text" class="form-control" id="biaya_operasional" name="biaya_operasional" value="{{$kppdata->bop}}" readonly>
-</div>
-<div class="form-group">
-    <label for="sumber_dana">Sumber Dana</label>
-    <input type="text" class="form-control" id="sumber_dana" name="sumber_dana" value="{{$kppdata->sumber_dana_operasional}}" readonly>
-</div>
-<div class="form-group">
-    <label for="nilai_bop">Nilai BOP</label>
-    <input type="text" class="halo1" id="nilai_bop" name="nilai_bop" value="{{$kppdata->nilai_bop}}" readonly>
-</div>
-
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#biaya_operasional_modal">
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#biaya_operasional_modal">
     Edit
-</button>
+	</button>
+</div>
+<table class="table table-bordered table-hover">
+  <thead>
+    <tr>
+      <th scope="col">No</th>
+      <th scope="col">Sumber Dana</th>
+      <th scope="col">Jumlah</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">1</th>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td colspan="2">Jumlah</td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
 
 
 <!-- Modal -->

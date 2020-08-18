@@ -54,13 +54,13 @@
           </li>
           <li class="nav-item ">
             <a class="nav-link" data-toggle="modal" data-target="#exampleModal">
-              <i class="material-icons">content_paste</i>
+              <i class="material-icons">content</i>
               <p>Tambah Data</p>
             </a>
           </li>
           <li class="nav-item ">
             <a class="nav-link" data-toggle="modal" data-target="#exampleModal">
-              <i class="material-icons">content_paste</i>
+              <i class="material-icons">content</i>
               <p>Edit Data</p>
             </a>
           </li>

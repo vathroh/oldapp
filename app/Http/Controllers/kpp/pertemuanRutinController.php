@@ -13,7 +13,7 @@ class pertemuanRutinController extends Controller
 {
     public function update(Request $request, $id)
     {
-        $ldate = $ldate = date('Y-m-d H:i:s');
+        $ldate = date('Y-m-d H:i:s');
         $kppdata=kppdata::where('id', $id)->get()[0];
 
         kppdata::where('id', $id)->update([

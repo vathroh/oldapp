@@ -6,7 +6,6 @@
 
 @section('content')
 
-
 <div class="card">
   <div class="card-header card-header-primary">
     <h4 class="card-title ">KPP</h4>
@@ -77,9 +76,7 @@
 
         <div class="document-group">
             @include('kpp.show.pengurus')
-        </div>
-
-        
+        </div>        
     </div>
 
     <div class="data-group document">

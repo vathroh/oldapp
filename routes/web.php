@@ -112,3 +112,4 @@ Route::resource('/kpp/pengecekan-fisik', 'kpp\pengecekanFisikController');
 Route::resource('/kpp/kegiatan-pemeliharaan-fisik', 'kpp\kegiatanPemeliharaanFisikController');
 Route::resource('/kpp/keterangan-lain-lain', 'kpp\keteranganLainController');
 Route::resource('/kpp/pengurus', 'kpp\penguruskppController');
+Route::resource('kpp/data-pertemuan', 'kpp\DataPertemuanController');

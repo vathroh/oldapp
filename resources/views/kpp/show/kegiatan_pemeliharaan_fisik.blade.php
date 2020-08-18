@@ -1,20 +1,32 @@
-
-<div class="form-group">
-	<label for="sumber_dana">Tanggal</label>
-	<input type="text" class="form-control" id="sumber_dana" name="sumber_dana" value="{{$kppdata->tanggal_kegiatan_perbaikan}}" readonly>
-</div>
-<div class="form-group">
-	<label for="nilai_bop">Sumber Dana</label>
-	<input type="text" class="form-control" id="nilai_bop" name="nilai_bop" value="{{$kppdata->sumber_dana_perbaikan}}" readonly>
-</div>
-<div class="form-group">
-	<label for="nilai_bop">Jumlah Dana</label>
-	<input type="text" class="halo" id="nilai_perbaikan" name="nilai_perbaikan" value="{{$kppdata->nilai_perbaikan}}" readonly>
-</div>
-
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#kegiatan_pemeliharaan_fisik_modal">
 	Edit
 </button>
+
+<table class="table table-bordered table-hover">
+  <thead>
+    <tr>
+      <th scope="col">No</th>
+      <th scope="col">Tanggal Mulai</th>
+      <th scope="col">Lama Perbaikan</th>
+      <th scope="col">Sumber Dana</th>
+      <th scope="col">Jumlah</th>
+      <th scope="col">Foto Sebelum</th>
+      <th scope="col">Foto Perbaikan</th>
+      <th scope="col">Foto Setelah</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">1</th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
 
 
 

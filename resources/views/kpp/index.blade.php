@@ -55,7 +55,7 @@
           $nama_desa=$kelurahan[0]->where('KD_KEL',$kppdata->kode_desa)->get()[0]['NAMA_DESA'];
           $nama_kecamatan = $kelurahan[0]->where('KD_KEL',$kppdata->kode_desa)->get()[0]['NAMA_KEC'];
           $nama_kabupaten = $kelurahan[0]->where('KD_KEL',$kppdata->kode_desa)->get()[0]['NAMA_KAB'];
-	  $bkm_name = $bkmdatas[0]->where('kelurahan_id', $kppdata->kode_desa)->get()[0]['bkm'];
+		  $bkm_name = $bkmdatas[0]->where('kelurahan_id', $kppdata->kode_desa)->get()[0]['bkm'];
           $uploader=$user[0]->where('id', $kppdata->user_id)->get()[0]['name'];
 
           $no=1;  
@@ -76,14 +76,76 @@
             <td>{{ $kppdata->anggota_pria }} Orang</td>
             <td>{{ $kppdata->anggota_wanita }} Orang</td>
             <td>{{ $kppdata->anggota_miskin }} Orang</td>
-            <td>{{ $kppdata->struktur_organisasi }}</td>
-            <td>{{ $kppdata->anggaran_dasar }}</td>
-            <td>{{ $kppdata->anggaran_rumah_tangga }}</td>
-            <td>{{ $kppdata->surat_keputusan }}</td>
-            <td>{{ $kppdata->rencana_kerja }}</td>
+            <td>{{ $kppdata->struktur_organisasi }} 
+				@php
+				if(is_null($kppdata->scan_struktur_organisasi)){
+				}else{
+				@endphp
+				<a href="/kpp/struktur-organisasi/{{$kppdata->id}}">Lihat</a></td>
+				@php
+				}
+				@endphp
+            <td>{{ $kppdata->anggaran_dasar }}
+				@php
+				if(is_null($kppdata->scan_anggaran_dasar)){
+				}else{
+				@endphp
+				<a href="/kpp/anggaran-dasar/{{$kppdata->id}}">Lihat</a></td>
+				@php
+				}
+				@endphp
+            </td>
+            <td>{{ $kppdata->anggaran_rumah_tangga }}
+				@php
+				if(is_null($kppdata->scan_anggaran_rumah_tangga)){
+				}else{
+				@endphp
+				<a href="/kpp/anggaran-rumah-tangga/{{$kppdata->id}}">Lihat</a></td>
+				@php
+				}
+				@endphp
+            </td>
+            <td>{{ $kppdata->surat_keputusan }}
+            	@php
+				if(is_null($kppdata->scan_surat_keputusan)){
+				}else{
+				@endphp
+				<a href="/kpp/surat-keputusan/{{$kppdata->id}}">Lihat</a></td>
+				@php
+				}
+				@endphp
+            </td>
+            <td>{{ $kppdata->rencana_kerja }}
+				@php
+				if(is_null($kppdata->scan_rencana_kerja)){
+				}else{
+				@endphp
+				<a href="/kpp/rencana-kerja/{{$kppdata->id}}">Lihat</a></td>
+				@php
+				}
+				@endphp
+            </td>
             <td>{{ $kppdata->pertemuan_rutin }}</td>
-            <td>{{ $kppdata->administrasi_rutin }}</td>
-            <td>{{ $kppdata->buku_inventaris_kegiatan }}</td>
+            <td>{{ $kppdata->administrasi_rutin }}
+            	@php
+				if(is_null($kppdata->scan_administrasi_rutin)){
+				}else{
+				@endphp
+				<a href="/kpp/administrasi-rutin/{{$kppdata->id}}">Lihat</a></td>
+				@php
+				}
+				@endphp
+            </td>
+            <td>{{ $kppdata->buku_inventaris_kegiatan }}
+                @php
+				if(is_null($kppdata->scan_buku_inventaris_kegiatan)){
+				}else{
+				@endphp
+				<a href="/kpp/buku-inventaris-kegiatan/{{$kppdata->id}}">Lihat</a></td>
+				@php
+				}
+				@endphp
+            </td>
             <td>{{ $kppdata->sumber_dana_operasional }}</td>
             <td class="nomer2">{{ $kppdata->nilai_bop }}</td>
             <td>{{ $kppdata->kegiatan_pengecekan }}</td>

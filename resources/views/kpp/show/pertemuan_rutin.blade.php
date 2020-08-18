@@ -1,35 +1,48 @@
 <div class="form-group">
 
     <label>       
-      Pertemuan Rutin
+      Frekwensi Pertemuan Rutin
     </label>
 
     <div class="data-group-isi">
-      <form>
         <div class="input">
-          <input type="text" class="form-control" id="pertemuan_rutin" name="pertemuan_rutin" value="{{ $kppdata->pertemuan_rutin }}" readonly>
-        </div>
-
-        <div class="isifile">
-          @php
-          if(is_null($kppdata->scan_pertemuan_rutin)){
-          echo "Scan belum diupload";
-          }else{
-          @endphp
-          <button type="submit" class="btn btn-primary">File sudah diupload</button>
-          @php
-          }
-          @endphp
+          <input type="text" id="pertemuan_rutin" name="pertemuan_rutin" value="{{ $kppdata->pertemuan_rutin }}" readonly>
         </div>
     
         <div class="button">
           <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#pertemuan_rutin_modal">
-            Edit & Upload
+            Edit
           </button>
         </div>
-      </form>
     </div>
 </div>
+
+<table class="table table-bordered table-hover">
+  <thead>
+    <tr>
+      <th scope="col">
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#input_pertemuan_rutin_modal">
+            Input
+          </button>
+        </th>
+      <th scope="col">Tanggal</th>
+      <th scope="col">Pokok Bahasan</th>
+      <th scope="col">Keterangan</th>
+      <th scope="col">Foto</th>
+    </tr>
+  </thead>
+  <tbody>
+	  @foreach($kpp_pertemuans as $pertemuan)
+    <tr>
+      <th scope="row">{{$loop->iteration}}</th>
+      <td>{{$pertemuan->tanggal}}</td>
+      <td>{{$pertemuan->pokok_bahasan}}</td>
+      <td>{{$pertemuan->keterangan}}</td>
+      <td><img src = "{{ asset('storage/kpp/'. $pertemuan->foto )}}" style = "height:100px;"></td>
+    </tr>
+    @endforeach
+  </tbody>
+</table>
 
 
 
@@ -61,12 +74,50 @@
               <option value="Tidak Pernah (dalam satu tahun)">Tidak Pernah (dalam satu tahun)</option>
             </select>
           </div>
-          <br>
-          <p>Upload Foto Terbaik Pertemuan Rutin</p>
+          <br>     
+		  <button type="submit" class="btn btn-primary mt-5">Simpan</button>
+        </form>
 
-          <input type="file" class="form-control-file" id="foto_pertemuan_rutin" name="foto_pertemuan_rutin">
+      </div>
+    </div>
+  </div>
+</div>
 
-          <button type="submit" class="btn btn-primary mt-5">Simpan</button>
+
+<!-- Modal -->
+<div class="modal fade" id="input_pertemuan_rutin_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Input Data Pertemuan Rutin</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <form method="post" action="/kpp/data-pertemuan" enctype="multipart/form-data">
+			@csrf          
+          
+			<div class="document-group" style=" margin-top: 5	0px;" >
+				<input type="text" id="kelurahan_id" name="kelurahan_id" value="{{$kppdata->kode_desa}}" readonly>
+				<div class="form-group">
+					<label>Tanggal</label>
+					<input type="date" class="form-control" id="tanggal_pertemuan_rutin" name="tanggal_pertemuan_rutin" placeholder="Tanggal" >
+				</div>
+				<div class="form-group">
+					<label>Pokok Bahasan</label>
+					<input type="text" class="form-control" id="pokok_bahasan" name="pokok_bahasan" placeholder="Pokok Bahasan" >
+				</div>
+				<div class="form-group">
+					<label>Keterangan</label>
+					<textarea class="form-control" id="keterangan" name="keterangan" rows="3"></textarea>
+				</div>
+				<p class="mt-3">Upload Foto Terbaik Pertemuan Rutin</p>
+				<input type="file" class="form-control-file" id="foto_pertemuan_rutin" name="foto_pertemuan_rutin">
+			</div>
+
+			<button type="submit" class="btn btn-primary mt-5">Simpan</button>
 
         </form>
 

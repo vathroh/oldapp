@@ -571,6 +571,7 @@ class ComposerStaticInit8659da8d9bee60bbb992f85efebf2bac
         'App\\kabupaten' => __DIR__ . '/../..' . '/app/kabupaten.php',
         'App\\kegiatanksm' => __DIR__ . '/../..' . '/app/kegiatanksm.php',
         'App\\kegiatanksmnew' => __DIR__ . '/../..' . '/app/kegiatanksmnew.php',
+        'App\\kpp_pertemuan' => __DIR__ . '/../..' . '/app/kpp_pertemuan.php',
         'App\\kppdata' => __DIR__ . '/../..' . '/app/kppdata.php',
         'App\\ksm' => __DIR__ . '/../..' . '/app/ksm.php',
         'App\\pengurus_kpp' => __DIR__ . '/../..' . '/app/pengurus_kpp.php',

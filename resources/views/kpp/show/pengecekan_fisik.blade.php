@@ -31,6 +31,21 @@
     </div>
 </div>
 
+<table class="table table-bordered table-hover">
+  <thead>
+    <tr>
+      <th scope="col">No</th>
+      <th scope="col">Tanggal</th>
+      <th scope="col">Foto</thT
+  <tbody>
+    <tr>
+      <th scope="row">1</th>
+      <td></td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+
 
 <!-- Modal -->
 <div class="modal fade" id="pengecekan_fisik_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

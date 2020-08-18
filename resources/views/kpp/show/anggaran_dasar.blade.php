@@ -13,10 +13,10 @@
         <div class="isifile">
           @php
           if(is_null($kppdata->scan_anggaran_dasar)){
-          echo "Scan ";
+          echo "File belum diupload";
           }else{
           @endphp
-          <button type="submit" class="btn btn-primary">Scan sudah diupload</button>
+          <p>File sudah diupload <a href="/kpp/anggaran-dasar/{{$kppdata->id}}">Lihat</a></p> 
           @php
           }
           @endphp

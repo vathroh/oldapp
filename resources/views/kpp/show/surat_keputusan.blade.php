@@ -13,10 +13,10 @@
         <div class="isifile">
           @php
           if(is_null($kppdata->scan_surat_keputusan)){
-          echo "File Kosong";
+          echo "File belum diupload";
           }else{
           @endphp
-          <button type="submit" class="btn btn-primary">File sudah diupload</button>
+          <p>File sudah diupload <a href="/kpp/surat-keputusan/{{$kppdata->id}}">Lihat</a></p> 
           @php
           }
           @endphp
@@ -48,9 +48,6 @@
           @method('patch')
           @csrf
 
-          @php
-
-          @endphp
 
 
           <div class="form-group">
@@ -65,9 +62,7 @@
           </div>
           <br>
           <p>Upload Scan Surat Keputusan</p>
-
           <input type="file" class="form-control-file" id="scan_surat_keputusan" name="scan_surat_keputusan">
-
           <button type="submit" class="btn btn-primary mt-5">Simpan</button>
 
         </form>

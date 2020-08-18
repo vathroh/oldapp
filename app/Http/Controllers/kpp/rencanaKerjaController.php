@@ -8,9 +8,16 @@ use Illuminate\Http\Request;
 use App\kppdata;
 use App\allvillage;
 use App\bkmdata;
+use App\alldistrict;
 
 class rencanaKerjaController extends Controller
 {
+	public function show($id){
+        $kabupaten=alldistrict::get();
+        $kppdata = kppdata::where('id', $id)->get();
+        return view('kpp.view.rencana_kerja', compact(['kabupaten', 'kppdata']));
+    }
+    
     public function update(Request $request, $id)
     {
         $kppdata=kppdata::where('id', $id)->get()[0];
@@ -20,13 +27,13 @@ class rencanaKerjaController extends Controller
         ]);
 
 
-        if ($request->hasFile('scan_anggaran_rumah_tangga')) {
+        if ($request->hasFile('scan_rencana_kerja')) {
             $extension = $request->scan_rencana_kerja->getClientOriginalExtension();
             $fileName=$kppdata->kode_desa . ' ' . 'scan_rencana_kerja' . '.' . $extension;
             kppdata::where('id', $id)->update([
                 'scan_rencana_kerja' => $fileName
             ]);
-            Storage::disk('local')->putFileAs('kpp', $request->scan_rencana_kerja, $fileName);
+            Storage::disk('public')->putFileAs('kpp', $request->scan_rencana_kerja, $fileName);
             return redirect ('/kpp/'.$id); 
 
         } else {

@@ -11,15 +11,15 @@
         </div>
 
         <div class="isifile">
-          @php
-          if(is_null($kppdata->scan_struktur_organisasi)){
-          echo "File Kosong";
-          }else{
-          @endphp
-          <button type="submit" class="btn btn-primary">File sudah diupload</button>
-          @php
-          }
-          @endphp
+            @php
+            if(is_null($kppdata->scan_struktur_organisasi)){
+                  echo "File Belum Diupload";
+            }else{
+            @endphp
+				<p>File sudah diupload <a href="/kpp/struktur-organisasi/{{$kppdata->id}}">Lihat</a></p> 
+            @php
+            }
+            @endphp
         </div>
     
         <div class="button">

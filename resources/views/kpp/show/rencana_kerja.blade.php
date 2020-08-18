@@ -13,10 +13,10 @@
         <div class="isifile">
           @php
           if(is_null($kppdata->scan_rencana_kerja)){
-          echo "Scan belum diupload";
+          echo "File belum diupload";
           }else{
           @endphp
-          <button type="submit" class="btn btn-primary">File sudah diupload</button>
+          <p>File sudah diupload <a href="/kpp/rencana-kerja/{{$kppdata->id}}">Lihat</a></p> 
           @php
           }
           @endphp
@@ -64,12 +64,10 @@
           <input type="file" class="form-control-file" id="scan_rencana_kerja" name="scan_rencana_kerja">
 
           <button type="submit" class="btn btn-primary mt-5">Simpan</button>
-
         </form>
 
 
       </div>
-
     </div>
   </div>
 </div>

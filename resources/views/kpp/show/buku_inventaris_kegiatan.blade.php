@@ -16,7 +16,7 @@
           echo "File Kosong";
           }else{
           @endphp
-          <button type="submit" class="btn btn-primary">File sudah diupload</button>
+          <p>File sudah diupload <a href="/kpp/buku-inventaris-kegiatan/{{$kppdata->id}}">Lihat</a></p> 
           @php
           }
           @endphp
@@ -39,7 +39,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Pencatatan/Administrasi Rutin</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Buku/Inventaris Kegiatan</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>

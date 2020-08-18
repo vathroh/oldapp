@@ -14,10 +14,10 @@
         <div class="isifile">
           @php
           if(is_null($kppdata->scan_administrasi_rutin)){
-          echo "Scan belum diupload";
+          echo "File belum diupload";
           }else{
           @endphp
-          <button type="submit" class="btn btn-primary">File sudah diupload</button>
+          <p>File sudah diupload <a href="/kpp/administrasi-rutin/{{$kppdata->id}}">Lihat</a></p> 
           @php
           }
           @endphp

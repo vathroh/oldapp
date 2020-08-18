@@ -11,6 +11,7 @@ use App\kppdata;
 use App\bkmdata;
 use App\pengurus_kpp;
 use App\User;
+use App\kpp_pertemuan;
 
 class kppController extends Controller
 {
@@ -102,8 +103,9 @@ class kppController extends Controller
         $bkmdata=bkmdata::where('kelurahan_id', $kppdata->kode_desa)->get()[0];
         $kabupaten=alldistrict::get();
         $pengurus_kpp=pengurus_kpp::where('kelurahan_id', $kppdata->kode_desa)->get()->first();
+        $kpp_pertemuans=kpp_pertemuan::where('kelurahan_id', $kppdata->kode_desa)->get();
 
-        return view('kpp.show', compact(['kppdata', 'kelurahan', 'bkmdata', 'kabupaten', 'pengurus_kpp']));
+        return view('kpp.show', compact(['kppdata', 'kelurahan', 'bkmdata', 'kabupaten', 'pengurus_kpp', 'kpp_pertemuans']));
     }
 
     /**

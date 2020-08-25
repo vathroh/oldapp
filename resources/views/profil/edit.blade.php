@@ -85,7 +85,7 @@
             </label>
             <select name="district" id="district" class="form-control input-lg dynamic">
 				@foreach($districts as $district)
-				<option value="{{ $district->KD_KAB }}">{{ $district->NAMA_KAB }}</option>
+				<option value="{{ $district->district }}">{{ $district->district }} {{ $district->NAMA_KAB }}</option>
 				@endforeach
             </select>
         </div>

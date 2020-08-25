@@ -74,7 +74,7 @@
 				POSISI / JABATAN
             </label>
             <select name="job_title" id="job_title" class="form-control input-lg dynamic">
-				<option value="{{ $job_desc->job_title}}">{{ $job_desc->job_title}} </option>
+				<option value="{{ $job_desc->job_title_id}}">{{ $job_desc->job_title}} </option>
 				@foreach($job_titles as $job_title)
 				<option value="{{ $job_title->id}}">{{ $job_title->job_title}} </option>
 				@endforeach

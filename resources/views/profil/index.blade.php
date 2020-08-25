@@ -77,7 +77,7 @@
 			<label for="district">
                 KABUPATEN / KOTA
 			</label>
-            <input type="text" id="district" name="district" value="{{ $job_desc->NAMA_KAB }}" readonly>
+            <input type="text" id="district" name="district" value="{{ $job_desc->district }} {{ $job_desc->NAMA_KAB }}" readonly>
         </div>
 	</div>
 </div>

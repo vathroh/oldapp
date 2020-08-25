@@ -1,5 +1,5 @@
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#kegiatan_pemeliharaan_fisik_modal">
-	Edit
+	Input
 </button>
 
 <table class="table table-bordered table-hover">
@@ -7,24 +7,30 @@
     <tr>
       <th scope="col">No</th>
       <th scope="col">Tanggal Mulai</th>
-      <th scope="col">Lama Perbaikan</th>
+      <th scope="col">Tanggal Selesai</th>
       <th scope="col">Sumber Dana</th>
       <th scope="col">Jumlah</th>
       <th scope="col">Foto Sebelum</th>
       <th scope="col">Foto Perbaikan</th>
       <th scope="col">Foto Setelah</th>
+      <th scope="col">Edit</th>
     </tr>
   </thead>
   <tbody>
+	  @foreach($infrastruktures_maintenances as $infrastruktures_maintenance)
     <tr>
-      <th scope="row">1</th>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
+      <th scope="row">{{ $loop->iteration }}</th>
+      <td>{{ $infrastruktures_maintenance->tanggal_mulai }}</td>
+      <td>{{ $infrastruktures_maintenance->tanggal_selesai }}</td>
+      <td>{{ $infrastruktures_maintenance->sumber_dana }}</td>
+      <td>{{ $infrastruktures_maintenance->jumlah }}</td>
+      <td><img src ="{{ asset('storage/kpp/' . $infrastruktures_maintenance->foto_sebelum_perbaikan) }}" style = "height:100px;"></td>
+      <td><img src ="{{ asset('storage/kpp/' . $infrastruktures_maintenance->foto_perbaikan) }}" style = "height:100px;"></td>
+      <td><img src ="{{ asset('storage/kpp/' . $infrastruktures_maintenance->foto_sesudah_perbaikan) }}" style = "height:100px;"></td>
+      <td><a href="/kpp/kegiatan-pemeliharaan-fisik/{{ $infrastruktures_maintenance->id}}/edit" ><button class="btn btn-primary">Edit</button></a></td>
+
     </tr>
+    @endforeach
   </tbody>
 </table>
 
@@ -43,24 +49,39 @@
 			</div>
 			<div class="modal-body">
 
-				<form method="post" action="/kpp/kegiatan-pemeliharaan-fisik/{{$kppdata->id}}" enctype="multipart/form-data">
-					@method('patch')
+				<form method="post" action="/kpp/kegiatan-pemeliharaan-fisik" enctype="multipart/form-data">
 					@csrf
+					<input type="text" id="kelurahan_id" name="kelurahan_id" value="{{$kppdata->kode_desa}}" readonly>
 					<div class="dates">
 						<div class="form-group">
-
-							<label for="sumber_dana">Tanggal</label>
-							<input type="date" class="form-control" id="usr1" name="tanggal_kegiatan_perbaikan" value="{{$kppdata->tanggal_kegiatan_perbaikan}}" >
+							<label for="tanggal_mulai_perbaikan">Tanggal</label>
+							<input type="date" class="form-control" id="tanggal_mulai_perbaikan" name="tanggal_mulai_perbaikan" required>
+						</div>
+						<div class="form-group">
+							<label for="tanggal_selesai_perbaikan">Tanggal</label>
+							<input type="date" class="form-control" id="tanggal_selesai_perbaikan" name="tanggal_selesai_perbaikan">
 						</div>
 					</div>
 					<div class="form-group">
-						<label for="nilai_bop">Sumber Dana</label>
-						<input type="text" class="form-control" id="sumber_dana_perbaikan" name="sumber_dana_perbaikan" value="{{$kppdata->sumber_dana_perbaikan}}" >
+						<label for="sumber_dana_perbaikan">Sumber Dana</label>
+						<input type="text" class="form-control" id="sumber_dana_perbaikan" name="sumber_dana_perbaikan" required>
 					</div>
 					<div class="form-group">
-						<label for="nilai_bop">Jumlah Dana</label>
-						<input type="text" class="nomer" id="nilai_perbaikan" name="nilai_perbaikan" value="{{$kppdata->nilai_perbaikan}}">
+						<label for="jumlah_dana">Jumlah Dana</label>
+						<input type="text" class="nomer" id="jumlah_dana" name="jumlah_dana" required>
+					</div>					
+					<div class="form-group">
+						<label for="foto_sebelum_perbaikan">Foto Sebelum Perbaikan</label>						
 					</div>
+					<input type="file" class="file-input" id="foto_sebelum_perbaikan" name="foto_sebelum_perbaikan" required>
+					<div class="form-group">
+						<label for="foto_perbaikan">Foto Perbaikan</label>						
+					</div>
+					<input type="file" class="file-input" id="foto_perbaikan" name="foto_perbaikan">
+					<div class="form-group">
+						<label for="foto_sesudah_perbaikan">Foto Sesudah Perbaikan</label>						
+					</div>
+					<input type="file" class="file-input" id="foto_sesudah_perbaikan" name="foto_sesudah_perbaikan">					
 					<br>
 					<button type="submit" class="btn btn-primary mt-5">Simpan</button>
 				</form>

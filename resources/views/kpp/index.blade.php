@@ -50,125 +50,111 @@
         </thead>
         <tbody>
           @foreach($kppdatas as $kppdata)
-
-          @php
-          $nama_desa=$kelurahan[0]->where('KD_KEL',$kppdata->kode_desa)->get()[0]['NAMA_DESA'];
-          $nama_kecamatan = $kelurahan[0]->where('KD_KEL',$kppdata->kode_desa)->get()[0]['NAMA_KEC'];
-          $nama_kabupaten = $kelurahan[0]->where('KD_KEL',$kppdata->kode_desa)->get()[0]['NAMA_KAB'];
-		  $bkm_name = $bkmdatas[0]->where('kelurahan_id', $kppdata->kode_desa)->get()[0]['bkm'];
-          $uploader=$user[0]->where('id', $kppdata->user_id)->get()[0]['name'];
-
-          $no=1;  
-          $pengurus_kpp = $pengurus_kpps[0]->where('kelurahan_id', $kppdata->kode_desa)->get()[0];
-          @endphp
-
-          <tr>
-            <th scope="row">{{ (($kppdatas->currentPage()-1) *10 ) + $loop->iteration }}</th>
-            <td>{{ $nama_kabupaten }}</td>
-            <td>{{ $nama_kecamatan }}</td>
-            <td><a href="/kpp/{{ $kppdata->id }}">{{ $nama_desa }} </a></td>
-            <td>{{ $bkm_name }}</td>
-            <td>{{ $kppdata->lokasi_bdi_bpm }}</td>
-            <td></td>
-            <td>{{ $kppdata->nama_kpp }}</td>
-            <td>{{ $pengurus_kpp->ketua_kpp }}</td>
-            <td>{{ $pengurus_kpp->ketua_kpp_hp }}</td>
-            <td>{{ $kppdata->anggota_pria }} Orang</td>
-            <td>{{ $kppdata->anggota_wanita }} Orang</td>
-            <td>{{ $kppdata->anggota_miskin }} Orang</td>
-            <td>{{ $kppdata->struktur_organisasi }} 
-				@php
-				if(is_null($kppdata->scan_struktur_organisasi)){
-				}else{
-				@endphp
-				<a href="/kpp/struktur-organisasi/{{$kppdata->id}}">Lihat</a></td>
-				@php
-				}
-				@endphp
-            <td>{{ $kppdata->anggaran_dasar }}
-				@php
-				if(is_null($kppdata->scan_anggaran_dasar)){
-				}else{
-				@endphp
-				<a href="/kpp/anggaran-dasar/{{$kppdata->id}}">Lihat</a></td>
-				@php
-				}
-				@endphp
-            </td>
-            <td>{{ $kppdata->anggaran_rumah_tangga }}
-				@php
-				if(is_null($kppdata->scan_anggaran_rumah_tangga)){
-				}else{
-				@endphp
-				<a href="/kpp/anggaran-rumah-tangga/{{$kppdata->id}}">Lihat</a></td>
-				@php
-				}
-				@endphp
-            </td>
-            <td>{{ $kppdata->surat_keputusan }}
-            	@php
-				if(is_null($kppdata->scan_surat_keputusan)){
-				}else{
-				@endphp
-				<a href="/kpp/surat-keputusan/{{$kppdata->id}}">Lihat</a></td>
-				@php
-				}
-				@endphp
-            </td>
-            <td>{{ $kppdata->rencana_kerja }}
-				@php
-				if(is_null($kppdata->scan_rencana_kerja)){
-				}else{
-				@endphp
-				<a href="/kpp/rencana-kerja/{{$kppdata->id}}">Lihat</a></td>
-				@php
-				}
-				@endphp
-            </td>
-            <td>{{ $kppdata->pertemuan_rutin }}</td>
-            <td>{{ $kppdata->administrasi_rutin }}
-            	@php
-				if(is_null($kppdata->scan_administrasi_rutin)){
-				}else{
-				@endphp
-				<a href="/kpp/administrasi-rutin/{{$kppdata->id}}">Lihat</a></td>
-				@php
-				}
-				@endphp
-            </td>
-            <td>{{ $kppdata->buku_inventaris_kegiatan }}
-                @php
-				if(is_null($kppdata->scan_buku_inventaris_kegiatan)){
-				}else{
-				@endphp
-				<a href="/kpp/buku-inventaris-kegiatan/{{$kppdata->id}}">Lihat</a></td>
-				@php
-				}
-				@endphp
-            </td>
-            <td>{{ $kppdata->sumber_dana_operasional }}</td>
-            <td class="nomer2">{{ $kppdata->nilai_bop }}</td>
-            <td>{{ $kppdata->kegiatan_pengecekan }}</td>
-            <td>{{ $kppdata->tanggal_kegiatan_perbaikan }}</td>
-            <td>{{ $kppdata->sumber_dana_perbaikan }}</td>
-            <td>{{ $kppdata->nilai_perbaikan }}</td>
-            <td>{{ $kppdata->keterangan_lain_lain }}</td>
-            <td>{{ $uploader }}</td>
-            </tr>
-            @php
-            $no++;
-            @endphp
-            @endforeach
-          </tbody>
-        </table>
-      </div>
-      <div class="row text-center">
-        <div class="col justify-content-center">
-          <span>{{ $kppdatas->links() }}</span>
-        </div>
+            <tr>
+                <th scope="row">{{ (($kppdatas->currentPage()-1) *10 ) + $loop->iteration }}</th>
+                <th>{{ $kppdata->NAMA_KAB }}</th>
+                <th>{{ $kppdata->NAMA_KEC }}</th>
+                <th><a href = "/kpp/{{ $kppdata->id }}">{{ $kppdata->NAMA_DESA }}</a></th>
+                <th>{{ $kppdata->bkm }}</th>
+                <th>{{ $kppdata->lokasi_bdi_bpm }}</th>
+                <th></th>
+                <th>{{ $kppdata->nama_kpp }}</th>
+                <th>{{ $kppdata->ketua_kpp }}</th>
+                <th>{{ $kppdata->ketua_kpp_hp }}</th>
+                <th>{{ $kppdata->anggota_pria }}</th>
+                <th>{{ $kppdata->anggota_wanita }}</th>
+                <th>{{ $kppdata->anggota_miskin }}</th>
+                <th>{{ $kppdata->struktur_organisasi }}
+                       @php
+                       if(is_null($kppdata->scan_struktur_organisasi)){
+                       }else{
+                       @endphp
+                       <a href="/kpp/struktur-organisasi/{{ $kppdata->id }}">Lihat</a></td>
+                       @php                
+                       }
+                       @endphp
+                </th>
+                <th>{{ $kppdata->anggaran_dasar }}
+                       @php
+                       if(is_null($kppdata->scan_anggaran_dasar)){
+                       }else{
+                       @endphp
+                       <a href="/kpp/anggaran-dasar/{{ $kppdata->id }}">Lihat</a></td>
+                       @php                
+                       }
+                       @endphp
+                </th>
+                <th>{{ $kppdata->anggaran_rumah_tangga }}
+                       @php
+                       if(is_null($kppdata->scan_anggaran_rumah_tangga)){
+                       }else{
+                       @endphp
+                       <a href="/kpp/anggaran-rumah-tangga/{{ $kppdata->id }}">Lihat</a></td>
+                       @php                
+                       }
+                       @endphp
+                </th>
+                <th>{{ $kppdata->surat_keputusan }}
+                       @php
+                       if(is_null($kppdata->scan_surat_keputusan)){
+                       }else{
+                       @endphp
+                       <a href="/kpp/surat-keputusan/{{ $kppdata->id }}">Lihat</a></td>
+                       @php                
+                       }
+                       @endphp
+                </th>
+                <th>{{ $kppdata->rencana_kerja }}
+                       @php
+                       if(is_null($kppdata->scan_rencana_kerja)){
+                       }else{
+                       @endphp
+                       <a href="/kpp/rencana-kerja/{{ $kppdata->id }}">Lihat</a></td>
+                       @php                
+                       }
+                       @endphp
+                </th>
+                <th>{{ $kppdata->pertemuan_rutin }}</th>
+                <th>{{ $kppdata->administrasi_rutin }}
+                       @php
+                       if(is_null($kppdata->scan_administrasi_rutin)){
+                       }else{
+                       @endphp
+                       <a href="/kpp/administrasi-rutin/{{ $kppdata->id }}">Lihat</a></td>
+                       @php                
+                       }
+                       @endphp
+                </th>
+                <th>{{ $kppdata->buku_inventaris_kegiatan }}
+                       @php
+                       if(is_null($kppdata->scan_buku_inventaris_kegiatan)){
+                       }else{
+                       @endphp
+                       <a href="/kpp/buku-inventaris-kegiatan/{{ $kppdata->id }}">Lihat</a></td>
+                       @php                
+                       }
+                       @endphp
+                </th>
+                <th></th>
+                <th></th>
+                <th>{{ $kppdata->kegiatan_pengecekan }}</th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th>{{ $kppdata->keterangan_lain_lain }}</th>
+                <th>{{ $kppdata->name }}
+            </tr> 
+          @endforeach
+        </tbody>
+      </table>
+    </div>
+    <div class="row text-center">
+      <div class="col justify-content-center">
+        <span>{{ $kppdatas->links() }}</span>
       </div>
     </div>
   </div>
+</div>
 
 
   <script src="{{ asset('js/cleave.js') }}"></script>

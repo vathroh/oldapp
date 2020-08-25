@@ -11,6 +11,11 @@ use App\bkmdata;
 
 class pertemuanRutinController extends Controller
 {
+	public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     public function update(Request $request, $id)
     {
         $ldate = date('Y-m-d H:i:s');

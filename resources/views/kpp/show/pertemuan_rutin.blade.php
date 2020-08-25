@@ -17,6 +17,12 @@
     </div>
 </div>
 
+@if (session('status'))
+    <div class="alert alert-success">
+        {{ session('status') }}
+    </div>
+@endif
+
 <table class="table table-bordered table-hover">
   <thead>
     <tr>
@@ -103,7 +109,7 @@
 				<input type="text" id="kelurahan_id" name="kelurahan_id" value="{{$kppdata->kode_desa}}" readonly>
 				<div class="form-group">
 					<label>Tanggal</label>
-					<input type="date" class="form-control" id="tanggal_pertemuan_rutin" name="tanggal_pertemuan_rutin" placeholder="Tanggal" >
+					<input type="date" class="form-control" id="tanggal_pertemuan_rutin" name="tanggal_pertemuan_rutin" required>
 				</div>
 				<div class="form-group">
 					<label>Pokok Bahasan</label>
@@ -114,7 +120,7 @@
 					<textarea class="form-control" id="keterangan" name="keterangan" rows="3"></textarea>
 				</div>
 				<p class="mt-3">Upload Foto Terbaik Pertemuan Rutin</p>
-				<input type="file" class="form-control-file" id="foto_pertemuan_rutin" name="foto_pertemuan_rutin">
+				<input type="file" class="form-control-file" id="foto_pertemuan_rutin" name="foto_pertemuan_rutin" required>
 			</div>
 
 			<button type="submit" class="btn btn-primary mt-5">Simpan</button>

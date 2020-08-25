@@ -37,40 +37,7 @@
         Kotaku - Jawa Tengah-1
       </a></div>
       <div class="sidebar-wrapper">
-        <ul class="nav">
-          @can('manage-users')
-          <li class="nav-item active  ">
-            <a class="nav-link" href="{{ route('admin.users.index') }}">
-              <i class="material-icons">dashboard</i>
-              <p>Profil</p>
-            </a>
-          </li>
-          @endcan
-          <li class="nav-item active  ">
-            <a class="nav-link" href="/profil">
-              <i class="material-icons">dashboard</i>
-              <p>Profil User</p>
-            </a>
-          </li>
-          <li class="nav-item active  ">
-            <a class="nav-link" href="/kpp">
-              <i class="material-icons">dashboard</i>
-              <p>Data KPP</p>
-            </a>
-          </li>
-          <li class="nav-item ">
-            <a class="nav-link" data-toggle="modal" data-target="#exampleModal">
-              <i class="material-icons">content</i>
-              <p>Tambah Data</p>
-            </a>
-          </li>
-          <li class="nav-item ">
-            <a class="nav-link" data-toggle="modal" data-target="#exampleModal">
-              <i class="material-icons">content</i>
-              <p>Edit Data</p>
-            </a>
-          </li>
-        </ul>
+        @yield('sidebar')
       </div>
     </div>
 
@@ -140,7 +107,6 @@
                                                      document.getElementById('logout-form').submit();">
                                     {{ __('Logout') }}
                                 </a>
-                                
 
                                 @can('manage-users')
                                 <a class="dropdown-item" href="{{ route('admin.users.index') }}">
@@ -215,64 +181,6 @@
               </div>
 
 
-              <!-- Modal -->
-  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel"></h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-
-
-          <form method="get" action="/kpp/create" enctype="multipart/form-data">
-
-            @csrf
-
-            <div class="data-group data-lokasi">
-              <div class="form-group">
-                <label for="kabupaten">
-                  Kabupaten
-                </label>
-                <select name="kabupaten" id="kabupaten" class="form-control input-lg dynamic" required>
-                  <option value="">Kabupaten</option>
-                  @foreach($kabupaten as $kab)
-                  <option value="{{$kab->kode_kab}}">{{$kab->nama_kab}}</option>
-                  @endforeach
-                </select>
-              </div>
-              <div class="form-group">
-                <label for="kecamatan">Kecamatan</label>
-                <select name="kecamatan" id="kecamatan" class="form-control input-lg dynamic" required>
-                  <option value="">Kecamatan</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label for="kelurahan">
-                  Kelurahan
-                </label>
-                <select name="kelurahan" id="kelurahan" class="form-control input-lg dynamic" required>
-                  <option value="">Kelurahan</option>
-                </select>
-              </div>                
-            </div>
-
-
-            <div class="text-center">
-
-              <button type="button" class="btn btn-primary mt-5" data-dismiss="modal" aria-label="Close">Batal</button>
-              <button type="submit" class="btn btn-primary mt-5">Submit</button>
-            </div>
-          </form>
-
-
-        </div>
-      </div>
-    </div>
-  </div>
 
               @yield('script')
 

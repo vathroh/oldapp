@@ -19,6 +19,9 @@ Route::get('/', function () {
 Auth::routes();
 // Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/home', 'kppController@index')->name('home');
+Route::resource('/profil', 'profilController');
+
+
 
 //User Management Control
 Route::namespace('Admin')->prefix('admin')->name('admin.')->middleware('can:manage-users')->group(function () {
@@ -113,3 +116,8 @@ Route::resource('/kpp/kegiatan-pemeliharaan-fisik', 'kpp\kegiatanPemeliharaanFis
 Route::resource('/kpp/keterangan-lain-lain', 'kpp\keteranganLainController');
 Route::resource('/kpp/pengurus', 'kpp\penguruskppController');
 Route::resource('kpp/data-pertemuan', 'kpp\DataPertemuanController');
+Route::resource('/kpp/data-bop', 'kpp\kppOperatingFundController');
+Route::resource('/kpp/data-pengecekan-fisik', 'kpp\dataPengecekanFisikController');
+
+
+

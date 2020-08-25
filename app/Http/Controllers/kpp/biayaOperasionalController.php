@@ -14,9 +14,7 @@ class biayaOperasionalController extends Controller
 		$nilai_bop1 = str_replace('.', '', $nilai_bop);
 
 		kppdata::where('id', $id)->update([
-			'bop'=>$request->biaya_operasional,
-			'sumber_dana_operasional'=>$request->sumber_dana,
-			'nilai_bop' => $nilai_bop1
+			'bop'=>$request->biaya_operasional
 		]);
 
 		return redirect ('/kpp/'.$id); 

@@ -23,7 +23,7 @@ $nama_bkm=$bkmdatas[0]->where('kelurahan_id', $request->kelurahan)->get()[0]['bk
 
             <div class="form-group">
                 <label for="lokasi_bdi">
-                    lokasi BDI/BPM
+                    TAHUN BDI/BPM
                 </label>
                 <input type="text" class="form-control" id="lokasi_bdi" name="lokasi_bdi">
             </div>

@@ -25,10 +25,9 @@ class profilController extends Controller
     {
 
 		$job_desc = job_desc::join('job_titles', 'job_descs.job_title_id', '=', 'job_titles.id')
-			->Join('work_zones', 'job_descs.work_zone_id', '=', 'work_zones.id')
+			->join('work_zones', 'job_descs.work_zone_id', '=', 'work_zones.id')
 			->leftJoin('allvillages', 'work_zones.district', '=', 'allvillages.KD_KAB')
             ->where('job_descs.user_id', Auth::user()->id)->get()[0];
-
 
 		return view('profil.index', compact(['job_desc']));
 	}
@@ -62,7 +61,7 @@ class profilController extends Controller
 	{
 		$job_desc = job_desc::join('job_titles', 'job_descs.job_title_id', '=', 'job_titles.id')
 			->join('work_zones', 'job_descs.work_zone_id', '=', 'work_zones.id')
-			->join('allvillages', 'work_zones.district', '=', 'allvillages.KD_KAB')
+			->leftJoin('allvillages', 'work_zones.district', '=', 'allvillages.KD_KAB')
 			->where('job_descs.user_id', Auth::user()->id)->get()[0];
 		
 	    $districts = work_zone::select('work_zones.district', 'NAMA_KAB')
@@ -71,13 +70,15 @@ class profilController extends Controller
         
         $job_titles = job_title::get();
 
+
 		return view('profil.edit', compact(['job_desc', 'districts', 'job_titles']));
 	}
 	
 	public function update(Request $request, $id)
-	{
-		$level = DB::table('job_titles')->where('id', '=', $request->job_title)->get()->pluck('level');
-		$work_zone_id = work_zone::where('level', $level)->where('district', $request->district)->get()->pluck('id')[0];
+    {
+        $level = DB::table('job_titles')->where('id', '=', $request->job_title)->get()->pluck('level');
+        $work_zone_id = work_zone::where('level', $level)->where('district', $request->district)->get()->pluck('id')[0];
+
 		
 		User::where('id', Auth::user()->id)->update([
 			'name' => $request->username,

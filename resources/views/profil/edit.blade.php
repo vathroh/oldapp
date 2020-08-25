@@ -74,6 +74,7 @@
 				POSISI / JABATAN
             </label>
             <select name="job_title" id="job_title" class="form-control input-lg dynamic">
+				<option value="{{ $job_desc->job_title}}">{{ $job_desc->job_title}} </option>
 				@foreach($job_titles as $job_title)
 				<option value="{{ $job_title->id}}">{{ $job_title->job_title}} </option>
 				@endforeach
@@ -84,6 +85,7 @@
 				KABUPATEN / KOTA
             </label>
             <select name="district" id="district" class="form-control input-lg dynamic">
+				<option value="{{ $job_desc->district }}">{{ $job_desc->district }} {{ $job_desc->NAMA_KAB }}</option>
 				@foreach($districts as $district)
 				<option value="{{ $district->district }}">{{ $district->district }} {{ $district->NAMA_KAB }}</option>
 				@endforeach

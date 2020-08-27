@@ -35,6 +35,7 @@
       <th scope="col">Pokok Bahasan</th>
       <th scope="col">Keterangan</th>
       <th scope="col">Foto</th>
+      <th scope="col">Edit</th>
     </tr>
   </thead>
   <tbody>
@@ -45,6 +46,7 @@
       <td>{{$pertemuan->pokok_bahasan}}</td>
       <td>{{$pertemuan->keterangan}}</td>
       <td><img src = "{{ asset('storage/kpp/'. $pertemuan->foto )}}" style = "height:100px;"></td>
+      <td><a href = "/kpp/data-pertemuan/{{ $pertemuan->id }}/edit"<button class = "btn btn-primary">Edit</button></a></td>
     </tr>
     @endforeach
   </tbody>
@@ -106,7 +108,7 @@
 			@csrf          
           
 			<div class="document-group" style=" margin-top: 5	0px;" >
-				<input type="text" id="kelurahan_id" name="kelurahan_id" value="{{$kppdata->kode_desa}}" readonly>
+				<input type="text" id="kelurahan_id" name="kelurahan_id" value="{{$kppdata->kode_desa}}" style = "color:transparent; border:none" readonly>
 				<div class="form-group">
 					<label>Tanggal</label>
 					<input type="date" class="form-control" id="tanggal_pertemuan_rutin" name="tanggal_pertemuan_rutin" required>

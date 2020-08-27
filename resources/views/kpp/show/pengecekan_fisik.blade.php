@@ -24,7 +24,8 @@
           </button></th>
       <th scope="col">Tanggal</th>
       <th scope="col">Keterangan</th>
-      <th scope="col">Foto</thT
+      <th scope="col">Foto</th>
+      <th scope="col">Edit</th>
   <tbody>
 	@foreach($data_pengecekan_fisiks as $data_pengecekan_fisik)
     <tr>
@@ -32,6 +33,7 @@
       <td>{{ $data_pengecekan_fisik->tanggal }}</td>
       <td>{{ $data_pengecekan_fisik->keterangan }}</td>
       <td><img src ="{{ asset('storage/kpp/' . $data_pengecekan_fisik->foto_pengecekan_fisik) }}" style = "height:100px;"></td>
+      <th><a href = "/kpp/data-pengecekan-fisik/{{ $data_pengecekan_fisik->id }}/edit"><button class = "btn btn-primary">Edit</button></a></th>
     </tr>
     @endforeach
   </tbody>
@@ -86,7 +88,7 @@
 
         <form method="post" action="/kpp/data-pengecekan-fisik" enctype="multipart/form-data">
           @csrf
-          <input type="text" id="kelurahan_id" name="kelurahan_id" value="{{$kppdata->kode_desa}}" readonly>
+          <input type="text" id="kelurahan_id" name="kelurahan_id" value="{{$kppdata->kode_desa}}" style = "border:none; color:transparent" readonly>
           <div class="form-group">
             <label>
               Tanggal

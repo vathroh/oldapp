@@ -21,13 +21,14 @@ class kppOperatingFundController extends Controller
 		$nilai_bop = str_replace('Rp. ', '', $request->nilai_bop);
 		$nilai_bop1 = str_replace('.', '', $nilai_bop);
 		
+		/*
 		$request->validate([
 			'kelurahan_id' => 'required',
 			'tanggal' => 'required',
 			'sumber_dana' => 'required',
 			'jumlah' => 'required',
 		]);
-			
+		*/
 				
 		kpp_operating_fund::create([
 			'kelurahan_id' => $request->kelurahan_id,
@@ -39,4 +40,19 @@ class kppOperatingFundController extends Controller
 		
 		return redirect('/kpp/' . $id);		
 	}
+	
+	public function update(Request $request, $id)
+     {
+         kpp_operating_fund::find($id)->update([
+            'tanggal'       => $request->tanggal, 
+            'sumber_dana'   => $request->sumber_dana,
+            'jumlah'        => $request->jumlah_dana,
+            'edited_by'     => Auth::user()->id  
+         ]);
+         
+         $kpp_id = kppdata::where('kode_desa', kpp_operating_fund::where('id', $id)->pluck('kelurahan_id')[0])->pluck('id')[0];
+         
+         return redirect('/kpp/' . $kpp_id);
+     } 
+
 }

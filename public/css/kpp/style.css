@@ -131,3 +131,29 @@ h3{
 .document_item input{
 	flex:3;
 }
+
+.image-wrapper{
+    position: relative;
+    display: flex;
+    margin-top: 10px;
+    padding: 10px;
+}
+
+.form-image{
+    width: 30%;
+    padding: 5px;
+    border: 1px solid black;
+    border-radius: 5px;
+    height: 300px;
+    margin: auto;
+}
+
+.form-image img{
+    max-width: 100%;
+    max-height:170px;
+    border-radius: 10px;
+}
+
+.form-image p{
+    padding-top: 5px;
+}

@@ -51,7 +51,7 @@
 
 				<form method="post" action="/kpp/kegiatan-pemeliharaan-fisik" enctype="multipart/form-data">
 					@csrf
-					<input type="text" id="kelurahan_id" name="kelurahan_id" value="{{$kppdata->kode_desa}}" readonly>
+					<input type="text" id="kelurahan_id" name="kelurahan_id" value="{{$kppdata->kode_desa}}" style = "border:none; color:transparent" readonly>
 					<div class="dates">
 						<div class="form-group">
 							<label for="tanggal_mulai_perbaikan">Tanggal</label>

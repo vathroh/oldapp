@@ -17,6 +17,7 @@
       <th scope="col">Sumber Dana</th>
       <th scope="col">Jumlah</th>
       <th scope="col">Diinput oleh</th>
+      <th scope="col">Edit</th>
     </tr>
   </thead>
   <tbody>
@@ -25,8 +26,9 @@
       <th scope="row">{{ $loop->iteration }}</th>
       <td>{{ $kpp_operating_fund->tanggal }}</td>
       <td>{{ $kpp_operating_fund->sumber_dana }}</td>
-      <td style="text-align:right"></td>
+      <td style="text-align:right">{{$kpp_operating_fund->jumlah}}</td>
       <td>{{ $user[0]->where('id', $kpp_operating_fund->inputby_id)->get()[0]['name'] }}</td>
+      <td><a href = "/kpp/biaya-operasional/{{$kpp_operating_fund->id}}/edit"><button class = "btn btn-primary">Edit</button></a></td>
     </tr>
     @endforeach
     <tr>
@@ -90,7 +92,7 @@
                 <form method="post" action="/kpp/data-bop" enctype="multipart/form-data">
                     @csrf
                     
-                    <input type="text" id="kelurahan_id" name="kelurahan_id" value="{{$kppdata->kode_desa}}" readonly>
+                    <input type="text" id="kelurahan_id" name="kelurahan_id" value="{{$kppdata->kode_desa}}" style = "border:none; color:transparent" readonly>
 					<div class="form-group">
 						<label for="sumber_dana">Tanggal Penerimaan Dana</label>
 						<input type="date" class="form-control" id="tanggal" name="tanggal" required>

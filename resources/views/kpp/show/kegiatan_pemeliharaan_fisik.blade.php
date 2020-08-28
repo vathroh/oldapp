@@ -42,7 +42,7 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">Biaya Perbaikan Infrastruktur</h5>
+				<h5 class="modal-title" id="exampleModalLabel">Kegiatan Perbaikan Infrastruktur</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
@@ -54,11 +54,11 @@
 					<input type="text" id="kelurahan_id" name="kelurahan_id" value="{{$kppdata->kode_desa}}" style = "border:none; color:transparent" readonly>
 					<div class="dates">
 						<div class="form-group">
-							<label for="tanggal_mulai_perbaikan">Tanggal</label>
+							<label for="tanggal_mulai_perbaikan">Tanggal Mulai</label>
 							<input type="date" class="form-control" id="tanggal_mulai_perbaikan" name="tanggal_mulai_perbaikan" required>
 						</div>
 						<div class="form-group">
-							<label for="tanggal_selesai_perbaikan">Tanggal</label>
+							<label for="tanggal_selesai_perbaikan">Tanggal Selesai</label>
 							<input type="date" class="form-control" id="tanggal_selesai_perbaikan" name="tanggal_selesai_perbaikan">
 						</div>
 					</div>

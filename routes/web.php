@@ -118,6 +118,7 @@ Route::resource('/kpp/pengurus', 'kpp\penguruskppController');
 Route::resource('kpp/data-pertemuan', 'kpp\DataPertemuanController');
 Route::resource('/kpp/data-bop', 'kpp\kppOperatingFundController');
 Route::resource('/kpp/data-pengecekan-fisik', 'kpp\dataPengecekanFisikController');
+Route::get('/kpp-download-excel', 'kppController@export');
 
 
 

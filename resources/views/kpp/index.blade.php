@@ -17,8 +17,8 @@
             <th rowspan="2">KELURAHAN/DESA</th>
             <th rowspan="2">NAMA BKM</th>
             <th rowspan="2">LOKASI BDI/BPM</th>
-            <th rowspan="2">KODE KPP</th>
             <th rowspan="2">NAMA KPP</th>
+            <th rowspan="2">STATUS KPP</th>
             <th rowspan="2">KETUA KPP</th>
             <th rowspan="2">KONTAK KETUA KPP</th>
             <th colspan="3">JUMLAH ANGGOTA</th>
@@ -57,8 +57,8 @@
                 <th><a href = "/kpp/{{ $kppdata->id }}">{{ $kppdata->NAMA_DESA }}</a></th>
                 <th>{{ $kppdata->bkm }}</th>
                 <th>{{ $kppdata->lokasi_bdi_bpm }}</th>
-                <th></th>
                 <th>{{ $kppdata->nama_kpp }}</th>
+                <th>{{ $kppdata->Status }}</th>
                 <th>{{ $kppdata->ketua_kpp }}</th>
                 <th>{{ $kppdata->ketua_kpp_hp }}</th>
                 <th>{{ $kppdata->anggota_pria }}</th>
@@ -151,6 +151,7 @@
     <div class="row text-center">
       <div class="col justify-content-center">
         <span>{{ $kppdatas->links() }}</span>
+        <a href = "/kpp-download-excel"><button class = "btn btn-primary">Download Data KPP</button></a>
       </div>
     </div>
   </div>

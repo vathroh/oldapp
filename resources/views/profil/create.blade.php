@@ -10,7 +10,7 @@
     <li class="nav-item active  ">
         <a class="nav-link" href="{{ route('admin.users.index') }}">
 		<i class="material-icons">dashboard</i>
-		<p>Profil</p>
+		<p>MANAJEMEN USER</p>
         </a>
     </li>
     @endcan

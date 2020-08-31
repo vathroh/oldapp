@@ -25,8 +25,9 @@ Route::resource('/profil', 'profilController');
 
 //User Management Control
 Route::namespace('Admin')->prefix('admin')->name('admin.')->middleware('can:manage-users')->group(function () {
-    Route::resource('/users', 'UsersController', ['except' => ['show', 'create', 'store']]);
+    Route::resource('/users', 'UsersController', ['except' => ['create', 'store']]);
 });
+
 
 Route::get('/blog/dashboard', 'Blog\UserController@index');
 
@@ -119,6 +120,7 @@ Route::resource('kpp/data-pertemuan', 'kpp\DataPertemuanController');
 Route::resource('/kpp/data-bop', 'kpp\kppOperatingFundController');
 Route::resource('/kpp/data-pengecekan-fisik', 'kpp\dataPengecekanFisikController');
 Route::get('/kpp-download-excel', 'kppController@export');
-
-
+Route::get('/rekap-data-kpp', 'kppController@rekap_all');
+Route::get('/kpp-rekap-data-kecamatan/{KD_KEC}', 'kppController@rekap_kecamatan');
+Route::get('/kpp-rekap-data-kelurahan/{KD_KEL}', 'kppController@rekap_kelurahan');
 

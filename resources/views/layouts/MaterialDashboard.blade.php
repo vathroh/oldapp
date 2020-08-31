@@ -38,24 +38,24 @@
       </a></div>
       <div class="sidebar-wrapper">
         <ul class="nav">
-          @can('manage-users')
-          <li class="nav-item active  ">
-            <a class="nav-link" href="{{ route('admin.users.index') }}">
-              <i class="material-icons">dashboard</i>
-              <p>Profil</p>
-            </a>
-          </li>
-          @endcan
+				@can('manage-users')
+		<li class="nav-item active  ">
+			<a class="nav-link" href="{{ route('admin.users.index') }}">
+			<i class="material-icons">dashboard</i>
+			<p>MANAJEMEN USER</p>
+			</a>
+		</li>
+		@endcan
           <li class="nav-item active  ">
             <a class="nav-link" href="/profil">
               <i class="material-icons">dashboard</i>
-              <p>Profil User</p>
+              <p>PROFIL</p>
             </a>
           </li>
           <li class="nav-item active  ">
             <a class="nav-link" href="/kpp">
               <i class="material-icons">dashboard</i>
-              <p>Data KPP</p>
+              <p>KPP</p>
             </a>
           </li>
           <li class="nav-item ">
@@ -68,6 +68,12 @@
             <a class="nav-link" data-toggle="modal" data-target="#exampleModal">
               <i class="material-icons">content</i>
               <p>Edit Data</p>
+            </a>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link" href = "/rekap-data-kpp">
+              <i class="material-icons">content</i>
+              <p>Rekap</p>
             </a>
           </li>
         </ul>

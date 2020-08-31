@@ -37,7 +37,7 @@
         Kotaku - Jawa Tengah-1
       </a></div>
       <div class="sidebar-wrapper">
-        @yield('sidebar')
+        @include('layouts.sidebar.MaterialDashboard')
       </div>
     </div>
 

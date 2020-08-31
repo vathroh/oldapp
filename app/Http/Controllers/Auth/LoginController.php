@@ -41,10 +41,10 @@ class LoginController extends Controller
 
     public function redirectTo()
     {
-       /* if (Auth::user()->hasRole('admin')) {
-            $this->redirectTo = route('admin.users.index');
+        if (Auth::user()->hasRole('fasilitator')) {
+            $this->redirectTo = route('kpp.index');
             return $this->redirectTo;
-        }*/
+        }
         $this->redirectTo = route('home');
         return $this->redirectTo;
     }

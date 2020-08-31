@@ -20,7 +20,7 @@ use App\kpp_pertemuan;
 use App\kpp_operating_fund;
 use App\data_pengecekan_fisik;
 use App\kpp_data_model;
-
+use Gate;
 
 class kppController extends Controller
 {
@@ -107,6 +107,11 @@ class kppController extends Controller
 
     public function show($id)
     {
+		if (Gate::denies('input-data')) {
+            return redirect(route('kpp.index'));
+        }
+
+        
 		$kabupaten=alldistrict::whereIn('kode_kab', explode(', ', str_replace(array('["',  '"]'),'', DB::table('work_zones')
             ->where('id', function($query){
                 $query->select('work_zone_id')

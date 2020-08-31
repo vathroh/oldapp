@@ -28,8 +28,11 @@
                                 <td>{{ $user->email }}</td>
                                 <td>{{ implode(', ', $user->roles()->get()->pluck('name')->toArray()) }}</td>
                                 <td>
-                                    @can('edit-users')
-                                    <a href="{{ route('admin.users.edit', $user->id) }}"><button type="button" class="btn btn-primary float-left">Kelola</button></a>
+									@can('delete-users')
+                                    <a href="{{'/pass-by-admin/' . $user->id . '/edit'}}"><button type="button" class="btn btn-primary float-left">Pass</button></a>
+                                    @endcan
+                                    @can('delete-users')
+                                    <a href="{{ route('admin.users.edit', $user->id) }}"><button type="button" class="btn btn-primary float-left">Edit</button></a>
                                     @endcan
                                     @can('delete-users')
                                     <form action="{{ route('admin.users.destroy', $user) }}" method="post" class="float-left">

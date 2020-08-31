@@ -184,6 +184,7 @@ class kppController extends Controller
 	
 	public function rekap_all()
 	{
+		
 		$kppdatas = $this->rekap()->groupBy('KD_KAB')->get();
 		
 		$kabupaten=alldistrict::whereIn('kode_kab', explode(', ', str_replace(array('["',  '"]'),'', DB::table('work_zones')

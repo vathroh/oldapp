@@ -1,9 +1,7 @@
-@extends('layouts.app')
+@extends('layouts.MaterialDashboard')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
+
 
             <div class="card">
                 <div class="card-header">Edit User {{ $user->name }}</div>
@@ -48,17 +46,54 @@
                                 </div>
                                 @endforeach
                             </div>
+                        </div>                        
+                        
+                        <div class="form-group row">
+							<div class="col-md-2 text-md-right">
+								<label for="job_title">
+									Posisi / Jabatan
+								</label>
+							</div>
+							<div class="col-md-8">
+								<select name="job_title" id="job_title" class="form-control input-lg dynamic">
+									<option value="{{ $user->job_title_id}}">{{ $user->job_title }} </option>
+									@foreach($job_titles as $job_title)
+									<option value="{{ $job_title->id}}">{{ $job_title->job_title}} </option>
+									@endforeach
+								</select>
+							</div>
+						</div>
+                        
+						<div class="form-group row">
+							<div class="col-md-2 text-md-right">
+								<label for="district">
+									Kabupaten / Kota
+								</label>
+							</div>
+							<div class="col-md-8">
+								<select name="district" id="district" class="form-control input-lg dynamic">
+									<option value="{{ $user->district }}">{{ $user->district }} {{ $user->nama_kab }}</option>
+									@foreach($kabupaten as $kab)
+									<option value="{{ $kab->district }}">{{ $kab->district }} {{ $kab->NAMA_KAB }}</option>
+									@endforeach
+								</select>
+							</div>
+						</div>
+                        
+                        <div class="form-group row">
+                            <label for="password" class="col-md-2 text-md-right">GANTI PASSWORD</label>
+                            <div class="col-md-8">
+                                <input id="change_password" type="text" class="form-control" name="change_password">
+                            </div>
                         </div>
-
-                        <button type="submit" class="btn btn-primary">
-                            Update
-                        </button>
-
+                        
+                        <div class="text-center">
+							<button type="submit" class="btn btn-primary">
+								Update
+							</button>
+                        </div>
                     </form>
                 </div>
-            </div>
-        </div>
-    </div>
 
 
     @endsection

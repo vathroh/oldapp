@@ -1,9 +1,7 @@
-@extends('layouts.app')
+@extends('layouts.MaterialDashboard')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
+
             <div class="card">
                 <div class="card-header">Users</div>
 
@@ -12,7 +10,9 @@
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">Name</th>
+                                <th scope="col">Nama</th>
+                                <th scope="col">Posisi/Jabatan</th>
+                                <th scope="col">Kabupaten/Kota</th>
                                 <th scope="col">Email</th>
                                 <th scope="col">Roles</th>
                                 <th scope="col">Actions</th>
@@ -22,12 +22,14 @@
                             @foreach($users as $user)
                             <tr>
                                 <th scope="row">{{$user->id}}</th>
-                                <td>{{$user->name}}</td>
-                                <td>{{$user->email}}</td>
+                                <td>{{ $user->name }}</td>
+                                <td>{{ $user->job_title }}</td>
+                                <td>{{ $user->district }} {{ $user->nama_kab }}</td>
+                                <td>{{ $user->email }}</td>
                                 <td>{{ implode(', ', $user->roles()->get()->pluck('name')->toArray()) }}</td>
                                 <td>
                                     @can('edit-users')
-                                    <a href="{{ route('admin.users.edit', $user->id) }}"><button type="button" class="btn btn-primary float-left">Edit</button></a>
+                                    <a href="{{ route('admin.users.edit', $user->id) }}"><button type="button" class="btn btn-primary float-left">Kelola</button></a>
                                     @endcan
                                     @can('delete-users')
                                     <form action="{{ route('admin.users.destroy', $user) }}" method="post" class="float-left">
@@ -43,7 +45,6 @@
                     </table>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
+
+
 @endsection

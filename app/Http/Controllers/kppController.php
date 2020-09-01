@@ -494,25 +494,20 @@ class kppController extends Controller
 
     public function coba3()
     {
-        return kppdata::select("*", 'kppdatas.id', \DB::raw('
-			CASE
-            WHEN 
-                IF( 
-		    		(select skor_kpp.scor from skor_kpp where skor_kpp.items = "anggaran_dasar" AND skor_kpp.criteria = kppdatas.anggaran_dasar) + 
-	    			(select skor_kpp.scor from skor_kpp where skor_kpp.items = "anggaran_rumah_tangga" AND skor_kpp.criteria = kppdatas.anggaran_rumah_tangga) + 
-                    (select skor_kpp.scor from skor_kpp where skor_kpp.items = "surat_keputusan" AND skor_kpp.criteria = kppdatas.surat_keputusan) > 1, 2, 0)
-                +
-                IF(
-                    (select skor_kpp.scor from skor_kpp where skor_kpp.items = "struktur_organisasi" AND skor_kpp.criteria = kppdatas.struktur_organisasi) = 2, 2, 0)
-                    = 4                
-                        THEN "Awal" 
-
-            WHEN 
-                (select skor_kpp.scor from skor_kpp where skor_kpp.items = "struktur_organisasi" AND skor_kpp.criteria = kppdatas.struktur_organisasi) = 2
-                THEN "Perlu Perhatian"
-            ELSE "Perlu Perhatian" 
-			END As Status 
-			'))
+        return kppdata::select("*", 'kppdatas.id', 
+            \DB::raw('
+                    (select skor_kpp.scor from skor_kpp where skor_kpp.items = "anggaran_dasar" AND skor_kpp.criteria = kppdatas.anggaran_dasar) as ad
+                '),
+            \DB::raw(' 
+                    (select skor_kpp.scor from skor_kpp where skor_kpp.items = "anggaran_rumah_tangga" AND skor_kpp.criteria = kppdatas.anggaran_rumah_tangga) as art
+                '),
+            \DB::raw('
+                    (select skor_kpp.scor from skor_kpp where skor_kpp.items = "struktur_organisasi" AND skor_kpp.criteria = kppdatas.struktur_organisasi) as struktur
+                '), 
+            \DB::raw('
+                    (select skor_kpp.scor from skor_kpp where skor_kpp.items = "surat_keputusan" AND skor_kpp.criteria = kppdatas.surat_keputusan) as sk
+                ')
+            )
 			->join('allvillages', 'kppdatas.kode_desa', '=', 'allvillages.KD_KEL')
             ->join('bkmdatas', 'kppdatas.kode_desa', '=', 'bkmdatas.kelurahan_id')
             ->join('pengurus_kpps', 'kppdatas.kode_desa', '=', 'pengurus_kpps.kelurahan_id')

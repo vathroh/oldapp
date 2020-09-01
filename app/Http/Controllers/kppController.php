@@ -491,6 +491,37 @@ class kppController extends Controller
 			
     }
 
+    public function coba3()
+    {
+        return kppdata::select("*", 'kppdatas.id', \DB::raw('
+			CASE
+            WHEN 
+                (select skor_kpp.scor from skor_kpp where skor_kpp.items = "struktur_organisasi" AND skor_kpp.criteria = kppdatas.struktur_organisasi) = 2
+                THEN "Perlu Perhatian"
+            ELSE "Perlu Perhatian" 
+			END As Status 
+			'))
+			->join('allvillages', 'kppdatas.kode_desa', '=', 'allvillages.KD_KEL')
+            ->join('bkmdatas', 'kppdatas.kode_desa', '=', 'bkmdatas.kelurahan_id')
+            ->join('pengurus_kpps', 'kppdatas.kode_desa', '=', 'pengurus_kpps.kelurahan_id')
+            ->join('users', 'kppdatas.user_id', '=', 'users.id')
+            ->whereIn('KD_KAB', explode(', ', str_replace(array('["',  '"]'),'', DB::table('work_zones')
+            ->where('id', function($query){
+                $query->select('work_zone_id')
+                      ->from('job_descs')
+                      ->where('user_id', Auth::user()->id)
+                      ->get()
+                      ->pluck('work_zone_id');
+				})->get()
+				->pluck('zone')
+				)));
+			
+    }
+
+    public function test()
+    {
+        return $this->coba3()->get();
+    }
 
     public function backup()
     {

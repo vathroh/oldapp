@@ -460,20 +460,29 @@ class kppController extends Controller
                     = 6            
                 THEN "Terbangun"
             WHEN 
-                IF( 
-		    		(select skor_kpp.scor from skor_kpp where skor_kpp.items = "anggaran_dasar" AND skor_kpp.criteria = kppdatas.anggaran_dasar) + 
-	    			(select skor_kpp.scor from skor_kpp where skor_kpp.items = "anggaran_rumah_tangga" AND skor_kpp.criteria = kppdatas.anggaran_rumah_tangga) + 
-                    (select skor_kpp.scor from skor_kpp where skor_kpp.items = "surat_keputusan" AND skor_kpp.criteria = kppdatas.surat_keputusan) > 1, 2, 0)
+                IF(
+                    CASE
+                        WHEN
+                    (select skor_kpp.scor from skor_kpp where skor_kpp.items = "anggaran_dasar" AND skor_kpp.criteria = kppdatas.anggaran_dasar) = 1 THEN 1 ELSE 0 END 
+                +
+                    CASE 
+                        WHEN
+                    (select skor_kpp.scor from skor_kpp where skor_kpp.items = "anggaran_rumah_tangga" AND skor_kpp.criteria = kppdatas.anggaran_rumah_tangga) = 1 THEN 1 ELSE 0 END
+                +
+                    (select skor_kpp.scor from skor_kpp where skor_kpp.items = "surat_keputusan" AND skor_kpp.criteria = kppdatas.surat_keputusan)
+                    > 1, 2, 0)
                 +
                 IF(
-                    (select skor_kpp.scor from skor_kpp where skor_kpp.items = "struktur_organisasi" AND skor_kpp.criteria = kppdatas.struktur_organisasi) = 2, 2, 0)
-                    = 4                
+                    CASE WHEN 
+                    (select skor_kpp.scor from skor_kpp where skor_kpp.items = "struktur_organisasi" AND skor_kpp.criteria = kppdatas.struktur_organisasi) = 2 THEN 2 ELSE 0 END
+                    ) = 4                
                         THEN "Awal" 
             WHEN 
                 (select skor_kpp.scor from skor_kpp where skor_kpp.items = "struktur_organisasi" AND skor_kpp.criteria = kppdatas.struktur_organisasi) = 2
                 THEN "Perlu Perhatian"
             ELSE "Perlu Perhatian" 
 			END As Status 
+
 			'))
 			->join('allvillages', 'kppdatas.kode_desa', '=', 'allvillages.KD_KEL')
             ->join('bkmdatas', 'kppdatas.kode_desa', '=', 'bkmdatas.kelurahan_id')
@@ -537,8 +546,9 @@ class kppController extends Controller
                     > 1, 2, 0)
                 +
                 IF(
-                    (select skor_kpp.scor from skor_kpp where skor_kpp.items = "struktur_organisasi" AND skor_kpp.criteria = kppdatas.struktur_organisasi) = 2, 2, 0)
-                    = 4                
+                    CASE WHEN 
+                    (select skor_kpp.scor from skor_kpp where skor_kpp.items = "struktur_organisasi" AND skor_kpp.criteria = kppdatas.struktur_organisasi) = 2 THEN 2 ELSE 0 END
+                    ) = 4                
                         THEN "Awal" 
             WHEN 
                 (select skor_kpp.scor from skor_kpp where skor_kpp.items = "struktur_organisasi" AND skor_kpp.criteria = kppdatas.struktur_organisasi) = 2

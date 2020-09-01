@@ -74,12 +74,6 @@ class UsersController extends Controller
         ]);
         
         
-        if($request->has('change_password')){
-			User::where('id', $user->id)->update([
-			'password' => Hash::make($request->change_password)
-			]);
-		};
-        
     }
 
     /**
@@ -112,14 +106,6 @@ class UsersController extends Controller
 				'user_id' 		=> $user->id,
 				'work_zone_id' 	=> $work_zone_id,
 				'job_title_id' 	=> $request->job_title
-			]);
-		};
-
-
-		if($request->has('change_password')) {
-			      
-			$user = User::where('id', $user->id)->update([
-				'password' => Hash::make($request->change_password)
 			]);
 		};
 

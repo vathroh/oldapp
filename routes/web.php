@@ -18,7 +18,7 @@ Route::get('/', function () {
 
 Auth::routes();
 // Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/home', 'kppController@index')->name('home');
+Route::get('/home', 'profilController@index')->name('home');
 Route::resource('/profil', 'profilController');
 
 
@@ -123,4 +123,10 @@ Route::get('/kpp-download-excel', 'kppController@export');
 Route::get('/rekap-data-kpp', 'kppController@rekap_all');
 Route::get('/kpp-rekap-data-kecamatan/{KD_KEC}', 'kppController@rekap_kecamatan');
 Route::get('/kpp-rekap-data-kelurahan/{KD_KEL}', 'kppController@rekap_kelurahan');
+
+//EDIT PASSWORD
+Route::get('/pass-by-admin/{id}/edit', 'passwordController@admin');
+Route::put('/pass-by-admin/{id}', 'passwordController@storeByAdmin');
+Route::get('/pass-by-user/{id}/edit', 'passwordController@user');
+Route::put('/pass-by-user/{id}', 'passwordController@storeByUser');
 

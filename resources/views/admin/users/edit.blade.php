@@ -80,13 +80,6 @@
 							</div>
 						</div>
                         
-                        <div class="form-group row">
-                            <label for="password" class="col-md-2 text-md-right">GANTI PASSWORD</label>
-                            <div class="col-md-8">
-                                <input id="change_password" type="text" class="form-control" name="change_password">
-                            </div>
-                        </div>
-                        
                         <div class="text-center">
 							<button type="submit" class="btn btn-primary">
 								Update

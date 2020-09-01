@@ -20,28 +20,144 @@ class UsersExport implements FromCollection
 
         return kppdata::select('allvillages.NAMA_KAB', 'allvillages.NAMA_KEC', 'allvillages.NAMA_DESA', 'bkmdatas.bkm', 
 			'kppdatas.lokasi_bdi_bpm', 'kppdatas.nama_kpp',
-			\DB::raw('
-			CASE
-			WHEN
-				(select skor_kpp.scor from skor_kpp where skor_kpp.items = "kegiatan_pengecekan" AND skor_kpp.criteria = kppdatas.kegiatan_pengecekan) +
-				CASE WHEN (select count(*) from infrastruktures_maintenances) > 0 THEN 1 ELSE 0 END  > 2
-					 THEN "Mandiri"
-			WHEN
-				(select skor_kpp.scor from skor_kpp where skor_kpp.items = "administrasi_rutin" AND skor_kpp.criteria = kppdatas.administrasi_rutin) + 
-				(select skor_kpp.scor from skor_kpp where skor_kpp.items = "buku_inventaris_kegiatan" AND skor_kpp.criteria = kppdatas.buku_inventaris_kegiatan) + 
-				(select skor_kpp.scor from skor_kpp where skor_kpp.items = "pertemuan_rutin" AND skor_kpp.criteria = kppdatas.pertemuan_rutin) +
-				(select skor_kpp.scor from skor_kpp where skor_kpp.items = "bop" AND skor_kpp.criteria = kppdatas.bop) = 8
-					THEN "Berdaya"
-			WHEN
-            (select skor_kpp.scor from skor_kpp where skor_kpp.items = "rencana_kerja" AND skor_kpp.criteria = kppdatas.rencana_kerja) = 2
-                THEN "Terbangun"
-			WHEN 
-				(select skor_kpp.scor from skor_kpp where skor_kpp.items = "anggaran_dasar" AND skor_kpp.criteria = kppdatas.anggaran_dasar) + 
-				(select skor_kpp.scor from skor_kpp where skor_kpp.items = "anggaran_rumah_tangga" AND skor_kpp.criteria = kppdatas.anggaran_rumah_tangga) + 
-				(select skor_kpp.scor from skor_kpp where skor_kpp.items = "surat_keputusan" AND skor_kpp.criteria = kppdatas.surat_keputusan) >= 2 
-					THEN "Awal" 
-			ELSE "Perlu Perhatian" 
-			END As Status 
+            \DB::raw('
+            CASE
+            WHEN
+                IF(
+                    CASE
+                        WHEN
+                    (select skor_kpp.scor from skor_kpp where skor_kpp.items = "kegiatan_pengecekan" AND skor_kpp.criteria = kppdatas.kegiatan_pengecekan) = 2 THEN 2 ELSE 0 END
+                    +
+                    CASE WHEN (select count(*) from infrastruktures_maintenances) > 0 THEN 2 ELSE 0 END  
+                    > 3, 2, 0)
+                +
+                IF(                    
+                    CASE 
+                        WHEN
+                    (select skor_kpp.scor from skor_kpp where skor_kpp.items = "administrasi_rutin" AND skor_kpp.criteria = kppdatas.administrasi_rutin) = 2 THEN 2 ELSE 0 END
+                    +
+                    CASE 
+                        WHEN
+                    (select skor_kpp.scor from skor_kpp where skor_kpp.items = "buku_inventaris_kegiatan" AND skor_kpp.criteria = kppdatas.buku_inventaris_kegiatan) = 2 THEN 2 ELSE 0 END
+                    +
+                    CASE
+                        WHEN
+                    (select skor_kpp.scor from skor_kpp where skor_kpp.items = "pertemuan_rutin" AND skor_kpp.criteria = kppdatas.pertemuan_rutin) = 2 THEN 2 ELSE 0 END
+                    +
+                    CASE 
+                        WHEN
+                    (select skor_kpp.scor from skor_kpp where skor_kpp.items = "bop" AND skor_kpp.criteria = kppdatas.bop) = 2 THEN 2 ELSE 0 END
+                    = 8, 2, 0
+                )
+                +
+                IF(
+                    (select skor_kpp.scor from skor_kpp where skor_kpp.items = "rencana_kerja" AND skor_kpp.criteria = kppdatas.rencana_kerja) = 2, 2, 0
+                )
+                +
+                IF(
+                    CASE
+                        WHEN
+                    (select skor_kpp.scor from skor_kpp where skor_kpp.items = "anggaran_dasar" AND skor_kpp.criteria = kppdatas.anggaran_dasar) = 1 THEN 1 ELSE 0 END 
+                +
+                    CASE 
+                        WHEN
+                    (select skor_kpp.scor from skor_kpp where skor_kpp.items = "anggaran_rumah_tangga" AND skor_kpp.criteria = kppdatas.anggaran_rumah_tangga) = 1 THEN 1 ELSE 0 END
+                +
+                    (select skor_kpp.scor from skor_kpp where skor_kpp.items = "surat_keputusan" AND skor_kpp.criteria = kppdatas.surat_keputusan)
+                    > 1, 2, 0
+                )
+                +
+                IF(
+                    (select skor_kpp.scor from skor_kpp where skor_kpp.items = "struktur_organisasi" AND skor_kpp.criteria = kppdatas.struktur_organisasi) = 2, 2, 0
+                )
+                 = 10  THEN "Mandiri" 
+
+            WHEN
+                IF(
+                    CASE 
+                        WHEN
+                    (select skor_kpp.scor from skor_kpp where skor_kpp.items = "administrasi_rutin" AND skor_kpp.criteria = kppdatas.administrasi_rutin) = 2 THEN 2 ELSE 0 END
+                    +
+                    CASE 
+                        WHEN
+                    (select skor_kpp.scor from skor_kpp where skor_kpp.items = "buku_inventaris_kegiatan" AND skor_kpp.criteria = kppdatas.buku_inventaris_kegiatan) = 2 THEN 2 ELSE 0 END
+                    +
+                    CASE
+                        WHEN
+                    (select skor_kpp.scor from skor_kpp where skor_kpp.items = "pertemuan_rutin" AND skor_kpp.criteria = kppdatas.pertemuan_rutin) = 2 THEN 2 ELSE 0 END
+                    +
+                    CASE 
+                        WHEN
+                    (select skor_kpp.scor from skor_kpp where skor_kpp.items = "bop" AND skor_kpp.criteria = kppdatas.bop) = 2 THEN 2 ELSE 0 END
+                    = 8, 2, 0
+                )
+                +
+                IF(
+                    (select skor_kpp.scor from skor_kpp where skor_kpp.items = "rencana_kerja" AND skor_kpp.criteria = kppdatas.rencana_kerja) = 2, 2, 0
+                )
+                +
+                IF(
+                    CASE
+                        WHEN
+                    (select skor_kpp.scor from skor_kpp where skor_kpp.items = "anggaran_dasar" AND skor_kpp.criteria = kppdatas.anggaran_dasar) = 1 THEN 1 ELSE 0 END 
+                +
+                    CASE 
+                        WHEN
+                    (select skor_kpp.scor from skor_kpp where skor_kpp.items = "anggaran_rumah_tangga" AND skor_kpp.criteria = kppdatas.anggaran_rumah_tangga) = 1 THEN 1 ELSE 0 END
+                +
+                    (select skor_kpp.scor from skor_kpp where skor_kpp.items = "surat_keputusan" AND skor_kpp.criteria = kppdatas.surat_keputusan)
+                    > 1, 2, 0
+                )
+                +
+                IF(
+                    (select skor_kpp.scor from skor_kpp where skor_kpp.items = "struktur_organisasi" AND skor_kpp.criteria = kppdatas.struktur_organisasi) = 2, 2, 0
+                )
+                 = 8  THEN "Berdaya" 
+            WHEN
+                IF(
+                    (select skor_kpp.scor from skor_kpp where skor_kpp.items = "rencana_kerja" AND skor_kpp.criteria = kppdatas.rencana_kerja) = 2, 2, 0
+                )
+                +
+                IF(
+                    CASE
+                        WHEN
+                    (select skor_kpp.scor from skor_kpp where skor_kpp.items = "anggaran_dasar" AND skor_kpp.criteria = kppdatas.anggaran_dasar) = 1 THEN 1 ELSE 0 END 
+                +
+                    CASE 
+                        WHEN
+                    (select skor_kpp.scor from skor_kpp where skor_kpp.items = "anggaran_rumah_tangga" AND skor_kpp.criteria = kppdatas.anggaran_rumah_tangga) = 1 THEN 1 ELSE 0 END
+                +
+                    (select skor_kpp.scor from skor_kpp where skor_kpp.items = "surat_keputusan" AND skor_kpp.criteria = kppdatas.surat_keputusan)
+                    > 1, 2, 0
+                )
+                +
+                IF(
+                    (select skor_kpp.scor from skor_kpp where skor_kpp.items = "struktur_organisasi" AND skor_kpp.criteria = kppdatas.struktur_organisasi) = 2, 2, 0
+                )
+                 = 6 THEN "Terbangun" 
+            WHEN 
+                IF(
+                    CASE
+                        WHEN
+                    (select skor_kpp.scor from skor_kpp where skor_kpp.items = "anggaran_dasar" AND skor_kpp.criteria = kppdatas.anggaran_dasar) = 1 THEN 1 ELSE 0 END 
+                +
+                    CASE 
+                        WHEN
+                    (select skor_kpp.scor from skor_kpp where skor_kpp.items = "anggaran_rumah_tangga" AND skor_kpp.criteria = kppdatas.anggaran_rumah_tangga) = 1 THEN 1 ELSE 0 END
+                +
+                    (select skor_kpp.scor from skor_kpp where skor_kpp.items = "surat_keputusan" AND skor_kpp.criteria = kppdatas.surat_keputusan)
+                    > 1, 2, 0
+                )
+                +
+                IF(
+                    (select skor_kpp.scor from skor_kpp where skor_kpp.items = "struktur_organisasi" AND skor_kpp.criteria = kppdatas.struktur_organisasi) = 2, 2, 0
+                )
+                 = 4 THEN "Awal" 
+            WHEN 
+                (select skor_kpp.scor from skor_kpp where skor_kpp.items = "struktur_organisasi" AND skor_kpp.criteria = kppdatas.struktur_organisasi) = 2
+                THEN "Perlu Perhatian"
+            ELSE "Perlu Perhatian" 
+			END As Status
 			'), 'pengurus_kpps.ketua_kpp', 'pengurus_kpps.ketua_kpp_hp', 'kppdatas.anggota_pria', 'kppdatas.anggota_wanita',
 			'kppdatas.anggota_miskin', 'kppdatas.struktur_organisasi', 'kppdatas.anggaran_dasar', 'kppdatas.anggaran_rumah_tangga', 
 			'kppdatas.surat_keputusan', 'kppdatas.rencana_kerja', 'kppdatas.pertemuan_rutin', 'kppdatas.administrasi_rutin', 

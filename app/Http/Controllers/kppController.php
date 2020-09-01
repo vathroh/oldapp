@@ -695,7 +695,7 @@ class kppController extends Controller
 
     public function test()
     {
-        return $this->coba3()->get();
+        return DB::table('kpp_view')->get();
     }
 
     public function backup()

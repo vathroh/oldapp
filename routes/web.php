@@ -102,6 +102,7 @@ Route::post('/ksm', 'DocumentsController@storeKSM');
 Route::post('/foto', 'DocumentsController@storeFoto');
 
 //KPP
+Route::get('/test', 'kppController@test');
 Route::resource('/kpp', 'kppController');
 Route::resource('/kpp/struktur-organisasi', 'kpp\strukturOrganisasiController');
 Route::resource('/kpp/anggaran-dasar', 'kpp\anggaranDasarController');

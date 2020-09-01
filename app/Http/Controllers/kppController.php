@@ -507,8 +507,8 @@ class kppController extends Controller
                     (select skor_kpp.scor from skor_kpp where skor_kpp.items = "surat_keputusan" AND skor_kpp.criteria = kppdatas.surat_keputusan) as sk
                     '),
             \DB::raw('
-            CASE
-            WHEN 
+
+
                 IF(
                     CASE
                         WHEN
@@ -524,7 +524,7 @@ class kppController extends Controller
                 +
                 IF(
                     (select skor_kpp.scor from skor_kpp where skor_kpp.items = "struktur_organisasi" AND skor_kpp.criteria = kppdatas.struktur_organisasi) = 2, 2, 0
-                )
+                ) 
 
 
                    as skr_awal

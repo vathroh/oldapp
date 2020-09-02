@@ -44,7 +44,7 @@
 
         <div class="form-group">
             <label>JUMLAH ANGGOTA</label>
-            <div class="data-group-isi">
+            <div class="data-group-isi justify-content-between">
                 <div class="data-group-label1">
                     PRIA
                 </div>

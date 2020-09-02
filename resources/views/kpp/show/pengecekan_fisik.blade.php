@@ -16,7 +16,7 @@
     </div>
 </div>
 
-<table class="table table-bordered table-hover">
+<table class="table table-bordered table-hover table-fixed" style="overflow-x:auto;">
   <thead>
     <tr>
       <th scope="col"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#input_pengecekan_fisik_modal">

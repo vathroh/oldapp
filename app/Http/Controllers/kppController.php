@@ -8,6 +8,9 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\UsersExport;
+use App\Exports\Rekap_kpp_per_kabupaten;
+use App\Exports\Rekap_kpp_per_kecamatan;
+use App\Exports\Rekap_kpp_per_kelurahan;
 use App\infrastruktures_maintenance;
 use App\alldistrict;
 use App\allsubdistrict;
@@ -181,15 +184,53 @@ class kppController extends Controller
     {
         //
     }
-    
+
+
+// =========================================================== EXPORT TO EXCEL ========================================================
+
+
     public function export()
     {
-		return Excel::download(new UsersExport, 'Data_KPP.xlsx');
+		return Excel::download(new UsersExport, 'Data_KPP.' . date('Y-m-d_H:i:s') . 'xlsx');
 	}
-	
+
+
+
+	public function exportRekapKabupaten()
+    {
+		return Excel::download(new Rekap_kpp_per_kabupaten, 'Rekap_KPP_Per_Kabupaten_' . date('Y-m-d_H:i:s') . '.xlsx');
+	}
+
+
+
+	public function exportRekapKecamatan($KAB)
+    {
+
+        $kppdatas = $this->rekap1()->groupBy('KD_KEC')->where('KD_KAB', $KAB)->get();
+		return Excel::download(new Rekap_kpp_per_kecamatan($kppdatas), 'Rekap_KPP_Per_Kecamatan_' . date('Y-m-d_H:i:s') . '.xlsx');
+	}
+
+
+
+    public function exportRekapKelurahan($KEC)
+    {
+		$kppdatas = $this->rekap2()->groupBy('KD_KEL')->where('KD_KEC', $KEC)->get();
+		return Excel::download(new Rekap_kpp_per_kelurahan($kppdatas), 'Rekap_KPP_Per_Kelurahan_' . date('Y-m-d_H:i:s') . '.xlsx');
+	}
+
+
+    // ================================================= REKAP FUNCTION ===========================================================
+
+
+
 	public function rekap_all()
+<<<<<<< HEAD
 	{
 		
+=======
+    {
+        $rekapkpp =  $this->rekap1()->get();
+>>>>>>> 6563158dd6cc12b1d08f5c87e2dd9089f8a9db8e
 		$kppdatas = $this->rekap()->groupBy('KD_KAB')->get();
 		
 		$kabupaten=alldistrict::whereIn('kode_kab', explode(', ', str_replace(array('["',  '"]'),'', DB::table('work_zones')
@@ -204,12 +245,12 @@ class kppController extends Controller
             )))->get();
               
 
-        return view('kpp.rekap.kabupaten', compact(['kabupaten', 'kppdatas']));
+        return view('kpp.rekap.kabupaten', compact(['kabupaten', 'kppdatas', 'rekapkpp']));
 	}
 	
 	public function rekap_kecamatan($KD_KAB)
 	{
-		
+		$rekapkpp =  $this->rekap1()->groupBy('KD_KAB')->where('KD_KAB', $KD_KAB)->get();		
 		$kppdatas = $this->rekap()->groupBy('KD_KEC')->where('KD_KAB', $KD_KAB)->get();
 		
 		$kabupaten=alldistrict::whereIn('kode_kab', explode(', ', str_replace(array('["',  '"]'),'', DB::table('work_zones')
@@ -224,12 +265,12 @@ class kppController extends Controller
             )))->get();
               
 
-        return view('kpp.rekap.kecamatan', compact(['kabupaten', 'kppdatas']));
+        return view('kpp.rekap.kecamatan', compact(['kabupaten', 'kppdatas', 'rekapkpp']));
 	}
 	
 	public function rekap_kelurahan($KD_KEC)
-	{
-		
+    {
+		$rekapkpp =  $this->rekap1()->groupBy('KD_KEC')->where('KD_KEC', $KD_KEC)->get();	
 		$kppdatas = $this->rekap()->groupBy('KD_KEL')->where('KD_KEC', $KD_KEC)->get();
 		
 		$kabupaten=alldistrict::whereIn('kode_kab', explode(', ', str_replace(array('["',  '"]'),'', DB::table('work_zones')
@@ -244,7 +285,7 @@ class kppController extends Controller
             )))->get();
               
 
-        return view('kpp.rekap.kelurahan', compact(['kabupaten', 'kppdatas']));
+        return view('kpp.rekap.kelurahan', compact(['kabupaten', 'kppdatas', 'rekapkpp']));
 	}
 	
     public function rekap()
@@ -291,11 +332,88 @@ class kppController extends Controller
     }
 
 		
+	public function rekap1()
+	{
+			return DB::table('kpp_data_view')->selectRaw('NAMA_KAB, NAMA_KEC, count(*) as jml_kpp,
+				SUM(CASE WHEN Status  = "Perlu Perhatian" Then 1 ELSE 0 END) as perlu_perhatian, 
+				SUM(CASE WHEN Status  = "Awal" Then 1 ELSE 0 END) as awal, 
+				SUM(CASE WHEN Status  = "Terbangun" Then 1 ELSE 0 END) as terbangun, 
+				SUM(CASE WHEN Status  = "Berdaya" Then 1 ELSE 0 END) as berdaya, 
+				SUM(CASE WHEN Status  = "Mandiri" Then 1 ELSE 0 END) as mandiri,
+				SUM(anggota_pria) as jml_pria,
+				SUM(anggota_wanita) as jml_wanita,
+				SUM(anggota_miskin) as jml_miskin,
+				SUM(CASE WHEN struktur_organisasi = "Ada" THEN 1 ELSE 0 END) as jml_struktur_organisasi,
+				SUM(CASE WHEN anggaran_dasar = "Ada" THEN 1 ELSE 0 END) as jml_anggaran_dasar,
+				SUM(CASE WHEN anggaran_rumah_tangga = "Ada" THEN 1 ELSE 0 END) as jml_anggaran_rumah_tangga,
+				SUM(CASE WHEN surat_keputusan = "Ada" THEN 1 ELSE 0 END) as jml_surat_keputusan,
+                SUM(CASE WHEN rencana_kerja = "Ada" THEN 1 ELSE 0 END) as jml_rencana_kerja,
+				SUM(CASE WHEN pertemuan_rutin = "Setiap Bulan" THEN 1 ELSE 0 END) as jml_pertemuan_rutin_setiap_bulan,
+                SUM(CASE WHEN pertemuan_rutin = "Setiap Tiga Bulan" THEN 1 ELSE 0 END) as jml_pertemuan_rutin_setiap_tiga_bulan,
+			    SUM(CASE WHEN pertemuan_rutin = "Setiap Enam Bulan" THEN 1 ELSE 0 END) as jml_pertemuan_rutin_setiap_enam_bulan,
+				SUM(CASE WHEN pertemuan_rutin = "Insidentil (sesuai kebutuhan)" THEN 1 ELSE 0 END) as jml_pertemuan_rutin_insidentil,
+                count(*) - SUM(CASE WHEN pertemuan_rutin = "Setiap Bulan" THEN 1 ELSE 0 END) -
+                SUM(CASE WHEN pertemuan_rutin = "Setiap Tiga Bulan" THEN 1 ELSE 0 END) -
+			    SUM(CASE WHEN pertemuan_rutin = "Setiap Enam Bulan" THEN 1 ELSE 0 END) -
+				SUM(CASE WHEN pertemuan_rutin = "Insidentil (sesuai kebutuhan)" THEN 1 ELSE 0 END) jml_pertemuan_rutin_tidak_pernah,
+                SUM(CASE WHEN administrasi_rutin = "Administrasi Bulanan Lengkap" THEN 1 ELSE 0 END) as jml_administrasi_bulanan_lengkap,
+                SUM(CASE WHEN administrasi_rutin = "Administrasi Bulanan Minimalis" THEN 1 ELSE 0 END) as jml_administrasi_bulanan_minimalis,
+                SUM(CASE WHEN administrasi_rutin = "Administrasi Triwulan/Selebihnya" THEN 1 ELSE 0 END) as jml_administrasi_triwulan,
+                count(*) - SUM(CASE WHEN administrasi_rutin = "Administrasi Bulanan Lengkap" THEN 1 ELSE 0 END) -
+                SUM(CASE WHEN administrasi_rutin = "Administrasi Bulanan Minimalis" THEN 1 ELSE 0 END) -
+                SUM(CASE WHEN administrasi_rutin = "Administrasi Triwulan/Selebihnya" THEN 1 ELSE 0 END) as jml_administrasi_tidak_ada,
+                SUM(CASE WHEN buku_inventaris_kegiatan = "Ada" THEN 1 ELSE 0 END) as jml_buku_inventaris_kegiatan,
+                SUM(CASE WHEN bop = "Ada" THEN 1 ELSE 0 END) as jml_bop,
+                SUM(jumlah_bop) as jml_dana_bop,
+                count(*) - SUM(CASE WHEN kegiatan_pengecekan = "Belum Dilakukan" THEN 1 ELSE 0 END) -
+ 				SUM(CASE WHEN kegiatan_pengecekan = "sudah_dilakukan" THEN 1 ELSE 0 END) as jml_pengecekan_belum_pernah,
+                SUM(CASE WHEN kegiatan_pengecekan = "Belum Dilakukan" THEN 1 ELSE 0 END) as jml_pengecekan_belum_dilakukan,
+                SUM(CASE WHEN kegiatan_pengecekan = "sudah_dilakukan" THEN 1 ELSE 0 END) as jml_pengecekan_sudah_dilakukan,
+                SUM(jumlah_kegiatan_perbaikan) as jml_kegiatan_perbaikan,
+                SUM(jumlah_dana_perbaikan) as jml_dana_perbaikan
+		');
+
+    }
 	
 	
-	
-	
-	
+    public function rekap2()
+	{
+			return DB::table('kpp_data_view')->selectRaw('NAMA_KAB, NAMA_KEC, NAMA_DESA,  count(*) as jml_kpp, Status,
+				SUM(anggota_pria) as jml_pria,
+				SUM(anggota_wanita) as jml_wanita,
+				SUM(anggota_miskin) as jml_miskin,
+				SUM(CASE WHEN struktur_organisasi = "Ada" THEN 1 ELSE 0 END) as jml_struktur_organisasi,
+				SUM(CASE WHEN anggaran_dasar = "Ada" THEN 1 ELSE 0 END) as jml_anggaran_dasar,
+				SUM(CASE WHEN anggaran_rumah_tangga = "Ada" THEN 1 ELSE 0 END) as jml_anggaran_rumah_tangga,
+				SUM(CASE WHEN surat_keputusan = "Ada" THEN 1 ELSE 0 END) as jml_surat_keputusan,
+                SUM(CASE WHEN rencana_kerja = "Ada" THEN 1 ELSE 0 END) as jml_rencana_kerja,
+				SUM(CASE WHEN pertemuan_rutin = "Setiap Bulan" THEN 1 ELSE 0 END) as jml_pertemuan_rutin_setiap_bulan,
+                SUM(CASE WHEN pertemuan_rutin = "Setiap Tiga Bulan" THEN 1 ELSE 0 END) as jml_pertemuan_rutin_setiap_tiga_bulan,
+			    SUM(CASE WHEN pertemuan_rutin = "Setiap Enam Bulan" THEN 1 ELSE 0 END) as jml_pertemuan_rutin_setiap_enam_bulan,
+				SUM(CASE WHEN pertemuan_rutin = "Insidentil (sesuai kebutuhan)" THEN 1 ELSE 0 END) as jml_pertemuan_rutin_insidentil,
+                count(*) - SUM(CASE WHEN pertemuan_rutin = "Setiap Bulan" THEN 1 ELSE 0 END) -
+                SUM(CASE WHEN pertemuan_rutin = "Setiap Tiga Bulan" THEN 1 ELSE 0 END) -
+			    SUM(CASE WHEN pertemuan_rutin = "Setiap Enam Bulan" THEN 1 ELSE 0 END) -
+				SUM(CASE WHEN pertemuan_rutin = "Insidentil (sesuai kebutuhan)" THEN 1 ELSE 0 END) jml_pertemuan_rutin_tidak_pernah,
+                SUM(CASE WHEN administrasi_rutin = "Administrasi Bulanan Lengkap" THEN 1 ELSE 0 END) as jml_administrasi_bulanan_lengkap,
+                SUM(CASE WHEN administrasi_rutin = "Administrasi Bulanan Minimalis" THEN 1 ELSE 0 END) as jml_administrasi_bulanan_minimalis,
+                SUM(CASE WHEN administrasi_rutin = "Administrasi Triwulan/Selebihnya" THEN 1 ELSE 0 END) as jml_administrasi_triwulan,
+                count(*) - SUM(CASE WHEN administrasi_rutin = "Administrasi Bulanan Lengkap" THEN 1 ELSE 0 END) -
+                SUM(CASE WHEN administrasi_rutin = "Administrasi Bulanan Minimalis" THEN 1 ELSE 0 END) -
+                SUM(CASE WHEN administrasi_rutin = "Administrasi Triwulan/Selebihnya" THEN 1 ELSE 0 END) as jml_administrasi_tidak_ada,
+                SUM(CASE WHEN buku_inventaris_kegiatan = "Ada" THEN 1 ELSE 0 END) as jml_buku_inventaris_kegiatan,
+                SUM(CASE WHEN bop = "Ada" THEN 1 ELSE 0 END) as jml_bop,
+                SUM(jumlah_bop) as jml_dana_bop,
+                count(*) - SUM(CASE WHEN kegiatan_pengecekan = "Belum Dilakukan" THEN 1 ELSE 0 END) -
+ 				SUM(CASE WHEN kegiatan_pengecekan = "sudah_dilakukan" THEN 1 ELSE 0 END) as jml_pengecekan_belum_pernah,
+                SUM(CASE WHEN kegiatan_pengecekan = "Belum Dilakukan" THEN 1 ELSE 0 END) as jml_pengecekan_belum_dilakukan,
+                SUM(CASE WHEN kegiatan_pengecekan = "sudah_dilakukan" THEN 1 ELSE 0 END) as jml_pengecekan_sudah_dilakukan,
+                SUM(jumlah_kegiatan_perbaikan) as jml_kegiatan_perbaikan,
+                SUM(jumlah_dana_perbaikan) as jml_dana_perbaikan
+		');
+
+    }
+
 	
 	
 	

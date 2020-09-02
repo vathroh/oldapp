@@ -96,11 +96,47 @@
                 <th>{{ $kppdata->jml_dana_perbaikan }}</th>
             </tr> 
           @endforeach
+			<tr>
+                <th colspan="3">JUMLAH</th>
+                <th>{{ $rekapkpp[0]->jml_kpp }}</th>
+                <th>{{ $rekapkpp[0]->perlu_perhatian }}</th>
+                <th>{{ $rekapkpp[0]->awal }}</th>
+                <th>{{ $rekapkpp[0]->terbangun }}</th>
+                <th>{{ $rekapkpp[0]->berdaya }}</th>
+                <th>{{ $rekapkpp[0]->mandiri }}</th>
+                <th>{{ $rekapkpp[0]->jml_pria }}</th>
+                <th>{{ $rekapkpp[0]->jml_wanita }}</th>
+                <th>{{ $rekapkpp[0]->jml_miskin }}</th>
+                <th>{{ $rekapkpp[0]->jml_struktur_organisasi }}</th>
+                <th>{{ $rekapkpp[0]->jml_anggaran_dasar }}</th>
+                <th>{{ $rekapkpp[0]->jml_anggaran_rumah_tangga }}</th>
+                <th>{{ $rekapkpp[0]->jml_surat_keputusan }}</th>
+                <th>{{ $rekapkpp[0]->jml_rencana_kerja }}</th>
+                <th>{{ $rekapkpp[0]->jml_pertemuan_rutin_setiap_bulan }}</th>
+                <th>{{ $rekapkpp[0]->jml_pertemuan_rutin_setiap_tiga_bulan }}</th>
+                <th>{{ $rekapkpp[0]->jml_pertemuan_rutin_setiap_enam_bulan }}</th>
+                <th>{{ $rekapkpp[0]->jml_pertemuan_rutin_insidentil }}</th>
+                <th>{{ $rekapkpp[0]->jml_pertemuan_rutin_tidak_pernah }}</th>
+                <th>{{ $rekapkpp[0]->jml_administrasi_bulanan_lengkap }}</th>
+                <th>{{ $rekapkpp[0]->jml_administrasi_bulanan_minimalis }}</th>
+                <th>{{ $rekapkpp[0]->jml_administrasi_triwulan }}</th>
+                <th>{{ $rekapkpp[0]->jml_administrasi_tidak_ada }}</th>
+                <th>{{ $rekapkpp[0]->jml_buku_inventaris_kegiatan }}</th>
+                <th>{{ $rekapkpp[0]->jml_bop  }}</th>
+                <th>{{ $rekapkpp[0]->jml_dana_bop }}</th>
+                <th>{{ $rekapkpp[0]->jml_pengecekan_belum_pernah }}</th>
+                <th>{{ $rekapkpp[0]->jml_pengecekan_belum_dilakukan }}</th>
+                <th>{{ $rekapkpp[0]->jml_pengecekan_sudah_dilakukan }}</th>
+                <th>{{ $rekapkpp[0]->jml_kegiatan_perbaikan }}</th>
+                <th>{{ $rekapkpp[0]->jml_dana_perbaikan }}</th>
+            </tr>
         </tbody>
       </table>
     </div>
-    <div class="row text-center">
-
+	<div class="row text-center">
+      <div class="col justify-content-center">
+        <a href = "/kpp-download-rekap-kecamatan/{{$kppdata->KD_KAB}}"><button class = "btn btn-primary">Download</button></a>
+      </div>
     </div>
   </div>
 </div>

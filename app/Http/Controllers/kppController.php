@@ -224,13 +224,8 @@ class kppController extends Controller
 
 
 	public function rekap_all()
-<<<<<<< HEAD
 	{
-		
-=======
-    {
-        $rekapkpp =  $this->rekap1()->get();
->>>>>>> 6563158dd6cc12b1d08f5c87e2dd9089f8a9db8e
+	        $rekapkpp =  $this->rekap1()->get();
 		$kppdatas = $this->rekap()->groupBy('KD_KAB')->get();
 		
 		$kabupaten=alldistrict::whereIn('kode_kab', explode(', ', str_replace(array('["',  '"]'),'', DB::table('work_zones')

@@ -39,7 +39,6 @@ class kppController extends Controller
      */
     public function index()
     {
-        //return $this->coba2()->get();
         $kppdatas = $this->coba2()->paginate(10);
         
         $kabupaten=alldistrict::whereIn('kode_kab', explode(', ', str_replace(array('["',  '"]'),'', DB::table('work_zones')
@@ -63,6 +62,11 @@ class kppController extends Controller
 
     public function create(Request $request)
     {
+		if (Gate::denies('input-data')) {
+            return redirect(route('kpp.index'));
+        }
+
+
         $kelurahan=allvillage::get();
         $kabupaten=alldistrict::whereIn('kode_kab', explode(', ', str_replace(array('["',  '"]'),'', DB::table('work_zones')
             ->where('id', function($query){
@@ -144,6 +148,11 @@ class kppController extends Controller
 
     public function edit($id)
     {
+		if (Gate::denies('input-data')) {
+            return redirect(route('kpp.index'));
+        }
+
+
         $kppdata=kppdata::find($id);
         $kelurahan=allvillage::where('KD_KEL', $kppdata->kode_desa)->get();
         $bkmdata=bkmdata::where('kelurahan_id', $kppdata->kode_desa)->get();
@@ -191,7 +200,7 @@ class kppController extends Controller
 
     public function export()
     {
-		return Excel::download(new UsersExport, 'Data_KPP.' . date('Y-m-d_H:i:s') . 'xlsx');
+		return Excel::download(new UsersExport, 'Data_KPP_' . date('Y-m-d_H:i:s') . '.xlsx');
 	}
 
 

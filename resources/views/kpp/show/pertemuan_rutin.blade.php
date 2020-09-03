@@ -6,7 +6,7 @@
 
     <div class="data-group-isi">
         <div class="input">
-          <input type="text" id="pertemuan_rutin" name="pertemuan_rutin" value="{{ $kppdata->pertemuan_rutin }}" readonly>
+          {{ $kppdata->pertemuan_rutin }}
         </div>
     
         <div class="button">
@@ -23,6 +23,7 @@
     </div>
 @endif
 
+<div class = "table">
 <table class="table table-bordered table-hover">
   <thead>
     <tr>
@@ -51,7 +52,7 @@
     @endforeach
   </tbody>
 </table>
-
+</div>
 
 
 <!-- Modal -->

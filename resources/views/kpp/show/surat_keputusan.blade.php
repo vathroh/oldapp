@@ -5,9 +5,8 @@
     </label>
 
     <div class="data-group-isi">
-      <form>
         <div class="input">
-          <input type="text" class="form-control" id="surat_keputusan" name="surat_keputusan" value="{{ $kppdata->surat_keputusan }}" readonly>
+          {{ $kppdata->surat_keputusan }}
         </div>
 
         <div class="isifile">
@@ -27,7 +26,6 @@
             Edit & Upload
           </button>
         </div>
-      </form>
     </div>
 </div>
 
@@ -47,9 +45,6 @@
         <form method="post" action="/kpp/surat-keputusan/{{$kppdata->id}}" enctype="multipart/form-data">
           @method('patch')
           @csrf
-
-
-
           <div class="form-group">
             <label for="surat_keputusan">
               Apakah sudah memiliki Surat Keputusan?
@@ -64,12 +59,9 @@
           <p>Upload Scan Surat Keputusan</p>
           <input type="file" class="form-control-file" id="scan_surat_keputusan" name="scan_surat_keputusan">
           <button type="submit" class="btn btn-primary mt-5">Simpan</button>
-
         </form>
-
-
+        
       </div>
-
     </div>
   </div>
 </div>

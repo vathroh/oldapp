@@ -118,6 +118,34 @@ class UsersController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
+    public function show(User $user)
+    {
+		$user = user::where('users.id', $user->id)
+			->leftjoin('job_descs', 'users.id', '=', 'job_descs.user_id')
+			->leftjoin('job_titles', 'job_descs.job_title_id', '=', 'job_titles.id')
+			->leftjoin('work_zones', 'job_descs.work_zone_id', '=', 'work_zones.id')
+			->leftjoin('alldistricts', 'work_zones.district', '=', 'alldistricts.kode_kab')			
+			->select('*', 'users.id')->get()[0];
+			
+		$job_titles = job_title::get();
+
+		$kabupaten = work_zone::select('work_zones.district', 'NAMA_KAB')
+            ->leftJoin('allvillages', 'allvillages.KD_KAB', '=', 'work_zones.district')
+            ->distinct()->get();
+            
+        if (Gate::denies('edit-users')) {
+            return redirect(route('admin.users.index'));
+        }
+
+        $roles = Role::all();
+        return view('admin.users.show', compact(['user', 'kabupaten', 'job_titles']))->with([
+
+            'roles' => $roles
+        ]);
+        
+        
+    }
+
     public function destroy(User $user)
     {
         if (Gate::denies('delete-users')) {

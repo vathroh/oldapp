@@ -82,6 +82,7 @@ h3{
 	background-color: transparent;
 	border:0;
     flex-wrap: wrap;
+    justify-content: space-between;
 }
 
 .data-group-isi form{
@@ -156,4 +157,32 @@ h3{
 
 .form-image p{
     padding-top: 5px;
+}
+
+.table{
+    width: 100%;
+    overflow: auto;
+}
+
+.document_item.keterangan_tambahan {
+    padding : 10px;
+    border-radius : 10px;
+    height : 100px;
+    border : 1px solid black;
+    width : 100%;
+    overflow : auto;
+}
+
+.card-body .row {
+    display:flex;
+    flex-wrap : wrap;
+    margin: 20px;
+    padding : 20px 20px;
+    border : 1px solid #9a9e9b;
+    border-radius : 10px;
+}
+
+.row .column{
+    display : flex;
+    flex-wrap : wrap;
 }

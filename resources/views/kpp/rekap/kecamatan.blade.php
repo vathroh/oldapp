@@ -7,6 +7,12 @@
     <p class="card-category"> Data KPP yang sudah diinput </p>
   </div>
   <div class="card-body">
+	<nav aria-label="breadcrumb">
+	  <ol class="breadcrumb">
+		<li class="breadcrumb-item"><a href="/rekap-data-kpp">SEMUA KABUPATEN</a></li>
+		<li class="breadcrumb-item active" aria-current="page">{{ $kppdatas->pluck('NAMA_KAB')->first() }}</li>
+	  </ol>
+	</nav>
     <div class="table-responsive">
       <table class="table table-bordered">
         <thead class=" text-primary text-center">

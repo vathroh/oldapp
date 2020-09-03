@@ -7,64 +7,64 @@
     <p class="card-category"> Data KPP yang sudah diinput </p>
   </div>
   <div class="card-body">
-    <div class="table-responsive">
-      <table class="table table-bordered">
+    <div class="table-responsive tableFixHead">
+      <table class="table table-bordered" style = "display: block; position: relative" >
         <thead class=" text-primary text-center">
           <tr>
-            <th rowspan="2">NO</th>
-            <th rowspan="2">KABUPATEN/KOTA</th>
-            <th rowspan="2">KECAMATAN</th>
-            <th rowspan="2">KELURAHAN/DESA</th>
-            <th rowspan="2">NAMA BKM</th>
-            <th rowspan="2">LOKASI BDI/BPM</th>
-            <th rowspan="2">NAMA KPP</th>
-            <th rowspan="2">STATUS KPP</th>
-            <th rowspan="2">KETUA KPP</th>
-            <th rowspan="2">KONTAK KETUA KPP</th>
-            <th colspan="3">JUMLAH ANGGOTA</th>
-            <th rowspan="2">STRUKTUR ORGANISASI</th>
-            <th colspan="3">DASAR LEMBAGA</th>
-            <th rowspan="2">RENCANA KERJA</th>
-            <th rowspan="2">PERTEMUAN RUTIN</th>
-            <th rowspan="2">ADMINISTRASI RUTIN</th>
-            <th rowspan="2">BUKU ADMINISTRASI KEGIATAN</th>
-            <th colspan="2">BOP</th>
-            <th rowspan="2">PENGECEKAN FISIK</th>
-            <th colspan="3">KEGIATAN PEMELIHARAAN</th>
-            <th rowspan="2">KETERANGAN</th>
-            <th rowspan="2">DIUPLOAD OLEH</th>
+            <td widtd = "10%" rowspan="2">NO</td>
+            <td rowspan="2">KABUPATEN/KOTA</td>
+            <td rowspan="2">KECAMATAN</td>
+            <td rowspan="2">KELURAHAN/DESA</td>
+            <td rowspan="2">NAMA BKM</td>
+            <td rowspan="2">LOKASI BDI/BPM</td>
+            <td rowspan="2">NAMA KPP</td>
+            <td rowspan="2">STATUS KPP</td>
+            <td rowspan="2">KETUA KPP</td>
+            <td rowspan="2">KONTAK KETUA KPP</td>
+            <td colspan="3">JUMLAH ANGGOTA</td>
+            <td rowspan="2">STRUKTUR ORGANISASI</td>
+            <td colspan="3">DASAR LEMBAGA</td>
+            <td rowspan="2">RENCANA KERJA</td>
+            <td rowspan="2">PERTEMUAN RUTIN</td>
+            <td rowspan="2">ADMINISTRASI RUTIN</td>
+            <td rowspan="2">BUKU ADMINISTRASI KEGIATAN</td>
+            <td colspan="2">BOP</td>
+            <td rowspan="2">PENGECEKAN FISIK</td>
+            <td colspan="3">KEGIATAN PEMELIHARAAN</td>
+            <td rowspan="2">KETERANGAN</td>
+            <td rowspan="2">DIUPLOAD OLEH</td>
           </tr>
           <tr class="text-center">
-            <th scope="row">PRIA</th>
-            <th scope="row">WANITA</th>
-            <th scope="row">MISKIN</th>
-            <th scope="row">AD</th>
-            <th scope="row">ART</th>
-            <th scope="row">SK</th>
-            <th scope="row">SUMBER DANA</th>
-            <th scope="row">JUMLAH</th>
-            <th scope="row">TANGGAL</th>
-            <th scope="row">SUMBER DANA</th>
-            <th scope="row">JUMLAH DANA</th>
+            <td scope="row">PRIA</td>
+            <td scope="row">WANITA</td>
+            <td scope="row">MISKIN</td>
+            <td scope="row">AD</td>
+            <td scope="row">ART</td>
+            <td scope="row">SK</td>
+            <td scope="row">SUMBER DANA</td>
+            <td scope="row">JUMLAH</td>
+            <td scope="row">TANGGAL</td>
+            <td scope="row">SUMBER DANA</td>
+            <td scope="row">JUMLAH DANA</td>
           </tr>
-        </thead>
-        <tbody>
+        </tdead>
+        <tbody style = "height : 300px; overflow-y: scroll;">
           @foreach($kppdatas as $kppdata)
             <tr>
-                <th scope="row">{{ (($kppdatas->currentPage()-1) *10 ) + $loop->iteration }}</th>
-                <th>{{ $kppdata->NAMA_KAB }}</th>
-                <th>{{ $kppdata->NAMA_KEC }}</th>
-                <th><a href = "/kpp/{{ $kppdata->id }}">{{ $kppdata->NAMA_DESA }}</a></th>
-                <th>{{ $kppdata->bkm }}</th>
-                <th>{{ $kppdata->lokasi_bdi_bpm }}</th>
-                <th>{{ $kppdata->nama_kpp }}</th>
-                <th>{{ $kppdata->Status }}</th>
-                <th>{{ $kppdata->ketua_kpp }}</th>
-                <th>{{ $kppdata->ketua_kpp_hp }}</th>
-                <th>{{ $kppdata->anggota_pria }}</th>
-                <th>{{ $kppdata->anggota_wanita }}</th>
-                <th>{{ $kppdata->anggota_miskin }}</th>
-                <th>{{ $kppdata->struktur_organisasi }}
+                <td scope="row">{{ (($kppdatas->currentPage()-1) *10 ) + $loop->iteration }}</td>
+                <td>{{ $kppdata->NAMA_KAB }}</td>
+                <td>{{ $kppdata->NAMA_KEC }}</td>
+                <td><a href = "/kpp/{{ $kppdata->id }}">{{ $kppdata->NAMA_DESA }}</a></td>
+                <td>{{ $kppdata->bkm }}</td>
+                <td>{{ $kppdata->lokasi_bdi_bpm }}</td>
+                <td>{{ $kppdata->nama_kpp }}</td>
+                <td>{{ $kppdata->Status }}</td>
+                <td>{{ $kppdata->ketua_kpp }}</td>
+                <td>{{ $kppdata->ketua_kpp_hp }}</td>
+                <td>{{ $kppdata->anggota_pria }}</td>
+                <td>{{ $kppdata->anggota_wanita }}</td>
+                <td>{{ $kppdata->anggota_miskin }}</td>
+                <td>{{ $kppdata->struktur_organisasi }}
                        @php
                        if(is_null($kppdata->scan_struktur_organisasi)){
                        }else{
@@ -73,8 +73,8 @@
                        @php                
                        }
                        @endphp
-                </th>
-                <th>{{ $kppdata->anggaran_dasar }}
+                </td>
+                <td>{{ $kppdata->anggaran_dasar }}
                        @php
                        if(is_null($kppdata->scan_anggaran_dasar)){
                        }else{
@@ -83,8 +83,8 @@
                        @php                
                        }
                        @endphp
-                </th>
-                <th>{{ $kppdata->anggaran_rumah_tangga }}
+                </td>
+                <td>{{ $kppdata->anggaran_rumah_tangga }}
                        @php
                        if(is_null($kppdata->scan_anggaran_rumah_tangga)){
                        }else{
@@ -93,8 +93,8 @@
                        @php                
                        }
                        @endphp
-                </th>
-                <th>{{ $kppdata->surat_keputusan }}
+                </td>
+                <td>{{ $kppdata->surat_keputusan }}
                        @php
                        if(is_null($kppdata->scan_surat_keputusan)){
                        }else{
@@ -103,8 +103,8 @@
                        @php                
                        }
                        @endphp
-                </th>
-                <th>{{ $kppdata->rencana_kerja }}
+                </td>
+                <td>{{ $kppdata->rencana_kerja }}
                        @php
                        if(is_null($kppdata->scan_rencana_kerja)){
                        }else{
@@ -113,9 +113,9 @@
                        @php                
                        }
                        @endphp
-                </th>
-                <th>{{ $kppdata->pertemuan_rutin }}</th>
-                <th>{{ $kppdata->administrasi_rutin }}
+                </td>
+                <td>{{ $kppdata->pertemuan_rutin }}</td>
+                <td>{{ $kppdata->administrasi_rutin }}
                        @php
                        if(is_null($kppdata->scan_administrasi_rutin)){
                        }else{
@@ -124,8 +124,8 @@
                        @php                
                        }
                        @endphp
-                </th>
-                <th>{{ $kppdata->buku_inventaris_kegiatan }}
+                </td>
+                <td>{{ $kppdata->buku_inventaris_kegiatan }}
                        @php
                        if(is_null($kppdata->scan_buku_inventaris_kegiatan)){
                        }else{
@@ -134,15 +134,15 @@
                        @php                
                        }
                        @endphp
-                </th>
-                <th></th>
-                <th></th>
-                <th>{{ $kppdata->kegiatan_pengecekan }}</th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th>{{ $kppdata->keterangan_lain_lain }}</th>
-                <th>{{ $kppdata->name }}
+                </td>
+                <td></td>
+                <td></td>
+                <td>{{ $kppdata->kegiatan_pengecekan }}</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>{{ $kppdata->keterangan_lain_lain }}</td>
+                <td>{{ $kppdata->name }}</td>
             </tr> 
           @endforeach
         </tbody>

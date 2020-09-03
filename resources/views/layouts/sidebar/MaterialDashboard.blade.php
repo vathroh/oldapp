@@ -19,7 +19,6 @@
               <p>Ganti Password</p>
             </a>
           </li>
-          @can('input-data')
           <li class="nav-item active dropdown">
 				<a class="nav-link" href="javascript:;" id="navbarDropdownProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					<i class="material-icons">engineering</i>
@@ -32,6 +31,7 @@
 						<p>Data KPP</p>
 					</a>
 			</li>
+			@can('input-data')
 			<li>
 					<a class="nav-link" data-toggle="modal" data-target="#exampleModal">
 						<i class="material-icons">library_add</i>
@@ -44,11 +44,11 @@
 						<p>Edit Data</p>
 					</a>
 			</li>
+          @endcan
 			<li>
 					<a class="nav-link" href = "/rekap-data-kpp">
 						<i class="material-icons">pending_actions</i>
 						<p>Rekap</p>
 					</a>
           </li>
-          @endcan
           </ul>

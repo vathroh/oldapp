@@ -3,19 +3,18 @@
       Pengecekan Fisik
     </label>
     <div class="data-group-isi">
-      <form>
         <div class="input">
-          <input type="text" class="form-control" id="pengecekan_fisik" name="pengecekan_fisik" value="{{ $kppdata->kegiatan_pengecekan }}" readonly>
+          {{ $kppdata->kegiatan_pengecekan }} 
         </div>    
         <div class="button">
           <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#pengecekan_fisik_modal">
             Edit
           </button>
         </div>
-      </form>
     </div>
 </div>
 
+<div class ="table">
 <table class="table table-bordered table-hover table-fixed" style="overflow-x:auto;">
   <thead>
     <tr>
@@ -38,7 +37,7 @@
     @endforeach
   </tbody>
 </table>
-
+</div>
 
 <!-- Modal -->
 <div class="modal fade" id="pengecekan_fisik_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

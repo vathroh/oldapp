@@ -6,9 +6,9 @@
             <div class="card">
                 <div class="card-header">Edit User {{ $user->name }}</div>
                 <div class="card-body">
-                    <form action="{{ route('admin.users.update', $user)}}" method="post">
-                        @csrf
-                        {{ method_field('put') }}
+                    <form action="{{ route('admin.users.destroy', $user) }}" method="post">
+						@csrf
+						{{ method_field('DELETE') }}
                         <div class="form-group row">
 							<div class="col-md-2 text-md-right">
 								<label for="email">Email</label>
@@ -84,10 +84,10 @@
 						</div>
                         
                         <div class="text-center">
-							<button type="submit" class="btn btn-primary">
-								Update
-							</button>
+							<a href = "{{ route('admin.users.index') }}"><button type="button" class="btn btn-primary">Batal</button></a>
+							<button type="submit" class="btn btn-warning">Delete</button>
                         </div>
+                        
                     </form>
                 </div>
 

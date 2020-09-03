@@ -2,13 +2,12 @@
   <div class="form-group">
 
     <label>       
-      Pencatatan/Administrasi Rutin
+      Pencatatan / Administrasi Rutin
     </label>
 
     <div class="data-group-isi">
-      <form>
         <div class="input">
-          <input type="text" class="form-control" id="administrasi_rutin" name="administrasi_rutin" value="{{ $kppdata->administrasi_rutin }}" readonly>
+          {{ $kppdata->administrasi_rutin }}
         </div>
 
         <div class="isifile">
@@ -28,7 +27,6 @@
             Edit & Upload
           </button>
         </div>
-      </form>
     </div>
 </div>
 <!-- </div> -->

@@ -1,10 +1,17 @@
 <div class="document_item biaya_operasional">
-    <h6>Biaya Operasional  KPP</h6>
-    <input type="text" class="form-control" id="biaya_operasional" name="biaya_operasional" value="{{$kppdata->bop}}" readonly>
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#biaya_operasional_modal">
-    Edit
-	</button>
+    <div class = "form-group">
+        <label>Biaya Operasional  KPP</label>
+        <div class = "data-group-isi">
+            <div class = "input">
+                {{$kppdata->bop}}
+            </div>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#biaya_operasional_modal">
+                Edit
+            </button>
+        </div>
+    </div>
 </div>
+<div class = "table">
 <table class="table table-bordered table-hover">
   <thead>
     <tr>
@@ -40,7 +47,8 @@
       <td style="text-align:right">{{ $jumlah2 }}</td>
     </tr>
   </tbody>
-</table>
+</table>i
+</div>
 
 
 <!-- Modal -->

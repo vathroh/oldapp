@@ -5,9 +5,8 @@
     </label>
 
     <div class="data-group-isi">
-      <form>
         <div class="input">
-          <input type="text" class="form-control" id="buku_inventaris_kegiatan" name="buku_inventaris_kegiatan" value="{{ $kppdata->buku_inventaris_kegiatan }}" readonly>
+          {{ $kppdata->buku_inventaris_kegiatan }}
         </div>
 
         <div class="isifile">
@@ -27,7 +26,6 @@
             Edit & Upload
           </button>
         </div>
-      </form>
     </div>
 </div>
 

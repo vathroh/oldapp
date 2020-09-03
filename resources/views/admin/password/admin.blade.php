@@ -11,7 +11,9 @@
         @method('put')
         @csrf
             <div class="form-group row my-5">
-                <label for="password" class="col-md-4 text-md-right">Masukkan Password Baru</label>
+				<div class="col-md-4 text-md-right">
+					<label for="password">Masukkan Password Baru</label>
+                </div>
                 <div class="col-md-6">
 					<input id="change_password" type="password" class="form-control" name="change_password">
                 </div>

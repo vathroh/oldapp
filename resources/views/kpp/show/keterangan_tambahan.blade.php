@@ -1,5 +1,5 @@
 <div class="document_item keterangan_tambahan">
-	<textarea readonly class="form-control" id="keterangan_tambahan" name="keterangan_tambahan" rows="7">{{$kppdata->keterangan_lain_lain}}</textarea readonly>
+    {{$kppdata->keterangan_lain_lain}}
 </div>
 	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#keterangan_lain_lain_modal">
     Edit
@@ -17,19 +17,13 @@
         </button>
       </div>
       <div class="modal-body">
-
         <form method="post" action="/kpp/keterangan-lain-lain/{{$kppdata->id}}" enctype="multipart/form-data">
           	@method('patch')
 	        @csrf
-			<textarea class="form-control" id="keterangan_tambahan" name="keterangan_tambahan" rows="7">{{$kppdata->keterangan_lain_lain}}</textarea>
-
+			<textarea autofocus class="form-control" id="keterangan_tambahan" name="keterangan_tambahan" rows="7">{{$kppdata->keterangan_lain_lain}}</textarea>
           <button type="submit" class="btn btn-primary mt-5">Simpan</button>
-
         </form>
-
-
       </div>
-
     </div>
   </div>
 </div>

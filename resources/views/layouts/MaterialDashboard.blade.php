@@ -16,30 +16,26 @@
   <!-- CSS Files -->
   <link href="{{ asset('MaterialDashboard/css/material-dashboard.css?v=2.1.2') }}" rel="stylesheet" />
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/css/bootstrap.min.css" integrity="sha384-VCmXjywReHh4PwowAiWNagnWcLhlEJLA5buUprzK8rxFgeH0kww/aWY76TfkUoSX" crossorigin="anonymous">
-
   @yield('head')
 
 </head>
 
 <body class="">
   <div class="wrapper ">
-    <div class="sidebar" data-color="purple" data-background-color="white" data-image="../assets/img/sidebar-1.jpg">
+    <div class="sidebar" data-color="purple" data-background-color="white" data-image="{{ asset('favicon-32x32.png') }}">
       <!--
         Tip 1: You can change the color of the sidebar using: data-color="purple | azure | green | orange | danger"
 
         Tip 2: you can also add an image using data-image tag
       -->
-      <div class="logo"><a href="#" class="simple-text logo-normal">
-        Kotaku - Jawa Tengah-1
-      </a></div>
-      <div class="sidebar-wrapper">
-        
-@include('layouts.sidebar.MaterialDashboard')
-
+      <div class="logo"><div class="simple-text logo-normal">
+		  <img src ="{{ asset('favicon-32x32.png') }}"><br>
+        Kotaku <br> OSP-1 Jawa Tengah-1
+      </div></div>
+      <div class="sidebar-wrapper">        
+		@include('layouts.sidebar.MaterialDashboard')
       </div>
     </div>
-
-
 
     <div class="main-panel">
       <!-- Navbar -->
@@ -86,7 +82,7 @@
                         @else
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                {{ Auth::user()->name }} <span class="caret"></span>
+                                <i class="material-icons">person</i> {{ Auth::user()->name }} <span class="caret"></span>
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
@@ -127,21 +123,11 @@
 
               @yield('content')
 
-
-
-
-
             </div>
 
           </div>
         </div>
       </div>
-
-
-
-
-
-
         <!-- Footer -->
         <footer class="footer">
           <div class="container-fluid">

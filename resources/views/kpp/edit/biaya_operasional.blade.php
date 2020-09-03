@@ -18,7 +18,6 @@
         @method('patch')
         @csrf
         <div class="data-group data-kpp">
-
             <div class="form-group">
                 <label for="tanggal">
                     TANGGAL PENERIMAAN

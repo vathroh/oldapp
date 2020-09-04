@@ -31,7 +31,7 @@
 						<p>Data KPP</p>
 					</a>
 			</li>
-			@can('input-data')
+			@can('edit-users')
 			<li>
 					<a class="nav-link" data-toggle="modal" data-target="#exampleModal">
 						<i class="material-icons">library_add</i>

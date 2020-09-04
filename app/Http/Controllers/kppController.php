@@ -115,7 +115,7 @@ class kppController extends Controller
     public function show($id)
     {
 		if (Gate::denies('edit-users')) {
-            return redirect(route('kpp.index'));
+            return redirect('/kpp');
         }
 
         
@@ -149,7 +149,7 @@ class kppController extends Controller
     public function edit($id)
     {
 		if (Gate::denies('edit-users')) {
-            return redirect(route('kpp.index'));
+            return redirect('/kpp');
         }
 
 

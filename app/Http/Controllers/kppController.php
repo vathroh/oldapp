@@ -62,7 +62,7 @@ class kppController extends Controller
 
     public function create(Request $request)
     {
-		if (Gate::denies('input-data')) {
+		if (Gate::denies('edit-users')) {
             return redirect(route('kpp.index'));
         }
 
@@ -114,7 +114,7 @@ class kppController extends Controller
 
     public function show($id)
     {
-		if (Gate::denies('input-data')) {
+		if (Gate::denies('edit-users')) {
             return redirect(route('kpp.index'));
         }
 
@@ -148,7 +148,7 @@ class kppController extends Controller
 
     public function edit($id)
     {
-		if (Gate::denies('input-data')) {
+		if (Gate::denies('edit-users')) {
             return redirect(route('kpp.index'));
         }
 

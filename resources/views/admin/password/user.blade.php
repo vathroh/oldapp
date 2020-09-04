@@ -19,7 +19,7 @@
                 </div>
             </div>
             <div class="text-center">
-				<a href = "/home"><button type="submit" class="btn btn-primary">Batal</button></a>
+				<a href = "/home"><button type="button" class="btn btn-primary">Batal</button></a>
 				<button type="submit" class="btn btn-primary">Ganti Password</button>
             </div>
     </form>

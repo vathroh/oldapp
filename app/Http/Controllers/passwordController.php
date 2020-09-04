@@ -24,14 +24,19 @@ class passwordController extends Controller
 	}
 	
 	public function storeByAdmin(Request $request, $id)
-	{
+    {
+        If($request->change_password == ''){
+            return redirect('/pass-by-admin/' . $id . '/edit');
+        } else {
 
 		User::where('id', $id)->update([
 			'password' => Hash::make($request->change_password)
 		]);
 
-		return redirect (route('admin.users.index'));
-	}
+        return redirect (route('admin.users.index'));
+        
+        }
+    }
 	
 	public function user()
     {
@@ -44,12 +49,17 @@ class passwordController extends Controller
 	}
 	
 	public function storeByUser(Request $request)
-	{
+    {
+        If($request->change_password == ''){
+            return redirect('/pass-by-user/' . Auth::user()->id . '/edit');
+        } else {
+
 		User::where('id', Auth::user()->id)->update([
 			'password' => Hash::make($request->change_password)
 		]);
-
-		return redirect ('/home');
-	}
+        return redirect ('/home');
+        
+    	}
 	
+    }
 }

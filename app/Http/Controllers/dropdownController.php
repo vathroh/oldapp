@@ -11,7 +11,7 @@ class dropdownController extends Controller
     public function kecamatan(Request $request)
     {
         $kode_kab = $request->get('kode_kab');
-        $kecamatan = allsubdistrict::where('kode_kab',  $kode_kab)->get(['kode_kec', 'nama_kec']);
+        $kecamatan = allvillage::where('KD_KAB',  $kode_kab)->distinct()->get(['KD_KEC', 'NAMA_KEC']);
         return response()->json($kecamatan);   
     }
 

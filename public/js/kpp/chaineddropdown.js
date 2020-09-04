@@ -10,7 +10,7 @@ $(document).ready(function () {
             $("#kecamatan").empty();
             $("#kecamatan").append('<option value="">Kecamatan</option>');
             $.each(data, function (index, kecamatanObj) {
-                $("#kecamatan").append('<option value="' + kecamatanObj.kode_kec + '">' + kecamatanObj.nama_kec + '</option>');
+                $("#kecamatan").append('<option value="' + kecamatanObj.KD_KEC + '">' + kecamatanObj.NAMA_KEC + '</option>');
             });
         });
     });

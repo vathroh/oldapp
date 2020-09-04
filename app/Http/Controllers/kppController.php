@@ -52,10 +52,6 @@ class kppController extends Controller
               ->pluck('zone')            
             )))->get();
               
-              
-        //return $kabupaten;
-//        $kppdatas = $this->kppdata()->paginate(10);
-
         return view('kpp.index', compact(['kabupaten', 'kppdatas']));
     }
 

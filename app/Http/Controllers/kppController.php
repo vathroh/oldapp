@@ -39,7 +39,7 @@ class kppController extends Controller
      */
     public function index()
     {
-        $kppdatas = $this->coba2()->paginate(10);
+        $kppdatas = $this->coba2()->orderBy('kppdatas.updated_at')->paginate(10);
         
         $kabupaten=alldistrict::whereIn('kode_kab', explode(', ', str_replace(array('["',  '"]'),'', DB::table('work_zones')
             ->where('id', function($query){
@@ -58,10 +58,8 @@ class kppController extends Controller
 
     public function create(Request $request)
     {
-		if (Gate::denies('edit-users')) {
-            return redirect(route('kpp.index'));
-        }
-
+        switch (Auth::user()->hasAnyRoles(['admin', 'fasilitator'])){ 
+        case true  :
 
         $kelurahan=allvillage::get();
         $kabupaten=alldistrict::whereIn('kode_kab', explode(', ', str_replace(array('["',  '"]'),'', DB::table('work_zones')
@@ -83,6 +81,12 @@ class kppController extends Controller
         } else {
             $id=kppdata::where('kode_desa', $request->kelurahan)->get()[0]['id'];
             return redirect('/kpp/'.$id);
+        }
+
+        break;
+        default:    
+            return redirect(route('kpp.index'));
+        break;
         }
     }
 
@@ -110,10 +114,7 @@ class kppController extends Controller
 
     public function show($id)
     {
-		if (Gate::denies('edit-users')) {
-            return redirect('/kpp');
-        }
-
+        If (Auth::user()->hasAnyRoles(['admin', 'fasilitator'])) {
         
 		$kabupaten=alldistrict::whereIn('kode_kab', explode(', ', str_replace(array('["',  '"]'),'', DB::table('work_zones')
             ->where('id', function($query){
@@ -139,16 +140,15 @@ class kppController extends Controller
         $jumlah = DB::table('kpp_operating_funds')->select(DB::raw('SUM(jumlah) as jumlah'))->get();
 
         return view('kpp.show', compact(['kppdata', 'kelurahan', 'bkmdata', 'kabupaten', 'pengurus_kpp', 'kpp_pertemuans', 'kpp_operating_funds', 'user', 'data_pengecekan_fisiks', 'infrastruktures_maintenances', 'jumlah']));
-    }
+    } else {
 
+        return redirect('/kpp');
+    }
+}
 
     public function edit($id)
     {
-		if (Gate::denies('edit-users')) {
-            return redirect('/kpp');
-        }
-
-
+	   If (Auth::user()->hasAnyRoles(['admin', 'fasilitator'])) {
         $kppdata=kppdata::find($id);
         $kelurahan=allvillage::where('KD_KEL', $kppdata->kode_desa)->get();
         $bkmdata=bkmdata::where('kelurahan_id', $kppdata->kode_desa)->get();
@@ -163,6 +163,10 @@ class kppController extends Controller
               ->pluck('zone')            
         )))->get();
         return view('kpp.edit', compact(['kppdata', 'bkmdata', 'kelurahan', 'kabupaten']));
+        
+       } else {
+           return redirect('/kpp');
+       }
     }
 
     

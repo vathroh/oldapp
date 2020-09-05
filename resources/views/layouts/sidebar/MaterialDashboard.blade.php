@@ -30,8 +30,8 @@
 						<i class="material-icons">library_books</i>
 						<p>Data KPP</p>
 					</a>
-			</li>
-			@can('edit-users')
+            </li>
+            @if (Auth::user()->hasAnyRoles(['admin', 'fasilitator']))
 			<li>
 					<a class="nav-link" data-toggle="modal" data-target="#exampleModal">
 						<i class="material-icons">library_add</i>
@@ -44,7 +44,7 @@
 						<p>Edit Data</p>
 					</a>
 			</li>
-          @endcan
+            @endif
 			<li>
 					<a class="nav-link" href = "/rekap-data-kpp">
 						<i class="material-icons">pending_actions</i>

@@ -40,8 +40,13 @@ class kppController extends Controller
     public function index()
     {
         $kppdatas = $this->coba2()->orderBy('kppdatas.updated_at')->paginate(10);
-        
-        $kabupaten=alldistrict::whereIn('kode_kab', explode(', ', str_replace(array('["',  '"]'),'', DB::table('work_zones')
+              
+        return view('kpp.index', compact(['kppdatas']));
+    }
+    
+    public function find()
+    {
+		$kabupaten=alldistrict::whereIn('kode_kab', explode(', ', str_replace(array('["',  '"]'),'', DB::table('work_zones')
             ->where('id', function($query){
                 $query->select('work_zone_id')
                       ->from('job_descs')
@@ -51,10 +56,9 @@ class kppController extends Controller
             })->get()
               ->pluck('zone')            
             )))->get();
-              
-        return view('kpp.index', compact(['kabupaten', 'kppdatas']));
+            
+        return view('kpp.find', compact('kabupaten'));
     }
-
 
     public function create(Request $request)
     {

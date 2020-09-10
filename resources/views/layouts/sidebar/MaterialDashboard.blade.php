@@ -33,13 +33,13 @@
             </li>
             @if (Auth::user()->hasAnyRoles(['admin', 'fasilitator']))
 			<li>
-					<a class="nav-link" data-toggle="modal" data-target="#exampleModal">
-						<i class="material-icons">library_add</i>
-						<p>Tambah Data</p>
-					</a>
+				<a class="nav-link" href = "/kpp-find">
+					<i class="material-icons">library_add</i>
+					<p>Tambah Data</p>
+				</a>
 			</li>
 			<li>
-					<a class="nav-link" data-toggle="modal" data-target="#exampleModal">
+					<a class="nav-link" href = "/kpp-find">
 						<i class="material-icons">rule</i>
 						<p>Edit Data</p>
 					</a>
@@ -51,4 +51,41 @@
 						<p>Rekap</p>
 					</a>
           </li>
+          <li class="nav-item active dropdown">
+				<a class="nav-link" href="javascript:;" id="navbarDropdownProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					<i class="material-icons">engineering</i>
+					<p>BLOG</p>
+				</a>
+			</li>
+			@if (Auth::user()->hasAnyRoles(['admin', 'fasilitator']))
+			<li>				
+				<a class="dropdown-item" href="/blog/post">
+					<i class="material-icons">list</i>
+					<p>ARTIKEL BLOG</p>
+				</a>
+            </li>
+            @endif
+            @if (Auth::user()->hasAnyRoles(['admin', 'osp']))
+            <li>				
+				<a class="dropdown-item" href="/blog/category">
+					<i class="material-icons">library_books</i>
+					<p>KATEGORI</p>
+				</a>
+            </li>
+            @endif
+            @if (Auth::user()->hasAnyRoles(['admin', 'osp']))
+            <li class="nav-item active dropdown">
+				<a class="nav-link" href="/pustaka">
+					<i class="material-icons">engineering</i>
+					<p>PUSTAKA</p>
+				</a>
+			</li>
+			@endif
+ 			<li>				
+				<a class="dropdown-item" href="#">
+					<i class="material-icons">library_books</i>
+					<p></p>
+				</a>
+            </li>
+          
           </ul>

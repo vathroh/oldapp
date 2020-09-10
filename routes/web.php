@@ -9,11 +9,14 @@
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
 |
-*/
+
 
 Route::get('/', function () {
     return view('landing');
 });
+*/
+
+Route::get('/', 'Blog\blogController@home');
 
 
 Auth::routes();
@@ -28,8 +31,26 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->middleware('can:mana
     Route::resource('/users', 'UsersController', ['except' => ['create', 'store']]);
 });
 
+// BLOG
+Route::get('/blog-osp1', 'Blog\blogController@index');
+Route::get('/blog-home', 'Blog\blogController@home');
+Route::get('/blog-osp1/{id}', 'Blog\blogController@show');
+Route::get('/blog/post-delete/{id}/{img}/edit', 'Blog\PostController@editImage1');
+Route::put('/blog/delete/{id}/{img}', 'Blog\PostController@deleteImage1');
+Route::resource('/blog/post', 'Blog\PostController');
+Route::resource('blog/category', 'Blog\CategoryController');
+//Route::get('/blog/dashboard', 'Blog\UserController@index');
 
-Route::get('/blog/dashboard', 'Blog\UserController@index');
+
+//LIBRARY
+Route::get('pustaka-osp1', 'Blog\blogController@library');
+Route::get('pustaka-osp1/{id}', 'Blog\blogController@single_library');
+Route::resource('/pustaka', 'libraryController');
+Route::get('/pustaka-file/{id}/{file}/delete', 'libraryController@deleteFile');
+
+
+//DOWNLOAD
+Route::get('download/{folder}/{file}', 'downloadController@download');
 
 Route::get('/doc', 'DocumentsController@index');
 Route::get('/table', 'DocumentsController@table');
@@ -127,6 +148,7 @@ Route::get('/kpp-download-rekap-kelurahan/{KD_KEC}', 'kppController@exportRekapK
 Route::get('/rekap-data-kpp', 'kppController@rekap_all');
 Route::get('/kpp-rekap-data-kecamatan/{KD_KEC}', 'kppController@rekap_kecamatan');
 Route::get('/kpp-rekap-data-kelurahan/{KD_KEL}', 'kppController@rekap_kelurahan');
+Route::get('/kpp-find', 'kppController@find');
 
 //EDIT PASSWORD
 Route::get('/pass-by-admin/{id}/edit', 'passwordController@admin');

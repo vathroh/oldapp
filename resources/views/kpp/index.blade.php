@@ -4,7 +4,7 @@
 <div class="card">
   <div class="card-header card-header-primary">
     <h4 class="card-title ">KPP</h4>
-    <p class="card-category"> Data KPP yang sudah diinput </p>
+    <p class="card-category"> Data KPP yang sudah diinput</p>
   </div>
   <div class="card-body">
     <div class="table-responsive tableFixHead">

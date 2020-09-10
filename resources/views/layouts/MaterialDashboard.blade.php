@@ -28,10 +28,10 @@
 
         Tip 2: you can also add an image using data-image tag
       -->
-      <div class="logo"><div class="simple-text logo-normal">
+      <div class="logo"><a href = "/"><div class="simple-text logo-normal">
 		  <img src ="{{ asset('favicon-32x32.png') }}"><br>
         Kotaku <br> OSP-1 Jawa Tengah-1
-      </div></div>
+      </div></a></div>
       <div class="sidebar-wrapper">        
 		@include('layouts.sidebar.MaterialDashboard')
       </div>
@@ -62,10 +62,10 @@
             </form>
             <ul class="navbar-nav">
               <li class="nav-item">
-                <a class="nav-link" href="#">
-                  <i class="material-icons">dashboard</i>
+                <a class="nav-link" href="/">
+                  <i class="material-icons">home</i>
                   <p class="d-lg-none d-md-block">
-                    Stats
+                    Home
                   </p>
                 </a>
               </li>              
@@ -138,68 +138,7 @@
               </div>
               </div>
 
-
-              <!-- Modal -->
-  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel"></h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-
-
-          <form method="get" action="/kpp/create" enctype="multipart/form-data">
-
-            @csrf
-
-            <div class="data-group data-lokasi">
-              <div class="form-group">
-                <label for="kabupaten">
-                  Kabupaten
-                </label>
-                <select name="kabupaten" id="kabupaten" class="form-control input-lg dynamic" required>
-                  <option value="">Kabupaten</option>
-                  @foreach($kabupaten as $kab)
-                  <option value="{{$kab->kode_kab}}">{{$kab->nama_kab}}</option>
-                  @endforeach
-                </select>
-              </div>
-              <div class="form-group">
-                <label for="kecamatan">Kecamatan</label>
-                <select name="kecamatan" id="kecamatan" class="form-control input-lg dynamic" required>
-                  <option value="">Kecamatan</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label for="kelurahan">
-                  Kelurahan
-                </label>
-                <select name="kelurahan" id="kelurahan" class="form-control input-lg dynamic" required>
-                  <option value="">Kelurahan</option>
-                </select>
-              </div>                
-            </div>
-
-
-            <div class="text-center">
-
-              <button type="button" class="btn btn-primary mt-5" data-dismiss="modal" aria-label="Close">Batal</button>
-              <button type="submit" class="btn btn-primary mt-5">Submit</button>
-            </div>
-          </form>
-
-
-        </div>
-      </div>
-    </div>
-  </div>
-
 @yield('script')
-<script src="{{ asset('js/kpp/chaineddropdown.js') }}" defer></script>
 <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script> -->
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/js/bootstrap.min.js" integrity="sha384-XEerZL0cuoUbHE4nZReLT7nx9gQrQreJekYhJD9WNWhH8nEW+0c5qq7aIo2Wl30J" crossorigin="anonymous"></script>

@@ -58,7 +58,7 @@
 								</label>
 							</div>
 							<div class="col-md-8">
-								<select name="job_title" id="job_title" class="form-control input-lg dynamic">
+								<select name="job_title" id="job_title" class="form-control input-lg dynamic" required>
 									<option value="{{ $user->job_title_id}}">{{ $user->job_title }} </option>
 									@foreach($job_titles as $job_title)
 									<option value="{{ $job_title->id}}">{{ $job_title->job_title}} </option>
@@ -74,7 +74,7 @@
 								</label>
 							</div>
 							<div class="col-md-8">
-								<select name="district" id="district" class="form-control input-lg dynamic">
+								<select name="district" id="district" class="form-control input-lg dynamic" required>
 									<option value="{{ $user->district }}">{{ $user->district }} {{ $user->nama_kab }}</option>
 									@foreach($kabupaten as $kab)
 									<option value="{{ $kab->district }}">{{ $kab->district }} {{ $kab->NAMA_KAB }}</option>

@@ -19753,4 +19753,78 @@ Copyright (c) 2015 Daniel Eden
   }
 }
 
+.image-row{
+
+border: 1px solid black; 
+border-radius: 8px;
+
+}
+
+.image-row-item{
+display: flex;
+text-align:center;
+align-items:center;
+}
+
+.image-row-item a{
+
+}
+
+.image-row-item-space{
+width: 50%;
+}
+
+.image-row-item-space img{
+border-radius: 8px;
+padding: 10px;
+}
+
+.button-row-item-space{
+width:100%;
+display:flex;
+justify-content:space-around;
+padding: 10px 0;
+}
+
+.pustaka{
+display: flex;	
+justify-content: center;
+}
+
+.pustaka a.tambah-pustaka{ 
+text-decoration: none;
+padding: 10px 10px 0 10px;
+display: flex;
+}
+
+.pustaka a.tambah-pustaka:hover { 
+text-decoration: none;
+color: white;
+background-color: blue;
+padding: 10px 10px 0 10px;
+border: 1px solid black;
+border-radius: 30px;
+}
+
+.pustaka .record{
+margin-top: 10px;
+padding : 10px;
+border: 1px solid grey;
+border-radius: 5px;	
+}
+
+.pustaka .record .subject{
+font-size: 18px;
+font-weight: 600;
+}
+
+.pustaka .record .download{
+display: flex;
+}
+
+.pustaka .record .download a{
+padding-right: 20px;
+}
+
+
 /*# sourceMappingURL=dashboard-free.css.map */

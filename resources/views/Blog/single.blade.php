@@ -13,7 +13,7 @@
 					<div class="clearfix post_detail">
 						<h2 style="color:black;">{{ $post->pluck('title')[0] }}</a></h2>
 					<div class="clearfix post-meta">
-						<p><span>Ditulis oleh {{ $post->pluck('name')[0] }} </span> <span>{{ $post->pluck('job_title')[0] }}</span> <span>{{ Str::title($post->pluck('nama_kab')[0]) }}</span></p>
+						<p><span>Diposting oleh {{ $post->pluck('name')[0] }} </span> <span>{{ $post->pluck('job_title')[0] }}</span> <span>{{ Str::title($post->pluck('nama_kab')[0]) }}</span></p>
 					</div>
 					<div class ="image1">
 						<img src="{{ asset('/storage/blog/' . $post->pluck('image1')[0]) }}" alt=""/>

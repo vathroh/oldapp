@@ -38,7 +38,7 @@
 					<div class="clearfix post_detail">
 						<h2><a href="/blog-osp1/{{ $post->id }}">{{ $post->title }}</a></h2>
 						<div class="clearfix post-meta">
-							<p><span>Ditulis oleh {{ $post->name }} </span> <span>{{ $post->job_title }}</span> <span>{{ Str::title($post->nama_kab) }}</span></p>
+							<p><span>Diposting oleh {{ $post->name }} </span> <span>{{ $post->job_title }}</span> <span>{{ Str::title($post->nama_kab) }}</span></p>
 						</div>
 						<div class="clearfix post_excerpt">
 					    	<img src="{{ asset('/storage/blog/' . $post->image1) }}" alt=""/>

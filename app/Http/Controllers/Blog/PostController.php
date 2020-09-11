@@ -25,11 +25,20 @@ class PostController extends Controller
     
     public function index()
     {
+		if (Auth::user()->hasAnyRoles(['admin', 'blog']))
+		{
 		$posts = post::join('post_categories', 'posts.id', '=', 'post_categories.post_id')
             ->join('categories', 'post_categories.category_id', '=', 'categories.id')
             ->orderBy('posts.updated_at', 'desc')
             ->where('posts.user_id', Auth::user()->id)
 			->get();
+		} else {
+		$posts = post::join('post_categories', 'posts.id', '=', 'post_categories.post_id')
+            ->join('categories', 'post_categories.category_id', '=', 'categories.id')
+            ->orderBy('posts.updated_at', 'desc')
+            ->where('posts.user_id', Auth::user()->id)
+			->get();
+		}
 		
 		return view('Blog.post.index', compact(['posts']));
 	}

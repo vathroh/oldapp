@@ -1,7 +1,7 @@
 @extends('layouts.bickery')
 
 @section('content')
-<div class="bgded overlay" style="background-image:url('/blog/images/background.jpeg');"> 
+<div class="bgded overlay" style="background-image:url('/blog/images/background3.jpeg');"> 
 	<div id="pageintro" class="hoc clear">
 		<div class="flexslider basicslider">
 			<ul class="slides">

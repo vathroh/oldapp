@@ -1,4 +1,4 @@
-@extends('layouts.ProfilMaterialDashboard')
+@extends('layouts.MaterialDashboard')
 
 @section('head')
 <link href="{{ asset('css/kpp/style.css') }}" rel="stylesheet">

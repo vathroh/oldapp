@@ -30,7 +30,6 @@ class PostController extends Controller
 		$posts = post::join('post_categories', 'posts.id', '=', 'post_categories.post_id')
             ->join('categories', 'post_categories.category_id', '=', 'categories.id')
             ->orderBy('posts.updated_at', 'desc')
-            ->where('posts.user_id', Auth::user()->id)
 			->get();
 		} else {
 		$posts = post::join('post_categories', 'posts.id', '=', 'post_categories.post_id')

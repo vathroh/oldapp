@@ -403,6 +403,7 @@ text-transform: uppercase;
 width: 100%;}
 
 /*popular post*/
+
 .single_sidebar .popular_post ul{}
 .single_sidebar .popular_post ul li{}
 .single_sidebar .popular_post ul li a{display: block;

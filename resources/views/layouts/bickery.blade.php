@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>OSP-1</title>
+		<title>KOTAKU OSP-1 JATENG-1</title>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 		<script src="{{ asset('js/app.js') }}" defer></script>
@@ -19,7 +19,7 @@
 				<h3 class="heading">OSP-1 JAWA TENGAH-1</h3>
 				<nav>
 					<ul class="nospace inline pushright uppercase">
-						<li><a href="index.html"><i class="fa fa-lg fa-home"></i></a></li>
+						<li><a href="/"><i class="fa fa-lg fa-home"></i></a></li>
 						<li><a href="#">About</a></li>
 						<li><a href="#">Contact</a></li>
 						<li><a href="#">Wilayah Dampingan</a></li>

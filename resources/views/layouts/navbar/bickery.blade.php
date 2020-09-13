@@ -5,8 +5,8 @@
 				<li><img src = "{{ asset('favicon-32x32.png') }}"></li>
 				<li><a href="/">Home</a></li>
 				<li><a href="/blog-osp1">BLOG</a></li>
-				<li><a href="#">PENGUMUMAN</a></li>
-				<li><a href="/pustaka-osp1">PUSTAKA</a></li>
+				<li><a href="/pustaka-osp1/pengumuman">PENGUMUMAN</a></li>
+				<li><a href="/pustaka-osp1/pustaka">PUSTAKA</a></li>
 			</ul>
 		</nav>
 		<div class="fl_right">
@@ -28,7 +28,7 @@
 					<a href = "/profil">{{ Auth::user()->name }}</a>
 				</li>
 				<li>
-					<a href = "/kpp">MASUK</a>
+					<a href = "/kpp">DASHBOARD</a>
 				</li>
 				<li>
 					<div class="dropdown-menu dropdown-menu-right">

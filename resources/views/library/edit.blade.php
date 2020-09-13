@@ -2,7 +2,8 @@
 
 @section('content')
 
-<form method="post" action="{{ route('pustaka.store') }}" enctype="multipart/form-data">
+<form method="post" action="/pustaka/{{$library->id}}" enctype="multipart/form-data">
+	@method('put')
     @csrf
     <div class="card">
       <div class="card-header card-header-primary">
@@ -15,6 +16,19 @@
             </div>
             <div class="col-md-10">
                 <input id="subject" type="text" class="form-control" name="subject" value="{{ $library->subject }}" required autofocus>
+            </div>
+        </div>
+        <div class="form-group row">
+			<div class="col-md-2 text-md-right">
+				<label for="description">Kategori</label>
+            </div>
+            <div class="col-md-10">
+                <select class="custom-select" id="category" name="category">
+					<option value="{{ $library->category_id }}">{{ $library->category_id }}{{ $library->name }}</option>
+					@foreach($categories as $category)
+					<option value="{{ $category->id }}">{{ $category->name }}</option>
+					@endforeach
+				</select>
             </div>
         </div>
 		<div class="form-group row">

@@ -44,7 +44,7 @@
 		$jumlah1 = str_replace('[{"jumlah":"', '', $jumlah);
 		$jumlah2 = str_replace('"}]', '', $jumlah1);	
       @endphp
-      <td style="text-align:right">{{ $jumlah2 }}</td>
+      <td style="text-align:right"></td>
     </tr>
   </tbody>
 </table>i

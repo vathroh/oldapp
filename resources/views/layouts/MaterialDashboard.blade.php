@@ -7,7 +7,7 @@
   <!-- CSRF Token -->
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>
-    Kotaku - Jawa Tengah-1
+    KOTAKU OSP-1 JATENG-1
   </title>
   <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
   <!--     Fonts and icons     -->
@@ -16,6 +16,7 @@
   <!-- CSS Files -->
   <link href="{{ asset('MaterialDashboard/css/material-dashboard.css?v=2.1.2') }}" rel="stylesheet" />
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/css/bootstrap.min.css" integrity="sha384-VCmXjywReHh4PwowAiWNagnWcLhlEJLA5buUprzK8rxFgeH0kww/aWY76TfkUoSX" crossorigin="anonymous">
+  <script src="{{ asset('MaterialDashboard/js/core/jquery.min.js') }}"></script>
   @yield('head')
 
 </head>
@@ -143,7 +144,7 @@
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/js/bootstrap.min.js" integrity="sha384-XEerZL0cuoUbHE4nZReLT7nx9gQrQreJekYhJD9WNWhH8nEW+0c5qq7aIo2Wl30J" crossorigin="anonymous"></script>
 <!--   Core JS Files -->
-  <script src="{{ asset('MaterialDashboard/js/core/jquery.min.js') }}"></script>
+  
   <script src="{{ asset('MaterialDashboard/js/core/popper.min.js') }}"></script> 
   <script src="{{ asset('MaterialDashboard/js/core/bootstrap-material-design.min.js') }}"></script>
   <script src="{{ asset('MaterialDashboard/js/plugins/perfect-scrollbar.jquery.min.js') }}"></script> 

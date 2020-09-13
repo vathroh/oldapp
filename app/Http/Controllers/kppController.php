@@ -39,7 +39,7 @@ class kppController extends Controller
      */
     public function index()
     {
-        $kppdatas = $this->coba2()->orderBy('kppdatas.updated_at')->paginate(10);
+        $kppdatas = $this->coba2()->orderBy('kppdatas.updated_at', 'desc')->paginate(10);
               
         return view('kpp.index', compact(['kppdatas']));
     }

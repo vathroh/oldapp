@@ -22,7 +22,7 @@
                         </div>
 					</div>
 					<div class="clearfix post_detail">
-						<h2><a href="/blog-osp1/{{ $post->id }}">{{ $post->title }}</a></h2>
+						<h2><a href="/blog-osp1/{{ $post->slug }}">{{ $post->title }}</a></h2>
 						<div class="clearfix post-meta">
 							<p><span>Ditulis oleh {{ $post->name }} </span> <span>{{ $post->job_title }}</span> <span>{{ Str::title($post->nama_kab) }}</span></p>
 						</div>
@@ -30,7 +30,7 @@
 					    	<img src="{{ asset('/storage/blog/' . $post->image1) }}" alt=""/>
 							<p> {!! $post->exerpt !!} >>> </p>
 						</div>
-							<a href="/blog-osp1/{{ $post->id }}">Continue Reading</a>
+							<a href="/blog-osp1/{{ $post->slug }}">Lanjut baca</a>
 					</div>
 				</div>	
 					@endforeach		

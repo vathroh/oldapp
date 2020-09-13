@@ -43,10 +43,11 @@ Route::resource('blog/category', 'Blog\CategoryController');
 
 
 //LIBRARY
-Route::get('pustaka-osp1', 'Blog\blogController@library');
-Route::get('pustaka-osp1/{id}', 'Blog\blogController@single_library');
+Route::get('pustaka-osp1/{library}', 'Blog\blogController@library');
+Route::get('pustaka-osp1/{id}/{library}', 'Blog\blogController@single_library');
 Route::resource('/pustaka', 'libraryController');
 Route::get('/pustaka-file/{id}/{file}/delete', 'libraryController@deleteFile');
+Route::resource('/library-category', 'libraryCategoryController');
 
 
 //DOWNLOAD

@@ -11,7 +11,6 @@
 		<div class="clearfix main_content floatleft">				
 			<div class="clearfix content">
 				<div class="clearfix single_content">
-
 					<div class="pustaka form-group row">
 						<div class="col-md-8 record" style="margin-top: 90px;">
 							<div class="subject">{{ $library->subject }}</div>
@@ -28,6 +27,7 @@
 							</div>
 						</div>
 					</div>
+				
 			</div>
 		</div>
 	</div>

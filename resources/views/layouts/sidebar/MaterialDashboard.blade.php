@@ -75,13 +75,25 @@
             @endif
             @if (Auth::user()->hasAnyRoles(['admin', 'osp']))
             <li class="nav-item active dropdown">
-				<a class="nav-link" href="/pustaka">
+				<a class="nav-link" href="#">
 					<i class="material-icons">engineering</i>
-					<p>PUSTAKA</p>
+					<p>LIBRARY</p>
 				</a>
 			</li>
-			@endif
+			 <li>				
+				<a class="dropdown-item" href="/library-category">
+					<i class="material-icons">library_books</i>
+					<p>KATEGORI</p>
+				</a>
+            </li>
  			<li>				
+				<a class="dropdown-item" href="/pustaka">
+					<i class="material-icons">library_books</i>
+					<p>BERKAS</p>
+				</a>
+            </li>
+            @endif
+            <li>				
 				<a class="dropdown-item" href="#">
 					<i class="material-icons">library_books</i>
 					<p></p>

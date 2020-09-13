@@ -1,7 +1,7 @@
 @extends('layouts.bickery')
 
 @section('page_title')
-<div class = "page-title">Pustaka</div>
+<div class = "page-title">{{ ucfirst($library) }}</div>
 @endsection
 
 @section('content')
@@ -12,7 +12,7 @@
 			<div class="clearfix content">
 				<div class="clearfix single_content">
 
-				@foreach($libraries as $library)
+				@foreach($libraries->where('category_id', $category_id) as $library)
 					<div class="pustaka form-group row">
 						<div class="col-md-8 record">
 							<div class="subject">{{ $library->subject }}</div>

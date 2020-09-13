@@ -17,6 +17,19 @@
                 <input id="subject" type="text" class="form-control" name="subject" required autofocus>
             </div>
         </div>
+        <div class="form-group row">
+			<div class="col-md-2 text-md-right">
+				<label for="description">Kategori</label>
+            </div>
+            <div class="col-md-10">
+                <select class="custom-select" id="category" name="category">
+					<option selected>Pilih Kategori</option>
+					@foreach($categories as $category)
+					<option value="{{ $category->id }}">{{ $category->name }}</option>
+					@endforeach
+				</select>
+            </div>
+        </div>
 		<div class="form-group row">
 			<div class="col-md-2 text-md-right">
 				<label for="description">Keterangan</label>

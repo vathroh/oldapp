@@ -38,6 +38,7 @@ class PostController extends Controller
             ->where('posts.user_id', Auth::user()->id)
 			->get();
 		}
+
 		
 		return view('Blog.post.index', compact(['posts']));
 	}
@@ -120,14 +121,14 @@ class PostController extends Controller
     
     public function edit($id)
     {
-		if (Auth::user()->hasAnyRoles(['admin', 'fasilitator']))
+		if (Auth::user()->hasAnyRoles(['admin','blog', 'fasilitator']))
 		{
 		$categories = category::all();
         $post = post::where('posts.id', $id)
-                        ->where('user_id', Auth::user()->id)
 						->join('post_categories', 'posts.id', '=', 'post_categories.post_id')
 						->join('categories', 'post_categories.category_id', '=', 'categories.id')
-						->first();
+						->first();						
+
 		return view('Blog.post.edit', compact(['post', 'categories']));
 		}
     }

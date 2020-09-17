@@ -150,6 +150,10 @@ Route::get('/rekap-data-kpp', 'kppController@rekap_all');
 Route::get('/kpp-rekap-data-kecamatan/{KD_KEC}', 'kppController@rekap_kecamatan');
 Route::get('/kpp-rekap-data-kelurahan/{KD_KEL}', 'kppController@rekap_kelurahan');
 Route::get('/kpp-find', 'kppController@find');
+Route::get('/rekap-kpp/{column}/{param}', 'kppController@rekap_item');
+Route::get('/rekap-kpp/{column}/{param}/{zone}/{zone_id}', 'kppController@rekap_item_zone');
+Route::get('/rekap-kpp-administrasi-tiga-bulan/{zone}/{zone_id}', 'kppController@rekap_administrasi_rutin');
+
 
 //EDIT PASSWORD
 Route::get('/pass-by-admin/{id}/edit', 'passwordController@admin');

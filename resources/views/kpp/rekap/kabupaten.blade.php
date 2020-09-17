@@ -67,42 +67,42 @@
 				<th>{{ $loop->iteration }}</th>
                 <th><a href = "/kpp-rekap-data-kecamatan/{{$kppdata->KD_KAB}}">{{ $kppdata->NAMA_KAB }}</a></th>
                 <th>{{ $kppdata->jml_kpp }}</th>
-                <th>{{ $kppdata->perlu_perhatian }}</th>
-                <th>{{ $kppdata->awal }}</th>
-                <th>{{ $kppdata->terbangun }}</th>
-                <th>{{ $kppdata->berdaya }}</th>
-                <th>{{ $kppdata->mandiri }}</th>
+                <th><a href = "/rekap-kpp/Status/Perlu Perhatian/KD_KAB/{{$kppdata->KD_KAB}}">{{ $kppdata->perlu_perhatian }}</a></th>
+                <th><a href = "/rekap-kpp/Status/Awal/KD_KAB/{{$kppdata->KD_KAB}}">{{ $kppdata->awal }}</a></th>
+                <th><a href = "/rekap-kpp/Status/Terbangun/KD_KAB/{{$kppdata->KD_KAB}}">{{ $kppdata->terbangun }}</a></th>
+                <th><a href = "/rekap-kpp/Status/Berdaya/KD_KAB/{{$kppdata->KD_KAB}}">{{ $kppdata->berdaya }}</a></th>
+                <th><a href = "/rekap-kpp/Status/Mandiri/KD_KAB/{{$kppdata->KD_KAB}}">{{ $kppdata->mandiri }}</a></th>
                 <th>{{ $kppdata->jml_pria }}</th>
                 <th>{{ $kppdata->jml_wanita }}</th>
                 <th>{{ $kppdata->jml_miskin }}</th>
-                <th>{{ $kppdata->jml_struktur_organisasi }}</th>
-                <th>{{ $kppdata->jml_anggaran_dasar }}</th>
-                <th>{{ $kppdata->jml_anggaran_rumah_tangga }}</th>
-                <th>{{ $kppdata->jml_surat_keputusan }}</th>
-                <th>{{ $kppdata->jml_rencana_kerja }}</th>
-                <th>{{ $kppdata->jml_pertemuan_rutin_setiap_bulan }}</th>
-                <th>{{ $kppdata->jml_pertemuan_rutin_setiap_tiga_bulan }}</th>
-                <th>{{ $kppdata->jml_pertemuan_rutin_setiap_enam_bulan }}</th>
-                <th>{{ $kppdata->jml_pertemuan_rutin_insidentil }}</th>
-                <th>{{ $kppdata->jml_pertemuan_rutin_tidak_pernah }}</th>
-                <th>{{ $kppdata->jml_administrasi_bulanan_lengkap }}</th>
-                <th>{{ $kppdata->jml_administrasi_bulanan_minimalis }}</th>
-                <th>{{ $kppdata->jml_administrasi_triwulan }}</th>
-                <th>{{ $kppdata->jml_administrasi_tidak_ada }}</th>
-                <th>{{ $kppdata->jml_buku_inventaris_kegiatan }}</th>
-                <th>{{ $kppdata->jml_bop  }}</th>
+                <th><a href = "/rekap-kpp/struktur_organisasi/Ada/KD_KAB/{{$kppdata->KD_KAB}}">{{ $kppdata->jml_struktur_organisasi }}</a></th>
+                <th><a href = "/rekap-kpp/anggaran_dasar/Ada/KD_KAB/{{$kppdata->KD_KAB}}">{{ $kppdata->jml_anggaran_dasar }}</a></th>
+                <th><a href = "/rekap-kpp/anggaran_rumah_tangga/Ada/KD_KAB/{{$kppdata->KD_KAB}}">{{ $kppdata->jml_anggaran_rumah_tangga }}</a></th>
+                <th><a href = "/rekap-kpp/surat_keputusan/Ada/KD_KAB/{{$kppdata->KD_KAB}}">{{ $kppdata->jml_surat_keputusan }}</a></th>
+                <th><a href = "/rekap-kpp/rencana_kerja/Ada/KD_KAB/{{$kppdata->KD_KAB}}">{{ $kppdata->jml_rencana_kerja }}</a></th>
+                <th><a href = "/rekap-kpp/pertemuan_rutin/Setiap Bulan/KD_KAB/{{$kppdata->KD_KAB}}">{{ $kppdata->jml_pertemuan_rutin_setiap_bulan }}</a></th>
+                <th><a href = "/rekap-kpp/pertemuan_rutin/Setiap Tiga Bulan/KD_KAB/{{$kppdata->KD_KAB}}">{{ $kppdata->jml_pertemuan_rutin_setiap_tiga_bulan }}</a></th>
+                <th><a href = "/rekap-kpp/pertemuan_rutin/Setiap Enam Bulan/KD_KAB/{{$kppdata->KD_KAB}}">{{ $kppdata->jml_pertemuan_rutin_setiap_enam_bulan }}</a></th>
+                <th><a href = "/rekap-kpp/pertemuan_rutin/Insidentil/KD_KAB/{{$kppdata->KD_KAB}}">{{ $kppdata->jml_pertemuan_rutin_insidentil }}</a></th>
+                <th><a href = "/rekap-kpp/pertemuan_rutin/Tidak Pernah/KD_KAB/{{$kppdata->KD_KAB}}">{{ $kppdata->jml_pertemuan_rutin_tidak_pernah }}</a></th>
+                <th><a href = "/rekap-kpp/administrasi_rutin/Administrasi Bulanan Lengkap/KD_KAB/{{$kppdata->KD_KAB}}">{{ $kppdata->jml_administrasi_bulanan_lengkap }}</a></th>
+                <th><a href = "/rekap-kpp/administrasi_rutin/Administrasi Bulanan Minimalis/KD_KAB/{{$kppdata->KD_KAB}}">{{ $kppdata->jml_administrasi_bulanan_minimalis }}</a></th>
+                <th><a href = "/rekap-kpp-administrasi-tiga-bulan/KD_KAB/{{$kppdata->KD_KAB}}">{{ $kppdata->jml_administrasi_triwulan }}</a></th>
+                <th><a href = "/rekap-kpp/administrasi_rutin/Tidak Ada/KD_KAB/{{$kppdata->KD_KAB}}">{{ $kppdata->jml_administrasi_tidak_ada }}</a></th>
+                <th><a href = "/rekap-kpp/buku_inventaris_kegiatan/Ada/KD_KAB/{{$kppdata->KD_KAB}}">{{ $kppdata->jml_buku_inventaris_kegiatan }}</a></th>
+                <th><a href = "/rekap-kpp/bop/Ada/KD_KAB/{{$kppdata->KD_KAB}}">{{ $kppdata->jml_bop  }}</a></th>
                 <th>{{ $kppdata->jml_dana_bop }}</th>
-                <th>{{ $kppdata->jml_pengecekan_belum_pernah }}</th>
-                <th>{{ $kppdata->jml_pengecekan_belum_dilakukan }}</th>
-                <th>{{ $kppdata->jml_pengecekan_sudah_dilakukan }}</th>
-                <th>{{ $kppdata->jml_kegiatan_perbaikan }}</th>
+                <th><a href = "/rekap-kpp/kegiatan_pengecekan/Belum Pernah/KD_KAB/{{$kppdata->KD_KAB}}">{{ $kppdata->jml_pengecekan_belum_pernah }}</a></th>
+                <th><a href = "/rekap-kpp/kegiatan_pengecekan/Belum Dilakukan/KD_KAB/{{$kppdata->KD_KAB}}">{{ $kppdata->jml_pengecekan_belum_dilakukan }}</a></th>
+                <th><a href = "/rekap-kpp/kegiatan_pengecekan/Sudah Dilakukan/KD_KAB/{{$kppdata->KD_KAB}}">{{ $kppdata->jml_pengecekan_sudah_dilakukan }}</a></th>
+                <th><a href = "/rekap-kpp/jumlah_kegiatan_perbaikan/0/KD_KAB/{{$kppdata->KD_KAB}}">{{ $kppdata->jml_kegiatan_perbaikan }}</th>
                 <th>{{ $kppdata->jml_dana_perbaikan }}</th>
             </tr>
             @endforeach
             <tr>
                 <th colspan="2">JUMLAH</th>
                 <th>{{ $rekapkpp[0]->jml_kpp }}</th>
-                <th>{{ $rekapkpp[0]->perlu_perhatian }}</th>
+                <th><a href = "/rekap-kpp/Status/Perlu Perhatian">{{ $rekapkpp[0]->perlu_perhatian }}</a></th>
                 <th>{{ $rekapkpp[0]->awal }}</th>
                 <th>{{ $rekapkpp[0]->terbangun }}</th>
                 <th>{{ $rekapkpp[0]->berdaya }}</th>

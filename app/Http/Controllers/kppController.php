@@ -294,8 +294,48 @@ class kppController extends Controller
               
 
         return view('kpp.rekap.kelurahan', compact(['kabupaten', 'kppdatas', 'rekapkpp']));
-	}
-	
+    }
+
+    public function rekap_item($column, $param)
+    {
+        return DB::table('kpp_data_view')->where($column, $param)->get();
+    }
+
+    public function rekap_item_zone($column, $param, $zone, $zone_id)
+    {
+        $nothing = DB::table('kpp_data_view')->where($zone, $zone_id)
+                                          ->where($column, '!=', 'Ada')->get();
+        $noPertemuanRutin = DB::table('kpp_data_view')->WhereNull($column)->where($zone, $zone_id)
+                                                             ->orWhereNotIn($column, ['Setiap Bulan', 'Setiap Tiga Bulan', 'Setiap Enam Bulan', 'Insidentil'])
+                                                             ->where($zone, $zone_id)->get();
+        
+        $noAdministrasiRutin = DB::table('kpp_data_view')
+            ->WhereNull($column)->where($zone, $zone_id)
+            ->orWhereNotIn($column, ['Administrasi Bulanan Lengkap', 'Administrasi Bulanan Minimalis', 'Administrasi Triwulan/Selebihnya'])
+            ->where($zone, $zone_id)->get();
+
+        $noKegiatanPengecekan = DB::table('kpp_data_view')
+            ->WhereNull($column)->where($zone, $zone_id)
+            ->orWhereNotIn($column, ['Belum Dilakukan', 'Sudah Dilakukan'])
+            ->where($zone, $zone_id)->get();
+
+        $kegiatanPerbaikan = DB::table('kpp_data_view')
+            ->where($column, '>', 0)
+            ->where($zone, $zone_id)
+            ->get();
+        $kppdatas = DB::table('kpp_data_view')->where($zone, $zone_id)->where($column, $param)->get();
+        return view('kpp.detail.index', compact(['kppdatas', 'noPertemuanRutin', 'nothing', 'zone_id', 'column', 'param', 'noAdministrasiRutin', 'noKegiatanPengecekan', 'kegiatanPerbaikan']));
+    }
+
+
+    public function rekap_administrasi_rutin($zone, $zone_id)
+    {
+        $column = 'administrasi_rutin';
+        $param = 'Administrasi Triwulan/Selebihnya';
+        $kppdatas = DB::table('kpp_data_view')->where($zone, $zone_id)->where('administrasi_rutin', 'Administrasi Triwulan/Selebihnya')->get();
+        return view('kpp.detail.index', compact(['kppdatas', 'zone_id', 'column', 'param']));
+    }
+
     public function rekap()
 	{
 			return DB::table('kpp_data_view')->selectRaw('*, count(*) as jml_kpp,

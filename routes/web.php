@@ -21,7 +21,7 @@ Route::get('/', 'Blog\blogController@home');
 
 Auth::routes();
 // Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/home', 'profilController@index')->name('home');
+Route::get('/home', 'DashboardController@index')->name('home');
 Route::resource('/profil', 'profilController');
 
 
@@ -60,7 +60,6 @@ Route::get('/bkm', 'DocumentsController@create');
 Route::get('/ksm', 'DocumentsController@ksm');
 Route::get('/foto', 'DocumentsController@foto');
 Route::get('/upload', 'DocumentsController@upload');
-
 Route::get('/docbkm', 'DocumentsController@docbkm');
 Route::post('/uploaddoc', 'DocumentsController@uploaddoc');
 
@@ -109,7 +108,9 @@ Route::get('/dokumen', 'VillagesController@jenisDokumen');
 Route::get('/kppkecamatan', 'dropdownController@kecamatan');
 Route::get('/kppkelurahan', 'dropdownController@kelurahan');
 
-Route::get('/dashboard', 'DashboardController@index');
+
+// DASHBOARD
+Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
 Route::get('/inputyear', 'DashboardController@create');
 Route::get('/coba', 'DashboardController@coba');
 
@@ -160,4 +161,35 @@ Route::get('/pass-by-admin/{id}/edit', 'passwordController@admin');
 Route::put('/pass-by-admin/{id}', 'passwordController@storeByAdmin');
 Route::get('/pass-by-user/{id}/edit', 'passwordController@user');
 Route::put('/pass-by-user/{id}', 'passwordController@storeByUser');
+
+
+//ACTIVITIES : PELATIHAN | RAKOR | KBIK | EVALUASI | TES
+Route::resource('/activity', 'activityController');
+Route::resource('/subjects', 'subjectsController');
+Route::resource('/evaluation-answers', 'evaluationAnswerController');
+Route::resource('/activities-category', 'activitiesCategoryController');
+Route::resource('/evaluation-questions', 'evaluationQuestionController');
+
+Route::get('/activities', 'activityController@activities');
+Route::get('/activity/{activity}', 'activityController@activity');
+Route::get('/activity/{activity}/{activity_item}', 'activityController@activity_item');
+Route::get('/schedule/{activity}/{activity_item}', 'activityController@schedule');
+Route::get('/lesson/{activity}/{activity_item}', 'activityController@lesson');
+Route::get('/attendance/{activity}/{activity_item}', 'activityController@attendance');
+Route::post('/records-attendance/{activity}/{activity_item}', 'activityController@records_attendance');
+Route::get('/lesson-download/{library_id}', 'activityController@lesson_download');
+Route::get('/training-evaluation/{activity_id}/{subject_id}', 'evaluationController@index');
+Route::get('/dropdown-question', 'evaluationAnswerController@dropdown');
+Route::get('/certificate_page/{activity}/{activity_item}', 'activityController@certificate_page');
+Route::post('/certificate', 'activityController@certificate');
+Route::get('/listing-attendant/{activity}/{activity_item}', 'activityController@listing_attendant');
+
+Route::get('/ajax-listing-attendant-find-name/', 'activityController@ajaxAttendanceFindName');
+Route::get('/ajax-listing-attendant/', 'activityController@ajaxAttendance');
+Route::post('/ajax-listing-register/', 'activityController@ajaxRegister');
+Route::get('/ajax-listing-ready', 'activityController@ready');
+Route::get('/ajax-listing-moveReg', 'activityController@moveReg');
+Route::delete('/ajax-listing-delete', 'activityController@deleteAjax');
+
+Route::post('/training-evaluation/{activity_id}/{subject_id}', 'evaluationController@store');
 

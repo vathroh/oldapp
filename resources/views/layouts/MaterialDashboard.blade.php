@@ -12,10 +12,10 @@
   <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
   <!--     Fonts and icons     -->
   <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+  <link rel="stylesheet" href="{{ asset('MaterialDashboard/css/font-awesome.min.css') }}">
   <!-- CSS Files -->
   <link href="{{ asset('MaterialDashboard/css/material-dashboard.css?v=2.1.2') }}" rel="stylesheet" />
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/css/bootstrap.min.css" integrity="sha384-VCmXjywReHh4PwowAiWNagnWcLhlEJLA5buUprzK8rxFgeH0kww/aWY76TfkUoSX" crossorigin="anonymous">
+  <link rel="stylesheet" href="{{ asset('/MaterialDashboard/css/bootstrap.min.css') }}">
   <script src="{{ asset('MaterialDashboard/js/core/jquery.min.js') }}"></script>
   @yield('head')
 
@@ -62,6 +62,14 @@
               </div>
             </form>
             <ul class="navbar-nav">
+				<li class="nav-item">
+					<a class="nav-link" href="/dashboard">
+						<i class="material-icons">dashboard</i>
+						<p class="d-lg-none d-md-block">
+							Dashboard
+						</p>
+					</a>
+				</li>  
               <li class="nav-item">
                 <a class="nav-link" href="/">
                   <i class="material-icons">home</i>

@@ -13,6 +13,7 @@ class libraryController extends Controller
 {
     public function index()
     {
+		
 		$libraries = library::select('libraries.id', 'libraries.subject', 'libraries.description', 'libraries.file', 
 		'libraries.link', 'categories_of_libraries.name'
 		)->join('categories_of_libraries', 'libraries.category_id', '=', 'categories_of_libraries.id')->paginate(10);

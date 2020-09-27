@@ -9,6 +9,11 @@ use App\categories_of_library;
 
 class libraryCategoryController extends Controller
 {
+	public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     public function index()
     {
         $categories = categories_of_library::paginate(10);

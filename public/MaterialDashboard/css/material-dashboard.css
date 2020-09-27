@@ -1,18 +1,4 @@
-/*!
 
- =========================================================
- * Material Dashboard - v2.1.0
- =========================================================
-
- * Product Page: https://www.creative-tim.com/product/material-dashboard
- * Copyright 2020 Creative Tim (http://www.creative-tim.com)
-
- =========================================================
-
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
- */
-/*     brand Colors              */
 .card {
   font-size: .875rem;
 }
@@ -19824,6 +19810,50 @@ display: flex;
 
 .pustaka .record .download a{
 padding-right: 20px;
+}
+
+.dashboard-icon-container {
+display : flex;
+flex-wrap : wrap;
+justify-content: center;
+}
+
+.dashboard-card {
+border-radius: 3px;
+display : flex;
+flex-wrap : wrap;
+padding: 10px;
+margin: 20px;
+justify-content: center;
+text-align: center;
+box-shadow: 0 5px 5px 2px rgba(0, 0, 0, 0.56);
+background-color: #38bfc1;
+color: #fff;
+width: 150px;
+}
+
+.dashboard-card a{
+text-decoration: none;
+color: #fff;
+}
+
+.dashboard-card:hover{
+background-color: #eab84d;
+color: #fff;
+}
+
+.dashboard-card a:hover{
+text-decoration: none;
+color: #fff;
+}
+
+.card-icon i {
+font-size: 50px;
+}
+
+.activity .activity_item{
+display: flex !important;
+backgroud-color: green;
 }
 
 

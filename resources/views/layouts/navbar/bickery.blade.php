@@ -28,7 +28,7 @@
 					<a href = "/profil">{{ Auth::user()->name }}</a>
 				</li>
 				<li>
-					<a href = "/kpp">DASHBOARD</a>
+					<a href = "/dashboard">DASHBOARD</a>
 				</li>
 				<li>
 					<div class="dropdown-menu dropdown-menu-right">

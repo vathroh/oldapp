@@ -199,6 +199,65 @@ class activityController extends Controller
 		return $pdf->setPaper('a4', 'landscape')->download('certificate.pdf');
 	}
 	
+	
+	public function monitoring($activity, $activity_item)
+	{
+		$activities = activity::get();
+		$start = activity::where('id', $activity)->pluck('start_date')->first();
+		$finish = activity::where('id', $activity)->pluck('finish_date')->first();
+		$role =activity_participant::where('user_id', Auth::user()->id)->get();		
+		$period =  Carbon::parse($start)->diffInDays($finish)+1;
+				
+		$attendances = activity_participant::join('users', 'activity_participants.user_id', '=', 'users.id')->join('attendance_records', 'attendance_records.user_id', '=', 'users.id')->where('attendance_records.activity_id', $activity_item)->where('role', 'PESERTA')->selectRaw('Date(attendance_records.created_at) as tanggal, users.name, users.id')->get();
+
+		$noAttendances = activity_participant::join('users', 'activity_participants.user_id', '=', 'users.id')->leftjoin('attendance_records', 'attendance_records.user_id', '=', 'users.id')->where('activity_participants.activity_id', $activity_item)->where('role', 'PESERTA')->selectRaw('users.id, name, Date(attendance_records.created_at) as tanggal')->get();
+		
+		$subjects = subject::all();
+		$evaluations = evaluation::join('users', 'users.id', '=', 'evaluations.user_id')->where('activity_id', $activity_item)->get();
+		$participants = activity_participant::join('users', 'users.id', '=', 'activity_participants.user_id')->where('activity_id', $activity_item)->get();
+		
+		return view('activities.monitoring', compact(['period', 'subjects', 'evaluations', 'participants', 'attendances', 'noAttendances', 'role', 'activity','activities', 'activity_item']));
+	}
+	
+	
+	
+	public function participants($activity, $activity_item)
+	{
+		$activities = activity::get();
+		$role =activity_participant::distinct()->where('user_id', Auth::user()->id)->get();	
+		$participants = User::distinct('users.id')->join('activity_participants', 'activity_participants.user_id', '=', 'users.id')->join('job_descs', 'users.id', '=', 'job_descs.user_id')->join('job_titles', 'job_descs.job_title_id', '=', 'job_titles.id')->join('work_zones', 'job_descs.work_zone_id', '=', 'work_zones.id')->join('allvillages', 'work_zones.district', '=', 'allvillages.KD_KAB')->where('activity_id', $activity_item)->where('role', 'PESERTA')->get(['users.id', 'name', 'job_title', 'NAMA_KAB']);
+		
+		return view('activities.participants', compact(['role', 'participants', 'activity','activities', 'activity_item']));
+	}	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	public function listing_attendant($activity, $activity_item)
 	{	
 		$role =activity_participant::where('user_id', Auth::user()->id)->get();

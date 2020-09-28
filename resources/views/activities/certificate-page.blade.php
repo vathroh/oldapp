@@ -9,7 +9,10 @@
 	<div class="card-body">			
 		<form method="post" action="/certificate">
 			@csrf
-			@if($role =="PESERTA" and $jml_hadir >= 2)
+			@if($role =="PESERTA" and $jml_hadir >= 3)
+				<button type="submit" class="btn btn-primary">Download Sertifikat</button>
+			@endif
+			@if($role =="PEMANDU" OR $role =="PANITIA")
 				<button type="submit" class="btn btn-primary">Download Sertifikat</button>
 			@endif
 		</form>

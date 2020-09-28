@@ -105,7 +105,7 @@ class subjectsController extends Controller
     public function update(Request $request, $id)
     {
 		$activity = activity::where('id', $request->activity)->pluck('name')->first();
-		$library_category_id = categories_of_library::where('name', 'PELATIHAN')->pluck('id')->first();
+	 	$library_category_id = categories_of_library::where('name', 'PELATIHAN')->pluck('id')->first();
 		
 		if($request->hasFile('file'))
 		{

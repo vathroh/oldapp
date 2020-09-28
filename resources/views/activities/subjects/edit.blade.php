@@ -116,6 +116,26 @@
 				</div>
 			</div>
         </div>
+        <div class="form-group row">
+			<div class="col-md-2 text-md-right">
+				<label for="link">Link Materi</label>
+            </div>
+            <div class="col-md-10">
+                <input id="link" type="text" class="form-control" name="link">
+            </div>
+        </div>
+        <div class  = "d-flex">
+			<div class="col-md-2 text-right">
+				<label for="file">Upload file</label>
+			</div>
+			<div class="col-md-8">
+				<div class="d-flex">
+					<div class="custom-file">
+						<input type="file" class="file-input" id="customFile"  name="file">
+					</div>
+				</div>
+			</div>
+		</div>
         <div class="text-center mt-5">
             <button type="submit" class="btn btn-primary">Simpan</button>
         </div>

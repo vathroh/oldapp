@@ -108,7 +108,7 @@
     <li class="nav-item active dropdown">
     	<a class="nav-link" href="/activities">
 			<i class="material-icons">engineering</i>
-			<p>CAPACITY BUILDING</p>
+			<p>KEGIATAN</p>
 		</a>
 	</li>
 	@if (Auth::user()->hasAnyRoles(['admin', 'osp']))
@@ -140,12 +140,6 @@
 		<a class="nav-link" href="/evaluation-answers">
 			<i class="material-icons">engineering</i>
 			<p>JAWAB</p>
-		</a>
-	</li>
-	<li class="nav-item dropdown">
-		<a class="nav-link" href="/evaluation">
-			<i class="material-icons">engineering</i>
-			<p>EVALUASI</p>
 		</a>
 	</li>
 	@endif

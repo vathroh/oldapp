@@ -49,7 +49,7 @@ class subjectsController extends Controller
             $file_name = Str::slug($request->subject, '_') . '.' . $extension;            
             
             Storage::disk('public')->putFileAS('library', $request->file, $file_name);            
-
+			
             library::create([
             'description'   	=> $activity,
             'subject'       	=> $request->subject,
@@ -104,16 +104,50 @@ class subjectsController extends Controller
     
     public function update(Request $request, $id)
     {
+		$activity = activity::where('id', $request->activity)->pluck('name')->first();
+		$library_category_id = categories_of_library::where('name', 'PELATIHAN')->pluck('id')->first();
+		
+		if($request->hasFile('file'))
+		{
+			$id = subject::max('id');
+            $extension = $request->file->getClientOriginalExtension();
+            $file_name = Str::slug($request->subject, '_') . '.' . $extension;            
+            
+            Storage::disk('public')->putFileAS('library', $request->file, $file_name);            
+			
+            library::create([
+            'description'   	=> $activity,
+            'subject'       	=> $request->subject,
+            'category_id'		=> $library_category_id,
+            'link'         		=> $request->link,
+            'file' 				=> $file_name
+			]);	
+		}
+		
+		
+		if($request->link != "")
+		{
+            library::create([
+            'description'   	=> $activity,
+            'subject'       	=> $request->subject,
+            'category_id'		=> $library_category_id,
+            'link'         		=> $request->link,
+			]);	
+		}
+		
+		$library_id = library::where('description', $activity)->where('subject', $request->subject)->pluck('id')->first();
+		
         subject::where('id', $id)->update([
-			'activity_id' => $request->activity,
-			'subject' => $request->subject,
-			'date' => $request->date,
-			'instructor1_id' => $request->instructor1,
-			'instructor2_id' => $request->instructor2,
-			'add_info' => $request->add_info,
-			'start_time' => date("H:i", strtotime($request->start_time)),
-			'finish_time' => date("H:i", strtotime($request->finish_time)),
-			'evaluation_sheet' => $request->evaluation_sheet
+			'library_id'		=> $library_id,			
+			'date' 				=> $request->date,			
+			'subject' 			=> $request->subject,
+			'add_info' 			=> $request->add_info,
+			'activity_id' 		=> $request->activity,			
+			'instructor1_id' 	=> $request->instructor1,
+			'instructor2_id' 	=> $request->instructor2,
+			'evaluation_sheet' 	=> $request->evaluation_sheet,
+			'start_time' 		=> date("H:i", strtotime($request->start_time)),
+			'finish_time' 		=> date("H:i", strtotime($request->finish_time))
 		]);
         
         return redirect ('/subjects');                

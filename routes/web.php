@@ -18,18 +18,17 @@ Route::get('/', function () {
 
 Route::get('/', 'Blog\blogController@home');
 
-
 Auth::routes();
 // Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/home', 'DashboardController@index')->name('home');
 Route::resource('/profil', 'profilController');
 
 
-
 //User Management Control
 Route::namespace('Admin')->prefix('admin')->name('admin.')->middleware('can:manage-users')->group(function () {
     Route::resource('/users', 'UsersController', ['except' => ['create', 'store']]);
 });
+
 
 // BLOG
 Route::get('/blog-osp1', 'Blog\blogController@index');
@@ -179,6 +178,7 @@ Route::get('/attendance/{activity}/{activity_item}', 'activityController@attenda
 Route::post('/records-attendance/{activity}/{activity_item}', 'activityController@records_attendance');
 Route::get('/lesson-download/{library_id}', 'activityController@lesson_download');
 Route::get('/training-evaluation/{activity_id}/{subject_id}', 'evaluationController@index');
+Route::get('/activity-evaluation/{activity_id}', 'evaluationController@activityEvaluation');
 Route::get('/dropdown-question', 'evaluationAnswerController@dropdown');
 Route::get('/certificate_page/{activity}/{activity_item}', 'activityController@certificate_page');
 Route::post('/certificate', 'activityController@certificate');
@@ -192,4 +192,4 @@ Route::get('/ajax-listing-moveReg', 'activityController@moveReg');
 Route::delete('/ajax-listing-delete', 'activityController@deleteAjax');
 
 Route::post('/training-evaluation/{activity_id}/{subject_id}', 'evaluationController@store');
-
+Route::post('/activity-evaluation/{activity_id}', 'evaluationController@evaluationActivityStore');

@@ -13,13 +13,20 @@
 			@foreach($noSubjects as $noSubject)
 			<div>{{ $loop->iteration }}. <a href="/training-evaluation/{{$noSubject->activity_id}}/{{$noSubject->id}}">{{ $noSubject->subject }}</a></div>
 			@endforeach
-		</div>
-		
+			
+			@if($activityQuestion < 0 )
+			<div>{{ $noSubjects->count() + 1 }}. <a href="/activity-evaluation/{{ $isActivityQuestions[0]->activity_id }}">Evaluasi Pelaksanaan Pelatihan</a></div>
+			@endif
+		</div>		
 		<div class="mt-3">
 			<span style="font-weight:bold;">Lembar evaluasi yang sudah diisi:</span>
 			@foreach($isSubjects as $isSubject)
 			<div>{{ $loop->iteration }}. {{ $isSubject->subject }}</div>
 			@endforeach
+			
+			@if($activityQuestion > 0 )
+			<div>{{ $noSubjects->count() + 1 }}. Evaluasi Pelaksanaan Pelatihan</div>
+			@endif
 		</div>
 	</div>
 </div>

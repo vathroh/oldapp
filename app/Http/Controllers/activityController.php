@@ -7,6 +7,7 @@ use App\activity_participant;
 use Illuminate\Http\Request;
 use App\activities_category;
 use App\attendance_record;
+use App\evaluation_question;
 use App\evaluation;
 use Carbon\Carbon;
 use App\allvillage;
@@ -111,9 +112,12 @@ class activityController extends Controller
 			->whereIn('id', $subject_id)->get();
 		$noSubjects = subject::where('activity_id', $activity_item)->where('evaluation_sheet', 1)
 			->whereNotIn('id', $subject_id)->get();
-		 
+			
+		$activityQuestion = evaluation::where('activity_id', $activity_item)->where('user_id', Auth::user()->id)->distinct()->where('subject_id', 0)->count();
 		
-		return view('activities.activity-item-sheet', compact(['role', 'isSubjects', 'noSubjects', 'activity_item', 'activity', 'activities', 'activity_categories']));
+		$isActivityQuestions = evaluation_question::where('activity_id', $activity_item)->where('for_all_subjects', 0)->get();
+		
+		return view('activities.activity-item-sheet', compact(['activityQuestion', 'role', 'isActivityQuestions', 'isSubjects', 'noSubjects', 'activity_item', 'activity', 'activities', 'activity_categories']));
 	}
 	
 	
@@ -213,7 +217,7 @@ class activityController extends Controller
 			
 		$users = User::distinct()->join('job_descs', 'job_descs.user_id', '=', 'users.id')
 			->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')
-			->join('allvillages', 'work_zones.district', '=', 'allvillages.KD_KAB')
+			->leftjoin('allvillages', 'work_zones.district', '=', 'allvillages.KD_KAB')
 			->join('job_titles', 'job_titles.id', '=', 'job_descs.job_title_id')
 			->where('district', $request->kode_kabupaten )
 			->whereNotIn('users.id', $registed_user)
@@ -231,7 +235,7 @@ class activityController extends Controller
 					
 		return $users = User::distinct()->join('job_descs', 'job_descs.user_id', '=', 'users.id')
 			->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')
-			->join('allvillages', 'work_zones.district', '=', 'allvillages.KD_KAB')
+			->leftjoin('allvillages', 'work_zones.district', '=', 'allvillages.KD_KAB')
 			->join('job_titles', 'job_titles.id', '=', 'job_descs.job_title_id')
 			->where('users.name', 'like', '%' . $request->nama . '%')
 			->whereNotIn('users.id', $registered_user)
@@ -287,7 +291,7 @@ class activityController extends Controller
 		{
 			$users = User::distinct()->join('job_descs', 'job_descs.user_id', '=', 'users.id')
 				->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')
-				->join('allvillages', 'work_zones.district', '=', 'allvillages.KD_KAB')
+				->leftjoin('allvillages', 'work_zones.district', '=', 'allvillages.KD_KAB')
 				->join('job_titles', 'job_titles.id', '=', 'job_descs.job_title_id')
 				->whereNotIn('users.id', $registered_user)
 				->where('users.name', 'like', '%' . $request->nama . '%')
@@ -300,7 +304,7 @@ class activityController extends Controller
 		{
 			$users = User::distinct()->join('job_descs', 'job_descs.user_id', '=', 'users.id')
 				->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')
-				->join('allvillages', 'work_zones.district', '=', 'allvillages.KD_KAB')
+				->leftjoin('allvillages', 'work_zones.district', '=', 'allvillages.KD_KAB')
 				->join('job_titles', 'job_titles.id', '=', 'job_descs.job_title_id')
 				->whereNotIn('users.id', $registered_user)
 				->Where('district', $request->kode_kabupaten )

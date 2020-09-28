@@ -53,7 +53,7 @@
 		<a href="/activities">
 			<div class="card-icon">
 				<i class="material-icons">groups</i>
-				<p>Capacity Building</p>
+				<p>Kegiatan</p>
 			</div>
 		</a>
 	</div>

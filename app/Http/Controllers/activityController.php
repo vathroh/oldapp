@@ -4,10 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use App\activity_participant;
+use App\evaluation_question;
 use Illuminate\Http\Request;
 use App\activities_category;
 use App\attendance_record;
-use App\evaluation_question;
+use App\evaluation_answer;
 use App\evaluation;
 use Carbon\Carbon;
 use App\allvillage;
@@ -234,7 +235,7 @@ class activityController extends Controller
 		return view('activities.participants', compact(['role', 'participants', 'pemandu_pemandu', 'panitia_panitia', 'activity','activities', 'activity_item']));
 	}	
 	
-	public function evaluation_result($activity, $activity_item)
+	public function evaluation_check($activity, $activity_item)
 	{
 		$activities = activity::get();
 		$role =activity_participant::where('user_id', Auth::user()->id)->get();	
@@ -243,9 +244,26 @@ class activityController extends Controller
 		
 		$participants = activity_participant::join('users', 'users.id', '=', 'activity_participants.user_id')->where('role', 'PESERTA')->get();
 		
-		return view('activities.evaluation-result', compact(['role', 'participants', 'evaluations', 'activity','activities', 'activity_item']));
+		return view('activities.evaluation-check', compact(['role', 'participants', 'evaluations', 'activity','activities', 'activity_item']));
 	}
 	
+	public function evaluation_result($activity, $activity_item)
+	{
+		$activities = activity::get();
+		$role =activity_participant::where('user_id', Auth::user()->id)->get();	
+		
+		$evaluations = evaluation::where('evaluations.activity_id', $activity_item)->join('subjects', 'subjects.id', '=', 'evaluations.subject_id')->join('users', 'users.id', '=', 'evaluations.user_id')->get();
+		
+		$subjects = subject::where('activity_id', $activity_item)->where('evaluation_sheet', 1)->get();
+		
+		$questions = evaluation_question::where('activity_id', $activity_item)->where('for_all_subjects', 1)->get();
+		$answers = evaluation_answer::get();
+		
+		
+		$participants = activity_participant::join('users', 'users.id', '=', 'activity_participants.user_id')->join('job_descs', 'job_descs.user_id', '=', 'users.id')->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')->join('allvillages', 'work_zones.district', '=', 'allvillages.KD_KAB')->join('job_titles', 'job_descs.job_title_id', 'job_titles.id')->where('role', 'PESERTA')->get();
+		
+		return view('activities.evaluation-result', compact(['role', 'subjects', 'questions', 'answers', 'participants', 'evaluations', 'activity','activities', 'activity_item']));
+	}
 	
 	
 	

@@ -50,9 +50,10 @@ class evaluationController extends Controller
 	public function store(Request $request, $activity_id, $subject_id)
 	{
 		$activity_category = activity::where('id', $activity_id)->pluck('category_id')[0];
+		
 		$questions = evaluation_question::where('activity_id', $activity_id)->where('for_all_subjects', 1)->count();	
 		
-		if(evaluation::where('subject_id', $subject_id)->count() > 0)
+		if(evaluation::where('subject_id', $subject_id)->where('user_id', Auth::user()->id)->count() > 0)
 		{
 			return redirect('activity/' . $activity_category . '/' .  $activity_id);
 		}			

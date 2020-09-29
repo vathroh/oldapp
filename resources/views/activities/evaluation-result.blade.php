@@ -8,43 +8,45 @@
 	</div>
 	@include('activities.navbar')
 	<div class="card-body">
-		<div class="monitoring-container d-flex">
+		<div class="evaluation-container">
+			@foreach($subjects as $subject)
 			
-			<div style="border: 1px solid black; border-radius: 5px; padding: 20px; margin: 10px; width:50%;">
-				<h5>Sudah Mengisi Evaluasi Topik Belajar</h5>		
-				@foreach($evaluations->unique('subject')->where('evaluation_sheet', 1) as $evaluation)
-				<div>
-					<div class="mt-3">
-						{{ $evaluation->subject }}
-					</div>					
-					<div>
-						<ol>				
-						@foreach($evaluations->where('subject_id', $evaluation->subject_id)->unique('users.id') as $evaluationPerSubject)					
-							<li>{{ $evaluationPerSubject->name }}</li>						
+			<h5>{{ $subject->subject }}</h5>
+			<table class="table">
+				<thead>
+					<tr>
+						<td rowspan="2">No</td>
+						<td rowspan="2">Nama</td>
+						<td rowspan="2">Posisi</td>
+						@foreach($questions as $question)
+						<td colspan="4">{{ $question->question }}</td>
 						@endforeach
-						</ol>
-					</div>				
-				</div>
-				@endforeach
-			</div>
-			
-			<div style="border: 1px solid black; border-radius: 5px; padding: 20px; margin: 10px; width:50%;">
-				<h5>Belum Mengisi Evaluasi Topik Belajar</h5>
-				@foreach($evaluations->unique('subject')->where('evaluation_sheet', 1) as $evaluation)				
-				<div>
-					<div class="mt-3">
-						{{ $evaluation->subject }}
-					</div>
-					<div>
-						<ol>
-							@foreach($participants->whereNotIn('id', $evaluations->where('subject_id', $evaluation->subject_id)->unique('user_id')->pluck('user_id'))	 as $participant)
-							<li>{{ $participant->name }}</li>						
-							@endforeach
-						</ol>
-					</div>				
-				</div>
-				@endforeach
-			</div>			
+					</tr>
+					<tr>
+						@foreach($questions as $question)
+						@foreach($answers->where('evaluation_question_id', $question->id)->sortBy('scale') as $answer)
+						<td>{{ $answer->scale }}</td>
+						@endforeach
+						@endforeach
+					</tr>
+				</thead>
+				<tbody>
+					@foreach($participants->unique('KD_KAB') as $participant)
+					<tr>
+						<th colspan="10">{{ $participant->NAMA_KAB }}</th>
+					</tr>
+					@foreach($participants->where('KD_KAB', $participant->KD_KAB)->unique('KD_KAB') as $participantKAB)
+					<tr>
+						<th scope="row">{{ $loop->iteration }}</th>
+						<td>{{ $participantKAB->name }}</td>
+						<td>{{ $participantKAB->job_title }}</td>
+						<td></td>
+					</tr>
+					@endforeach
+					@endforeach
+				  </tbody>
+				</table>
+				@endforeach	
 		</div>
 	</div>
 </div>

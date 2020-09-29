@@ -5,7 +5,7 @@
 				@if (Auth::user()->hasAnyRoles(['admin', 'training']))
 				<a class="nav-link" href="/listing-attendant/{{ $activity }}/{{ $activity_item }}">Register Peserta</a>
 				<a class="nav-link" href="/training-monitoring/{{ $activity }}/{{ $activity_item }}">Monitoring</a>
-				<a class="nav-link" href="/participants/{{ $activity }}/{{ $activity_item }}">Peserta</a>
+				<a class="nav-link" href="/participants/{{ $activity }}/{{ $activity_item }}">Personil</a>
 				@endif
 				<a class="nav-link" href="/attendance/{{ $activity }}/{{ $activity_item }}">Daftar Hadir</a>
 				@if($role == "PESERTA")

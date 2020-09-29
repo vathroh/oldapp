@@ -227,7 +227,11 @@ class activityController extends Controller
 		$role =activity_participant::distinct()->where('user_id', Auth::user()->id)->get();	
 		$participants = User::distinct('users.id')->join('activity_participants', 'activity_participants.user_id', '=', 'users.id')->join('job_descs', 'users.id', '=', 'job_descs.user_id')->join('job_titles', 'job_descs.job_title_id', '=', 'job_titles.id')->join('work_zones', 'job_descs.work_zone_id', '=', 'work_zones.id')->join('allvillages', 'work_zones.district', '=', 'allvillages.KD_KAB')->where('activity_id', $activity_item)->where('role', 'PESERTA')->get(['users.id', 'name', 'job_title', 'NAMA_KAB']);
 		
-		return view('activities.participants', compact(['role', 'participants', 'activity','activities', 'activity_item']));
+		$pemandu_pemandu = User::distinct('users.id')->join('activity_participants', 'activity_participants.user_id', '=', 'users.id')->join('job_descs', 'users.id', '=', 'job_descs.user_id')->join('job_titles', 'job_descs.job_title_id', '=', 'job_titles.id')->join('work_zones', 'job_descs.work_zone_id', '=', 'work_zones.id')->join('allvillages', 'work_zones.district', '=', 'allvillages.KD_KAB')->where('activity_id', $activity_item)->where('role', 'PEMANDU')->get(['users.id', 'name', 'job_title', 'NAMA_KAB']);
+		
+		$panitia_panitia = User::distinct('users.id')->join('activity_participants', 'activity_participants.user_id', '=', 'users.id')->join('job_descs', 'users.id', '=', 'job_descs.user_id')->join('job_titles', 'job_descs.job_title_id', '=', 'job_titles.id')->join('work_zones', 'job_descs.work_zone_id', '=', 'work_zones.id')->join('allvillages', 'work_zones.district', '=', 'allvillages.KD_KAB')->where('activity_id', $activity_item)->where('role', 'PANITIA')->get(['users.id', 'name', 'job_title', 'NAMA_KAB']);
+		
+		return view('activities.participants', compact(['role', 'participants', 'pemandu_pemandu', 'panitia_panitia', 'activity','activities', 'activity_item']));
 	}	
 	
 	

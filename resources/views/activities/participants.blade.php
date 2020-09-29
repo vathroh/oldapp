@@ -29,9 +29,52 @@
 				@endforeach
 			</tbody>
 		</table>
-
 		
 		
+		Pemandu:		
+		<table class="table">
+			<thead>
+				<tr>
+					<th scope="col">No</th>
+					<th scope="col">Nama</th>
+					<th scope="col">Posisi</th>
+					<th scope="col">Kabupaten/Kota</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach($pemandu_pemandu as $pemandu)
+				<tr>
+					<th scope="row">{{ $loop->iteration }}</th>
+					<td>{{ $pemandu->name }}</td>
+					<td>{{ $pemandu->job_title }}</td>
+					<td>{{ $pemandu->NAMA_KAB }}</td>
+				</tr>
+				@endforeach
+			</tbody>
+		</table>
+		
+		
+		Panitia:		
+		<table class="table">
+			<thead>
+				<tr>
+					<th scope="col">No</th>
+					<th scope="col">Nama</th>
+					<th scope="col">Posisi</th>
+					<th scope="col">Kabupaten/Kota</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach($panitia_panitia as $panitia)
+				<tr>
+					<th scope="row">{{ $loop->iteration }}</th>
+					<td>{{ $panitia->name }}</td>
+					<td>{{ $panitia->job_title }}</td>
+					<td>{{ $panitia->NAMA_KAB }}</td>
+				</tr>
+				@endforeach
+			</tbody>
+		</table>		
 	</div>
 </div>
 @endsection

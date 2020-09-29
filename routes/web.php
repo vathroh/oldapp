@@ -185,6 +185,7 @@ Route::post('/certificate', 'activityController@certificate');
 Route::get('/listing-attendant/{activity}/{activity_item}', 'activityController@listing_attendant');
 Route::get('/training-monitoring/{activity}/{activity_item}', 'activityController@monitoring');
 Route::get('/participants/{activity}/{activity_item}', 'activityController@participants');
+Route::get('/evaluation-result/{activity}/{activity_item}', 'activityController@evaluation_result');
 
 Route::get('/ajax-listing-attendant-find-name/', 'activityController@ajaxAttendanceFindName');
 Route::get('/ajax-listing-attendant/', 'activityController@ajaxAttendance');

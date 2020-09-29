@@ -8,7 +8,7 @@
 	</div>
 	@include('activities.navbar')
 	<div class="card-body">		
-		Peserta:		
+		<h5>Peserta:		</h5>
 		<table class="table">
 			<thead>
 				<tr>
@@ -31,7 +31,7 @@
 		</table>
 		
 		
-		Pemandu:		
+		<h5>Pemandu:		</h5>
 		<table class="table">
 			<thead>
 				<tr>
@@ -54,7 +54,7 @@
 		</table>
 		
 		
-		Panitia:		
+		<h5>Panitia:		</h5>
 		<table class="table">
 			<thead>
 				<tr>

@@ -40,7 +40,7 @@
 					@endphp
 					@for ($i = 0; $i < $count; $i++)
 					<div class="check" style =" margin-left: 30px;">
-						<input class="form-check-input" type="radio" name="answer{{ $loop->iteration }}" id="answer{{ $loop->iteration }}{{$i}}" value="{{ $answers->where('evaluation_question_id', $question->id)->where('scale', $i+1)->pluck('id')->first()}}">
+						<input class="form-check-input" type="radio" name="answer{{ $loop->iteration }}" id="answer{{ $loop->iteration }}{{$i}}" value="{{ $answers->where('evaluation_question_id', $question->id)->where('scale', $i+1)->pluck('id')->first()}}" required>
 						<label class="form-check-label" for="answer{{ $loop->iteration }}{{$i}}">
 							{{ $answers->where('evaluation_question_id', $question->id)->where('scale', $i+1)->pluck('answer')->first() }}
 						</label>

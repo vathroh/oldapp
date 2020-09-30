@@ -8,6 +8,7 @@
 	</div>
 	@include('activities.navbar')
 	<div class="card-body">
+		<div style="height: 60vh; overflow: auto;">
 		
 			@foreach($subjects as $subject)
 			
@@ -39,6 +40,7 @@
 				</tbody>
 			</table>
 			@endforeach
+		</div>
 	</div>
 </div>
 @endsection

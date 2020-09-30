@@ -181,7 +181,7 @@ Route::get('/training-evaluation/{activity_id}/{subject_id}', 'evaluationControl
 Route::get('/activity-evaluation/{activity_id}', 'evaluationController@activityEvaluation');
 Route::get('/dropdown-question', 'evaluationAnswerController@dropdown');
 Route::get('/certificate_page/{activity}/{activity_item}', 'activityController@certificate_page');
-Route::post('/certificate', 'activityController@certificate');
+Route::post('/certificate/{activity_item}', 'activityController@certificate');
 Route::get('/listing-attendant/{activity}/{activity_item}', 'activityController@listing_attendant');
 Route::get('/training-monitoring/{activity}/{activity_item}', 'activityController@monitoring');
 Route::get('/participants/{activity}/{activity_item}', 'activityController@participants');

@@ -45,6 +45,6 @@
 <body>
 	<img src="{{ public_path('SERTIFIKAT.png') }}">
 	<div class="name" style=""><h4>{{ $username }}</h4></div>
-	<div class="as" style=""><h4>Sebagai Peserta</h4></div>
+	<div class="as" style=""><h4>Sebagai {{$role}}</h4></div>
 </body>
 </html>

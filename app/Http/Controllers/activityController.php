@@ -179,24 +179,35 @@ class activityController extends Controller
 	
 	public function certificate_page($activity, $activity_item)
     {
+		
+		$start = activity::where('id', $activity)->pluck('start_date')->first();
+		$finish = activity::where('id', $activity)->pluck('finish_date')->first();
+		$period =  Carbon::parse($start)->diffInDays($finish)+1;
+		
 		$role =activity_participant::where('user_id', Auth::user()->id)->where('activity_id', $activity_item)->pluck('role')->first();
 		$activities = activity::get();
 		
+		$attendances = activity_participant::join('users', 'activity_participants.user_id', '=', 'users.id')->join('attendance_records', 'attendance_records.user_id', '=', 'users.id')->where('attendance_records.activity_id', $activity_item)->where('role', 'PESERTA')->selectRaw('Date(attendance_records.created_at) as tanggal, users.name, users.id')->get();
+		
 		$jml_hadir =attendance_record::where('user_id', Auth::user()->id)->where('activity_id', $activity_item)->count();
 		
-		return view('activities.certificate-page', compact(['role', 'activity', 'activity_item', 'activities', 'jml_hadir']));
+		$subjects = subject::all();
+		$evaluations = evaluation::join('users', 'users.id', '=', 'evaluations.user_id')->where('activity_id', $activity_item)->get();
+		
+		return view('activities.certificate-page', compact(['role', 'period', 'start', 'activity', 'activity_item', 'activities', 'jml_hadir', 'attendances', 'subjects', 'evaluations']));
 	}
 	
 	
-	public function certificate()
-    {		
+	public function certificate($activity_item)
+    {	
+		$role =activity_participant::where('user_id', Auth::user()->id)->where('activity_id', $activity_item)->pluck('role')->first();
 		$username =User::where('id', Auth::user()->id)->pluck('name')->first();
 		$name = [$username];
 		
 		//return view('activities.certificate', compact(['username']));
 
 		
-		$pdf = PDF::loadView('activities.certificate', compact(['username']));
+		$pdf = PDF::loadView('activities.certificate', compact(['username', 'role']));
 		return $pdf->setPaper('a4', 'landscape')->download('certificate.pdf');
 	}
 	

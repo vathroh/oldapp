@@ -8,39 +8,37 @@
 	</div>
 	@include('activities.navbar')
 	<div class="card-body">
-		<div class="evaluation-container">
-
-			<table class="table">
-				<thead>
+		
+			@foreach($subjects as $subject)
+			
+			<h5 class="text-center mt-5" style="width:100%;">{{ $subject->subject }}</h5>
+			
+			<table class="table table-striped table-bordered">
+				<thead class="thead-dark">
 					<tr>
-						<td rowspan="2">No</td>
-						<td rowspan="2">Nama</td>
-						<td rowspan="2">Posisi</td>
-						<td rowspan="2">Kabupaten/Kota</td>
-						@foreach($questions as $question)
-						<td colspan="4">{{ $question->question }}</td>
-						@endforeach
+						<td class="text-center" rowspan="2">Pertanyaan</td>
+						<td class="text-center" colspan="4">Jumlah Jawaban</td>
 					</tr>
 					<tr>
-						@foreach($questions as $question)
-						@foreach($answers->where('evaluation_question_id', $question->id)->sortBy('scale') as $answer)
-						<td>{{ $answer->scale }}</td>
-						@endforeach
-						@endforeach
+						<td class="text-center">1</td>
+						<td class="text-center">2</td>
+						<td class="text-center">3</td>
+						<td class="text-center">4</td>						
 					</tr>
 				</thead>
-				<tbody>	
-					@foreach($participants as $participant)				
-					<tr>
-						<td>{{ $loop->iteration }}</td>
-						<td> {{ $participant->name }}</td>
-						<td> {{ $participant->job_title }}</td>
-						<td> {{ $participant->NAMA_KAB }}</td>
+				<tbody id="participants">	
+					@foreach($questions as $question)	
+					<tr>						
+						<td>{{ $question->question }}</td>
+						<td class="text-center">{{ $evaluations->where('subject_id', $subject->id)->where('question_id', $question->id)->where('scale', 1)->count() }}</td>
+						<td class="text-center">{{ $evaluations->where('subject_id', $subject->id)->where('question_id', $question->id)->where('scale', 2)->count() }}</td>
+						<td class="text-center">{{ $evaluations->where('subject_id', $subject->id)->where('question_id', $question->id)->where('scale', 3)->count() }}</td>
+						<td class="text-center">{{ $evaluations->where('subject_id', $subject->id)->where('question_id', $question->id)->where('scale', 4)->count() }}</td>
 					</tr>
-					@endforeach
-				  </tbody>
-				</table>
-		</div>
+					@endforeach					
+				</tbody>
+			</table>
+			@endforeach
 	</div>
 </div>
 @endsection

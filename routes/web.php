@@ -193,6 +193,7 @@ Route::get('/ajax-listing-attendant/', 'activityController@ajaxAttendance');
 Route::post('/ajax-listing-register/', 'activityController@ajaxRegister');
 Route::get('/ajax-listing-ready', 'activityController@ready');
 Route::get('/ajax-listing-moveReg', 'activityController@moveReg');
+Route::get('/ajax-evaluation-result', 'activityController@ajaxEvaluationResult');
 Route::delete('/ajax-listing-delete', 'activityController@deleteAjax');
 
 Route::post('/training-evaluation/{activity_id}/{subject_id}', 'evaluationController@store');

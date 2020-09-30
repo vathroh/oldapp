@@ -38,14 +38,15 @@
 				<div>
 					<div class="mt-3">
 						@php
-						$tanggal = Carbon\Carbon::parse($attendances[0]->date);
-						
+						$tanggal = Carbon\Carbon::parse($start);
+						$day = $tanggal->addDays($i);
+						$day1 =  $day->format('Y-m-d');
 						@endphp
-						{{ $tanggal->addDays($i)->format('l, d F Y') }}
+						{{ $day->format('l, d F Y') }}
 					</div>					
 					<div>
 						<ol>				
-						@foreach($noAttendances->whereNotIn('id', $attendances->where('tanggal',  $tanggal->addDays($i)->format('Y-m-d'))->pluck('id') )->groupBy('id') as $noAttendance)	
+						@foreach($noAttendances->whereNotIn('id', $attendances->where('tanggal', $day1)->pluck('id') )->groupBy('id') as $noAttendance)	
 			
 							<li>{{ $noAttendance->first()->name }}</li>						
 						@endforeach

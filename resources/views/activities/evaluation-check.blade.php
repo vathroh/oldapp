@@ -19,7 +19,7 @@
 					</div>					
 					<div>
 						<ol>				
-						@foreach($evaluations->where('subject_id', $evaluation->subject_id)->unique('users.id') as $evaluationPerSubject)					
+						@foreach($evaluations->where('subject_id', $evaluation->subject_id)->unique('id') as $evaluationPerSubject)					
 							<li>{{ $evaluationPerSubject->name }}</li>						
 						@endforeach
 						</ol>

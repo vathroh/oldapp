@@ -9,15 +9,14 @@
 	@include('activities.navbar')
 	<div class="card-body">
 		<div class="evaluation-container">
-			@foreach($subjects as $subject)
-			
-			<h5>{{ $subject->subject }}</h5>
+
 			<table class="table">
 				<thead>
 					<tr>
 						<td rowspan="2">No</td>
 						<td rowspan="2">Nama</td>
 						<td rowspan="2">Posisi</td>
+						<td rowspan="2">Kabupaten/Kota</td>
 						@foreach($questions as $question)
 						<td colspan="4">{{ $question->question }}</td>
 						@endforeach
@@ -30,23 +29,17 @@
 						@endforeach
 					</tr>
 				</thead>
-				<tbody>
-					@foreach($participants->unique('KD_KAB') as $participant)
+				<tbody>	
+					@foreach($participants as $participant)				
 					<tr>
-						<th colspan="10">{{ $participant->NAMA_KAB }}</th>
+						<td>{{ $loop->iteration }}</td>
+						<td> {{ $participant->name }}</td>
+						<td> {{ $participant->job_title }}</td>
+						<td> {{ $participant->NAMA_KAB }}</td>
 					</tr>
-					@foreach($participants->where('KD_KAB', $participant->KD_KAB)->unique('KD_KAB') as $participantKAB)
-					<tr>
-						<th scope="row">{{ $loop->iteration }}</th>
-						<td>{{ $participantKAB->name }}</td>
-						<td>{{ $participantKAB->job_title }}</td>
-						<td></td>
-					</tr>
-					@endforeach
 					@endforeach
 				  </tbody>
 				</table>
-				@endforeach	
 		</div>
 	</div>
 </div>

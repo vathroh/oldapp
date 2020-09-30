@@ -260,9 +260,11 @@ class activityController extends Controller
 		$answers = evaluation_answer::get();
 		
 		
-		$participants = activity_participant::join('users', 'users.id', '=', 'activity_participants.user_id')->join('job_descs', 'job_descs.user_id', '=', 'users.id')->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')->join('allvillages', 'work_zones.district', '=', 'allvillages.KD_KAB')->join('job_titles', 'job_descs.job_title_id', 'job_titles.id')->where('role', 'PESERTA')->get();
+		$participants = activity_participant::distinct()->join('users', 'users.id', '=', 'activity_participants.user_id')->join('job_descs', 'job_descs.user_id', '=', 'users.id')->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')->join('allvillages', 'work_zones.district', '=', 'allvillages.KD_KAB')->join('job_titles', 'job_descs.job_title_id', 'job_titles.id')->where('role', 'PESERTA')->get(['users.id', 'users.name', 'job_title', 'NAMA_KAB']);
 		
-		return view('activities.evaluation-result', compact(['role', 'subjects', 'questions', 'answers', 'participants', 'evaluations', 'activity','activities', 'activity_item']));
+		$kabupaten = allvillage::all();
+		
+		return view('activities.evaluation-result', compact(['role', 'subjects', 'questions', 'answers', 'participants', 'evaluations', 'activity','activities', 'activity_item', 'kabupaten']));
 	}
 	
 	

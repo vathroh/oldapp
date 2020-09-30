@@ -8,22 +8,22 @@
 	</div>
 	@include('activities.navbar')
 	<div class="card-body">
-
-		<div class="monitoring-container d-flex">
-			
+		<div class="monitoring-container d-flex">			
 			<div style="border: 1px solid black; border-radius: 5px; padding: 20px; margin: 10px; width:50%;">
 				<h5>Sudah Mengisi Daftar Hadir</h5>		
 				@for($i=0; $i<$period; $i++)
 				<div>
 					<div class="mt-3">
 						@php
-						$tanggal = Carbon\Carbon::parse($attendances[0]->date);
+						$tanggal = Carbon\Carbon::parse($start);
+						$day = $tanggal->addDays($i);
+						$day1 =  $day->format('Y-m-d');
 						@endphp
-						{{ $tanggal->addDays($i)->format('l, d F Y') }}
+						{{ $day->format('l, d F Y') }}
 					</div>					
 					<div>
 						<ol>				
-						@foreach($attendances->where('tanggal',  $tanggal->addDays($i)->format('Y-m-d')) as $attendance)					
+						@foreach($attendances->where('tanggal', $day1) as $attendance)					
 							<li>{{$attendance->name }}</li>						
 						@endforeach
 						</ol>
@@ -53,38 +53,6 @@
 					</div>				
 				</div>
 				@endfor
-			</div>
-		</div>
-		<div class="monitoring-container d-flex">
-			<div style="border: 1px solid black; border-radius: 5px; padding: 20px; margin: 10px; width:50%;">
-				<h5>Sudah Mengisi Evaluasi Topik Belajar</h5>
-				
-				@foreach($subjects as $subject)
-				<div class="mt-3">{{ $subject->subject }}</div>
-					@foreach($evaluations->where('subject_id', $subject->id)->unique('users.id') as $evaluation)
-					<ol>
-						<li><div>{{ $evaluation->name }}</div></li>
-					</ol>				
-					@endforeach
-				@endforeach	
-				
-			</div>
-			
-			<div style="border: 1px solid black; border-radius: 5px; padding: 20px; margin: 10px; width:50%;">
-				<h5>Belum Mengisi Evaluasi Topik Belajar</h5>	
-				
-				@foreach($subjects as $subject)
-				<div class="mt-3">{{ $subject->subject }}</div>
-										
-					<ol>
-						@foreach($participants->whereNotIn('id', $evaluations->where('subject_id', $subject->id)->unique('users.id')->pluck('id') ) as $participant)
-						<li><div>{{ $participant->name }}</div></li>
-						@endforeach	
-					</ol>
-					
-					
-				@endforeach	
-				
 			</div>
 		</div>
 	</div>

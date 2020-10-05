@@ -12,11 +12,23 @@
 			<div class="card-body" style="body-background: #f2e2c6;">
 				<ol>
 					<div>
-						@foreach($activities->where('category_id', $activity_category->id) as $activity)
-						<li  class="mt-2">
-						<div><a href="/attendance/{{$activity->category_id}}/{{$activity->id}}">{{ $activity->name }}</a></div>
-						</li>
-						@endforeach
+						@if (Auth::user()->hasAnyRoles(['admin', 'training']))
+						
+							@foreach($activities->where('category_id', $activity_category->id)->unique('activities.id') as $activity)
+							<li  class="mt-2">								
+								<div><a href="/attendance/{{$activity->category_id}}/{{$activity->id}}">{{ $activity->name }}</a></div>						
+							</li>						
+							@endforeach
+							
+						@elseif(Auth::user()->hasAnyRoles(['user']))
+						
+							@foreach($activities->where('category_id', $activity_category->id)->where('user_id', Auth::user()->id )->unique('activities.id') as $activity)
+							<li  class="mt-2">							
+								<div><a href="/attendance/{{$activity->category_id}}/{{$activity->id}}">{{ $activity->name }}</a></div>
+							</li>						
+							@endforeach				
+						
+						@endif
 					</div>
 				</ol>
 			</div>

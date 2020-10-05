@@ -93,7 +93,8 @@ class activityController extends Controller
     public function activities()
     {
 		$activity_categories = activities_category::all();
-		$activities = activity::get();
+		$activities = activity::join('activity_participants', 
+		'activities.id', '=', 'activity_participants.activity_id')->get();
 		return view('activities.activity', compact(['activity_categories', 'activities']));
 	}
 	
@@ -151,6 +152,17 @@ class activityController extends Controller
 	
 	public function attendance($activity, $activity_item)
     {
+		$start = activity::where('id', $activity)->pluck('start_date')->first();
+		$finish = activity::where('id', $activity)->pluck('finish_date')->first();
+		$period =  Carbon::parse($start)->diffInDays($finish)+1;		
+		
+		if(Carbon::now()->lessThan(Carbon::parse($start)) == false and Carbon::now()->lessThan(Carbon::parse($finish)))
+		{
+			$activity_day = 1;
+		} else {
+			$activity_day = 0;
+		}
+		
 		$role =activity_participant::where('user_id', Auth::user()->id)->pluck('role')->first();
 		$activities = activity::get();
 		
@@ -159,7 +171,7 @@ class activityController extends Controller
 		
 		$attendance_records = attendance_record::where('user_id', Auth::user()->id )->get();
 
-		return view('activities.attendance', compact(['role', 'attendance_records', 'activity', 'activity_item', 'hadir', 'activities']));
+		return view('activities.attendance', compact(['role', 'attendance_records', 'activity', 'activity_item', 'hadir', 'activities', 'activity_day']));
 	}
 	
 	

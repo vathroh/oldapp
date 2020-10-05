@@ -28,7 +28,7 @@
 				</table>
 			</div>
 			<div class="button-area text-center" style="width:50%;">
-				@if($hadir == 0)
+				@if($hadir == 0 and $activity_day == 1)
 				<form method="post" action="/records-attendance/{{$activity}}/{{$activity_item}}">
 					@csrf
 					<button type="submit" class="btn btn-large btn-primary">HADIR</button>

@@ -203,7 +203,7 @@ class activityController extends Controller
 	public function certificate($activity_item)
     {	
 		$role =activity_participant::where('user_id', Auth::user()->id)->where('activity_id', $activity_item)->pluck('role')->first();
-		$username =User::where('id', Auth::user()->id)->pluck('name')->first();
+		$username =User::where('id', Auth::user()->id)->pluck('sertificate')->first();
 		$name = [$username];
 		
 		//return view('activities.certificate', compact(['username']));

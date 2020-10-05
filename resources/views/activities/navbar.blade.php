@@ -13,6 +13,8 @@
 				@endif
 				<a class="nav-link" href="/schedule/{{ $activity }}/{{ $activity_item }}">Jadwal</a>
 				<a class="nav-link" href="/lesson/{{ $activity }}/{{ $activity_item }}">Materi</a>
+				<!--
 				<a class="nav-link" href="/certificate_page/{{ $activity }}/{{ $activity_item }}">Sertifikat</a>
+				-->
 	</nav>
 	

@@ -168,6 +168,7 @@ Route::resource('/subjects', 'subjectsController');
 Route::resource('/evaluation-answers', 'evaluationAnswerController');
 Route::resource('/activities-category', 'activitiesCategoryController');
 Route::resource('/evaluation-questions', 'evaluationQuestionController');
+Route::resource('/activity-blacklist', 'activityBlacklistController');
 
 Route::get('/activities', 'activityController@activities');
 Route::get('/activity/{activity}', 'activityController@activity');

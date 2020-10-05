@@ -7,6 +7,7 @@ use App\activity_participant;
 use App\evaluation_question;
 use Illuminate\Http\Request;
 use App\activities_category;
+use App\activity_blacklist;
 use App\attendance_record;
 use App\evaluation_answer;
 use App\evaluation;
@@ -183,6 +184,7 @@ class activityController extends Controller
 		$start = activity::where('id', $activity)->pluck('start_date')->first();
 		$finish = activity::where('id', $activity)->pluck('finish_date')->first();
 		$period =  Carbon::parse($start)->diffInDays($finish)+1;
+		$blacklists = activity_blacklist::all();
 		
 		$role =activity_participant::where('user_id', Auth::user()->id)->where('activity_id', $activity_item)->pluck('role')->first();
 		$activities = activity::get();
@@ -194,7 +196,7 @@ class activityController extends Controller
 		$subjects = subject::all();
 		$evaluations = evaluation::join('users', 'users.id', '=', 'evaluations.user_id')->where('activity_id', $activity_item)->get();
 		
-		return view('activities.certificate-page', compact(['role', 'period', 'start', 'activity', 'activity_item', 'activities', 'jml_hadir', 'attendances', 'subjects', 'evaluations']));
+		return view('activities.certificate-page', compact(['role', 'period', 'start', 'activity', 'activity_item', 'activities', 'jml_hadir', 'attendances', 'subjects', 'evaluations', 'blacklists']));
 	}
 	
 	
@@ -271,18 +273,75 @@ class activityController extends Controller
 		
 		$participants = activity_participant::distinct()->join('users', 'users.id', '=', 'activity_participants.user_id')->join('job_descs', 'job_descs.user_id', '=', 'users.id')->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')->join('allvillages', 'work_zones.district', '=', 'allvillages.KD_KAB')->join('job_titles', 'job_descs.job_title_id', 'job_titles.id')->where('role', 'PESERTA')->get(['users.id', 'users.name', 'job_title', 'NAMA_KAB']);
 		
-		$evaluations = evaluation::join('evaluation_answers', 'evaluations.answer_id', '=', 'evaluation_answers.id')->join('subjects', 'subjects.id', '=', 'evaluations.subject_id')->join('users', 'users.id', '=', 'evaluations.user_id')->where('evaluations.activity_id', $activity_item)->whereIN('user_id', $participants->pluck('id'))->get();
+		$evaluations = evaluation::join('evaluation_questions', 'evaluations.question_id', '=', 'evaluation_questions.id')->join('evaluation_answers', 'evaluations.answer_id', '=', 'evaluation_answers.id')->join('subjects', 'subjects.id', '=', 'evaluations.subject_id')->join('users', 'users.id', '=', 'evaluations.user_id')->where('evaluations.activity_id', $activity_item)->whereIN('user_id', $participants->pluck('id'))->get();
 		
 		$kabupaten = allvillage::all();
+				
+		$chart 	= array();
+		$chart1 = array();		
+		$scales = evaluation_answer::groupBy('scale')->orderBy('scale')->get('scale');
+		
+		
+		foreach($subjects as $subject)
+		{		
+			foreach($questions as $question)
+			{		
+				foreach($scales as $scale)
+				{
+					$count = evaluation::join('evaluation_answers', 'evaluations.answer_id', '=', 'evaluation_answers.id')->where('activity_id', $activity_item)->where('scale', $scale->scale)->where('subject_id', $subject->id)->where('question_id', $question->id)->count();
+					$chart = [ 'subject' => $subject->subject, 'question' => $question->question, $scale->scale => $count ];
+					$chart1[] = $chart;
+					
+				}
+			}
+		}
+		
+		//return $chart1;		
 		
 		return view('activities.evaluation-result', compact(['role', 'subjects', 'questions', 'answers', 'participants', 'evaluations', 'activity','activities', 'activity_item', 'kabupaten']));
 	}
 	
 	public function ajaxEvaluationResult(Request $request)
 	{
+		$chart 	= array();
+		$chart1 = array();		
+		$scales = evaluation_answer::groupBy('scale')->orderBy('scale')->get('scale');
+		$subjects = subject::where('evaluation_sheet', 1)->get();		
+		$questions = evaluation_question::where('for_all_subjects', 1)->get();
+		
+		
+		foreach($subjects as $subject)
+		{		
+			foreach($questions as $question)
+			{		
+				foreach($scales as $scale)
+				{
+					$count = evaluation::join('evaluation_answers', 'evaluations.answer_id', '=', 'evaluation_answers.id')->where('scale', $scale->scale)->where('subject_id', $subject->id)->where('question_id', $question->id)->count();
+					$chart = [ 'subject' => $subject->subject, 'question' => $question->question, 'answer_item' => $scale->scale, 'value' => $count ];
+					$chart1[] = $chart;
+					
+				}
+			}
+		}
+		
 		$participants = activity_participant::distinct()->join('users', 'users.id', '=', 'activity_participants.user_id')->join('job_descs', 'job_descs.user_id', '=', 'users.id')->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')->join('allvillages', 'work_zones.district', '=', 'allvillages.KD_KAB')->join('job_titles', 'job_descs.job_title_id', 'job_titles.id')->where('role', 'PESERTA')->get(['users.id', 'users.name', 'job_title', 'NAMA_KAB']);
 		
-		return response()->json($participants); 
+		
+		
+		
+		
+		$evaluations = [
+			[ 'id' => 'd1', 'region' =>  'USA', 	'value' => 20],
+			[ 'id' => 'd2', 'region' =>  'India', 	'value' => 12],
+			[ 'id' => 'd3', 'region' =>  'China', 	'value' => 11],
+			[ 'id' => 'd4', 'region' =>  'Germany', 'value' => 6],
+			[ 'id' => 'd4', 'region' =>  'Indonesia', 'value' => 3]
+		];
+
+		
+			// evaluation::join('evaluation_answers', 'evaluations.answer_id', '=', 'evaluation_answers.id')->get('scale');
+		
+		return response()->json($chart1); 
 		
 	}
 

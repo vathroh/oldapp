@@ -142,6 +142,12 @@
 			<p>JAWAB</p>
 		</a>
 	</li>
+	<li class="nav-item dropdown">
+		<a class="nav-link" href="/activity-blacklist">
+			<i class="material-icons">engineering</i>
+			<p>BLACKLIST</p>
+		</a>
+	</li>
 	@endif
 	<li>				
 		<a class="dropdown-item" href="#">

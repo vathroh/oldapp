@@ -26,12 +26,11 @@
 				$isEvaluation += $evaluation;			
 			@endphp			
 			@endforeach
-
-						
+									
 			<form method="post" action="/certificate/{{$subjects[0]->activity_id}}">
 			<div style="width:100%;" class="text-center">			
 			@csrf
-			@if($role =="PESERTA")
+			@if($role =="PESERTA" and $blacklists->where('user_id', Auth::user()->id)->count() == 0 )
 				@if($jml_hadir == $period and $isEvaluation == $jml_subject)
 					<button type="submit" class="btn btn-primary">Download Sertifikat</button>
 				@endif
@@ -75,7 +74,7 @@
 						<td class="text-center">Materi</td>
 						<td class="text-center">Evaluasi Belajar</td>					
 					</tr>
-				</thead>				
+				</thead>
 				<tbody>
 					@foreach($subjects->where('evaluation_sheet', 1) as $subject)
 					<tr>
@@ -86,6 +85,19 @@
 					@endforeach
 				</tbody>
 			</table>
+			<div>
+				<div><h5>Catatan Tambahan</h5></div>
+				@if($blacklists->where('user_id', Auth::user()->id)->count() > 0) 
+				<div style="color:red; font-weight:bold;">
+					<ul><li>
+						
+							{{ $blacklists->where('user_id', Auth::user()->id )->first()->reason }} 
+						
+					</ul></li>
+				</div>
+				@endif
+			</div>
+			
 			@endif
 	</div>
 </div>

@@ -241,7 +241,10 @@ class activityController extends Controller
 		$role =activity_participant::where('user_id', Auth::user()->id)->get();		
 		$period =  Carbon::parse($start)->diffInDays($finish)+1;
 				
-		$attendances = attendance_record::where('attendance_records.activity_id', $activity_item)->join('users', 'users.id', '=', 'attendance_records.user_id')->selectRaw('Date(attendance_records.created_at) as tanggal, attendance_records.user_id, users.name')->get();
+		$attendances = attendance_record::join('users', 'attendance_records.user_id', '=', 'users.id')->join('activity_participants', function($join){
+			$join->on('activity_participants.user_id', '=', 'attendance_records.user_id')
+					->on('activity_participants.activity_id', '=', 'attendance_records.activity_id');
+				})->where('attendance_records.activity_id', $activity_item)->where('role', 'PESERTA')->selectRaw('Date(attendance_records.created_at) as tanggal, users.name, users.id')->get();
 		
 		
 		$sattendances = activity_participant::join('users', 'activity_participants.user_id', '=', 'users.id')->join('attendance_records', 'attendance_records.user_id', '=', 'users.id')->where('attendance_records.activity_id', $activity_item)->where('role', 'PESERTA')->selectRaw('Date(attendance_records.created_at) as tanggal, users.name, users.id')->get();

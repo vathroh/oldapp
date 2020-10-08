@@ -26,7 +26,7 @@
 					<div>
 						<ol>				
 						@foreach($attendances->where('tanggal', $day1) as $attendance)					
-							<li>{{$attendance->id }} {{$attendance->name }}</li>						
+							<li>{{$attendance->name }}</li>						
 						@endforeach
 						</ol>
 					</div>				
@@ -49,7 +49,7 @@
 					<div>
 						<ol>				
 						@foreach($noAttendances->whereNotIn('id', $attendances->where('tanggal', $day1)->pluck('id') )->groupBy('id') as $noAttendance)			
-							<li>{{ $noAttendance->first()->id }} {{ $noAttendance->first()->name }}</li>						
+							<li>{{ $noAttendance->first()->name }}</li>						
 						@endforeach
 						</ol>
 					</div>				

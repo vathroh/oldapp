@@ -19,12 +19,17 @@
 					</tr>
 				</thead>
 				<tbody>
+					@if($subjects !="")
+
 					@for($i=0; $i<$period; $i++)
+					
+
 					<tr class="table-warning">
 						<td colspan="3">
 							{{ Carbon\Carbon::parse($subjects[0]->date)->addDays($i)->format('l, d F Y')  }}
 						</td>
 					</tr>
+					
 					@foreach($subjects->where('date', Carbon\Carbon::parse($subjects[0]->date)->addDays($i)->format('Y-m-d') ) as $subject)
 					<tr>
 						<td>{{ $subject->start_time }} - {{ $subject->finish_time }}</td>
@@ -32,7 +37,9 @@
 						<td>{{ $users->where('id', $subject->instructor1_id)->pluck('name')->first() }}</td>
 					</tr>
 					@endforeach
+					
 					@endfor
+					@endif
 				</tbody>
 			</table>			
 		</div>

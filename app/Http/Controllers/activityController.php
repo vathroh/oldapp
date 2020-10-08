@@ -400,7 +400,7 @@ class activityController extends Controller
 			->leftjoin('allvillages', 'work_zones.district', '=', 'allvillages.KD_KAB')
 			->join('job_titles', 'job_titles.id', '=', 'job_descs.job_title_id')
 			->where('district', $request->kode_kabupaten )
-			->whereNotIn('users.id', $registed_user)
+			//->whereNotIn('users.id', $registed_user)
 			->get(['user_id', 'name', 'NAMA_KAB', 'job_title']);
 			
 		return response()->json($users);   
@@ -418,7 +418,7 @@ class activityController extends Controller
 			->leftjoin('allvillages', 'work_zones.district', '=', 'allvillages.KD_KAB')
 			->join('job_titles', 'job_titles.id', '=', 'job_descs.job_title_id')
 			->where('users.name', 'like', '%' . $request->nama . '%')
-			->whereNotIn('users.id', $registered_user)
+			//->whereNotIn('users.id', $registered_user)
 			->get(['user_id', 'name', 'NAMA_KAB', 'job_title']);
 			
 		return response()->json($users);   

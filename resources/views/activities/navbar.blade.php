@@ -12,7 +12,9 @@
 				<a class="nav-link" href="/activity/{{ $activity }}/{{ $activity_item }}">Evaluasi Belajar</a>
 				@endif
 				<a class="nav-link" href="/schedule/{{ $activity }}/{{ $activity_item }}">Jadwal</a>
-				<a class="nav-link" href="/lesson/{{ $activity }}/{{ $activity_item }}">Materi</a>							
+				<a class="nav-link" href="/lesson/{{ $activity }}/{{ $activity_item }}">Materi</a>
+				@if($activity_item == 1)
 				<a class="nav-link" href="/certificate_page/{{ $activity }}/{{ $activity_item }}">Sertifikat</a>
+				@endif
 	</nav>
 	

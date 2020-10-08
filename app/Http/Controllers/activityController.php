@@ -95,7 +95,7 @@ class activityController extends Controller
     public function activities()
     {
 		$activity_categories = activities_category::all();
-		$activities = activity::leftjoin('activity_participants', 
+		$activities = activity::join('activity_participants', 
 		'activities.id', '=', 'activity_participants.activity_id')->select('activities.id', 'name', 'category_id')->get();
 		return view('activities.activity', compact(['activity_categories', 'activities']));
 	}

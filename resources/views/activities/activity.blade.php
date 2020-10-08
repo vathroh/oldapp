@@ -22,7 +22,7 @@
 							
 						@elseif(Auth::user()->hasAnyRoles(['user']))
 						
-							@foreach($activities->where('category_id', $activity_category->id)->where('user_id', Auth::user()->id )->unique('activities.id') as $activity)
+							@foreach($activities->where('category_id', $activity_category->id)->unique('activities.id') as $activity)
 							<li  class="mt-2">							
 								<div><a href="/attendance/{{$activity->category_id}}/{{$activity->id}}">{{ $activity->name }}</a></div>
 							</li>						

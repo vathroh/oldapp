@@ -454,7 +454,7 @@ class activityController extends Controller
 			->join('job_descs', 'job_descs.user_id', '=', 'users.id')
 			->join('job_titles', 'job_titles.id', '=', 'job_descs.job_title_id')
 			->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')
-			->join('allvillages', 'work_zones.district', '=', 'allvillages.KD_KAB')
+			->leftjoin('allvillages', 'work_zones.district', '=', 'allvillages.KD_KAB')
 			->get(['activity_participants.user_id', 'name', 'NAMA_KAB', 'job_title']);
 		
 		return response()->json($participatans);		

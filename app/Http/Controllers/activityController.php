@@ -308,6 +308,7 @@ class activityController extends Controller
 	
 	public function ajaxEvaluationResult(Request $request)
 	{
+		
 		$chart 	= array();
 		$chart1 = array();		
 		$chartx = array();
@@ -340,21 +341,40 @@ class activityController extends Controller
 				$chartt[$i] = $charty;
 				$i++;				
 			}			
-			$chart1[$question->question] = [[$keys, $values] = Arr::divide(Arr::flatten(Arr::collapse($chartt))),  Arr::flatten($chartl)];
+			$chartq[$x] = [ Arr::flatten(Arr::collapse($chartt)),  Arr::flatten($chartl) ];
 			$x++;			
 		}
 		
+		$count1 = count($chartq[0][0]);
+		$count2 = count($chartq);
+		
+		$x=0;
+		foreach($questions as $question)
+		{
+			for($i=0; $i<$count1; $i++)
+			{
+				$i1 = $chartq[$x][0][$i];
+				$u1 = $chartq[$x][1][$i];
+				$chart12[$i] = [$i1 => $u1];
+			}
+			
+			$chart1[$x] = Arr::collapse([['question' => $question->question], Arr::collapse($chart12)]);
+			$x++;
+		}
+		//$chart1 = $chartq;
+		
+		/*
 
 				
-		$evaluations = [
+		$chart1 = [
 			[ 'id' => 'd1', 'region' =>  'USA', 	'value' => 20],
 			[ 'id' => 'd2', 'region' =>  'India', 	'value' => 12],
 			[ 'id' => 'd3', 'region' =>  'China', 	'value' => 11],
 			[ 'id' => 'd4', 'region' =>  'Germany', 'value' => 6],
-			[ 'id' => 'd4', 'region' =>  'Indonesia', 'value' => 3]
+			[ 'id' => 'd4', 'region' =>  'Indonesia', 'value' => 17]
 		];
 
-		
+		*/
 			// evaluation::join('evaluation_answers', 'evaluations.answer_id', '=', 'evaluation_answers.id')->get('scale');
 		
 		return response()->json($chart1); 

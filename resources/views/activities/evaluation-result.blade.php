@@ -4,7 +4,21 @@
 <script src="{{ asset('d3/d3.v6.min.js') }}" defer></script>
 <script src="{{ asset('d3/d3-scale.v3.min.js') }}" defer></script>
 <script src="{{ asset('d3/d3-axis.v2.min.js') }}" defer></script>
-
+<script src="{{ asset('d3/d3-collection.v1.min.js') }}" defer></script>
+<style>
+.axis path,
+.axis line{
+	fill: none;
+	stroke: #000;
+	shape-rendering: crispEdges;
+}
+.bar{
+	fill: steelblue;
+}
+.x.axis path{
+	display: none;
+}
+</style>
 @endsection
 
 @section('content')
@@ -64,6 +78,7 @@
 				</tbody>
 			</table>	
 		</div>
+		
 		
 		<!--
 		<div style="height: 60vh; overflow: auto;">

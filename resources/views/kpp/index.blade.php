@@ -30,7 +30,7 @@
             <td rowspan="2">BUKU ADMINISTRASI KEGIATAN</td>
             <td colspan="2">BOP</td>
             <td rowspan="2">PENGECEKAN FISIK</td>
-            <td colspan="3">KEGIATAN PEMELIHARAAN</td>
+            <td colspan="3">KEGIATAN PEMELIHARAAN TERAKHIR</td>
             <td rowspan="2">KETERANGAN</td>
             <td rowspan="2">DIUPLOAD OLEH</td>
           </tr>
@@ -135,12 +135,19 @@
                        }
                        @endphp
                 </td>
-                <td></td>
-                <td></td>
+                <td>
+					@php
+						foreach($BOPs->where('kelurahan_id', $kppdata->kode_desa) as $BOP)
+						{
+							echo "$BOP->sumber_dana,";
+						}
+					@endphp
+                </td>
+                <td>{{ $BOPs->where('kelurahan_id', $kppdata->kode_desa)->sum('jumlah') }}</td>
                 <td>{{ $kppdata->kegiatan_pengecekan }}</td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>{{ $kppdata->tanggal_mulai }}</td>
+                <td>{{ $kppdata->sumber_dana }}</td>
+                <td>{{ $kppdata->jumlah }}</td>
                 <td>{{ $kppdata->keterangan_lain_lain }}</td>
                 <td>{{ $kppdata->name }}</td>
             </tr> 

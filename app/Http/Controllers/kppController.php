@@ -39,9 +39,10 @@ class kppController extends Controller
      */
     public function index()
     {
-        $kppdatas = $this->coba2()->orderBy('kppdatas.updated_at', 'desc')->paginate(10);
+        $kppdatas = $this->coba2()->leftjoin('infrastruktures_maintenances', 'infrastruktures_maintenances.kelurahan_id', '=', 'kppdatas.kode_desa')->groupBy('kppdatas.kode_desa')->orderBy('kppdatas.updated_at', 'desc')->paginate(10);
+        $BOPs = kpp_operating_fund::get();
               
-        return view('kpp.index', compact(['kppdatas']));
+        return view('kpp.index', compact(['kppdatas', 'BOPs']));
     }
     
     public function find()

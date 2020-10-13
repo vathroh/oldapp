@@ -103,10 +103,6 @@ Route::get('/ajaxfotokegiatan', 'VillagesController@fotokegiatan');
 Route::get('/dokumen', 'VillagesController@jenisDokumen');
 
 
-//KPP Dropdown
-Route::get('/kppkecamatan', 'dropdownController@kecamatan');
-Route::get('/kppkelurahan', 'dropdownController@kelurahan');
-
 
 // DASHBOARD
 Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
@@ -153,6 +149,10 @@ Route::get('/kpp-find', 'kppController@find');
 Route::get('/rekap-kpp/{column}/{param}', 'kppController@rekap_item');
 Route::get('/rekap-kpp/{column}/{param}/{zone}/{zone_id}', 'kppController@rekap_item_zone');
 Route::get('/rekap-kpp-administrasi-tiga-bulan/{zone}/{zone_id}', 'kppController@rekap_administrasi_rutin');
+//KPP Dropdown
+Route::get('/kppkecamatan', 'dropdownController@kecamatan');
+Route::get('/kppkelurahan', 'dropdownController@kelurahan');
+Route::get('/searchindexkpp', 'kppController@searchIndex');
 
 
 //EDIT PASSWORD

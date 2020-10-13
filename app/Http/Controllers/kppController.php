@@ -464,7 +464,16 @@ class kppController extends Controller
     }
 
 	
-	
+// =========================================== AJAX =====================================================================
+
+public function searchIndex(Request $request)
+{
+	$BOPs = kpp_operating_fund::get();
+	$kppdatas = $this->coba2()->leftjoin('infrastruktures_maintenances', 'infrastruktures_maintenances.kelurahan_id', '=', 'kppdatas.kode_desa')->groupBy('kppdatas.kode_desa')->where('NAMA_DESA', 'like', '%' . $request->kelurahan . '%')->orderBy('kppdatas.updated_at', 'desc')->get();
+
+	return response()->json([$kppdatas, $BOPs]);
+}
+
 	
     
 // ====================================== custom function ===============================================================

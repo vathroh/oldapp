@@ -155,7 +155,7 @@
         </tbody>
       </table>
     </div>
-    <div class="row text-center">
+    <div id="indexKPPpagination" class="row text-center">
       <div class="col justify-content-center">
         <span>{{ $kppdatas->links() }}</span>
         <a href = "/kpp-download-excel"><button class = "btn btn-primary">Download Data KPP</button></a>
@@ -164,19 +164,5 @@
   </div>
 </div>
 
-
-  <script src="{{ asset('js/cleave.js') }}"></script>
-<script>
-
-var cleave = new Cleave('.nomer2', {
-    numeral: true,
-    numeralThousandsGroupStyle: 'thousand'
-});
-
-var cleave = new Cleave('.nomer3', {
-    numeral: true,
-    numeralThousandsGroupStyle: 'thousand'
-});
-
-</script>
-  @endsection
+<script src="{{ asset('js/kpp/searchIndexKPP.js') }}"></script>
+@endsection

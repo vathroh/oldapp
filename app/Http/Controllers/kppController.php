@@ -285,7 +285,7 @@ class kppController extends Controller
             )))->get();
               
 
-        return view_('kpp.rekap.kabupaten', compact(['kabupaten', 'kppdatas', 'rekapkpp']));
+        return view('kpp.rekap.kabupaten', compact(['kabupaten', 'kppdatas', 'rekapkpp']));
 	}
 	
 	public function rekap_kecamatan($KD_KAB)

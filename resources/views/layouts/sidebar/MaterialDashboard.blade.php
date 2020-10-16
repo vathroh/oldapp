@@ -51,6 +51,12 @@
 			<p>Edit Data</p>
 		</a>
 	</li>
+	<li>
+		<a class="nav-link" href = "/kpp-monitoring">
+			<i class="material-icons">rule</i>
+			<p>Monitoring</p>
+		</a>
+	</li>
     @endif
 	
 	<li>

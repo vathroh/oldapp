@@ -138,6 +138,9 @@ Route::resource('/kpp/pengurus', 'kpp\penguruskppController');
 Route::resource('kpp/data-pertemuan', 'kpp\DataPertemuanController');
 Route::resource('/kpp/data-bop', 'kpp\kppOperatingFundController');
 Route::resource('/kpp/data-pengecekan-fisik', 'kpp\dataPengecekanFisikController');
+Route::get('/kpp-monitoring', 'kppController@monitoring');
+Route::get('/kpp-spot-check', 'kppController@spotCheck');
+Route::get('/kpp-maintenance', 'kppController@maintenance');
 Route::get('/kpp-download-excel', 'kppController@export');
 Route::get('/kpp-download-rekap-kabupaten', 'kppController@exportRekapKabupaten');
 Route::get('/kpp-download-rekap-kecamatan/{KD_KAB}', 'kppController@exportRekapKecamatan');
@@ -149,6 +152,7 @@ Route::get('/kpp-find', 'kppController@find');
 Route::get('/rekap-kpp/{column}/{param}', 'kppController@rekap_item');
 Route::get('/rekap-kpp/{column}/{param}/{zone}/{zone_id}', 'kppController@rekap_item_zone');
 Route::get('/rekap-kpp-administrasi-tiga-bulan/{zone}/{zone_id}', 'kppController@rekap_administrasi_rutin');
+
 //KPP Dropdown
 Route::get('/kppkecamatan', 'dropdownController@kecamatan');
 Route::get('/kppkelurahan', 'dropdownController@kelurahan');

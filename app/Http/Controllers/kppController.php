@@ -198,6 +198,37 @@ class kppController extends Controller
     {
         //
     }
+    
+    
+    
+    public function monitoring()
+    {
+		$kppExist = DB::table('kpp_data_view')->groupBy('KD_KEL');
+		$bdiVillages = DB::table('bdi_villages');
+		$BDIs = $bdiVillages->get();
+		$bdiKPP = DB::table('kpp_data_view')->join('bdi_villages', 'kpp_data_view.KD_KEL', '=', 'bdi_villages.KD_KEL')->groupBy('kpp_data_view.KD_KEL')->pluck('kpp_data_view.KD_KEL');
+		$noBDI = $kppExist->whereNotIn('KD_KEL', $bdiKPP)->get();
+		$noKPPs = $bdiVillages->groupBy('bdi_villages.KD_KEL')->whereNotIn('bdi_villages.KD_KEL', $bdiKPP)->join('allvillages', 'bdi_villages.KD_KEL', '=', 'allvillages.KD_KEL')->get();
+		$PICs = DB::table('job_descs')->join('users', 'users.id', '=', 'job_descs.user_id')->join('job_titles', 'job_titles.id', '=', 'job_descs.job_title_id')->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')->join('personalInformations', 'personalInformations.nik', '=', 'users.nik')->get();
+        return view('kpp.monitoring', compact(['noKPPs', 'BDIs', 'PICs']));
+    }
+    
+    
+    
+    public function spotCheck()
+    {
+		$spotChecks = DB::table('data_pengecekan_fisiks')->join('allvillages', 'allvillages.KD_KEL', '=', 'data_pengecekan_fisiks.kelurahan_id')->get();
+		$kppdatas = kppdata::get();
+		return view('kpp.SpotCheckKPP', compact(['spotChecks', 'kppdatas']));
+	}
+	
+	
+	public function maintenance()
+	{
+		$kppdatas = kppdata::get();
+		$maintenances = infrastruktures_maintenance::join('allvillages', 'allvillages.KD_KEL', '=', 'infrastruktures_maintenances.kelurahan_id')->get();		
+		return view('kpp.KPPmaintenance', compact(['maintenances', 'kppdatas']));
+	}
 
 
 // =========================================================== EXPORT TO EXCEL ========================================================
@@ -254,7 +285,7 @@ class kppController extends Controller
             )))->get();
               
 
-        return view('kpp.rekap.kabupaten', compact(['kabupaten', 'kppdatas', 'rekapkpp']));
+        return view_('kpp.rekap.kabupaten', compact(['kabupaten', 'kppdatas', 'rekapkpp']));
 	}
 	
 	public function rekap_kecamatan($KD_KAB)

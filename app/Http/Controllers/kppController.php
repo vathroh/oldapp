@@ -229,6 +229,22 @@ class kppController extends Controller
 		$maintenances = infrastruktures_maintenance::join('allvillages', 'allvillages.KD_KEL', '=', 'infrastruktures_maintenances.kelurahan_id')->get();		
 		return view('kpp.KPPmaintenance', compact(['maintenances', 'kppdatas']));
 	}
+	
+	
+	public function bop()
+	{
+		$kppdatas = kppdata::get();
+		$BOPs = kpp_operating_fund::join('allvillages', 'allvillages.KD_KEL', '=', 'kpp_operating_funds.kelurahan_id')->get();
+		
+		return view('kpp.KPPoperatingFund', compact(['BOPs', 'kppdatas']));
+	}
+	
+	public function meeting()
+	{
+		$kppdatas = kppdata::get();
+		$meetings = kpp_pertemuan::join('allvillages', 'allvillages.KD_KEL', '=', 'kpp_pertemuans.kelurahan_id')->get();
+		return view('kpp.KPPmeeting', compact(['kppdatas', 'meetings']));
+	}
 
 
 // =========================================================== EXPORT TO EXCEL ========================================================

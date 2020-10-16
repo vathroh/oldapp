@@ -138,9 +138,12 @@ Route::resource('/kpp/pengurus', 'kpp\penguruskppController');
 Route::resource('kpp/data-pertemuan', 'kpp\DataPertemuanController');
 Route::resource('/kpp/data-bop', 'kpp\kppOperatingFundController');
 Route::resource('/kpp/data-pengecekan-fisik', 'kpp\dataPengecekanFisikController');
+//KPP Monitoring
 Route::get('/kpp-monitoring', 'kppController@monitoring');
 Route::get('/kpp-spot-check', 'kppController@spotCheck');
 Route::get('/kpp-maintenance', 'kppController@maintenance');
+Route::get('/kpp-bop', 'kppController@bop');
+Route::get('/kpp-meeting', 'kppController@meeting');
 Route::get('/kpp-download-excel', 'kppController@export');
 Route::get('/kpp-download-rekap-kabupaten', 'kppController@exportRekapKabupaten');
 Route::get('/kpp-download-rekap-kecamatan/{KD_KAB}', 'kppController@exportRekapKecamatan');

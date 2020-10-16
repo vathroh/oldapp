@@ -69,6 +69,18 @@
 			<p>Pengecekan</p>
 		</a>
 	</li>
+	<li>
+		<a class="nav-link" href = "/kpp-bop">
+			<i class="material-icons">rule</i>
+			<p>BOP</p>
+		</a>
+	</li>
+	<li>
+		<a class="nav-link" href = "/kpp-meeting">
+			<i class="material-icons">rule</i>
+			<p>Pertemuan</p>
+		</a>
+	</li>
     @endif
 	
 	<li>

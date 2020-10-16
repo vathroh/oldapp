@@ -57,6 +57,18 @@
 			<p>Monitoring</p>
 		</a>
 	</li>
+	<li>
+		<a class="nav-link" href = "/kpp-maintenance">
+			<i class="material-icons">rule</i>
+			<p>Perbaikan</p>
+		</a>
+	</li>
+	<li>
+		<a class="nav-link" href = "/kpp-spot-check">
+			<i class="material-icons">rule</i>
+			<p>Pengecekan</p>
+		</a>
+	</li>
     @endif
 	
 	<li>

@@ -179,7 +179,60 @@
 		</a>
 	</li>
 	@endif
+</ul>
+<ul class="nav">
+	@if (Auth::user()->hasAnyRoles(['admin', 'osp']))
+	<li class="nav-item active dropdown">
+		<a class="nav-link" href="/activities-category">
+			<i class="material-icons">engineering</i>
+			<p>EVALUASI KINERJA</p>
+		</a>
+	</li>
+	<li class="nav-item dropdown">
+		<a class="nav-link" href="/personnel-evaluation-criteria">
+			<i class="material-icons">engineering</i>
+			<p>KRITERIA</p>
+		</a>
+	</li>	
 	<li>				
+		<a class="dropdown-item" href="/personnel-evaluation-aspect">
+			<i class="material-icons">engineering</i>
+			<p>ASPEK</p>
+		</a>
+    </li>
+    <li>				
+		<a class="dropdown-item" href="/personnel-evaluation-setup">
+			<i class="material-icons">engineering</i>
+			<p>SETUP</p>
+		</a>
+    </li>
+    <li>
+		<a class="dropdown-item" href="/personnel-evaluator">
+			<i class="material-icons">engineering</i>
+			<p>PENILAI</p>
+		</a>
+    </li>
+        <li>
+		<a class="dropdown-item" href="/personnel-evaluation">
+			<i class="material-icons">engineering</i>
+			<p>LEMBAR EVALUASI</p>
+		</a>
+    </li>
+    
+    <li>
+		<a class="dropdown-item" href="/personnel-evaluation-rekap">
+			<i class="material-icons">engineering</i>
+			<p>REKAP</p>
+		</a>
+    </li>
+    @endif
+    <li>				
+		<a class="dropdown-item" href="#">
+			<i class="material-icons"></i>
+			<p></p>
+		</a>
+    </li>
+    <li>				
 		<a class="dropdown-item" href="#">
 			<i class="material-icons"></i>
 			<p></p>

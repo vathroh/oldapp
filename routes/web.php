@@ -5,7 +5,7 @@
 | Web Routes
 |--------------------------------------------------------------------------
 |
-| Here is where you can register web routes for your application. These
+| Here is where you can register web routes for your application. These'
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
 |
@@ -156,7 +156,7 @@ Route::get('/rekap-kpp/{column}/{param}', 'kppController@rekap_item');
 Route::get('/rekap-kpp/{column}/{param}/{zone}/{zone_id}', 'kppController@rekap_item_zone');
 Route::get('/rekap-kpp-administrasi-tiga-bulan/{zone}/{zone_id}', 'kppController@rekap_administrasi_rutin');
 
-//KPP Dropdown
+//KPP Ajax
 Route::get('/kppkecamatan', 'dropdownController@kecamatan');
 Route::get('/kppkelurahan', 'dropdownController@kelurahan');
 Route::get('/searchindexkpp', 'kppController@searchIndex');
@@ -172,37 +172,73 @@ Route::put('/pass-by-user/{id}', 'passwordController@storeByUser');
 //ACTIVITIES : PELATIHAN | RAKOR | KBIK | EVALUASI | TES
 Route::resource('/activity', 'activityController');
 Route::resource('/subjects', 'subjectsController');
-Route::resource('/evaluation-answers', 'evaluationAnswerController');
-Route::resource('/activities-category', 'activitiesCategoryController');
-Route::resource('/evaluation-questions', 'evaluationQuestionController');
-Route::resource('/activity-blacklist', 'activityBlacklistController');
-
 Route::get('/activities', 'activityController@activities');
 Route::get('/activity/{activity}', 'activityController@activity');
-Route::get('/activity/{activity}/{activity_item}', 'activityController@activity_item');
-Route::get('/schedule/{activity}/{activity_item}', 'activityController@schedule');
+Route::resource('/evaluation-answers', 'evaluationAnswerController');
+Route::resource('/activity-blacklist', 'activityBlacklistController');
+Route::resource('/activities-category', 'activitiesCategoryController');
+Route::get('/dropdown-question', 'evaluationAnswerController@dropdown');
+Route::resource('/evaluation-questions', 'evaluationQuestionController');
 Route::get('/lesson/{activity}/{activity_item}', 'activityController@lesson');
-Route::get('/attendance/{activity}/{activity_item}', 'activityController@attendance');
-Route::post('/records-attendance/{activity}/{activity_item}', 'activityController@records_attendance');
+Route::post('/certificate/{activity_item}', 'activityController@certificate');
 Route::get('/lesson-download/{library_id}', 'activityController@lesson_download');
+Route::get('/schedule/{activity}/{activity_item}', 'activityController@schedule');
+Route::get('/attendance/{activity}/{activity_item}', 'activityController@attendance');
+Route::get('/activity/{activity}/{activity_item}', 'activityController@activity_item');
+Route::get('/participants/{activity}/{activity_item}', 'activityController@participants');
 Route::get('/training-evaluation/{activity_id}/{subject_id}', 'evaluationController@index');
 Route::get('/activity-evaluation/{activity_id}', 'evaluationController@activityEvaluation');
-Route::get('/dropdown-question', 'evaluationAnswerController@dropdown');
-Route::get('/certificate_page/{activity}/{activity_item}', 'activityController@certificate_page');
-Route::post('/certificate/{activity_item}', 'activityController@certificate');
-Route::get('/listing-attendant/{activity}/{activity_item}', 'activityController@listing_attendant');
+Route::post('/training-evaluation/{activity_id}/{subject_id}', 'evaluationController@store');
 Route::get('/training-monitoring/{activity}/{activity_item}', 'activityController@monitoring');
-Route::get('/participants/{activity}/{activity_item}', 'activityController@participants');
-Route::get('/evaluation-check/{activity}/{activity_item}', 'activityController@evaluation_check');
+Route::post('/records-attendance/{activity}/{activity_item}', 'activityController@records_attendance');
+Route::get('/listing-attendant/{activity}/{activity_item}', 'activityController@listing_attendant');
 Route::get('/evaluation-result/{activity}/{activity_item}', 'activityController@evaluation_result');
-
+Route::post('/activity-evaluation/{activity_id}', 'evaluationController@evaluationActivityStore');
+Route::get('/certificate_page/{activity}/{activity_item}', 'activityController@certificate_page');
+Route::get('/evaluation-check/{activity}/{activity_item}', 'activityController@evaluation_check');
+//Ajax
 Route::get('/ajax-listing-attendant-find-name/', 'activityController@ajaxAttendanceFindName');
+Route::get('/ajax-evaluation-result', 'activityController@ajaxEvaluationResult');
 Route::get('/ajax-listing-attendant/', 'activityController@ajaxAttendance');
 Route::post('/ajax-listing-register/', 'activityController@ajaxRegister');
-Route::get('/ajax-listing-ready', 'activityController@ready');
-Route::get('/ajax-listing-moveReg', 'activityController@moveReg');
-Route::get('/ajax-evaluation-result', 'activityController@ajaxEvaluationResult');
 Route::delete('/ajax-listing-delete', 'activityController@deleteAjax');
+Route::get('/ajax-listing-moveReg', 'activityController@moveReg');
+Route::get('/ajax-listing-ready', 'activityController@ready');
 
-Route::post('/training-evaluation/{activity_id}/{subject_id}', 'evaluationController@store');
-Route::post('/activity-evaluation/{activity_id}', 'evaluationController@evaluationActivityStore');
+
+
+//EVALUASI KINERJA 
+Route::resource('personnel-evaluator', 'personnelEvaluation\evaluator');
+Route::resource('personnel-evaluation', 'personnelEvaluation\evaluation');
+Route::resource('personnel-evaluation-setup', 'personnelEvaluation\setup');
+Route::resource('personnel-evaluation-aspect', 'personnelEvaluation\aspect');
+Route::resource('personnel-evaluation-criteria', 'personnelEvaluation\criteria');
+Route::get('personnel-evaluation-rekap', 'personnelEvaluation\evaluation@rekap');
+Route::put('personnel-evaluation-setup-ready/{id}', 'personnelEvaluation\setup@ready');
+Route::get('personnel-evaluation-edit',  'personnelEvaluation\evaluation@editPermission');
+Route::get('personnel-evaluation-monitoring',  'personnelEvaluation\evaluation@monitoring');
+Route::put('personnel-evaluation-setup-aspect/{id}', 'personnelEvaluation\setup@saveAspect');
+Route::put('personnel-evaluation-setup-not-ready/{id}', 'personnelEvaluation\setup@notReady');
+Route::put('personnel-evaluation-edit-grant/{id}',  'personnelEvaluation\evaluation@editGrant');
+Route::get('personnel-evaluation-setup/{quarter}/{year}/{id}', 'personnelEvaluation\setup@store');
+Route::put('personnel-evaluation-value-ready/{valueId}',  'personnelEvaluation\evaluation@ready');
+Route::put('personnel-evaluation-edit-denied/{id}',  'personnelEvaluation\evaluation@editDenied');
+Route::get('personnel-evaluation-home/{settingId}/{evaluasi}', 'personnelEvaluation\evaluation@home');
+Route::post('personnnel-evaluation-index', 'personnelEvaluation\setup@setupIndex')->name('setupIndex');
+Route::get('personnel-evaluation-create/{settingId}/{userId}',  'personnelEvaluation\evaluation@input');
+Route::put('personnel-evaluation-value-not-ready/{valueId}',  'personnelEvaluation\evaluation@notReady');
+Route::get('personnel-evaluation-input/{settingId}/{userId}',  'personnelEvaluation\evaluation@inputValue');
+Route::get('personnel-evaluation-download/{settingId}/{userId}',  'personnelEvaluation\evaluation@download');
+//Ajax
+Route::get('personnel-evaluation-setup-aspect-item-move-down', 'personnelEvaluation\setup@moveDownAspectItem');
+Route::get('personnel-evaluation-setup-aspect-item-move-up', 'personnelEvaluation\setup@moveUpAspectItem');
+Route::get('personnel-evaluation-setup-aspect-item-delete', 'personnelEvaluation\setup@deleteAspectItem');
+Route::get('personnel-evaluation-setup-aspect-move-save', 'personnelEvaluation\setup@moveSaveAspect');
+Route::get('personnel-evaluation-setup-aspect-move-down', 'personnelEvaluation\setup@moveDownAspect');
+Route::get('personnel-evaluation-setup-aspect-move-up', 'personnelEvaluation\setup@moveUpAspect');
+Route::get('personnel-evaluation-setup-aspect-delete', 'personnelEvaluation\setup@deleteAspect');
+Route::get('personnel-evaluation-myevaluation', 'personnelEvaluation\evaluation@myevaluation');
+Route::get('personnnel-evaluation-getJobTitles', 'personnelEvaluation\setup@ajaxJobTitles');
+Route::get('personnel-evaluator-select', 'personnelEvaluation\evaluator@getEvaluator');
+Route::get('personnel-evaluation-home', 'personnelEvaluation\evaluation@ajaxHome');
+Route::get('search-aspect-id', 'personnelEvaluation\setup@ajaxAspect');

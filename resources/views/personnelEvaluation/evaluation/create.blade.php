@@ -1,0 +1,593 @@
+@extends('layouts.MaterialDashboard')
+
+@section('head')
+@endsection
+
+@section('content')
+<div class="card">
+  <div class="card-header card-header-primary">
+    <h4 class="card-title ">Evaluasi Kinerja</h4>
+    <p class="card-category">Kriteria</p>
+  </div>
+  <div class="card-body">
+		@include('personnelEvaluation.navbar')
+
+			<div id="ready" class="form-group text-center my-3" data-ready="{{ $value[0]->ready }}">
+				<h4>Evaluasi Kinerja {{ $setting->pluck('job_title')->first() }}</h4>
+				<h4>Kuartal {{ $setting->pluck('quarter')->first() }} Tahun {{ $setting->pluck('year')->first() }}</h4>
+			</div>
+			
+			<div>
+				<div class="row">
+					<div class="col-md-3"><h6>Nama Personil</h6></div>
+					<div class="col-md-9"><h6>: {{ $user[0]->name }}</h6></h6></div>
+					
+				</div>
+				<div class="row">
+					<div class="col-md-3"><h6>Tim</h6></div>
+					<div class="col-md-9"><h6>: <input type="text" id="team" data-value="{{ $value[0]->id }}" value="{{ $value[0]->team }}"></h6></h6></div>					
+				</div>
+				<div class="row">
+					<div class="col-md-3"><h6>Kabupaten/Kota</h6></div>
+					<div class="col-md-9"><h6>: {{ $user[0]->NAMA_KAB }}</h6></h6></div>					
+				</div>
+			</div>
+			
+			<table class=" table table-bordered" style="width:100%;">
+				<thead>
+					<tr>
+						<th class="text-center" scope="col">No</th>
+						<th class="text-center" scope="col">Aspek Kinerja</th>
+						<th class="text-center" scope="col">Variabel Target</th>
+						<th class="text-center" scope="col">Tercapai %</th>
+						<th class="text-center" scope="col">No. Bukti</th>
+						<th class="text-center" scope="col">Penilaian Ketercapaian (%)</th>
+						<th class="text-center" scope="col">Skor</th>
+					</tr>
+				</thead>
+				<tbody>
+					@if($criteriIds != "")
+					@php $i = 1 @endphp
+					@foreach($criteriIds as $criteriId)
+						<tr style="background-color:#c2f0fc;">
+							<th>{{ $i }}</th>
+							<th colspan="6">{{ $criterias->where('id',$criteriId[0])->pluck('criteria')->first() }}</th>
+						</tr>
+					
+						@php $y = 1;  $countAspect = count($criteriIds[$i-1]) @endphp
+						@for($x=1; $x < $countAspect; $x++)
+						
+							<tr>
+								<td class="text-right">{{ $y }} </td>
+								<td>{{ $aspects->where('id', $criteriIds[$i-1][$x] )->pluck('aspect')->first() }} </td>
+								<td class="text-center">
+									<input type="checkbox" value="1" id="checkbox" data-id="{{ $criterias->where('id',$criteriId[0])->pluck('id')->first() }}-{{ $aspects->where('id', $criteriIds[$i-1][$x] )->pluck('id')->first() }}" data-aspect="{{ $aspects->where('id', $criteriIds[$i-1][$x] )->pluck('id')->first() }}" data-criteria="{{ $criterias->where('id',$criteriId[0])->pluck('id')->first() }}"
+									
+									data-value="{{ $value[0]->id }}"
+										
+										@if(isset($content[$criterias->where('id',$criteriId[0])->pluck('id')->first()][$aspects->where('id', $criteriIds[$i-1][$x] )->pluck('id')->first()]['variabel'])) 
+										
+										data-variabel="{{$content[$criterias->where('id',$criteriId[0])->pluck('id')->first()][$aspects->where('id', $criteriIds[$i-1][$x] )->pluck('id')->first()]['variabel'] }}" 
+									
+											@if($content[$criterias->where('id',$criteriId[0])->pluck('id')->first()][$aspects->where('id', $criteriIds[$i-1][$x] )->pluck('id')->first()]['variabel'] == 1 ) 
+									
+												checked 
+									
+											@endif 
+										@endif >
+								</td>
+								<td class="text-center">
+									<input class="capaian" type="Text" size="3" id="{{ $criterias->where('id',$criteriId[0])->pluck('id')->first() }}-{{ $aspects->where('id', $criteriIds[$i-1][$x] )->pluck('id')->first() }}" data-aspect="{{ $aspects->where('id', $criteriIds[$i-1][$x] )->pluck('id')->first() }}" data-criteria="{{ $criterias->where('id',$criteriId[0])->pluck('id')->first() }}" data-value="{{ $value[0]->id }}" data-variabel="$content[$criterias->where('id',$criteriId[0])->pluck('id')->first()][$aspects->where('id', $criteriIds[$i-1][$x] )->pluck('id')->first()]['variabel']" 							
+							
+									@if(isset($content[$criterias->where('id',$criteriId[0])->pluck('id')->first()][$aspects->where('id', $criteriIds[$i-1][$x] )->pluck('id')->first()]['variabel'])) 							
+								
+										@if($content[$criterias->where('id',$criteriId[0])->pluck('id')->first()][$aspects->where('id', $criteriIds[$i-1][$x] )->pluck('id')->first()]['variabel'] == 0 )
+							
+											disabled style="background-color:grey;" 
+								
+										@endif @else disabled style="background-color:grey;" 
+							
+									@endif
+							
+									@if(isset($content[$criterias->where('id',$criteriId[0])->pluck('id')->first()][$aspects->where('id', $criteriIds[$i-1][$x] )->pluck('id')->first()]['capaian'])) value="{{ $content[$criterias->where('id',$criteriId[0])->pluck('id')->first()][$aspects->where('id', $criteriIds[$i-1][$x] )->pluck('id')->first()]['capaian'] }}" @endif>
+								</td>
+								<td class="text-center">
+									<input class="evidences" type="Text" size="3" id="{{ $criterias->where('id',$criteriId[0])->pluck('id')->first() }}-{{ $aspects->where('id', $criteriIds[$i-1][$x] )->pluck('id')->first() }}" data-aspect="{{ $aspects->where('id', $criteriIds[$i-1][$x] )->pluck('id')->first() }}" data-criteria="{{ $criterias->where('id',$criteriId[0])->pluck('id')->first() }}" data-value="{{ $value->first()->id }}" 
+							
+										@if(isset($content[$criterias->where('id',$criteriId[0])->pluck('id')->first()][$aspects->where('id', $criteriIds[$i-1][$x] )->pluck('id')->first()]['variabel'])) 							
+								
+											@if($content[$criterias->where('id',$criteriId[0])->pluck('id')->first()][$aspects->where('id', $criteriIds[$i-1][$x] )->pluck('id')->first()]['variabel'] == 0 )
+							
+												disabled style="background-color:grey;" 
+								
+											@endif @else disabled style="background-color:grey;" 
+							
+										@endif
+							
+									@if(isset($content[$criterias->where('id',$criteriId[0])->pluck('id')->first()][$aspects->where('id', $criteriIds[$i-1][$x] )->pluck('id')->first()]['evidences'])) value="{{ $content[$criterias->where('id',$criteriId[0])->pluck('id')->first()][$aspects->where('id', $criteriIds[$i-1][$x] )->pluck('id')->first()]['evidences'] }}" @endif
+									>
+								</td>
+								<td class="text-center">
+									<input class="assesment" type="Text" size="3" id="{{ $criterias->where('id',$criteriId[0])->pluck('id')->first() }}-{{ $aspects->where('id', $criteriIds[$i-1][$x] )->pluck('id')->first() }}" data-aspect="{{ $aspects->where('id', $criteriIds[$i-1][$x] )->pluck('id')->first() }}" data-criteria="{{ $criterias->where('id',$criteriId[0])->pluck('id')->first() }}" data-value="{{ $value->first()->id }}" 
+									@if(isset($content[$criterias->where('id',$criteriId[0])->pluck('id')->first()][$aspects->where('id', $criteriIds[$i-1][$x] )->pluck('id')->first()]['variabel'])) 							
+								
+										@if($content[$criterias->where('id',$criteriId[0])->pluck('id')->first()][$aspects->where('id', $criteriIds[$i-1][$x] )->pluck('id')->first()]['variabel'] == 0 )
+							
+											disabled style="background-color:grey;" 
+								
+										@endif @else disabled style="background-color:grey;" 
+							
+									@endif
+							
+									@if(isset($content[$criterias->where('id',$criteriId[0])->pluck('id')->first()][$aspects->where('id', $criteriIds[$i-1][$x] )->pluck('id')->first()]['assesment'])) value="{{ $content[$criterias->where('id',$criteriId[0])->pluck('id')->first()][$aspects->where('id', $criteriIds[$i-1][$x] )->pluck('id')->first()]['assesment'] }}" @endif
+									>
+								</td>
+								<td class="text-center">
+									<input class="score" type="Text" size="3" id="{{ $criterias->where('id',$criteriId[0])->pluck('id')->first() }}-{{ $aspects->where('id', $criteriIds[$i-1][$x] )->pluck('id')->first() }}" data-aspect="{{ $aspects->where('id', $criteriIds[$i-1][$x] )->pluck('id')->first() }}" data-criteria="{{ $criterias->where('id',$criteriId[0])->pluck('id')->first() }}" 
+									
+									
+									@if(isset($content[$criterias->where('id',$criteriId[0])->pluck('id')->first()][$aspects->where('id', $criteriIds[$i-1][$x] )->pluck('id')->first()]['variabel'])) 
+									
+									data-variabel = "{{ $content[$criterias->where('id',$criteriId[0])->pluck('id')->first()][$aspects->where('id', $criteriIds[$i-1][$x] )->pluck('id')->first()]['variabel'] }}"
+
+									@endif
+									
+									data-value="{{ $value->first()->id }}" 									
+									
+									@if(isset($content[$criterias->where('id',$criteriId[0])->pluck('id')->first()][$aspects->where('id', $criteriIds[$i-1][$x] )->pluck('id')->first()]['score'])) value="{{ $content[$criterias->where('id',$criteriId[0])->pluck('id')->first()][$aspects->where('id', $criteriIds[$i-1][$x] )->pluck('id')->first()]['score'] }}" @endif disabled
+									>
+								</td>
+							</tr>					
+						
+						@php $y++ @endphp
+						@endfor
+						
+						<tr>
+							<th class="text-center" colspan="2">Jumlah</th>
+							<th class="text-center" id="sumVariabel{{$criterias->where('id',$criteriId[0])->pluck('id')->first()}}"></th>
+							<th colspan="3"></th>
+							<th data-proportion="{{ $criterias->where('id',$criteriId[0])->pluck('proportion')->first() }}" class="text-center" id="sumScores{{$criterias->where('id',$criteriId[0])->pluck('id')->first()}}">
+							</th>
+						</tr>				
+					
+					@php $i++ @endphp
+					@endforeach
+					@endif
+					<tr>
+						<th class="text-center" colspan="2">T O T A L</th>
+						<td class="text-center" id="totalVariabel"></td>
+						<th colspan="3" id="finalResult"></th>
+						<th class="text-center" id="totalScores"></th>
+					</tr>
+					<tr>
+						<th colspan="2" style="border-color:transparent;"></th>
+						<th colspan="5" style="border-color:transparent;">							
+						</th>
+					</tr>
+				</tbody>
+			</table>
+			
+			<div class="row">
+								
+				<div class="col-md-6">
+					<div>
+						REKOMENDASI PERBAIKAN
+					</div>
+					<div class="form-group">
+						<textarea class="form-control" id="recommendation" data-value="{{ $value[0]->id }}" rows="4">{{ $value[0]->recommendation }}</textarea>
+					</div>
+				</div>
+				
+				<div class="col-md-6">
+					<div>
+						MASALAH DAN SARAN
+					</div>
+					<div class="form-group">
+						<textarea class="form-control"  id="issue" data-value="{{ $value[0]->id }}" rows="4">{{ $value[0]->issue }}</textarea>
+					</div>
+				</div>
+			</div>
+					
+			<div class="mt-3" style="width:100%; border: 1px solid grey; border-radius: 5px; padding: 30px;">
+				<div style="width: 600px; margin:auto;" >
+					<div class="row">
+						Status Blacklist
+					</div>
+					<div>
+						<div class="check">
+							<input class="check-input" type="checkbox" value="Penyalahgunaan Dana Program/LKM/Masyarakat" id="blackllist1">
+							<label class="check-label" for="blackllist1">
+								Penyalahgunaan Dana Program/LKM/Masyarakat
+							</label>
+						</div>
+						<div class="check">
+							<input class="check-input" type="checkbox" value="Penyalahgunaan Dana Program/LKM/Masyarakat" id="blackllist2">
+							<label class="check-label" for="blackllist2">
+								Manipulasi Data dan atau Data SIM
+							</label>
+						</div>
+					</div>
+					<div class="row mt-1" style="background-color:#befc9f; padding:10px 0;">
+						<div class="col" style="font-weight: bold; font-size:14px;">
+							Hasil Akhir/Kualifikasi Kinerja
+						</div>
+						<div class="col">
+							<h6 id="finalResult" class="text-center" style="vertical-align: bottom;">{{ $value[0]->finalResult }}</h6>
+						</div>
+					</div>
+				</div>
+			</div>
+				
+			@if($value[0]->ready==0)
+			<form method="post" action="/personnel-evaluation-value-ready/{{ $value[0]->id }}" enctype="multipart/form-data">
+			@method('put')
+			@csrf
+			<div class="text-center mt-5">
+				<button type="submit" class="btn btn-primary">SUDAH OK, KIRIM</button>
+			</div>
+			</form>
+			@else
+			<form method="post" action="/personnel-evaluation-value-not-ready/{{ $value[0]->id }}" enctype="multipart/form-data">
+			@method('put')
+			@csrf
+			<div class="text-center mt-5">
+				<button type="submit" class="btn btn-primary">AJUKAN PERMINTAAN EDIT</button>
+			</div>
+			</form>
+			@endif
+		
+    </div>
+    
+  </div>
+</div>
+
+
+<script>
+
+$(document).ready(function() {
+	var ready = $("div#ready").data('ready');
+	if(ready == 1 ){
+		$("input[type=text]").attr('disabled', true)
+		$("input#checkbox").attr('disabled', true)
+	}
+});
+
+$("textarea#recommendation").keyup(function(){
+	var recommendation		= $(this).val();
+	var issue				= $("textarea#issue").val();
+	var value				= $(this).data('value');
+	var team				= $("input#team").val();
+	
+	$.ajax({			
+		type: 'get',
+		url: '/personnel-evaluation/create',
+		data: {
+			'recommendation': recommendation,
+			'value'			: value,
+			'issue'			: issue,
+			'team'			: team
+		},
+	
+		
+		success: function(data) {
+			console.log(data);
+		}
+	});
+	
+
+});
+
+$("textarea#issue").keyup(function(){
+	var recommendation		= $("textarea#recommendation").val();
+	var value				= $(this).data('value');
+	var team				= $("input#team").val();
+	var issue				= $(this).val();
+	
+	$.ajax({			
+		type: 'get',
+		url: '/personnel-evaluation/create',
+		data: {
+			'recommendation': recommendation,
+			'value'			: value,
+			'issue'			: issue,
+			'team'			: team
+		},	
+		
+		success: function(data) {
+			console.log(data);
+		}
+	});
+	
+});
+
+$("input#team").keyup(function(){
+	var recommendation		= $("textarea#recommendation").val();	
+	var issue				= $("textarea#issue").val();
+	var value				= $(this).data('value');
+	var team				= $(this).val();
+	
+	$.ajax({			
+		type: 'get',
+		url: '/personnel-evaluation/create',
+		data: {
+			'recommendation': recommendation,
+			'value'			: value,
+			'issue'			: issue,
+			'team'			: team
+		},	
+		
+		success: function(data) {
+			console.log(data);
+		}
+	});
+});
+
+$("input#checkbox").click(function(){	
+	var id 				= $(this).data('id');
+	var criteria		= $(this).data('criteria');
+	var aspect			= $(this).data('aspect');
+	var value			= $(this).data('value');
+	var recommendation	= $("textarea#recommendation").val();	
+	var issue			= $("textarea#recommendation").val();
+	var team			= $("input#team").val();
+	
+	console.log(value);
+	
+	if($(this).prop('checked')) {
+		var variabel = 1;
+        $("input[id=" + id + "]").prop('disabled', false);
+		$("input[id=" + id + "]").css('background-color', 'white');
+		$("input[id=" + id + "]").css('color', 'black');
+		$("input[id=" + id + "].score").css('color', 'red');		
+		$("input[id=" + id + "].score").attr('data-variabel', '1');		
+				
+    } else {
+		var variabel = 0;
+        $("input[id=" + id + "]").prop('disabled', true);
+		$("input[id=" + id + "]").css('background-color', 'grey');
+		$("input[id=" + id + "]").css('color', 'grey');		
+		$("input[id=" + id + "].score").attr('data-variabel', '0');	
+    }
+    	
+	$.ajax({			
+		type: 'get',
+		url: '/personnel-evaluation/create',
+		data: {
+			
+			'criteria' 		: criteria,
+			'aspect' 		: aspect,
+			'value'			: value,
+			'recommendation': recommendation,
+			'issue'			: issue,
+			'team'			: team,
+			'variabel'		: variabel
+		},
+		
+		success: function(data) {
+			console.log(data);
+		}
+	});
+	
+	var totalScores = 0;
+	for(i=1; i < 4; i++){
+		var sumScores = 0;
+		$("input[data-variabel='1'][data-criteria=" + i + "].score").each(function(){
+			var assesmentValue = $(this).val();
+			if ($.isNumeric(assesmentValue)) {
+				sumScores += parseFloat(assesmentValue);
+			}
+		});	
+	
+	
+		var variabel 	= $("input[data-criteria='"+ i +"']#checkbox:checked").length;
+		var proportion 		= $("#sumScores"+i).data('proportion');
+		
+		$("#sumVariabel"+i).text(variabel);
+		$("#sumScores"+i).text(sumScores.toFixed(2));
+		
+		if(variabel > 0){
+			var allScores =  parseFloat(sumScores * proportion / variabel);
+		}else{
+			var allScores = 0;
+		}
+		totalScores += parseFloat(allScores);
+	}
+	
+	if(parseFloat(totalScores) >= 50 && parseFloat(totalScores) < 75){
+		var kinerja = "Tercapai";
+	}else if(parseFloat(totalScores) >= 75){
+		var kinerja = "Sangat Baik";
+	}else{
+		var kinerja = "Tidak Tercapai";
+	}	
+	
+	$("h6#finalResult").text(kinerja);
+	
+	
+	var totalVariabel 	= $("input#checkbox:checked").length;
+	$("#totalVariabel").text(totalVariabel);
+	$("#totalScores").text(totalScores.toFixed(2) + '%');
+});
+
+$("input[type=text].capaian").keyup(function(){
+	var criteria= $(this).data('criteria');
+	var aspect	= $(this).data('aspect');
+	var value	= $(this).data('value');
+	var capaian	= $(this).val();
+	var recommendation	= $("textarea#recommendation").val();	
+	var issue			= $("textarea#issue").val();
+	var team			= $("input#team").val();
+	
+	$.ajax({			
+		type: 'get',
+		url: '/personnel-evaluation/create',
+		data: {
+			'recommendation': recommendation,
+			'issue'			: issue,
+			'team'			: team,
+			'criteria' 	: criteria,
+			'aspect' 	: aspect,
+			'value'		: value,
+			'capaian'	: capaian
+		},
+		
+		success: function(data) {
+			console.log(data);
+		}
+	});
+});
+
+$("input[type=text].evidences").keyup(function(){
+	var criteria	= $(this).data('criteria');
+	var aspect		= $(this).data('aspect');
+	var value		= $(this).data('value');
+	var evidences	= $(this).val();
+	var recommendation	= $("textarea#recommendation").val();	
+	var issue			= $("textarea#issue").val();
+	var team			= $("input#team").val();
+	
+	$.ajax({			
+		type: 'get',
+		url: '/personnel-evaluation/create',
+		data: {
+			'recommendation': recommendation,
+			'issue'			: issue,
+			'team'			: team,
+			'criteria' 	: criteria,
+			'aspect' 	: aspect,
+			'value'		: value,
+			'evidences'	: evidences
+		},
+		
+		success: function(data) {
+			console.log(data);
+		}
+	});
+});
+
+$("input[type=text].assesment").keyup(function(){
+	var recommendation	= $("textarea#recommendation").val();	
+	var issue			= $("textarea#issue").val();
+	var criteria		= $(this).data('criteria');	
+	var aspect			= $(this).data('aspect');
+	var value			= $(this).data('value');	
+	var team			= $("input#team").val();
+	var assesment		= $(this).val();
+	
+	var id 				= "#" + criteria + '-' + aspect;
+	$(id + ".score").val(assesment/100);
+	var score			= assesment/100;
+	
+	var totalScores = 0;
+	for(i=1; i < 4; i++){
+		var sumScores = 0;
+		$("input[data-variabel='1'][data-criteria=" + i + "].score").each(function(){
+			var assesmentValue = $(this).val();
+			if ($.isNumeric(assesmentValue)) {
+				sumScores += parseFloat(assesmentValue);
+			}
+		});		
+	
+		var variabel 	= $("input[data-criteria='"+ i +"']#checkbox:checked").length;
+		var proportion 	= $("#sumScores"+i).data('proportion');
+		$("#sumScores"+i).text(sumScores.toFixed(2));
+		$("#sumVariabel"+i).text(variabel);
+		
+		if(variabel > 0){
+			var allScores =  parseFloat(sumScores * proportion / variabel);
+		}else{
+			var allScores = 0;
+		}
+		totalScores += parseFloat(allScores);
+	}
+	
+	$("#totalScores").text(totalScores.toFixed(2) + '%');	
+	
+	if(parseFloat(totalScores) >= 50 && parseFloat(totalScores) < 75){
+		var kinerja = "Tercapai";
+	}else if(parseFloat(totalScores) >= 75){
+		var kinerja = "Sangat Baik";
+	}else{
+		var kinerja = "Tidak Tercapai";
+	}	
+	
+	$("h6#finalResult").text(kinerja);
+	
+	$.ajax({			
+		type: 'get',
+		url: '/personnel-evaluation/create',
+		data: {
+			'recommendation': recommendation,
+			'issue'			: issue,
+			'team'			: team,
+			'totalScores'	: totalScores,
+			'kinerja'		: kinerja,
+			'criteria'	 	: criteria,
+			'aspect'	 	: aspect,
+			'value'			: value,
+			'score'			: score,
+			'assesment'		: assesment
+		},
+		
+		success: function(data) {
+			console.log(data);
+		}
+	});
+	 
+	
+});
+
+function input(){
+	$.ajax({		
+		type: 'get',
+		url: '/personnel-evaluation/create',
+		data: {
+			
+			'criteria' 		: criteria,
+			'aspect' 		: aspect,
+			'value'			: value,
+			'recommendation': recommendation,
+			'issue'			: issue,
+			'team'			: team,
+			'variabel'		: variabel
+		},
+		
+		success: function(data) {
+			console.log(data);
+		}
+	});
+}
+
+function ready(){
+	var totalScores = 0;
+	for(i=1; i < 4; i++){			
+		var sumScores = 0;
+		
+		$("input[data-variabel='1'][data-criteria=" + i + "].score").each(function(){
+			var assesmentValue = $(this).val();
+			if ($.isNumeric(assesmentValue)) {
+				sumScores += parseFloat(assesmentValue);				
+			}				
+		});
+		
+		var variabel = $("input[data-variabel='1'][ data-criteria='" + i + "']#checkbox").length;
+		var proportion = $("#sumScores"+i).data('proportion');			
+		
+		$("#sumVariabel"+i).text(variabel);
+		$("#sumScores"+i).text(sumScores.toFixed(2));
+		
+		if(variabel > 0){
+			var allScores = parseFloat(sumScores * proportion / variabel);
+		}else{
+			var allScores = 0;
+		}
+		
+		totalScores += parseFloat(allScores);
+	}
+	var totalVariabel = $("input[data-variabel='1']#checkbox").length;
+	$("#totalVariabel").text(totalVariabel);
+	$("#totalScores").text(totalScores.toFixed(2) + '%');	
+}
+
+</script>
+@endsection

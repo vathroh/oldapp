@@ -93,7 +93,11 @@
                 <th><a href = "/rekap-kpp/bop/Ada/KD_KAB/{{$kppdata->KD_KAB}}">{{ $kppdata->jml_bop  }}</a></th>
                 <th>{{ $kppdata->jml_dana_bop }}</th>
                 <th><a href = "/rekap-kpp/kegiatan_pengecekan/Belum Pernah/KD_KAB/{{$kppdata->KD_KAB}}">{{ $kppdata->jml_pengecekan_belum_pernah }}</a></th>
-                <th><a href = "/rekap-kpp/kegiatan_pengecekan/Belum Dilakukan/KD_KAB/{{$kppdata->KD_KAB}}">{{ $kppdata->jml_pengecekan_belum_dilakukan }}</a></th>
+                <th>
+					<a href = "/rekap-kpp/kegiatan_pengecekan/Belum Dilakukan/KD_KAB/{{$kppdata->KD_KAB}}">
+						{{ $kppdata->jml_pengecekan_belum_dilakukan }}
+					</a>
+				</th>
                 <th><a href = "/rekap-kpp/kegiatan_pengecekan/Sudah Dilakukan/KD_KAB/{{$kppdata->KD_KAB}}">{{ $kppdata->jml_pengecekan_sudah_dilakukan }}</a></th>
                 <th><a href = "/rekap-kpp/jumlah_kegiatan_perbaikan/0/KD_KAB/{{$kppdata->KD_KAB}}">{{ $kppdata->jml_kegiatan_perbaikan }}</th>
                 <th>{{ $kppdata->jml_dana_perbaikan }}</th>

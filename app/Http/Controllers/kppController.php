@@ -286,7 +286,7 @@ class kppController extends Controller
 
 	public function rekap_all()
 	{
-	        $rekapkpp =  $this->rekap1()->get();
+		$rekapkpp =  $this->rekap1()->get();
 		$kppdatas = $this->rekap()->groupBy('KD_KAB')->get();
 		
 		$kabupaten=alldistrict::whereIn('kode_kab', explode(', ', str_replace(array('["',  '"]'),'', DB::table('work_zones')
@@ -326,7 +326,7 @@ class kppController extends Controller
 	
 	public function rekap_kelurahan($KD_KEC)
     {
-		$rekapkpp =  $this->rekap1()->groupBy('KD_KEC')->where('KD_KEC', $KD_KEC)->get();	
+		$rekapkpp = $this->rekap1()->groupBy('KD_KEC')->where('KD_KEC', $KD_KEC)->get();	
 		$kppdatas = $this->rekap()->groupBy('KD_KEL')->where('KD_KEC', $KD_KEC)->get();
 		
 		$kabupaten=alldistrict::whereIn('kode_kab', explode(', ', str_replace(array('["',  '"]'),'', DB::table('work_zones')
@@ -386,6 +386,8 @@ class kppController extends Controller
 
     public function rekap()
 	{
+		//return DB::table('kpp_data_view')->selectRaw('*, SUM(CASE WHEN kegiatan_pengecekan = "Sudah Dilakukan" THEN 1 ELSE 0 END) as jml_pengecekan_sudah_dilakukan');
+		
 			return DB::table('kpp_data_view')->selectRaw('*, count(*) as jml_kpp,
 				SUM(CASE WHEN Status  = "Perlu Perhatian" Then 1 ELSE 0 END) as perlu_perhatian, 
 				SUM(CASE WHEN Status  = "Awal" Then 1 ELSE 0 END) as awal, 
@@ -418,12 +420,13 @@ class kppController extends Controller
                 SUM(CASE WHEN bop = "Ada" THEN 1 ELSE 0 END) as jml_bop,
                 SUM(jumlah_bop) as jml_dana_bop,
                 count(*) - SUM(CASE WHEN kegiatan_pengecekan = "Belum Dilakukan" THEN 1 ELSE 0 END) -
- 				SUM(CASE WHEN kegiatan_pengecekan = "sudah_dilakukan" THEN 1 ELSE 0 END) as jml_pengecekan_belum_pernah,
+ 				SUM(CASE WHEN kegiatan_pengecekan = "Sudah Dilakukan" THEN 1 ELSE 0 END) as jml_pengecekan_belum_pernah, 				
                 SUM(CASE WHEN kegiatan_pengecekan = "Belum Dilakukan" THEN 1 ELSE 0 END) as jml_pengecekan_belum_dilakukan,
-                SUM(CASE WHEN kegiatan_pengecekan = "sudah_dilakukan" THEN 1 ELSE 0 END) as jml_pengecekan_sudah_dilakukan,
+                SUM(CASE WHEN kegiatan_pengecekan = "Sudah Dilakukan" THEN 1 ELSE 0 END) as jml_pengecekan_sudah_dilakukan,
                 SUM(jumlah_kegiatan_perbaikan) as jml_kegiatan_perbaikan,
                 SUM(jumlah_dana_perbaikan) as jml_dana_perbaikan
 		');
+		
     
     }
 
@@ -462,9 +465,9 @@ class kppController extends Controller
                 SUM(CASE WHEN bop = "Ada" THEN 1 ELSE 0 END) as jml_bop,
                 SUM(jumlah_bop) as jml_dana_bop,
                 count(*) - SUM(CASE WHEN kegiatan_pengecekan = "Belum Dilakukan" THEN 1 ELSE 0 END) -
- 				SUM(CASE WHEN kegiatan_pengecekan = "sudah_dilakukan" THEN 1 ELSE 0 END) as jml_pengecekan_belum_pernah,
+ 				SUM(CASE WHEN kegiatan_pengecekan = "Sudah Dilakukan" THEN 1 ELSE 0 END) as jml_pengecekan_belum_pernah,
                 SUM(CASE WHEN kegiatan_pengecekan = "Belum Dilakukan" THEN 1 ELSE 0 END) as jml_pengecekan_belum_dilakukan,
-                SUM(CASE WHEN kegiatan_pengecekan = "sudah_dilakukan" THEN 1 ELSE 0 END) as jml_pengecekan_sudah_dilakukan,
+                SUM(CASE WHEN kegiatan_pengecekan = "sudah Dilakukan" THEN 1 ELSE 0 END) as jml_pengecekan_sudah_dilakukan,
                 SUM(jumlah_kegiatan_perbaikan) as jml_kegiatan_perbaikan,
                 SUM(jumlah_dana_perbaikan) as jml_dana_perbaikan
 		');

@@ -30,42 +30,66 @@ class evaluation extends Controller
 
     public function index()
     {
-		$evaluators = personnel_evaluator::where('evaluator', job_desc::where('user_id', Auth::user()->id)->pluck('job_title_id')->first())->get();
-		$isUser		= personnel_evaluation_value::join('users', 'users.id', '=', 'personnel_evaluation_values.userId')->get();			
-		$notUser	= User::join('job_descs', 'job_descs.user_id', '=', 'users.id')->select('users.id', 'name', 'job_title_id')->get();						
-		$settings 	= personnel_evaluation_setting::join('job_titles', 'personnel_evaluation_settings.jobTitleId', '=', 'job_titles.id')
-					->orderBy('year', 'desc')->select('personnel_evaluation_settings.id', 'quarter', 'year', 'job_title', 'jobTitleId')
-					->where('status', 1)->get();
-		$value		= personnel_evaluation_value::where('userId', Auth::user()->id)->get();
+		$value			= personnel_evaluation_value::where('userId', Auth::user()->id )->get();
+		$myEvaluations 	= personnel_evaluation_value::where('userId', Auth::user()->id )->get();
+		$myZones		= explode(", ", job_desc::where('user_id', Auth::user()->id)->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')
+						  ->pluck('zone')->first());
+						  
+		$isUser			= personnel_evaluation_value::join('users', 'users.id', '=', 'personnel_evaluation_values.userId')
+						  ->join('job_descs', 'job_descs.user_id', '=', 'users.id')->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')
+						  ->select('users.id', 'settingId', 'userId', 'totalScore', 'userTotalScore', 'ok_by_user', 'edit_by_user', 'ready', 'edit', 'name', 'district')->whereIn('district', $myZones)
+						  ->get();			
+		$notUser		= User::join('job_descs', 'job_descs.user_id', '=', 'users.id')->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')
+						  ->select('users.id', 'name', 'job_title_id', 'district')->whereNotIn('district', ["OSP-1"])->whereIn('district', $myZones)->get();
+						  
+		$evaluators 	= personnel_evaluator::where('evaluator', job_desc::where('user_id', Auth::user()->id)->pluck('job_title_id')->first())->get();	
 		
-		return view('personnelEvaluation.index', compact(['isUser', 'notUser', 'settings', 'evaluators', 'value']));
+		$settings 		= personnel_evaluation_setting::join('job_titles', 'personnel_evaluation_settings.jobTitleId', '=', 'job_titles.id')
+						  ->select('personnel_evaluation_settings.id', 'quarter', 'year', 'job_title', 'jobTitleId')
+						  ->orderBy('year', 'desc')->where('status', 1)->get();
+		
+						  		
+		return view('personnelEvaluation.index', compact(['isUser', 'notUser', 'settings', 'evaluators', 'value', 'myEvaluations', 'myZones']));
 	}
 	
 	
 	public function home($settingId, $evaluasi)
 	{
-		
+		$myZones	= explode(", ", job_desc::where('user_id', Auth::user()->id)->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')
+					  ->pluck('zone')->first());
+		$evaluators = personnel_evaluator::where('evaluator', job_desc::where('user_id', Auth::user()->id)->pluck('job_title_id')->first())->get();
 		$setting 	= personnel_evaluation_setting::join('job_titles', 'personnel_evaluation_settings.jobTitleId', '=', 'job_titles.id')
 						->where('personnel_evaluation_settings.id', $settingId)->select('personnel_evaluation_settings.id', 'quarter', 'year', 'job_title', 'jobTitleId')->get();
 					
-		$isUser		= personnel_evaluation_value::join('users', 'users.id', '=', 'personnel_evaluation_values.userId')
-					->where('settingId', $settingId)->get();
-					
-					
-		if($evaluasi == "sudah-dievaluasi"){
+		$isUser		= personnel_evaluation_value::distinct('users.id')->join('users', 'users.id', '=', 'personnel_evaluation_values.userId')
+					  ->join('job_descs', 'job_descs.user_id', '=', 'users.id')->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')
+					  ->join('job_titles', 'job_descs.job_title_id', '=', 'job_titles.id')->whereIn('district', $myZones)->where('settingId', $settingId)	  
+					  ->join('allvillages', 'work_zones.district', '=', 'allvillages.KD_KAB')->select('users.id', 'users.name', 'ok_by_user', 'job_title', 'district', 'NAMA_KAB', 'ready', 'totalScore')->get();
+					  
+					  
+		if($evaluasi == "sudah-mengisi-evkinja"){
+			$users	= $isUser->where('ok_by_user', "1");
+		} elseif ($evaluasi == "sedang-mengisi-evkinja"){
+			$users	= $isUser->where('ok_by_user', '0');			
+		} elseif($evaluasi == "belum-mengisi-evkinja") {
+			$users 	= User::distinct('users.id')->join('job_descs', 'job_descs.user_id', '=', 'users.id')->whereNotIn('users.id', $isUser->pluck('id'))
+					  ->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')->where('job_title_id', $setting[0]->jobTitleId)
+					  ->join('job_titles', 'job_descs.job_title_id', '=', 'job_titles.id')->join('allvillages', 'work_zones.district', '=', 'allvillages.KD_KAB')
+					  ->whereIn('district', $myZones)->select('users.id', 'name', 'job_title_id', 'job_title', 'district', 'NAMA_KAB')->get();
+		} elseif($evaluasi == "selesai-dievaluasi"){
 			$users	= $isUser->where('ready', "1");
-		} elseif ($evaluasi == "dalam-proses-evaluasi"){
-			$users	= $isUser->where('ready', '0');			
-		} else {
-			$users 	= User::join('job_descs', 'job_descs.user_id', '=', 'users.id')->whereNotIn('users.id', $isUser->pluck('id'))
-					->where('job_title_id', $setting[0]->jobTitleId)->select('users.id', 'name', 'job_title_id')->get();
+		} elseif ($evaluasi == "sedang-dievaluasi"){
+			$users	= $isUser->where('ready', '0')->where('totalScore', '>', 0);			
+		} elseif($evaluasi == "siap-dievaluasi") {
+			$users	= $isUser->where('ok_by_user', "1")->where('ready', '0')->where('totalScore', 0);
 		}
 		
-		return view('personnelEvaluation.evaluation.index', compact(['setting', 'users', 'evaluasi']));
+		return view('personnelEvaluation.evaluation.index', compact(['setting', 'users', 'evaluasi', 'evaluators']));
 	}
 	
 	public function monitoring()
     {
+		$evaluators = personnel_evaluator::where('evaluator', job_desc::where('user_id', Auth::user()->id)->pluck('job_title_id')->first())->get();
 		$job_titles	= job_title::distinct('job_titles.id')->leftjoin('job_descs', 'job_titles.id', '=', 'job_descs.job_title_id')
 					->select('job_titles.id', 'job_titles.job_title', 'level')->get();
 		$districts	= allvillage::get()->unique('KD_KAB');
@@ -75,7 +99,7 @@ class evaluation extends Controller
 		$settings 	= personnel_evaluation_setting::join('job_titles', 'personnel_evaluation_settings.jobTitleId', '=', 'job_titles.id')
 					->orderBy('year', 'desc')->select('personnel_evaluation_settings.id', 'quarter', 'year', 'job_title', 'jobTitleId')
 					->where('status', 1)->get();					
-		return view('personnelEvaluation.monitoring', compact(['isUser', 'notUser', 'settings', 'evaluators', 'job_titles', 'districts']));
+		return view('personnelEvaluation.monitoring', compact(['isUser', 'notUser', 'settings', 'evaluators', 'job_titles', 'districts', 'evaluators']));
 	}
 	
 	
@@ -95,24 +119,24 @@ class evaluation extends Controller
 		$data = unserialize(personnel_evaluation_value::where('id', $request->value)->pluck('content')->first());
 		
 		if(isset($request->variabel)){
-			$data[$request->criteria][$request->aspect]['variabel'] 	= $request->variabel;
+			$data[$request->criteria][$request->aspect]['variabel'] 			= $request->variabel;
 		}
 		if(isset($request->capaian)){
-			$data[$request->criteria][$request->aspect]['capaian'] 		= $request->capaian;
+			$data[$request->criteria][$request->aspect]['capaian'] 				= $request->capaian;
 		}
 		if(isset($request->evidences)){
-			$data[$request->criteria][$request->aspect]['evidences'] 	= $request->evidences;
+			$data[$request->criteria][$request->aspect]['evidences'] 			= $request->evidences;
 		}
 		if(isset($request->assesment)){
-			$data[$request->criteria][$request->aspect]['assesment'] 	= $request->assesment;
+			$data[$request->criteria][$request->aspect]['assesment'] 			= $request->assesment;
 		}
-		if(isset($request->score)){
-			$data[$request->criteria][$request->aspect]['score'] 		= $request->score;
+		if(isset($request->score_by_evaluator)){
+			$data[$request->criteria][$request->aspect]['score_by_evaluator']	= $request->score_by_evaluator;
 		}
 		
-		if(isset($request->totalScores)){
+		if(isset($request->totalScore)){
 			personnel_evaluation_value::where('id', $request->value)->update([
-				'totalScore'		=> $request->totalScores
+				'totalScore'		=> $request->totalScore
 			]);
 		}
 		
@@ -129,13 +153,53 @@ class evaluation extends Controller
 			'team'				=> $request->team
 		]);
 		
-		return response($data);
+		return response($request);
 		
+	}
+	
+	
+	public function userCreate(Request $request)
+	{	
+		$data = unserialize(personnel_evaluation_value::where('id', $request->value)->pluck('content')->first());
+		
+		if(isset($request->variabel)){
+			$data[$request->criteria][$request->aspect]['variabel'] 	= $request->variabel;
+		}
+		if(isset($request->capaian)){
+			$data[$request->criteria][$request->aspect]['capaian'] 		= $request->capaian;
+		}
+		if(isset($request->evidences)){
+			$data[$request->criteria][$request->aspect]['evidences'] 	= $request->evidences;
+		}
+		if(isset($request->score)){
+			$data[$request->criteria][$request->aspect]['score'] 		= $request->score;
+		}
+		
+		if(isset($request->totalScores)){
+			personnel_evaluation_value::where('id', $request->value)->update([
+				'userTotalScore'		=> $request->totalScores
+			]);
+		}
+		
+		if(isset($request->kinerja)){
+			personnel_evaluation_value::where('id', $request->value)->update([
+				'userFinalResult'		=> $request->kinerja
+			]);
+		}
+		
+		personnel_evaluation_value::where('id', $request->value)->update([			
+			'content' 			=> serialize($data),
+			'team'				=> $request->team
+		]);
+		
+		return response($data);
 	}
 	
 	
 	public function inputValue($settingId, $userId)
 	{	
+		$evaluators = personnel_evaluator::where('evaluator', job_desc::where('user_id', Auth::user()->id)->pluck('job_title_id')->first())->get();
+		
 		$user		= job_title::distinct('users.id')->join('job_descs', 'job_descs.job_title_id', '=', 'job_titles.id')
 						->join('users', 'users.id', '=', 'job_descs.user_id')->where('users.id', $userId)
 						->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')
@@ -152,7 +216,7 @@ class evaluation extends Controller
 		}
 		
 		
-		return view('personnelEvaluation.evaluation.input', compact(['settingId', 'userId', 'user']));
+		return view('personnelEvaluation.evaluation.input', compact(['settingId', 'userId', 'user', 'evaluators']));
 	}
 	
 	
@@ -161,7 +225,9 @@ class evaluation extends Controller
 				
 		$aspects 	= personnel_evaluation_aspect::get();
 		$criterias 	= personnel_evaluation_criteria::orderBy('created_at', 'desc')->get();
-		$criteriIds	= unserialize(personnel_evaluation_setting::where('id', $settingId)->pluck('aspectId')->first());		
+		$criteriIds	= unserialize(personnel_evaluation_setting::where('id', $settingId)->pluck('aspectId')->first());	
+		$evaluators = personnel_evaluator::where('evaluator', job_desc::where('user_id', Auth::user()->id)->pluck('job_title_id')->first())->get();
+			
 		$setting 	= personnel_evaluation_setting::where('personnel_evaluation_settings.id', $settingId)
 						->join('job_titles', 'job_titles.id', '=', 'personnel_evaluation_settings.JobTitleId')
 						->get();
@@ -183,12 +249,13 @@ class evaluation extends Controller
 			$content ="";
 		}
 				
-		return view('personnelEvaluation.evaluation.create', compact(['aspects', 'criterias', 'criteriIds', 'setting', 'user', 'value', 'content']));
+		return view('personnelEvaluation.evaluation.create', compact(['aspects', 'criterias', 'criteriIds', 'setting', 'user', 'value', 'content', 'evaluators']));
 	}
 	
 	
 	public function download($settingId, $userId)
 	{
+		$evaluators = personnel_evaluator::where('evaluator', job_desc::where('user_id', Auth::user()->id)->pluck('job_title_id')->first())->get();
 		$aspects 	= personnel_evaluation_aspect::get();
 		$criterias 	= personnel_evaluation_criteria::orderBy('created_at', 'desc')->get();
 		$criteriIds	= unserialize(personnel_evaluation_setting::where('id', $settingId)->pluck('aspectId')->first());		
@@ -212,7 +279,7 @@ class evaluation extends Controller
 		}
 
 		
-		return view('personnelEvaluation.evaluation.download', compact(['aspects', 'criterias', 'criteriIds', 'setting', 'user', 'value', 'content']));
+		return view('personnelEvaluation.evaluation.download', compact(['aspects', 'criterias', 'criteriIds', 'setting', 'user', 'value', 'content', 'evaluators']));
 		$pdf = PDF::loadView('personnelEvaluation.evaluation.download', compact(['aspects', 'criterias', 'criteriIds', 'setting', 'user', 'value', 'content']));
 		return $pdf->setPaper('a4', 'portrait')->download('Evkinja.pdf');
 	}
@@ -220,14 +287,24 @@ class evaluation extends Controller
 	
 	public function rekap()
 	{
+		$myZones	= explode(", ", job_desc::where('user_id', Auth::user()->id)->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')
+					  ->pluck('zone')->first());
+					  
+		$evaluators = personnel_evaluator::where('evaluator', job_desc::where('user_id', Auth::user()->id)->pluck('job_title_id')->first())->get();
 		$evaluations= personnel_evaluation_value::get();
-		$users		= personnel_evaluation_value::join('users', 'users.id', '=', 'personnel_evaluation_values.userId')->where('ready', 1)
-					->get();
+		
+		$users		= personnel_evaluation_value::join('users', 'users.id', '=', 'personnel_evaluation_values.userId')
+						  ->join('personnel_evaluation_settings', 'personnel_evaluation_settings.id', '=', 'personnel_evaluation_values.settingId')
+						  ->join('job_descs', 'job_descs.user_id', '=', 'users.id')->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')
+						  ->select('users.id', 'settingId', 'userId', 'totalScore', 'userTotalScore', 'ok_by_user', 'edit_by_user', 'ready', 'edit', 'name', 'district', 'jobTitleId')->whereIn('district', $myZones)
+						  ->get();
+					
 		$jobDescs	= job_desc::join('job_titles', 'job_titles.id', '=', 'job_descs.job_title_id')
 					->join('work_zones', 'work_zones.id','=', 'job_descs.work_zone_id')
-					->join('allvillages', 'allvillages.KD_KAB', '=', 'work_zones.district')
+					->leftjoin('allvillages', 'allvillages.KD_KAB', '=', 'work_zones.district')
 					->get();
-		return view('personnelEvaluation.evaluation.rekap', compact(['users', 'jobDescs', 'evaluations']));
+					
+		return view('personnelEvaluation.evaluation.rekap', compact(['users', 'jobDescs', 'evaluations', 'evaluators']));
 	}
 	
 	
@@ -253,18 +330,52 @@ class evaluation extends Controller
 	}
 	
 	
+	public function userReady($valueId)
+	{
+
+		personnel_evaluation_value::where('id', $valueId)->update([
+			'ok_by_user' => '1',
+		]);
+		
+		return redirect('personnel-evaluation');
+	}
+	
+	
+	public function userNotReady($valueId)
+	{
+
+		personnel_evaluation_value::where('id', $valueId)->update([
+			'edit_by_user' => '1',
+		]);
+		
+		return redirect('personnel-evaluation');
+	}
+	
+	
 	
 	public function editPermission()
 	{
-		$personnels = personnel_evaluation_value::where('edit', 1)->distinct('users.id')
+		
+		$myZone	= explode(", ", User::join('job_descs', 'job_descs.user_id', '=',  'users.id')
+					  ->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')
+					  ->where('users.id', Auth::user()->id)->pluck('zone')->first());
+					  
+		$evaluators = personnel_evaluator::where('evaluator', job_desc::where('user_id', Auth::user()->id)->pluck('job_title_id')->first())->pluck('jobId');
+		
+		$myJobId	= job_desc::where('user_id', Auth::user()->id)->pluck('job_title_id')->first();
+		
+		$personnels = personnel_evaluation_value::where('edit_by_user', 1)->distinct('personnel_evaluators.jobId')
 					->join('personnel_evaluation_settings', 'personnel_evaluation_values.settingId', '=', 'personnel_evaluation_settings.id')					
 					->join('job_descs', 'job_descs.user_id', '=', 'personnel_evaluation_values.userId')
 					->join('users', 'users.id', '=', 'personnel_evaluation_values.userId' )
 					->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')
 					->join('job_titles', 'job_titles.id', '=', 'job_descs.job_title_id')
 					->join('allvillages', 'allvillages.KD_KAB', '=', 'work_zones.district')
-					->select('personnel_evaluation_values.id', 'userId', 'users.name', 'job_title', 'quarter', 'year', 'NAMA_KAB')->get();
-		return view('personnelEvaluation.edit', compact('personnels'));
+					->join('personnel_evaluators', 'personnel_evaluators.jobId', '=', 'job_descs.job_title_id')
+					->select('users.id', 'name', 'personnel_evaluators.evaluator', 'job_title', 'district', 'NAMA_KAB')
+					->get();
+					
+		return view('personnelEvaluation.edit', compact(['personnels', 'evaluators', 'myJobId', 'myZone']));
 	}
 	
 	
@@ -288,17 +399,51 @@ class evaluation extends Controller
 	}
 	
 	
-	public function ajaxHome()
+	public function userEditGrant($valueId)
+	{
+		personnel_evaluation_value::where('id', $valueId)->update([
+			'edit_by_user' 	=> 0,
+			'ok_by_user' => 0
+		]);
+		
+		return redirect('personnel-evaluation-edit');
+	}
+	
+	public function userEditDenied($valueId)
+	{
+		personnel_evaluation_value::where('id', $valueId)->update([
+			'edit_by_user' 	=> 2
+		]);
+		
+		return redirect('personnel-evaluation-edit');
+	}
+	
+	
+	public function ajaxHome(Request $request)
 	{
 		$evaluators = personnel_evaluator::where('evaluator', job_desc::where('user_id', Auth::user()->id)->pluck('job_title_id')->first())->get();
 		$isUser		= personnel_evaluation_value::join('users', 'users.id', '=', 'personnel_evaluation_values.userId')->get();			
-		$notUser	= User::join('job_descs', 'job_descs.user_id', '=', 'users.id')->select('users.id', 'name', 'job_title_id')->get();						
+		$notUser	= User::join('job_descs', 'job_descs.user_id', '=', 'users.id')->select('users.id', 'name', 'job_title_id')->get();
+						
 		$settings 	= personnel_evaluation_setting::join('job_titles', 'personnel_evaluation_settings.jobTitleId', '=', 'job_titles.id')
-					->orderBy('year', 'desc')->select('personnel_evaluation_settings.id', 'quarter', 'year', 'job_title', 'jobTitleId')
-					->where('status', 1)->get();
+					->join('job_descs', 'job_descs.job_title_id', '=', 'job_titles.id')->selectRaw('quarter, year, job_title')
+					->where('status', 1)->where('year', $request->year)->where('quarter', $request->quarter)->get();				
+					
+		$users		= User::join('job_descs', 'job_descs.user_id', '=', 'users.id')->get();						
+					
 		$value		= personnel_evaluation_value::where('userId', Auth::user()->id)->get();
 		
-		return response()->json([$isUser, $notUser, $settings, $evaluators, $value]);
+		return response()->json([$settings, $users]);
+	}
+	
+	public function myEvaluation()
+	{	
+		$myTitleId		= job_desc::where('user_id', Auth::user()->id)->pluck('job_title_id')->first();
+		$myEvaluations 	= personnel_evaluation_value::where('userId', Auth::user()->id )->get();			
+		$settings		= personnel_evaluation_setting::where('jobTitleId', $myTitleId)->get();
+		$evaluators		= personnel_evaluator::where('evaluator', $myTitleId)->get();
+				
+		return view('personnelEvaluation.evaluation.myEvaluation', compact(['settings', 'evaluators', 'myEvaluations']));
 	}
 	
 }

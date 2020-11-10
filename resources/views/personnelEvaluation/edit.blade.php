@@ -20,19 +20,19 @@
 					</tr>
 				</thead>
 				<tbody>
-					@foreach($personnels as $personnel)				
+					@foreach($personnels->where('evaluator', $myJobId)->whereIn('district', $myZone) as $personnel)				
 					<tr>
 						<td>Kuartal {{ $personnel->quarter }} Tahun {{ $personnel->year }}</td>
 						<td>{{ $personnel->name }}</td>
 						<td>{{ $personnel->job_title }}</td>
 						<td>{{ $personnel->NAMA_KAB }}</td>
 						<td class="text-center d-flex">
-							<form method="post" action="personnel-evaluation-edit-grant/{{$personnel->id}}">
+							<form method="post" action="personnel-evaluation-edit-grant-user/{{$personnel->id}}">
 							@method('put')
 							@csrf							
 							<button class="btn btn-primary">Izinkan</button>
 							</form>
-							<form method="post" action="personnel-evaluation-edit-denied/{{$personnel->id}}">
+							<form method="post" action="personnel-evaluation-edit-denied-user/{{$personnel->id}}">
 							@method('put')
 							@csrf
 							<button class="btn btn-warning">Tolak</button>

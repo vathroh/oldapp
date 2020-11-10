@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\personnelEvaluation;
 
-
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\personnel_evaluator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use App\job_title;
+use App\job_desc;
 
 class evaluator extends Controller
 {
@@ -28,7 +29,8 @@ class evaluator extends Controller
 	public function create()
 	{
 		$jobTitles = job_title::all();
-		return view('personnelEvaluation.evaluator.create', compact(['jobTitles']));
+		$evaluators = personnel_evaluator::where('evaluator', job_desc::where('user_id', Auth::user()->id)->pluck('job_title_id')->first())->get();
+		return view('personnelEvaluation.evaluator.create', compact(['jobTitles', 'evaluators']));
 	}
 	
 	

@@ -9,23 +9,6 @@
 	<div class="card-body">
 	@include('personnelEvaluation.navbar')
 	
-	<div class="row">		
-		<div class="col-md-3">
-			<select id="quarter" type="text" class="form-control" name="quarter" required autofocus>
-				<option value="1">I</option>
-				<option value="2">II</option>
-				<option value="3">III</option>
-				<option value="4">IV</option>
-				</select>
-			</div>
-		<div class="col-md-3">
-			<select id="year" type="text" class="form-control" name="year" required>
-				<option value="2020">2020</option>
-				<option value="2021">2021</option>
-				<option value="2021">2022</option>
-			</select>
-		</div>	
-	</div>
 	
 	<div class="row">
 		<div class="col">
@@ -36,8 +19,10 @@
 					<tr>
 						<th scope="col">No</th>
 						<th scope="col">Nama</th>
+						<th scope="col">Posisi</th>
+						<th>Kabupaten/Kota</th>
 						<th scope="col">Aksi</th>
-						@if($evaluasi == "sudah-dievaluasi")
+						@if($evaluasi == "selesai-dievaluasi")
 						<th class="text-center" scope="col">
 							<button class="btn btn-success">Download Semua</button>
 						</th>
@@ -50,13 +35,15 @@
 					<tr>
 						<th scope="row">{{ $loop->iteration }}</th>
 						<td>{{ $user->name }}</td>
-						@if($evaluasi == "belum-dievaluasi")
+						<td>{{ $user->job_title }}</td>
+						<td>{{ $user->NAMA_KAB }}</td>
+						@if($evaluasi == "siap-dievaluasi")
 						<td>
 							<a href="/personnel-evaluation-input/{{ $setting[0]->id }}/{{ $user->id }}"><button class="btn btn-success">Evaluasi Sekarang</button></a>							
 						</td>
 						@endif
 						
-						@if($evaluasi == "sudah-dievaluasi")
+						@if($evaluasi == "selesai-dievaluasi")
 						<td class="text-center">
 							<a href="/personnel-evaluation-input/{{ $setting[0]->id }}/{{ $user->id }}"><button class="btn btn-success">Lihat</button></a>
 						</td>
@@ -65,7 +52,7 @@
 						</td>
 						@endif
 						
-						@if($evaluasi == "dalam-proses-evaluasi")
+						@if($evaluasi == "sedang-dievaluasi")
 						<td class="text-center">
 							<a href="/personnel-evaluation-input/{{ $setting[0]->id }}/{{ $user->id }}">
 								<button class="btn btn-success">Lanjutkan Evaluasi</button>

@@ -6,9 +6,12 @@ use App\personnel_evaluation_criteria;
 use App\personnel_evaluation_setting;
 use App\Http\Controllers\Controller;
 use App\personnel_evaluation_aspect;
+use Illuminate\Support\Facades\Auth;
+use App\personnel_evaluator;
 use Illuminate\Support\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use App\job_desc;
 use App\job_title;
 
 class setup extends Controller
@@ -27,14 +30,14 @@ class setup extends Controller
     
     public function index()
     {	
-		
+		$evaluators = personnel_evaluator::where('evaluator', job_desc::where('user_id', Auth::user()->id)->pluck('job_title_id')->first())->get();
 		$settings 		= personnel_evaluation_setting::orderBy('created_at', 'desc')->get();
 		$lastSettings	= personnel_evaluation_setting::where('year', $settings->pluck('year')->last())
 						->where('quarter', $settings->pluck('quarter')->last())->get();
 		
 		$jobTitles 		= job_title::whereNotIn('level', ['OSP'])->whereNotIn('job_title', ['Operator', 'Sekretaris'])->whereNotIn('id', $settings->pluck('jobTitleId') )->get();
 		$jobTitleAll	= job_title::all();
-		return view('personnelEvaluation.setup.index', compact(['jobTitles', 'jobTitleAll', 'settings', 'lastSettings']));
+		return view('personnelEvaluation.setup.index', compact(['jobTitles', 'jobTitleAll', 'settings', 'lastSettings', 'evaluators']));
 	}
 	
 	
@@ -45,7 +48,8 @@ class setup extends Controller
 		$criteriIds	= unserialize(personnel_evaluation_setting::where('id', $id)->pluck('aspectId')->first());
 		$setting 	= personnel_evaluation_setting::where('id', $id)->get();
 		$criterias 	= personnel_evaluation_criteria::orderBy('created_at', 'desc')->get();
-		return view('personnelEvaluation.setup.create', compact(['setting', 'criterias', 'criteriIds', 'aspects', 'jobTitles']));
+		$evaluators = personnel_evaluator::where('evaluator', job_desc::where('user_id', Auth::user()->id)->pluck('job_title_id')->first())->get();
+		return view('personnelEvaluation.setup.create', compact(['setting', 'criterias', 'criteriIds', 'aspects', 'jobTitles', 'evaluators']));
 	}
 	
 	
@@ -65,20 +69,21 @@ class setup extends Controller
 	{
 		$setting = personnel_evaluation_setting::where('id', $id)->get();
 		$criterias = personnel_evaluation_criteria::orderBy('created_at', 'desc')->get();
-		return view('personnelEvaluation.setup.create', compact(['setting', 'criterias']));
+		$evaluators = personnel_evaluator::where('evaluator', job_desc::where('user_id', Auth::user()->id)->pluck('job_title_id')->first())->get();
+		return view('personnelEvaluation.setup.create', compact(['setting', 'criterias', 'evaluators']));
 	}
 	
 	
 	public function edit($id)
 	{
-		
+		$evaluators = personnel_evaluator::where('evaluator', job_desc::where('user_id', Auth::user()->id)->pluck('job_title_id')->first())->get();
 		$criteriIds	= unserialize(personnel_evaluation_setting::where('id', $id)->pluck('aspectId')->first());
 		$setting 	= personnel_evaluation_setting::where('personnel_evaluation_settings.id', $id)->get();
 		$aspects 	= personnel_evaluation_aspect::get();
 		$criterias 	= personnel_evaluation_criteria::orderBy('created_at', 'desc')->get();
 		$jobTitles	= job_title::get();
 		
-		return view('personnelEvaluation.setup.create', compact(['setting', 'criterias', 'criteriIds', 'aspects', 'jobTitles']));
+		return view('personnelEvaluation.setup.create', compact(['setting', 'criterias', 'criteriIds', 'aspects', 'jobTitles', 'evaluators']));
 	}
 	
 	
@@ -119,6 +124,7 @@ class setup extends Controller
 	
 	public function notReady($id)
 	{
+		
 		personnel_evaluation_setting::where('id', $id)->update([
 			'status' => 0
 		]);
@@ -127,7 +133,8 @@ class setup extends Controller
 		$setting 	= personnel_evaluation_setting::where('personnel_evaluation_settings.id', $id)->get();
 		$jobTitles	= job_title::get();
 		$criterias 	= personnel_evaluation_criteria::orderBy('created_at', 'desc')->get();
-		return view('personnelEvaluation.setup.create', compact(['setting', 'criterias', 'criteriIds', 'aspects', 'jobTitles']));
+		$evaluators = personnel_evaluator::where('evaluator', job_desc::where('user_id', Auth::user()->id)->pluck('job_title_id')->first())->get();
+		return view('personnelEvaluation.setup.create', compact(['setting', 'criterias', 'criteriIds', 'aspects', 'jobTitles', 'evaluators']));
 	}
 	
 	

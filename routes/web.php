@@ -1,9 +1,9 @@
 <?php
 
 /*
-|--------------------------------------------------------------------------
+|------------------------------------------------------------------------------------------------------------------------------------------
 | Web Routes
-|--------------------------------------------------------------------------
+|------------------------------------------------------------------------------------------------------------------------------------------
 |
 | Here is where you can register web routes for your application. These'
 | routes are loaded by the RouteServiceProvider within a group which
@@ -23,12 +23,11 @@ Auth::routes();
 Route::get('/home', 'DashboardController@index')->name('home');
 Route::resource('/profil', 'profilController');
 
-
 //User Management Control
 Route::namespace('Admin')->prefix('admin')->name('admin.')->middleware('can:manage-users')->group(function () {
     Route::resource('/users', 'UsersController', ['except' => ['create', 'store']]);
+    Route::get('users-index', 'UsersController@ajaxIndex');
 });
-
 
 // BLOG
 Route::get('/blog-osp1', 'Blog\blogController@index');
@@ -227,8 +226,13 @@ Route::get('personnel-evaluation-home/{settingId}/{evaluasi}', 'personnelEvaluat
 Route::post('personnnel-evaluation-index', 'personnelEvaluation\setup@setupIndex')->name('setupIndex');
 Route::get('personnel-evaluation-create/{settingId}/{userId}',  'personnelEvaluation\evaluation@input');
 Route::put('personnel-evaluation-value-not-ready/{valueId}',  'personnelEvaluation\evaluation@notReady');
+Route::put('personnel-evaluation-value-ready-user/{userId}', 'personnelEvaluation\evaluation@userReady');
+Route::put('personnel-evaluation-edit-grant-user/{id}',  'personnelEvaluation\evaluation@userEditGrant');
+Route::put('personnel-evaluation-edit-denied-user/{id}',  'personnelEvaluation\evaluation@userEditDenied');
 Route::get('personnel-evaluation-input/{settingId}/{userId}',  'personnelEvaluation\evaluation@inputValue');
 Route::get('personnel-evaluation-download/{settingId}/{userId}',  'personnelEvaluation\evaluation@download');
+Route::put('personnel-evaluation-value-not-ready-user/{valueId}',  'personnelEvaluation\evaluation@userNotReady');
+
 //Ajax
 Route::get('personnel-evaluation-setup-aspect-item-move-down', 'personnelEvaluation\setup@moveDownAspectItem');
 Route::get('personnel-evaluation-setup-aspect-item-move-up', 'personnelEvaluation\setup@moveUpAspectItem');
@@ -240,5 +244,6 @@ Route::get('personnel-evaluation-setup-aspect-delete', 'personnelEvaluation\setu
 Route::get('personnel-evaluation-myevaluation', 'personnelEvaluation\evaluation@myevaluation');
 Route::get('personnnel-evaluation-getJobTitles', 'personnelEvaluation\setup@ajaxJobTitles');
 Route::get('personnel-evaluator-select', 'personnelEvaluation\evaluator@getEvaluator');
+Route::get('personnel-evaluation-user-create', 'personnelEvaluation\evaluation@userCreate');
 Route::get('personnel-evaluation-home', 'personnelEvaluation\evaluation@ajaxHome');
 Route::get('search-aspect-id', 'personnelEvaluation\setup@ajaxAspect');

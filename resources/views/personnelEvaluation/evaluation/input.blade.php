@@ -57,13 +57,11 @@
 		
 		<div class="row text-center mt-5">
 			<div class="col">
-				<a href="/personnel-evaluation-create/{{$settingId}}/{{$userId}}"><button type="button" class="btn btn-primary">Input</button></a>
+				<a href="/personnel-evaluation-create/{{$settingId}}/{{$userId}}"><button type="button" class="btn btn-primary">Lanjut</button></a>
 			</div>
 		</div>
     
 	</div>
 </div>
-
-
 
 @endsection

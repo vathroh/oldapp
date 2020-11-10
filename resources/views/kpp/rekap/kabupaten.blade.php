@@ -1,5 +1,17 @@
 @extends('layouts.MaterialDashboard')
 
+@section('search')
+<form class="navbar-form">
+              <div class="input-group no-border">
+        <input type="text" id="search" value="" class="form-control" placeholder="Cari...">
+            <button type="submit" class="btn btn-white btn-round btn-just-icon">
+                <i class="material-icons">search</i>
+            <div class="ripple-container"></div>
+        </button>
+    </div>
+</form>
+@endsection
+
 @section('content')
 <div class="card">
   <div class="card-header card-header-primary">

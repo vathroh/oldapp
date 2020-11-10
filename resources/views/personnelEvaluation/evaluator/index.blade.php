@@ -7,7 +7,9 @@
     <p class="card-category">Siapa menilai siapa</p>
   </div>
   <div class="card-body">
+	
 	@include('personnelEvaluation.navbar')
+	
     <div class="tableFixHead" style="width:100%;">
 		<table class="table table-striped">
 			<thead>

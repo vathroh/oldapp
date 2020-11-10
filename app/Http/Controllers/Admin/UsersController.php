@@ -156,4 +156,20 @@ class UsersController extends Controller
         $user->delete();
         return redirect()->route('admin.users.index');
     }
+    
+    
+    public function ajaxIndex(Request $request)
+    {
+		$users = user::leftjoin('job_descs', 'users.id', '=', 'job_descs.user_id')
+			->leftjoin('job_titles', 'job_descs.job_title_id', '=', 'job_titles.id')
+			->leftjoin('work_zones', 'job_descs.work_zone_id', '=', 'work_zones.id')
+			->leftjoin('alldistricts', 'work_zones.district', '=', 'alldistricts.kode_kab')			
+			->where('name', 'LIKE', "%{$request->search }%")
+			->orWhere('job_title', 'LIKE', "%{$request->search }%")
+			->orWhere('NAMA_KAB', 'LIKE', "%{$request->search }%")
+			->orWhere('district', 'LIKE', "%{$request->search }%")
+			->select('*', 'users.id')->orderBy('users.id')->get();	
+
+		return response()->json($users);
+	}
 }

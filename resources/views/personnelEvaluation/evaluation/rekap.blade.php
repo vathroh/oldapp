@@ -21,12 +21,12 @@
 						<th scope="col">Posisi</th>
 						<th scope="col">Kabupaten/Kota</th>
 						<th scope="col">Nilai (%)</th>
-						<th scope="col">Status</th>
+						<th scope="col">Kinerja</th>
 					</tr>
 				</thead>
 				<tbody>
-
-					@foreach($users as $user)
+				@if($jobDescs->where('user_id', Auth::user()->id )->first()->level == "Korkot")
+					@foreach($users->whereIn('jobTitleId', $evaluators->pluck('jobId'))->where('ready', 1) as $user)
 					<tr>
 						<th scope="row">{{ $loop->iteration }}</th>
 						<td>{{ $user->name }}</td>
@@ -36,7 +36,46 @@
 						<td>{{ $evaluations->where('userId', $user->id)->first()->finalResult }}</td>
 					</tr>
 					@endforeach
-
+				
+				@else
+					<tr>
+						<td colspan="6" style="text-transform:uppercase;">tim korkot/askot mandiri</td>
+					</tr>
+					@foreach($users->where('ready', 1)->sortBy('jobTitleId')->whereNotIn('jobTitleId', [11])->unique('jobTitleId') as $user1)
+					<tr>
+						<td colspan="6" style="text-transform:uppercase;">{{ $jobDescs->where('user_id', $user1->id)->first()->job_title }}</td>
+					</tr>
+					@foreach($users->where('ready', 1)->sortBy('jobTitleId')->whereNotIn('jobTitleId', [11])->where('jobTitleId', $user1->jobTitleId) as $user)
+					<tr>
+						<th scope="row">{{ $loop->iteration }}</th>
+						<td>{{ $user->name }}</td>
+						<td>{{ $jobDescs->where('user_id', $user->id)->first()->job_title }}</td>
+						<td>{{ $jobDescs->where('user_id', $user->id)->first()->NAMA_KAB }}</td>
+						<td>{{ $evaluations->where('userId', $user->id)->first()->totalScore }}</td>
+						<td>{{ $evaluations->where('userId', $user->id)->first()->finalResult }}</td>
+					</tr>
+					@endforeach
+					@endforeach
+					<tr><td colspan="6" class="text-center">==</td></tr>
+					<tr>
+						<td colspan="6" style="text-transform:uppercase;">tim faskel</td>
+					</tr>
+					@foreach($users->where('ready', 1)->whereIn('jobTitleId', [11])->unique('NAMA_KAB') as $user1)
+					<tr>
+						<td colspan="6">{{ $jobDescs->where('user_id', $user->id)->first()->NAMA_KAB }}</td>
+					</tr>
+					@foreach($users->where('ready', 1)->whereIn('jobTitleId', [11])->where('NAMA_KAB', $user1->NAMA_KAB) as $user)
+					<tr>
+						<th scope="row">{{ $loop->iteration }}</th>
+						<td>{{ $user->name }}</td>
+						<td>{{ $jobDescs->where('user_id', $user->id)->first()->job_title }}</td>
+						<td>{{ $jobDescs->where('user_id', $user->id)->first()->NAMA_KAB }}</td>
+						<td>{{ $evaluations->where('userId', $user->id)->first()->totalScore }}</td>
+						<td>{{ $evaluations->where('userId', $user->id)->first()->finalResult }}</td>
+					</tr>
+					@endforeach
+					@endforeach
+				@endif
 				</tbody>
 			</table>
 

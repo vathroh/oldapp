@@ -26,73 +26,91 @@
 			</div>
 		</div>
 		
-		<div class="table-responsive tableFixHead">
-			<table class="table table-bordered">
-				<thead class=" text-primary text-center">
-					<tr class="text-center">
-						<th>Kuartal | Tahun</th>
-						<th>Posisi Yang Dievaluasi</th>
-						<th>Jumlah Personil</th>
-						<th>Belum Dievaluasi</th>
-						<th>Proses</th>
-						<th>Selesai Dievaluasi</th>
-						<th>Permintaan Edit</th>
-						<th>Permintaan Ditolak</th>
-					</tr>
-				</thead>
-				<tbody>
-					@foreach($job_titles->whereIn('level', ['Korkot', 'Askot Mandiri']) as $job_title)
-					
-					@foreach($settings->where('jobTitleId', $job_title->id)->where('year', $settings->max('year'))->where('quarter', $settings->where('year', $settings->max('year'))->max('quarter') ) as $setting)
-					
-					<tr>
-						<td>Kuartal {{ $setting->quarter }} Tahun {{ $setting->year }}</td>
-						<td>{{ $setting->job_title }}</td>
-						<td></td>
-						<td class="text-center"><a href="/personnel-evaluation-home/{{$setting->id}}/belum-dievaluasi">{{ $notUser->where('job_title_id', $setting->jobTitleId)->whereNotIn('id', $isUser->where('settingId', $setting->id)->pluck('id'))->count() }}</a></td>
-						<td class="text-center"><a href="/personnel-evaluation-home/{{$setting->id}}/dalam-proses-evaluasi">{{ $isUser->where('settingId', $setting->id)->where('ready', 0)->count() }}</a></td>
-						<td class="text-center"><a href="/personnel-evaluation-home/{{$setting->id}}/sudah-dievaluasi">{{ $isUser->where('settingId', $setting->id)->where('ready', 1)->count() }}</a></td>
-						<td></td>
-						<td></td>
-					</tr>
-					@endforeach
-					@endforeach
-				</tbody>
-			</table>
-		</div>
+		@if($evaluators->count() > 0)
 		
 		<div class="table-responsive tableFixHead">
 			<table class="table table-bordered">
 				<thead class=" text-primary text-center">
-					<tr class="text-center">
-						<th>Kuartal | Tahun</th>
-						<th>Posisi Yang Dievaluasi</th>
-						<th>Jumlah Personil</th>
-						<th>Belum Dievaluasi</th>
+					<tr class="text-center" style="background-color: purple; color:white;">
+						<th rowspan="2">Kuartal | Tahun</th>
+						<th rowspan="2">Posisi Yang Dievaluasi</th>
+						<th rowspan="2">Jumlah Personil</th>
+						<th colspan="3">Diisi Oleh Personil</th>
+												
+						<th colspan="4">Diisi Oleh Tim Penilai</th>
+						<th rowspan="2">Permintaan Edit</th>
+						<th rowspan="2">Permintaan Edit Ditolak</th>
+					</tr>
+					<tr class="text-center" style="background-color: purple; color:white;">						
+						<th>Belum Mengisi</th>
 						<th>Proses</th>
+						<th>Sudah Mengisi</th>
+						<th>Belum Dievaluasi</th>
+						<th>Siap Dievaluasi</th>
+						<th>Sedang DiEvaluasi</th>
 						<th>Selesai Dievaluasi</th>
-						<th>Permintaan Edit</th>
-						<th>Permintaan Ditolak</th>
+
 					</tr>
 				</thead>
-				<tbody>	
-					@foreach($districts as $district)
-					<tr style="background-color:#caeef9;">
-						<td colspan="8">{{ ucwords($district->NAMA_KAB)}}</td>
-					</tr>	
-					@foreach($job_titles->whereIn('level', ['Tim Faskel']) as $job_title)
+				<tbody>
+
+					@foreach($evaluators as $evaluator)
+					@foreach($settings->where('jobTitleId', $evaluator->jobId)->sortBy('quarter')->sortBy('year') as $setting)
 					<tr>
-						<td>Kuartal {{ $settings[0]->quarter }} Tahun {{ $settings[0]->year }}</td>
-						<td>{{ $job_title->job_title }}</td>
-					</tr>					
-					@foreach($settings->where('jobTitleId', $job_title->id)->where('year', $settings->max('year'))->where('quarter', $settings->where('year', $settings->max('year'))->max('quarter') ) as $setting)
-					
-					@endforeach
+						<td>Kuartal {{ $setting->quarter }} Tahun {{ $setting->year }}</td>
+						
+						<td>{{ $setting->job_title }}</td>
+						
+						<td class="text-center">{{ $notUser->where('job_title_id', $setting->jobTitleId)->count() }}</td>
+						
+						<td class="text-center">
+							<a href="/personnel-evaluation-home/{{$setting->id}}/belum-mengisi-evkinja">
+								{{ $notUser->where('job_title_id', $setting->jobTitleId)->whereNotIn('id', $isUser->where('settingId', $setting->id)->pluck('id'))->count() }}
+							</a>
+						</td>
+						
+						<td class="text-center">
+							<a href="/personnel-evaluation-home/{{$setting->id}}/sedang-mengisi-evkinja">
+								{{ $isUser->where('settingId', $setting->id)->where('ok_by_user', 0)->count() }}
+							</a>
+						</td>						
+						
+						
+						<td class="text-center">
+							<a href="/personnel-evaluation-home/{{$setting->id}}/sudah-mengisi-evkinja">								
+								{{ $isUser->where('settingId', $setting->id)->where('ok_by_user', 1)->count() }}
+							</a>
+						</td>
+						
+						<td class="text-center">
+							{{ $notUser->where('job_title_id', $setting->jobTitleId)->whereNotIn('id', $isUser->where('settingId', $setting->id)->pluck('id'))->count() + $isUser->where('settingId', $setting->id)->where('totalScore', 0)->count()  }}
+						</td>
+						
+						<td class="text-center" @if($isUser->where('settingId', $setting->id)->where('ok_by_user', 1)->count() > 0) style="color:red; font-weight:bold;" @endif>
+							<a href="/personnel-evaluation-home/{{$setting->id}}/siap-dievaluasi">
+								{{ $isUser->where('settingId', $setting->id)->where('ok_by_user', 1)->count() - $isUser->where('settingId', $setting->id)->where('totalScore', '>', 0 )->count() }}
+							</a>
+						</td>
+						
+						<td class="text-center">
+							<a href="/personnel-evaluation-home/{{$setting->id}}/sedang-dievaluasi">
+								{{ $isUser->where('settingId', $setting->id)->where('ready', 0)->where('totalScore', '>', 0 )->count() }}
+							</a
+						</td>
+						
+						<td class="text-center">
+							<a href="/personnel-evaluation-home/{{$setting->id}}/selesai-dievaluasi">
+								{{ $isUser->where('settingId', $setting->id)->where('ready', 1)->count() }}
+							</a>
+						</td>
+					</tr>
 					@endforeach
 					@endforeach
 				</tbody>
 			</table>
-		</div>
+			@endif
+		
+		
     </div>
  </div>
 

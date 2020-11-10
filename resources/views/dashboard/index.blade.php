@@ -53,7 +53,15 @@
 		<a href="/activities">
 			<div class="card-icon">
 				<i class="material-icons">groups</i>
-				<p>Kegiatan</p>
+				<p>Pelatihan / Rakor / KBIK</p>
+			</div>
+		</a>
+	</div>
+	<div class="dashboard-card">
+		<a href="/personnel-evaluation">
+			<div class="card-icon">
+				<i class="material-icons">groups</i>
+				<p>Evkinja</p>
 			</div>
 		</a>
 	</div>

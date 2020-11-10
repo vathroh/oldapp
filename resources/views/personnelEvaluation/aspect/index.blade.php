@@ -14,6 +14,7 @@
 				<tr>
 					<th scope="col">#</th>
 					<th scope="col">Kriteria</th>
+					<th scope="col">Posisi</th>
 					<th scope="col">Aspek</th>
 					<th scope="col"><a href="/personnel-evaluation-aspect/create"><i class="material-icons">circle_plus</i></a></th>
 				</tr>
@@ -23,6 +24,7 @@
 				<tr>
 					<th scope="row">{{ $loop->iteration }}</th>
 					<td>{{ $criterias->where('id', $aspect->criteria_id)->pluck('criteria')->first() }}</td>
+					<td>{{ $jobTitles->where('id', $aspect->evaluate_to)->first()->job_title }}</td>
 					<td>{{ $aspect->aspect }}</td>
 					<td></td>
 				</tr>

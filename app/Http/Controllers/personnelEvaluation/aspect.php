@@ -32,10 +32,10 @@ class aspect extends Controller
 	public function create()
 	{
 		$jobTitles	= job_title::distinct('job_title')
-						->join('job_descs', 'job_descs.job_title_id', '=', 'job_titles.id')	
-						->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')
-						->whereNotIn('work_zones.level', ['OSP'])
-						->select('job_title_id', 'job_title')
+						->leftjoin('job_descs', 'job_descs.job_title_id', '=', 'job_titles.id')	
+						->whereNotIn('level', ['OSP'])
+						->whereNotIn('job_title', ['Operator', 'Sekretaris'])
+						->select('job_titles.id', 'job_title')
 						->orderBy('job_titles.id')
 						->get();
 						

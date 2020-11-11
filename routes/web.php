@@ -232,7 +232,7 @@ Route::put('personnel-evaluation-edit-denied-user/{id}',  'personnelEvaluation\e
 Route::get('personnel-evaluation-input/{settingId}/{userId}',  'personnelEvaluation\evaluation@inputValue');
 Route::get('personnel-evaluation-download/{settingId}/{userId}',  'personnelEvaluation\evaluation@download');
 Route::put('personnel-evaluation-value-not-ready-user/{valueId}',  'personnelEvaluation\evaluation@userNotReady');
-
+Route::get('personnel-evaluation-setup-copy/{settingId}', 'personnelEvaluation\setup@copy');
 //Ajax
 Route::get('personnel-evaluation-setup-aspect-item-move-down', 'personnelEvaluation\setup@moveDownAspectItem');
 Route::get('personnel-evaluation-setup-aspect-item-move-up', 'personnelEvaluation\setup@moveUpAspectItem');

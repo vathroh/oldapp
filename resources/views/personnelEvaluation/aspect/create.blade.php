@@ -42,7 +42,7 @@
 					<select id="evaluateTo" type="text" class="form-control" name="evaluateTo" required>
 						<option selected>Pilih Posisi...</option>
 						@foreach($jobTitles as $jobTitle)
-						<option value="{{ $jobTitle->job_title_id }}">{{ $jobTitle->job_title }}</option>
+						<option value="{{ $jobTitle->id }}">{{ $jobTitle->job_title }}</option>
 						@endforeach
 					</select>
 				</div>

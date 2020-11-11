@@ -291,5 +291,19 @@ class setup extends Controller
 	}
 	
 	
+	public function copy($SettingId)
+	{
+		$currentSetting = personnel_evaluation_Setting::where('id', $SettingId)->first();
+		$lastSetting	= personnel_evaluation_Setting::where('jobTitleId', [$currentSetting->jobTitleId])->whereNotIn('id', [$SettingId])
+						  ->where('status', 1)->latest()->first();
+		
+		if($lastSetting != "")
+		{		
+			personnel_evaluation_Setting::where('id', $SettingId)->update([
+				'aspectId'	=> $lastSetting->aspectId
+			]);
+		}
+		return redirect("/personnel-evaluation-setup/" . $SettingId . "/edit");
+	}
 	
 }

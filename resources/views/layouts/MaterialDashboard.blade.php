@@ -11,7 +11,7 @@
   </title>
   <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
   <!--     Fonts and icons     -->
-  
+
   <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
   <link rel="stylesheet" href="{{ asset('MaterialDashboard/css/font-awesome.min.css') }}">
   <!-- CSS Files -->
@@ -25,130 +25,134 @@
 <body class="">
   <div class="wrapper ">
     <div class="sidebar" data-color="purple" data-background-color="white" data-image="{{ asset('favicon-32x32.png') }}">
-      <!--
-        Tip 1: You can change the color of the sidebar using: data-color="purple | azure | green | orange | danger"
+      <!-- 	Tip 1: You can change the color of the sidebar using: data-color="purple | azure | green | orange | danger"
+				Tip 2: you can also add an image using data-image tag
+		-->
+      <div class="logo">
+        <a href="/">
+          <div class="simple-text logo-normal">
+            <img src="{{ asset('favicon-32x32.png') }}"><br>
+            Kotaku <br> OSP-1 Jawa Tengah-1
+        </a>
+      </div>
+    </div>
+    <div class="sidebar-wrapper">
+      @include('layouts.sidebar.MaterialDashboard')
+    </div>
+  </div>
 
-        Tip 2: you can also add an image using data-image tag
-      -->
-      <div class="logo"><a href = "/"><div class="simple-text logo-normal">
-		  <img src ="{{ asset('favicon-32x32.png') }}"><br>
-        Kotaku <br> OSP-1 Jawa Tengah-1
-      </div></a></div>
-      <div class="sidebar-wrapper">        
-		@include('layouts.sidebar.MaterialDashboard')
+  <div class="main-panel">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
+      <div class="container-fluid">
+        <div class="navbar-wrapper">
+          <a class="navbar-brand" href="javascript:;"></a>
+        </div>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="navbar-toggler-icon icon-bar"></span>
+          <span class="navbar-toggler-icon icon-bar"></span>
+          <span class="navbar-toggler-icon icon-bar"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end">
+          @yield('search')
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="/dashboard">
+                <i class="material-icons">dashboard</i>
+                <p class="d-lg-none d-md-block">
+                  Dashboard
+                </p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="material-icons">home</i>
+                <p class="d-lg-none d-md-block">
+                  Home
+                </p>
+              </a>
+            </li>
+
+            <!-- Authentication Links -->
+
+            @guest
+            <li class="nav-item">
+              <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+            </li>
+
+            @if (Route::has('register'))
+            <li class="nav-item">
+              <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+            </li>
+            @endif
+
+            @else
+            <li class="nav-item dropdown">
+              <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                <i class="material-icons">person</i> {{ Auth::user()->name }} <span class="caret"></span>
+              </a>
+
+              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="/profil">Profil</a>
+                <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                  {{ __('Logout') }}
+                </a>
+
+                @can('manage-users')
+                <a class="dropdown-item" href="{{ route('admin.users.index') }}">
+                  User Management
+                </a>
+                @endcan
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                  @csrf
+                </form>
+              </div>
+            </li>
+            @endguest
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <!-- End Navbar -->
+
+    <div class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-12">
+            @yield('content')
+
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="main-panel">
-      <!-- Navbar -->
-      <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
-        <div class="container-fluid">
-          <div class="navbar-wrapper">
-            <a class="navbar-brand" href="javascript:;"></a>
-          </div>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="navbar-toggler-icon icon-bar"></span>
-            <span class="navbar-toggler-icon icon-bar"></span>
-            <span class="navbar-toggler-icon icon-bar"></span>
-          </button>
-          <div class="collapse navbar-collapse justify-content-end">
-            @yield('search')
-            <ul class="navbar-nav">
-				<li class="nav-item">
-					<a class="nav-link" href="/dashboard">
-						<i class="material-icons">dashboard</i>
-						<p class="d-lg-none d-md-block">
-							Dashboard
-						</p>
-					</a>
-				</li>  
-              <li class="nav-item">
-                <a class="nav-link" href="/">
-                  <i class="material-icons">home</i>
-                  <p class="d-lg-none d-md-block">
-                    Home
-                  </p>
-                </a>
-              </li>              
-              <!-- Authentication Links -->
-                        @guest
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                        </li>
-                        @if (Route::has('register'))
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                        </li>
-                        @endif
-                        @else
-                        <li class="nav-item dropdown">
-                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                <i class="material-icons">person</i> {{ Auth::user()->name }} <span class="caret"></span>
-                            </a>
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container-fluid">
+        <nav class="float-left">
+        </nav>
+        <div class="copyright float-right">
+          &copy;
 
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-								<a class="dropdown-item" href="/profil">Profil</a>
-                                <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                    {{ __('Logout') }}
-                                </a>
-                                
-
-                                @can('manage-users')
-                                <a class="dropdown-item" href="{{ route('admin.users.index') }}">
-                                    User Management
-                                </a>
-                                @endcan
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                    @csrf
-                                </form>
-                            </div>
-                        </li>
-                        @endguest
-            </ul>
-          </div>
-        </div>
-      </nav>
-      <!-- End Navbar -->
-
-      <div class="content">
-        <div class="container-fluid">
-          <div class="row">
-            <div class="col-md-12">
-
-              @yield('content')
-
-            </div>
-          </div>
+          <script>
+            document.write(new Date().getFullYear())
+          </script>
+          Kotaku Jawa Tengah-1
         </div>
       </div>
-        <!-- Footer -->
-        <footer class="footer">
-          <div class="container-fluid">
-            <nav class="float-left">
+    </footer>
+  </div>
 
-            </nav>
-            <div class="copyright float-right">
-              &copy;
-              <script>
-              document.write(new Date().getFullYear())
-              </script> Kotaku Jawa Tengah-1
-              </div>
-              </div>
-              </footer>
-              </div>
-              </div>
-
-@yield('script')
-<!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+  @yield('script')
+  <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/js/bootstrap.min.js" integrity="sha384-XEerZL0cuoUbHE4nZReLT7nx9gQrQreJekYhJD9WNWhH8nEW+0c5qq7aIo2Wl30J" crossorigin="anonymous"></script> -->
-<!--   Core JS Files -->
-  
-  <script src="{{ asset('MaterialDashboard/js/core/popper.min.js') }}"></script> 
+  <!--   Core JS Files -->
+
+  <script src="{{ asset('MaterialDashboard/js/core/popper.min.js') }}"></script>
   <script src="{{ asset('MaterialDashboard/js/core/bootstrap-material-design.min.js') }}"></script>
-  <script src="{{ asset('MaterialDashboard/js/plugins/perfect-scrollbar.jquery.min.js') }}"></script> 
+  <script src="{{ asset('MaterialDashboard/js/plugins/perfect-scrollbar.jquery.min.js') }}"></script>
   <!-- Include a polyfill for ES6 Promises (optional) for IE11, UC Browser and Android browser support SweetAlert
   <script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.js"></script> -->
   <script src="{{ asset('js/core.js') }}"></script>
@@ -324,9 +328,8 @@
         });
       });
     });
-    
   </script>
 
-              </body>
+</body>
 
-              </html>
+</html>

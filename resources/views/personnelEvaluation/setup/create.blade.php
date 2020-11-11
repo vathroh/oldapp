@@ -9,9 +9,16 @@
   <div class="card-body">
 		@include('personnelEvaluation.navbar')
 
-			<div class="form-group text-center my-5">
+			<div class="form-group text-center my-2">
 				<h4>Daftar Aspek Kinerja {{ $jobTitles->where('id', $setting->pluck('jobTitleId')->first())->first()->job_title }}</h4>
 				<h4>Kuartal {{ $setting->pluck('quarter')->first() }} Tahun {{ $setting->pluck('year')->first() }}</h4>
+			</div>
+			
+			<div class="text-center">
+				
+				<a href="/personnel-evaluation-setup-copy/{{ $setting->first()->id }}">
+					<button class="btn btn-primary" type="button">Copy Dari Periode Sebelumnya</button>
+				</a>
 			</div>
 			
 			<div>

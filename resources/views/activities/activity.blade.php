@@ -9,26 +9,48 @@
 			<div class="card-header card-header-primary">
 				<h5 class="card-title ">{{ $activity_category->name }}</h4>
 			</div>
+			
 			<div class="card-body" style="body-background: #f2e2c6;">
 				<ol>
 					<div>
-						@if (Auth::user()->hasAnyRoles(['admin', 'training']))
-						
-							@foreach($activities->where('category_id', $activity_category->id)->unique('activities.id') as $activity)
+						@foreach($activities->where('category_id', $activity_category->id) as $activity)						
 							<li  class="mt-2">								
-								<div><a href="/attendance/{{$activity->category_id}}/{{$activity->id}}">{{ $activity->name }}</a></div>						
+								<div>
+									<a href="/attendance/{{$activity->category_id}}/{{$activity->id}}">
+										{{ $activity->name }} Tanggal 
+										
+										@if(Carbon\Carbon::parse($activity->start_date)->format('d') != 										
+										Carbon\Carbon::parse($activity->finish_date)->format('d')  )
+										
+											{{ Carbon\Carbon::parse($activity->start_date)->format('d') }}
+										
+										@endif
+										
+										@if(Carbon\Carbon::parse($activity->start_date)->format('F') != 										
+										Carbon\Carbon::parse($activity->finish_date)->format('F')  )
+										
+											{{ Carbon\Carbon::parse($activity->start_date)->format('F') }}
+										
+										@endif
+										
+										@if(Carbon\Carbon::parse($activity->start_date)->format('Y') != 										
+										Carbon\Carbon::parse($activity->finish_date)->format('Y')  )
+										
+											{{ Carbon\Carbon::parse($activity->start_date)->format('Y') }}
+										
+										@endif
+										
+										@if($activity->start_date != $activity->finish_date)
+										-
+										@endif
+										
+										{{ Carbon\Carbon::parse($activity->finish_date)->format('d') }}
+										{{ Carbon\Carbon::parse($activity->finish_date)->format('F') }}
+										{{ Carbon\Carbon::parse($activity->finish_date)->format('Y') }}
+									</a>
+								</div>						
 							</li>						
-							@endforeach
-							
-						@elseif(Auth::user()->hasAnyRoles(['user']))
-						
-							@foreach($activities->where('category_id', $activity_category->id)->unique('activities.id') as $activity)
-							<li  class="mt-2">							
-								<div><a href="/attendance/{{$activity->category_id}}/{{$activity->id}}">{{ $activity->name }}</a></div>
-							</li>						
-							@endforeach				
-						
-						@endif
+						@endforeach
 					</div>
 				</ol>
 			</div>

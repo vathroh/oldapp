@@ -95,14 +95,20 @@ class activityController extends Controller
     public function activities()
     {
 		$activity_categories = activities_category::all();
-		$activities = activity::join('activity_participants', 
-		'activities.id', '=', 'activity_participants.activity_id')->select('activities.id', 'name', 'category_id')->get();
+		
+		if (Auth::user()->hasAnyRoles(['admin']))
+        {
+            $activities = activity::select('activities.id', 'name', 'category_id', 'start_date', 'finish_date')->get();
+        } else {
+			$activities = activity::distinct('activities.id')->join('activity_participants', 'activities.id', '=', 'activity_participants.activity_id')
+						  ->select('activities.id', 'name', 'category_id', 'start_date', 'finish_date')->get();
+		}
 		return view('activities.activity', compact(['activity_categories', 'activities']));
 	}
 	
 	public function activity($activity)
     {
-		return $activities = activity::where('category_id', $activity)->get();		
+		$activities = activity::where('category_id', $activity)->get();		
 		return view('activities.activity-item', compact('activities'));
 	}
 	

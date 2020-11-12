@@ -450,6 +450,7 @@ class activityController extends Controller
 			->leftjoin('allvillages', 'work_zones.district', '=', 'allvillages.KD_KAB')
 			->join('job_titles', 'job_titles.id', '=', 'job_descs.job_title_id')
 			->where('users.name', 'like', '%' . $request->nama . '%')
+			->orWhere('job_titles.job_title', 'like', '%' . $request->nama . '%')
 			//->whereNotIn('users.id', $registered_user)
 			->get(['user_id', 'name', 'NAMA_KAB', 'job_title']);
 			

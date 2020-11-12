@@ -24,7 +24,8 @@ $(document).ready(function () {
     
     $("#find_name").keyup(function () {
         var nama = $("#find_name").val();
-
+		var activity_id = $("#activity_id").val();
+		
         $.get('/ajax-listing-attendant-find-name?nama=' + nama, function (data) {
             console.log(data);
             $("#users").empty();

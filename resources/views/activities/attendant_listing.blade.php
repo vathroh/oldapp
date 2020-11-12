@@ -27,7 +27,7 @@
 						<option value="{{ $district->KD_KAB }}">{{ $district->NAMA_KAB }}</option>
 						@endforeach
 					</select>
-					<input type="text" class="form-control" id="find_name" name="find_name" placeholder="Cari berdasarkan nama">
+					<input type="text" class="form-control" id="find_name" name="find_name" placeholder="Cari Berdasarkan Nama/Jabatan">
 					<select class="custom-select" id="users" multiple size="10">
 					</select>
 					<input type="submit" value="Register" id="register">

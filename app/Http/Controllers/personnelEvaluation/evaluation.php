@@ -29,7 +29,7 @@ class evaluation extends Controller
 
 
     public function index()
-    {
+		{
 		$value			= personnel_evaluation_value::where('userId', Auth::user()->id )->get();
 		$myEvaluations 	= personnel_evaluation_value::where('userId', Auth::user()->id )->get();
 		$myZones		= explode(", ", job_desc::where('user_id', Auth::user()->id)->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')
@@ -89,7 +89,7 @@ class evaluation extends Controller
 	
 	public function monitoring()
     {
-		$evaluators = personnel_evaluator::where('evaluator', job_desc::where('user_id', Auth::user()->id)->pluck('job_title_id')->first())->get();
+		$evaluators = personnel_evaluator::where('evaluator', job_desc::where('user_id', Auth::user()->id)->pluck('job_title_id')->first())->get();        
 		$job_titles	= job_title::distinct('job_titles.id')->leftjoin('job_descs', 'job_titles.id', '=', 'job_descs.job_title_id')
 					->select('job_titles.id', 'job_titles.job_title', 'level')->get();
 		$districts	= allvillage::get()->unique('KD_KAB');

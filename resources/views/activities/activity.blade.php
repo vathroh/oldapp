@@ -65,3 +65,5 @@
 <script src="{{ asset('js/bootstrap.min.js') }}" defer></script>
 <script src="{{ asset('js/jquery.form.min.js') }}" defer></script>
 @endsection
+
+

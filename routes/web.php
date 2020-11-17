@@ -196,7 +196,9 @@ Route::post('/activity-evaluation/{activity_id}', 'evaluationController@evaluati
 Route::get('/certificate_page/{activity}/{activity_item}', 'activityController@certificate_page');
 Route::get('/evaluation-check/{activity}/{activity_item}', 'activityController@evaluation_check');
 //Ajax
+Route::get('/ajax-listing-attendant-find-registered-name/', 'activityController@ajaxAttendanceFindRegisteredName');
 Route::get('/ajax-listing-attendant-find-name/', 'activityController@ajaxAttendanceFindName');
+Route::get('/ajax-listing-registered-attendant/', 'activityController@ajaxRegisteredAttendance');
 Route::get('/ajax-evaluation-result', 'activityController@ajaxEvaluationResult');
 Route::get('/ajax-listing-attendant/', 'activityController@ajaxAttendance');
 Route::post('/ajax-listing-register/', 'activityController@ajaxRegister');

@@ -19,6 +19,14 @@
             <p>PROFIL</p>
         </a>
     </li>
+ @if (Auth::user()->hasAnyRoles(['admin', 'fasilitator']))
+		<li>				
+		<a class="dropdown-item" href="/hrm">
+			<i class="material-icons">library_books</i>
+			<p>HRM</p>
+		</a>
+    </li>
+	@endif
     <li class="nav-item ">
         <a class="nav-link" href ="{{'/pass-by-user/' . Auth::user()->id . '/edit' }} ">
             <i class="material-icons">line_style</i>

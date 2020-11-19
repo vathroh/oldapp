@@ -63,7 +63,7 @@ class User extends Authenticatable
 
     public function jobDesc()
     {
-        return $this->belongsTo('App\job_desc', 'id');
+        return $this->hasMany('App\job_desc');
     }
     
     public function posisi()
@@ -87,4 +87,7 @@ class User extends Authenticatable
             'work_zone_id' //localkey on  job_desc 
         );
     }
+
+
+    
 }

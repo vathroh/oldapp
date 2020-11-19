@@ -30,25 +30,39 @@ class evaluation extends Controller
 
     public function index()
 		{
-		$value			= personnel_evaluation_value::where('userId', Auth::user()->id )->get();
+			/*
+ 			$user = User::find(58);
+			return $user->jobDesc()->first()->kabupaten()->get();
+			 
+
+
+			//return $district = allvillage::where('KD_KAB', '3321')->first();
+
+			$district = allvillage::find(410);
+
+//			return $district->jobDesc()->get();
+			return User::find($district->jobDesc()->pluck('user_id'));
+			 */
+
+		$value				= personnel_evaluation_value::where('userId', Auth::user()->id )->get();
 		$myEvaluations 	= personnel_evaluation_value::where('userId', Auth::user()->id )->get();
-		$myZones		= explode(", ", job_desc::where('user_id', Auth::user()->id)->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')
-						  ->pluck('zone')->first());
+		$myZones			= explode(", ", job_desc::where('user_id', Auth::user()->id)->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')
+								    ->pluck('zone')->first());
 						  
-		$isUser			= personnel_evaluation_value::join('users', 'users.id', '=', 'personnel_evaluation_values.userId')
-						  ->join('job_descs', 'job_descs.user_id', '=', 'users.id')->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')
-						  ->select('users.id', 'settingId', 'userId', 'totalScore', 'userTotalScore', 'ok_by_user', 'edit_by_user', 'ready', 'edit', 'name', 'district')->whereIn('district', $myZones)
-						  ->get();			
-		$notUser		= User::join('job_descs', 'job_descs.user_id', '=', 'users.id')->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')
-						  ->select('users.id', 'name', 'job_title_id', 'district')->whereNotIn('district', ["OSP-1"])->whereIn('district', $myZones)->get();
+	 	$isUser				= personnel_evaluation_value::join('users', 'users.id', '=', 'personnel_evaluation_values.userId')
+							  	  ->join('job_descs', 'job_descs.user_id', '=', 'users.id')->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')
+									  ->select('users.id', 'settingId', 'userId', 'totalScore', 'userTotalScore', 'ok_by_user', 'edit_by_user', 'ready', 'edit', 'name', 'district')
+									  ->whereIn('district', $myZones)->get();			
+
+		$notUser			= User::join('job_descs', 'job_descs.user_id', '=', 'users.id')->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')
+	 						  		->select('users.id', 'name', 'job_title_id', 'district')->whereNotIn('district', ["OSP-1"])->whereIn('district', $myZones)->get();
 						  
-		$evaluators 	= personnel_evaluator::where('evaluator', job_desc::where('user_id', Auth::user()->id)->pluck('job_title_id')->first())->get();	
+		$evaluators 	= personnel_evaluator::where('evaluator', User::find(Auth::user()->id)->posisi()->latest()->first()->id)->get();	
 		
 		$settings 		= personnel_evaluation_setting::join('job_titles', 'personnel_evaluation_settings.jobTitleId', '=', 'job_titles.id')
-						  ->select('personnel_evaluation_settings.id', 'quarter', 'year', 'job_title', 'jobTitleId')
-						  ->orderBy('year', 'desc')->where('status', 1)->get();
-		
-						  		
+						  		  ->select('personnel_evaluation_settings.id', 'quarter', 'year', 'job_title', 'jobTitleId')
+									  ->orderBy('year', 'desc')->where('status', 1)->get();
+
 		return view('personnelEvaluation.index', compact(['isUser', 'notUser', 'settings', 'evaluators', 'value', 'myEvaluations', 'myZones']));
 	}
 	

@@ -29,6 +29,8 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->middleware('can:mana
     Route::get('users-index', 'UsersController@ajaxIndex');
 });
 
+Route::get('hrm', 'hrmController@index');
+
 // BLOG
 Route::get('/blog-osp1', 'Blog\blogController@index');
 Route::get('/blog-home', 'Blog\blogController@home');

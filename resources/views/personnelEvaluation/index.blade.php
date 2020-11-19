@@ -85,10 +85,6 @@
 
 					@foreach($evaluators as $evaluator)
 					@foreach($settings->where('jobTitleId', $evaluator->jobId)->sortBy('quarter')->sortBy('year') as $setting)
-					
-					<tr>
-						<td>{{ $myZones[0][1] }}</td>
-					</tr>
 					<tr>
 						<td>Kuartal {{ $setting->quarter }} Tahun {{ $setting->year }}</td>
 						

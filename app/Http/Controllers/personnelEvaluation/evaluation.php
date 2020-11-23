@@ -77,7 +77,12 @@ class evaluation extends Controller
 				$siapDievaluasi = [];
 				$prosesDievaluasi = [];
 				$selesaiDievaluasi = [];
-				foreach($jobDescUser->whereIn('user_id', personnel_evaluation_value::whereIn('settingId', $lastSetting->pluck('id'))->pluck('userId')) as $userSdh)
+
+		//		return $jobDescUser;
+
+				//				foreach($jobDescUser->whereIn('user_id', personnel_evaluation_value::whereIn('settingId', $lastSetting->pluck('id'))->pluck('userId')) as $userSdh)
+				foreach($jobDescUser as $userSdh)
+
 				{
 					if($userSdh->yangDievaluasi()->whereIn('settingId', $lastSetting->pluck('id'))->where('ok_by_user', 0)->count() > 0)
 					{

@@ -78,56 +78,65 @@ class evaluation extends Controller
 				$prosesDievaluasi = [];
 				$selesaiDievaluasi = [];
 
-		//		return $jobDescUser;
-
-				//				foreach($jobDescUser->whereIn('user_id', personnel_evaluation_value::whereIn('settingId', $lastSetting->pluck('id'))->pluck('userId')) as $userSdh)
-				foreach($jobDescUser as $userSdh)
-
+				if( $jobDescUser->whereIn('user_id', personnel_evaluation_value::whereIn('settingId', $lastSetting->pluck('id'))->pluck('userId'))->count() > 0 )
 				{
-					if($userSdh->yangDievaluasi()->whereIn('settingId', $lastSetting->pluck('id'))->where('ok_by_user', 0)->count() > 0)
-					{
-						$blm[] = $userSdh->yangDievaluasi()->whereIn('settingId', $lastSetting->pluck('id'))->where('ok_by_user', 0)->first();	
-					}
 
-					if($userSdh->yangDievaluasi()->whereIn('settingId', $lastSetting->pluck('id'))->where('ok_by_user', 1)->count() > 0)
-					{
-						$sdh[] = $userSdh->yangDievaluasi()->whereIn('settingId', $lastSetting->pluck('id'))->where('ok_by_user', 1)->first();	
-					}
-
-					if($userSdh->yangDievaluasi()->whereIn('settingId', $lastSetting->pluck('id'))->where('totalScore', '=', 0)->count() > 0)
-					{
-						$belumDievaluasi[] = $userSdh->yangDievaluasi()->whereIn('settingId', $lastSetting->pluck('id'))->where('totalScore', '=', 0)->first();	
-					}
-
-					if($userSdh->yangDievaluasi()->whereIn('settingId', $lastSetting->pluck('id'))->where('totalScore', '=', 0)->where('ok_by_user', 1)->count() > 0)
-					{
-						$siapDievaluasi[] = $userSdh->yangDievaluasi()->whereIn('settingId', $lastSetting->pluck('id'))->where('totalScore', '=', 0)->where('ok_by_user', 1)->first();	
-					}
-
-					if($userSdh->yangDievaluasi()->whereIn('settingId', $lastSetting->pluck('id'))->where('totalScore', '>', 0)->where('ready', 0)->count() > 0)
-					{
-						$prosesDievaluasi[] = $userSdh->yangDievaluasi()->whereIn('settingId', $lastSetting->pluck('id'))->where('totalScore', '>', 0)->where('ready', 0)->first();	
-					}
-
-					if($userSdh->yangDievaluasi()->whereIn('settingId', $lastSetting->pluck('id'))->where('totalScore', '>', 0)->where('ready', 1)->count() > 0)
-					{
-						$selesaiDievaluasi[] = $userSdh->yangDievaluasi()->whereIn('settingId', $lastSetting->pluck('id'))->where('totalScore', '>', 0)->where('ready', 1)->first();	
-					}
-
-				}
+					foreach($jobDescUser->whereIn('user_id', personnel_evaluation_value::whereIn('settingId', $lastSetting->pluck('id'))->pluck('userId')) as $userSdh)
 				
-				$evaluationValue[$myZones[$i]][$job_id]['ProsesMengisi'] = $blm; 
-				$evaluationValue[$myZones[$i]][$job_id]['SelesaiMengisi'] = $sdh;
-				$evaluationValue[$myZones[$i]][$job_id]['BelumDievaluasi'] = $jobDescUser->whereNotIn('user_id', 
+					//foreach($jobDescUser as $userSdh)
+
+					{
+						if($userSdh->yangDievaluasi()->whereIn('settingId', $lastSetting->pluck('id'))->where('ok_by_user', 0)->count() > 0)
+						{
+							$blm[] = $userSdh->yangDievaluasi()->whereIn('settingId', $lastSetting->pluck('id'))->where('ok_by_user', 0)->first();	
+						}
+
+						if($userSdh->yangDievaluasi()->whereIn('settingId', $lastSetting->pluck('id'))->where('ok_by_user', 1)->count() > 0)
+						{
+							$sdh[] = $userSdh->yangDievaluasi()->whereIn('settingId', $lastSetting->pluck('id'))->where('ok_by_user', 1)->first();	
+						}
+
+						if($userSdh->yangDievaluasi()->whereIn('settingId', $lastSetting->pluck('id'))->where('totalScore', '=', 0)->count() > 0)
+						{
+							$belumDievaluasi[] = $userSdh->yangDievaluasi()->whereIn('settingId', $lastSetting->pluck('id'))->where('totalScore', '=', 0)->first();	
+						}
+
+						if($userSdh->yangDievaluasi()->whereIn('settingId', $lastSetting->pluck('id'))->where('totalScore', '=', 0)->where('ok_by_user', 1)->count() > 0)
+						{
+							$siapDievaluasi[] = $userSdh->yangDievaluasi()->whereIn('settingId', $lastSetting->pluck('id'))->where('totalScore', '=', 0)->where('ok_by_user', 1)->first();	
+						}
+
+						if($userSdh->yangDievaluasi()->whereIn('settingId', $lastSetting->pluck('id'))->where('totalScore', '>', 0)->where('ready', 0)->count() > 0)
+						{
+							$prosesDievaluasi[] = $userSdh->yangDievaluasi()->whereIn('settingId', $lastSetting->pluck('id'))->where('totalScore', '>', 0)->where('ready', 0)->first();	
+						}
+
+						if($userSdh->yangDievaluasi()->whereIn('settingId', $lastSetting->pluck('id'))->where('totalScore', '>', 0)->where('ready', 1)->count() > 0)
+						{
+							$selesaiDievaluasi[] = $userSdh->yangDievaluasi()->whereIn('settingId', $lastSetting->pluck('id'))->where('totalScore', '>', 0)->where('ready', 1)->first();	
+						}
+
+					}
+				
+					$evaluationValue[$myZones[$i]][$job_id]['ProsesMengisi'] = $blm; 
+					$evaluationValue[$myZones[$i]][$job_id]['SelesaiMengisi'] = $sdh;
+					$evaluationValue[$myZones[$i]][$job_id]['BelumDievaluasi'] = $jobDescUser->whereNotIn('user_id', 
 					$userSdh->yangDievaluasi()->whereIn('settingId', $lastSetting->pluck('id'))->where('totalScore', '!=', '0.00' )->pluck('userId'));
-				$evaluationValue[$myZones[$i]][$job_id]['SiapDievaluasi'] = $siapDievaluasi; 
-				$evaluationValue[$myZones[$i]][$job_id]['ProsesDievaluasi'] = $prosesDievaluasi; 
-				$evaluationValue[$myZones[$i]][$job_id]['SelesaiDievaluasi'] = $selesaiDievaluasi; 
-
+					$evaluationValue[$myZones[$i]][$job_id]['SiapDievaluasi'] = $siapDievaluasi; 
+					$evaluationValue[$myZones[$i]][$job_id]['ProsesDievaluasi'] = $prosesDievaluasi; 
+					$evaluationValue[$myZones[$i]][$job_id]['SelesaiDievaluasi'] = $selesaiDievaluasi; 
+				} else {
+					$evaluationValue[$myZones[$i]][$job_id]['ProsesMengisi'] = []; 
+					$evaluationValue[$myZones[$i]][$job_id]['SelesaiMengisi'] = [];
+					$evaluationValue[$myZones[$i]][$job_id]['BelumDievaluasi'] = $jobDescUser;
+					$evaluationValue[$myZones[$i]][$job_id]['SiapDievaluasi'] = []; 
+					$evaluationValue[$myZones[$i]][$job_id]['ProsesDievaluasi'] = []; 
+					$evaluationValue[$myZones[$i]][$job_id]['SelesaiDievaluasi'] = []; 
+				} 
 			}
-		}
 
-	 	   $evaluationValues = collect($evaluationValue);
+			$evaluationValues = collect($evaluationValue);
+		} 
 
 		return view('personnelEvaluation.index', compact(['myEvaluationSetting', 'myEvaluationValues', 'evaluators', 'evaluationValues', 'myZones', 'allvillages',
 		'lastYear', 'lastQuarter', 'lastSetting']));
@@ -170,49 +179,70 @@ class evaluation extends Controller
 				$siapDievaluasi = [];
 				$prosesDievaluasi = [];
 				$selesaiDievaluasi = [];
-				foreach($jobDescUser->whereIn('user_id', personnel_evaluation_value::whereIn('settingId', $lastSetting->pluck('id'))->pluck('userId')) as $userSdh)
-				{
-					if($userSdh->yangDievaluasi()->whereIn('settingId', $lastSetting->pluck('id'))->where('ok_by_user', 0)->count() > 0)
-					{
-						$blm[] = $userSdh->yangDievaluasi()->whereIn('settingId', $lastSetting->pluck('id'))->where('ok_by_user', 0)->first();	
-					}
-
-					if($userSdh->yangDievaluasi()->whereIn('settingId', $lastSetting->pluck('id'))->where('ok_by_user', 1)->count() > 0)
-					{
-						$sdh[] = $userSdh->yangDievaluasi()->whereIn('settingId', $lastSetting->pluck('id'))->where('ok_by_user', 1)->first();	
-					}
-
-					if($userSdh->yangDievaluasi()->whereIn('settingId', $lastSetting->pluck('id'))->where('totalScore', '=', 0)->count() > 0)
-					{
-						$belumDievaluasi[] = $userSdh->yangDievaluasi()->whereIn('settingId', $lastSetting->pluck('id'))->where('totalScore', '=', 0)->first();	
-					}
-
-					if($userSdh->yangDievaluasi()->whereIn('settingId', $lastSetting->pluck('id'))->where('totalScore', '=', 0)->where('ok_by_user', 1)->count() > 0)
-					{
-						$siapDievaluasi[] = $userSdh->yangDievaluasi()->whereIn('settingId', $lastSetting->pluck('id'))->where('totalScore', '=', 0)->where('ok_by_user', 1)->first();	
-					}
-
-					if($userSdh->yangDievaluasi()->whereIn('settingId', $lastSetting->pluck('id'))->where('totalScore', '>', 0)->where('ready', 0)->count() > 0)
-					{
-						$prosesDievaluasi[] = $userSdh->yangDievaluasi()->whereIn('settingId', $lastSetting->pluck('id'))->where('totalScore', '>', 0)->where('ready', 0)->first();	
-					}
-
-					if($userSdh->yangDievaluasi()->whereIn('settingId', $lastSetting->pluck('id'))->where('totalScore', '>', 0)->where('ready', 1)->count() > 0)
-					{
-						$selesaiDievaluasi[] = $userSdh->yangDievaluasi()->whereIn('settingId', $lastSetting->pluck('id'))->where('totalScore', '>', 0)->where('ready', 1)->first();	
-					}
-				}
 				
-				$evaluationValue[$myZones[$i]][$job_id]['ProsesMengisi'] = $blm; 
-				$evaluationValue[$myZones[$i]][$job_id]['SelesaiMengisi'] = $sdh;
-				$evaluationValue[$myZones[$i]][$job_id]['SiapDievaluasi'] = $siapDievaluasi; 
-				$evaluationValue[$myZones[$i]][$job_id]['ProsesDievaluasi'] = $prosesDievaluasi; 
-				$evaluationValue[$myZones[$i]][$job_id]['SelesaiDievaluasi'] = $selesaiDievaluasi;
-				$evaluationValue[$myZones[$i]][$job_id]['BelumDievaluasi'] = $jobDescUser->whereNotIn('user_id', 
+				
+			
+				if( $jobDescUser->whereIn('user_id', personnel_evaluation_value::whereIn('settingId', $lastSetting->pluck('id'))->pluck('userId'))->count() > 0 )
+				{
+
+					foreach($jobDescUser->whereIn('user_id', personnel_evaluation_value::whereIn('settingId', $lastSetting->pluck('id'))->pluck('userId')) as $userSdh)
+				
+					//foreach($jobDescUser as $userSdh)
+
+					{
+						if($userSdh->yangDievaluasi()->whereIn('settingId', $lastSetting->pluck('id'))->where('ok_by_user', 0)->count() > 0)
+						{
+							$blm[] = $userSdh->yangDievaluasi()->whereIn('settingId', $lastSetting->pluck('id'))->where('ok_by_user', 0)->first();	
+						}
+
+						if($userSdh->yangDievaluasi()->whereIn('settingId', $lastSetting->pluck('id'))->where('ok_by_user', 1)->count() > 0)
+						{
+							$sdh[] = $userSdh->yangDievaluasi()->whereIn('settingId', $lastSetting->pluck('id'))->where('ok_by_user', 1)->first();	
+						}
+
+						if($userSdh->yangDievaluasi()->whereIn('settingId', $lastSetting->pluck('id'))->where('totalScore', '=', 0)->count() > 0)
+						{
+							$belumDievaluasi[] = $userSdh->yangDievaluasi()->whereIn('settingId', $lastSetting->pluck('id'))->where('totalScore', '=', 0)->first();	
+						}
+
+						if($userSdh->yangDievaluasi()->whereIn('settingId', $lastSetting->pluck('id'))->where('totalScore', '=', 0)->where('ok_by_user', 1)->count() > 0)
+						{
+							$siapDievaluasi[] = $userSdh->yangDievaluasi()->whereIn('settingId', $lastSetting->pluck('id'))->where('totalScore', '=', 0)->where('ok_by_user', 1)->first();	
+						}
+
+						if($userSdh->yangDievaluasi()->whereIn('settingId', $lastSetting->pluck('id'))->where('totalScore', '>', 0)->where('ready', 0)->count() > 0)
+						{
+							$prosesDievaluasi[] = $userSdh->yangDievaluasi()->whereIn('settingId', $lastSetting->pluck('id'))->where('totalScore', '>', 0)->where('ready', 0)->first();	
+						}
+
+						if($userSdh->yangDievaluasi()->whereIn('settingId', $lastSetting->pluck('id'))->where('totalScore', '>', 0)->where('ready', 1)->count() > 0)
+						{
+							$selesaiDievaluasi[] = $userSdh->yangDievaluasi()->whereIn('settingId', $lastSetting->pluck('id'))->where('totalScore', '>', 0)->where('ready', 1)->first();	
+						}
+
+					}
+				
+					$evaluationValue[$myZones[$i]][$job_id]['ProsesMengisi'] = $blm; 
+					$evaluationValue[$myZones[$i]][$job_id]['SelesaiMengisi'] = $sdh;
+					$evaluationValue[$myZones[$i]][$job_id]['BelumDievaluasi'] = $jobDescUser->whereNotIn('user_id', 
 					$userSdh->yangDievaluasi()->whereIn('settingId', $lastSetting->pluck('id'))->where('totalScore', '!=', '0.00' )->pluck('userId'));
-			}
-		}
-	 	 $evaluationValues = collect($evaluationValue); 
+					$evaluationValue[$myZones[$i]][$job_id]['SiapDievaluasi'] = $siapDievaluasi; 
+					$evaluationValue[$myZones[$i]][$job_id]['ProsesDievaluasi'] = $prosesDievaluasi; 
+					$evaluationValue[$myZones[$i]][$job_id]['SelesaiDievaluasi'] = $selesaiDievaluasi; 
+				} else {
+					$evaluationValue[$myZones[$i]][$job_id]['ProsesMengisi'] = []; 
+					$evaluationValue[$myZones[$i]][$job_id]['SelesaiMengisi'] = [];
+					$evaluationValue[$myZones[$i]][$job_id]['BelumDievaluasi'] = $jobDescUser;
+					$evaluationValue[$myZones[$i]][$job_id]['SiapDievaluasi'] = []; 
+					$evaluationValue[$myZones[$i]][$job_id]['ProsesDievaluasi'] = []; 
+					$evaluationValue[$myZones[$i]][$job_id]['SelesaiDievaluasi'] = []; 
+				} 
+			}	
+				
+				
+				
+			$evaluationValues = collect($evaluationValue);
+		}	
 					  
 		if($evaluasi == "sudah-mengisi-evkinja"){
 			$evkinUsers	= Arr::pluck($evaluationValue[$district][$jobId]['SelesaiMengisi'], 'userId');

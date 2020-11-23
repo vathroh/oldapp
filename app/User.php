@@ -65,6 +65,7 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\job_desc');
     }
+
     
     public function posisi()
     {
@@ -88,6 +89,21 @@ class User extends Authenticatable
         );
     }
 
+    public function evaluationSetting()
+    {
+        return $this->hasManyThrough(
+            'App\personnel_evaluation_setting', 'App\job_desc',
+            'user_id',
+            'jobTitleId',
+            'id',
+            'job_title_id'
+        );
 
+    }
+
+    public function evaluationValue()
+    {
+        return $this->hasMany('App\personnel_evaluation_value', 'userId');
+    }
     
 }

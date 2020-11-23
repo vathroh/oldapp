@@ -118,7 +118,6 @@
 									@endif
 								</td>
 								<td class="text-center">
-								@if($user[0]->id != Auth::user()->id)
 									<input class="evidences" type="Text" size="3" id="{{ $criterias->where('id',$criteriId[0])->pluck('id')->first() }}-{{ $aspects->where('id', $criteriIds[$i-1][$x] )->pluck('id')->first() }}" data-aspect="{{ $aspects->where('id', $criteriIds[$i-1][$x] )->pluck('id')->first() }}" data-criteria="{{ $criterias->where('id',$criteriId[0])->pluck('id')->first() }}" data-value="{{ $value->first()->id }}" 
 							
 										@if(isset($content[$criterias->where('id',$criteriId[0])->pluck('id')->first()][$aspects->where('id', $criteriIds[$i-1][$x] )->pluck('id')->first()]['variabel'])) 							
@@ -133,9 +132,6 @@
 							
 									@if(isset($content[$criterias->where('id',$criteriId[0])->pluck('id')->first()][$aspects->where('id', $criteriIds[$i-1][$x] )->pluck('id')->first()]['evidences'])) value="{{ $content[$criterias->where('id',$criteriId[0])->pluck('id')->first()][$aspects->where('id', $criteriIds[$i-1][$x] )->pluck('id')->first()]['evidences'] }}" @endif
 									>
-									@else 
-									<button type="submit" class="btn btn-primary">Upload</button>
-									@endif
 								</td>
 								@if($user[0]->id != Auth::user()->id)
 								<td class="text-center">

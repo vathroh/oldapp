@@ -8,56 +8,35 @@
 	</div>
 	<div class="card-body">
 		@include('personnelEvaluation.navbar')
-		
-		@if($notUser->where('id', Auth::user()->id )->count() > 0)
-		
-		@if($settings->count() > 0 )
-			@php
-			$lastYear		= $settings->pluck('year')->max();
-			$lastQuarter 	= $settings->where('year', $lastYear)->pluck('quarter')->max();
-			$jobTitleId		= $notUser->where('id', Auth::user()->id )->first()->job_title_id;
-			$mySettingId	= $settings->where('year', $lastYear)->where('quarter', $lastQuarter)->where('jobTitleId', $jobTitleId );
-			@endphp
-		
-		@if($mySettingId->count() > 0 )
-			@php
-			$settingId		= $mySettingId->first()->id;
-			$myEvaluation	= $myEvaluations->where('settingId', $settingId );
-			@endphp
-			
-		@if($myEvaluation->count() == 0 )
-			
+
+	@if($myEvaluationValues->count() == 0 )	
 				<div class="my-3 text-center" style="border: 2px solid red; border-radius: 5px; padding: 20px;">
 					<h5 style="color:red;">Anda Belum Mengisi Evaluasi Kinerja. </h5>
-					<a href="personnel-evaluation-input/{{  $settings->where('year', $settings->pluck('year')->max())->pluck('id')->max() }} /{{ Auth::user()->id }}"><button class="btn btn-danger">Isi Sekarang</button></a>
+					<a href="personnel-evaluation-input/{{ $myEvaluationSetting->pluck('id')->first() }}/{{ Auth::user()->id }}"><button class="btn btn-danger">Isi Sekarang</button></a>
 				</div>
 			
-			@else
+	@else	
 			
 				<div class="my-3 text-center" style="border: 2px solid grey; border-radius: 5px; padding: 20px;">
 					<h5 style="color:grey;">
-						Evaluasi Kinerja Kuartal {{ $lastQuarter  }} Tahun {{ $lastYear }} 
-						@if($myEvaluation->first()->ok_by_user == 1 )
+						Evaluasi Kinerja Kuartal {{ $lastQuarter }} Tahun {{ $lastYear }}
+						@if($myEvaluationValues->get()->first()->ok_by_user == 1 )
 							Sudah Selesai				
-						@else
+							@else
 							<span style="color:red">Belum Selesai</span>						
-						@endif
+							@endif
 						Diinput.	
 					</h5>
-					<a href="personnel-evaluation-input/{{  $settingId }}/{{ Auth::user()->id }}">
-						@if($myEvaluation->first()->ok_by_user == 1 )
+					<a href="personnel-evaluation-input/{{ $myEvaluationSetting->pluck('id')->first() }}/{{ Auth::user()->id }}">
+@if($myEvaluationValues->get()->first()->ok_by_user == 1 )
 							<button class="btn btn-primary">Lihat</button>
-						@else
+							@else
 							<button class="btn btn-success">Selesaikan</button>
-						@endif
+							@endif
 					</a>
 				</div>
-			
 			@endif
-			@endif		
-		@endif
-		@endif
-			
+
 		@if($evaluators->count() > 0)
 		
 		<div class="table-responsive tableFixHead">
@@ -77,64 +56,73 @@
 						<th>Sudah Mengisi</th>
 						<th>Belum Dievaluasi</th>
 						<th>Siap Dievaluasi</th>
-						<th>Sedang DiEvaluasi</th>
+						<th>Sedang Dievaluasi</th>
 						<th>Selesai Dievaluasi</th>
 					</tr>
 				</thead>
 				<tbody>
 
-					@foreach($evaluators as $evaluator)
-					@foreach($settings->where('jobTitleId', $evaluator->jobId)->sortBy('quarter')->sortBy('year') as $setting)
+					@for( $i = 0; $i < count($myZones); $i++)
+					
 					<tr>
-						<td>Kuartal {{ $setting->quarter }} Tahun {{ $setting->year }}</td>
+						<td colspan="10"> {{ $allvillages->where('KD_KAB', $myZones[$i])->first()->NAMA_KAB }}</td>
+					</tr>
+					
+					@foreach($evaluators as $evaluator)
+					<tr>
+						<td>Kuartal  Tahun </td>
 						
-						<td>{{ $setting->job_title }}</td>
-						
-						<td class="text-center">{{ $notUser->where('job_title_id', $setting->jobTitleId)->count() }}</td>
+						<td>{{ $evaluator->jabatanYangDinilai()->pluck('job_title')->first() }}
+							
+						</td>
 						
 						<td class="text-center">
-							<a href="/personnel-evaluation-home/{{$setting->id}}/belum-mengisi-evkinja">
-								{{ $notUser->where('job_title_id', $setting->jobTitleId)->whereNotIn('id', $isUser->where('settingId', $setting->id)->pluck('id'))->count() }}
+								{{ count($evaluationValues[$myZones[$i]][$evaluator->jobId]['Personil']) }}
+						</td>
+						
+						<td class="text-center">
+							<a href="/personnel-evaluation-home/{{ $myZones[$i] }}/{{ $evaluator->jobId }}/belum-mengisi-evkinja">
+								{{ count($evaluationValues[$myZones[$i]][$evaluator->jobId]['BelumMengisi']) }}
 							</a>
 						</td>
 						
 						<td class="text-center">
-							<a href="/personnel-evaluation-home/{{$setting->id}}/sedang-mengisi-evkinja">
-								{{ $isUser->where('settingId', $setting->id)->where('ok_by_user', 0)->count() }} 
+							<a href="/personnel-evaluation-home/{{ $myZones[$i] }}/{{ $evaluator->jobId }}/sedang-mengisi-evkinja">
+								{{ count($evaluationValues[$myZones[$i]][$evaluator->jobId]['ProsesMengisi']) }}
 							</a>
 						</td>						
 						
 						
 						<td class="text-center">
-							<a href="/personnel-evaluation-home/{{$setting->id}}/sudah-mengisi-evkinja">								
-								{{ $isUser->where('settingId', $setting->id)->where('ok_by_user', 1)->count() }}
+							<a href="/personnel-evaluation-home/{{ $myZones[$i] }}/{{ $evaluator->jobId }}/sudah-mengisi-evkinja">	
+							{{ count($evaluationValues[$myZones[$i]][$evaluator->jobId]['SelesaiMengisi']) }}
 							</a>
 						</td>
 						
 						<td class="text-center">
-							{{ $notUser->where('job_title_id', $setting->jobTitleId)->whereNotIn('id', $isUser->where('settingId', $setting->id)->pluck('id'))->count() + $isUser->where('settingId', $setting->id)->where('totalScore', 0)->count()  }}
+								{{ count($evaluationValues[$myZones[$i]][$evaluator->jobId]['BelumDievaluasi']) }}
 						</td>
 						
-						<td class="text-center" @if($isUser->where('settingId', $setting->id)->where('ok_by_user', 1)->count() > 0) style="color:red; font-weight:bold;" @endif>
-							<a href="/personnel-evaluation-home/{{$setting->id}}/siap-dievaluasi">
-								{{ $isUser->where('settingId', $setting->id)->where('ok_by_user', 1)->count() - $isUser->where('settingId', $setting->id)->where('totalScore', '>', 0 )->count() }}
+						<td class="text-center" style="color:red; font-weight:bold;" >
+							<a href="/personnel-evaluation-home/{{ $myZones[$i] }}/{{ $evaluator->jobId }}/siap-dievaluasi">
+								{{ count($evaluationValues[$myZones[$i]][$evaluator->jobId]['SiapDievaluasi']) }}
 							</a>
 						</td>
 						
 						<td class="text-center">
-							<a href="/personnel-evaluation-home/{{$setting->id}}/sedang-dievaluasi">
-								{{ $isUser->where('settingId', $setting->id)->where('ready', 0)->where('totalScore', '>', 0 )->count() }}
+							<a href="/personnel-evaluation-home/{{ $myZones[$i] }}/{{ $evaluator->jobId }}/sedang-dievaluasi">
+								{{ count($evaluationValues[$myZones[$i]][$evaluator->jobId]['ProsesDievaluasi']) }}
 							</a
 						</td>
 						
 						<td class="text-center">
-							<a href="/personnel-evaluation-home/{{$setting->id}}/selesai-dievaluasi">
-								{{ $isUser->where('settingId', $setting->id)->where('ready', 1)->count() }}
+							<a href="/personnel-evaluation-home/{{ $myZones[$i] }}/{{ $evaluator->jobId }}/selesai-dievaluasi">
+						{{ count($evaluationValues[$myZones[$i]][$evaluator->jobId]['SelesaiDievaluasi']) }}
 							</a>
 						</td>
 					</tr>
 					@endforeach
-					@endforeach
+					@endfor
 				</tbody>
 			</table>
 			@endif

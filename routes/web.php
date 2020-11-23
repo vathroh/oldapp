@@ -226,7 +226,7 @@ Route::put('personnel-evaluation-edit-grant/{id}',  'personnelEvaluation\evaluat
 Route::get('personnel-evaluation-setup/{quarter}/{year}/{id}', 'personnelEvaluation\setup@store');
 Route::put('personnel-evaluation-value-ready/{valueId}',  'personnelEvaluation\evaluation@ready');
 Route::put('personnel-evaluation-edit-denied/{id}',  'personnelEvaluation\evaluation@editDenied');
-Route::get('personnel-evaluation-home/{settingId}/{evaluasi}', 'personnelEvaluation\evaluation@home');
+Route::get('personnel-evaluation-home/{district}/{jobId}/{evaluasi}', 'personnelEvaluation\evaluation@home');
 Route::post('personnnel-evaluation-index', 'personnelEvaluation\setup@setupIndex')->name('setupIndex');
 Route::get('personnel-evaluation-create/{settingId}/{userId}',  'personnelEvaluation\evaluation@input');
 Route::put('personnel-evaluation-value-not-ready/{valueId}',  'personnelEvaluation\evaluation@notReady');

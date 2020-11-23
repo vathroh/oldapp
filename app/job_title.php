@@ -17,6 +17,11 @@ class job_title extends Model
 
         );
     }
+
+    public function evaluationSetting()
+    {
+        return $this->hasMany('App\personnel_evaluation_setting', 'jobTitleId');
+    }
     
 
 }

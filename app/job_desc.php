@@ -14,16 +14,21 @@ class job_desc extends Model
 	 	public function user()
 		{
     		return $this->belongsTo('App\User');
-		}   
+		} 
 
     public function areaKerja()
     {
-        return $this->belongsTo('App\work_zone');
+        return $this->belongsTo('App\work_zone', 'work_zone_id');
     }
 
     public function posisi()
     {
         return $this->belongsTo('App\job_title', 'job_title_id');
+    }
+
+    public function yangDievaluasi()
+    {
+       return $this->belongsTo('App\personnel_evaluation_value', 'user_id', 'userId');
     }
 
 		public function kabupaten()

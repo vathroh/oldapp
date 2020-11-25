@@ -28,8 +28,8 @@
 							<li>								
 								<tr>		
 									<td>{{ App\User::find($attendance->user_id)->name }}</td>
-									<td>{{ App\User::find($attendance->user_id)->posisi()->first()->job_title }}</td>
-									<td>{{ App\User::find($attendance->user_id)->jobDesc()->first()->kabupaten()->first()->NAMA_KAB ?? "OSP" }}</td>	
+									<td></td>
+									<td></td>	
 								</tr>		
 							</li>				
 						@endforeach

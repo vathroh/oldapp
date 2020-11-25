@@ -31,7 +31,7 @@
 								<tr>		
 									<td>{{ $attendance->user()->first()->name }}</td>
 									<td>{{ $attendance->user()->first()->posisi()->pluck('job_title')->first() }}</td>
-									<td>{{$attendance->user()->first()->areaKerja()->first()->district?? '-' }}</td>	
+									<td>{{$attendance->user()->first()->jobDesc()->first()->kabupaten()->first()->NAMA_KAB ?? 'OSP' }}</td>	
 								</tr>		
 							</li>				
 						@endforeach
@@ -54,11 +54,13 @@
 						{{ $day->format('l, d F Y') }}
 					</div>					
 					<div>
-						<ol>				
-						@foreach($noAttendances->whereNotIn('id', $attendances->where('tanggal', $day1)->pluck('id') )->groupBy('id') as $noAttendance)			
+						<ol>
+						
+						@foreach($noAttendances->whereNotIn('user_id', $attendances->where('tanggal', $day1)->pluck('user_id') ) as $noAttendance)			
 							<li>
-								{{ App\User::find($noAttendance->first()->user_id ) ->name  }} 
-								{{ App\User::find($noAttendance->first()->user_id ) ->posisi()->pluck('job_title')->first()  }}  
+								{{ $noAttendance->user()->first()->name }}
+								{{ $noAttendance->user()->first()->posisi()->pluck('job_title')->first() }}
+								{{ $noAttendance->user()->first()->jobDesc()->first()->kabupaten()->first()->NAMA_KAB ?? 'OSP' }}
 							</li>						
 						@endforeach
 						</ol>

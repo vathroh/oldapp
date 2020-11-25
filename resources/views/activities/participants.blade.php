@@ -21,10 +21,10 @@
 			<tbody>
 				@foreach($participants->where('role', 'PESERTA') as $participant)
 				<tr>
-					<th scope="row">{{ $loop->iteration }}</th>
+					<td>{{ $loop->iteration }}</td>
 					<td>{{ $participant->user()->first()->name }}</td>
-					<td></td>
-					<td></td>
+					<td>{{ $participant->user()->first()->posisi()->first()->job_title ?? '' }}</td>
+					<td>{{ $participant->user()->first()->jobDesc()->first()->kabupaten()->first()->NAMA_KAB ?? 'OSP' }}</td>
 				</tr>
 				@endforeach
 			</tbody>
@@ -44,11 +44,10 @@
 			<tbody>
 				@foreach($participants->where('role', 'PEMANDU') as $participant)
 				<tr>
-					<th scope="row">{{ $loop->iteration }}</th>
+					<td>{{ $loop->iteration }}</td>
 					<td>{{ $participant->user()->first()->name }}</td>
 					<td>{{ $participant->user()->first()->posisi()->first()->job_title }}</td>
-					<td>{{ $participant->user()->first()->jobDesc()->first()
-					->kabupaten()->first()->NAMA_KAB ?? 'OSP'}}</td>
+					<td>{{ $participant->user()->first()->jobDesc()->first()->kabupaten()->first()->KD_KAB ?? 'OSP' }}</td>
 				</tr>
 				@endforeach
 			</tbody>
@@ -68,11 +67,10 @@
 			<tbody>
 				@foreach($participants->where('role', 'PANITIA') as $participant)
 				<tr>
-					<th scope="row">{{ $loop->iteration }}</th>
+					<td>{{ $loop->iteration }}</td>
 					<td>{{ $participant->user()->first()->name }}</td>
 					<td>{{ $participant->user()->first()->posisi()->first()->job_title }}</td>
-					<td>{{ $participant->user()->first()->jobDesc()->first()
-					->kabupaten()->first()->NAMA_KAB ?? 'OSP'}}</td>
+					<td>{{ $participant->user()->first()->jobDesc()->first()->kabupaten()->first()->KD_KAB ?? 'OSP' }}</td>
 				</tr>
 				@endforeach
 			</tbody>

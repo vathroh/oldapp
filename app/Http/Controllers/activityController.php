@@ -224,7 +224,7 @@ class activityController extends Controller
 		return view('activities.certificate-page', compact(['role', 'period', 'start', 'activity', 'activity_item', 'activities', 'jml_hadir', 'attendances', 'subjects', 'evaluations', 'blacklists']));
 	}
 	
-	
+// ============================================================= certificate page ======================================================================
 	public function certificate($activity_item)
     {	
 		$role =activity_participant::where('user_id', Auth::user()->id)->where('activity_id', $activity_item)->pluck('role')->first();
@@ -237,7 +237,8 @@ class activityController extends Controller
 		$pdf = PDF::loadView('activities.certificate', compact(['username', 'role']));
 		return $pdf->setPaper('a4', 'landscape')->download('certificate.pdf');
 	}
-	
+
+// ================================================================== certificate =====================================================================  
 	
 	public function monitoring($activity, $activity_item)
 	{
@@ -262,7 +263,7 @@ class activityController extends Controller
     $attendances   = attendance_record::where('activity_id', $activity_item)
         ->selectRaw('Date(created_at) as tanggal, user_id')->get();
 
-    $noAttendances = activity_participant::whereNotIn('user_id', $attendances->pluck('user_id'))->where('activity_id', $activity_item)->get();
+    $noAttendances = activity_participant::where('activity_id', $activity_item)->get();
 
  
 
@@ -277,7 +278,7 @@ class activityController extends Controller
 		return view('activities.monitoring', compact(['period', 'start', 'subjects', 'evaluations', 'participants', 'attendances', 'noAttendances', 'role', 'activity','activities', 'activity_item']));
 	}
 	
-	
+	// =================================================================== monitoring =====================================================================
 	
 	public function participants($activity, $activity_item)
 	{
@@ -286,7 +287,7 @@ class activityController extends Controller
 		
 //	 	$participants = User::distinct('users.id')->join('activity_participants', 'activity_participants.user_id', '=', 'users.id')->join('job_descs', 'users.id', '=', 'job_descs.user_id')->join('job_titles', 'job_descs.job_title_id', '=', 'job_titles.id')->join('work_zones', 'job_descs.work_zone_id', '=', 'work_zones.id')->leftjoin('allvillages', 'work_zones.district', '=', 'allvillages.KD_KAB')->where('activity_id', $activity_item)->where('role', 'PESERTA')->get(['users.id', 'name', 'job_title', 'NAMA_KAB']);
 
-    $participants = activity_participant::where('activity_id', $activity_item)->get();
+   $participants = activity_participant::where('activity_id', $activity_item)->get();
 
 		$pemandu_pemandu = User::distinct('users.id')->join('activity_participants', 'activity_participants.user_id', '=', 'users.id')->join('job_descs', 'users.id', '=', 'job_descs.user_id')->join('job_titles', 'job_descs.job_title_id', '=', 'job_titles.id')->join('work_zones', 'job_descs.work_zone_id', '=', 'work_zones.id')->join('allvillages', 'work_zones.district', '=', 'allvillages.KD_KAB')->where('activity_id', $activity_item)->where('role', 'PEMANDU')->get(['users.id', 'name', 'job_title', 'NAMA_KAB']);
 		

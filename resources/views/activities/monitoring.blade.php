@@ -21,15 +21,17 @@
 						$day1 =  $day->format('Y-m-d');
 						@endphp
 						{{ $day->format('l, d F Y') }}
-					</div>					
+					</div>	
+
+
 					<div>
 						<ol>				
 							@foreach($attendances->where('tanggal', $day1) as $attendance)					
 							<li>								
 								<tr>		
-									<td>{{ App\User::find($attendance->user_id)->name }}</td>
-									<td></td>
-									<td></td>	
+									<td>{{ $attendance->user()->first()->name }}</td>
+									<td>{{ $attendance->user()->first()->posisi()->pluck('job_title')->first() }}</td>
+									<td>{{$attendance->user()->first()->areaKerja()->first()->district?? '-' }}</td>	
 								</tr>		
 							</li>				
 						@endforeach
@@ -55,7 +57,9 @@
 						<ol>				
 						@foreach($noAttendances->whereNotIn('id', $attendances->where('tanggal', $day1)->pluck('id') )->groupBy('id') as $noAttendance)			
 							<li>
-														</li>						
+								{{ App\User::find($noAttendance->first()->user_id ) ->name  }} 
+								{{ App\User::find($noAttendance->first()->user_id ) ->posisi()->pluck('job_title')->first()  }}  
+							</li>						
 						@endforeach
 						</ol>
 					</div>				

@@ -10,6 +10,12 @@ class activity_participant extends Model
 
     public function user()
     {
-        return $this->belongsTo('App\User');
+        return $this->hasMany('App\User', 'user_id' );
+
+    }
+
+    public function attendanceRecords()
+    {
+        return $this->belongsToMany('App\attendance_record', 'user_id', 'user_id');
     }
 }

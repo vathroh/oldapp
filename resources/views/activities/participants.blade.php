@@ -23,7 +23,7 @@
 				<tr>
 					<th scope="row">{{ $loop->iteration }}</th>
 					<td>{{ $participant->user()->first()->name }}</td>
-					<td>{{ $participant->user()->first()->posisi()->first()->job_title }}</td>
+					<td>{{ $participant->user()->first()->posisi()->first()->job_title ?? "" }}</td>
 					<td>{{ $participant->user()->first()->jobDesc()->first()
 					->kabupaten()->first()->NAMA_KAB ?? 'OSP'}}</td>
 				</tr>

@@ -216,13 +216,14 @@ Route::resource('personnel-evaluation', 'personnelEvaluation\evaluation');
 Route::resource('personnel-evaluation-setup', 'personnelEvaluation\setup');
 Route::resource('personnel-evaluation-aspect', 'personnelEvaluation\aspect');
 Route::resource('personnel-evaluation-criteria', 'personnelEvaluation\criteria');
+Route::get('personnel-evaluation-upload/{valueId}', 'personnelEvaluation\evaluation@upload');
 Route::get('personnel-evaluation-rekap', 'personnelEvaluation\evaluation@rekap');
 Route::put('personnel-evaluation-setup-ready/{id}', 'personnelEvaluation\setup@ready');
 Route::get('personnel-evaluation-edit',  'personnelEvaluation\evaluation@editPermission');
 Route::get('personnel-evaluation-monitoring',  'personnelEvaluation\evaluation@monitoring');
 Route::put('personnel-evaluation-setup-aspect/{id}', 'personnelEvaluation\setup@saveAspect');
 Route::put('personnel-evaluation-setup-not-ready/{id}', 'personnelEvaluation\setup@notReady');
-Route::put('personnel-evaluation-edit-grant/{id}',  'personnelEvaluation\evaluation@editGrant');
+Route::put('personnel-evaluation-edit-grant/{valueId}',  'personnelEvaluation\evaluation@editGrant');
 Route::get('personnel-evaluation-setup/{quarter}/{year}/{id}', 'personnelEvaluation\setup@store');
 Route::put('personnel-evaluation-value-ready/{valueId}',  'personnelEvaluation\evaluation@ready');
 Route::put('personnel-evaluation-edit-denied/{id}',  'personnelEvaluation\evaluation@editDenied');
@@ -237,6 +238,8 @@ Route::get('personnel-evaluation-input/{settingId}/{userId}',  'personnelEvaluat
 Route::get('personnel-evaluation-download/{settingId}/{userId}',  'personnelEvaluation\evaluation@download');
 Route::put('personnel-evaluation-value-not-ready-user/{valueId}',  'personnelEvaluation\evaluation@userNotReady');
 Route::get('personnel-evaluation-setup-copy/{settingId}', 'personnelEvaluation\setup@copy');
+Route::get('personnel-evaluation-myevaluation', 'personnelEvaluation\evaluation@myevaluation');
+Route::get('personnel-evaluation-monitoring-extend/{evaluation}/{jobId}', 'personnelEvaluation\evaluation@extendedMonitoring');
 //Ajax
 Route::get('personnel-evaluation-setup-aspect-item-move-down', 'personnelEvaluation\setup@moveDownAspectItem');
 Route::get('personnel-evaluation-setup-aspect-item-move-up', 'personnelEvaluation\setup@moveUpAspectItem');
@@ -245,7 +248,6 @@ Route::get('personnel-evaluation-setup-aspect-move-save', 'personnelEvaluation\s
 Route::get('personnel-evaluation-setup-aspect-move-down', 'personnelEvaluation\setup@moveDownAspect');
 Route::get('personnel-evaluation-setup-aspect-move-up', 'personnelEvaluation\setup@moveUpAspect');
 Route::get('personnel-evaluation-setup-aspect-delete', 'personnelEvaluation\setup@deleteAspect');
-Route::get('personnel-evaluation-myevaluation', 'personnelEvaluation\evaluation@myevaluation');
 Route::get('personnnel-evaluation-getJobTitles', 'personnelEvaluation\setup@ajaxJobTitles');
 Route::get('personnel-evaluator-select', 'personnelEvaluation\evaluator@getEvaluator');
 Route::get('personnel-evaluation-user-create', 'personnelEvaluation\evaluation@userCreate');

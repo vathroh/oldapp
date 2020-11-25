@@ -19,12 +19,13 @@
 				</tr>
 			</thead>
 			<tbody>
-				@foreach($participants as $participant)
+				@foreach($participants->where('role', 'PESERTA') as $participant)
 				<tr>
 					<th scope="row">{{ $loop->iteration }}</th>
-					<td>{{ $participant->name }}</td>
-					<td>{{ $participant->job_title }}</td>
-					<td>{{ $participant->NAMA_KAB }}</td>
+					<td>{{ $participant->user()->first()->name }}</td>
+					<td>{{ $participant->user()->first()->posisi()->first()->job_title }}</td>
+					<td>{{ $participant->user()->first()->jobDesc()->first()
+					->kabupaten()->first()->NAMA_KAB ?? 'OSP'}}</td>
 				</tr>
 				@endforeach
 			</tbody>
@@ -42,12 +43,13 @@
 				</tr>
 			</thead>
 			<tbody>
-				@foreach($pemandu_pemandu as $pemandu)
+				@foreach($participants->where('role', 'PEMANDU') as $participant)
 				<tr>
 					<th scope="row">{{ $loop->iteration }}</th>
-					<td>{{ $pemandu->name }}</td>
-					<td>{{ $pemandu->job_title }}</td>
-					<td>{{ $pemandu->NAMA_KAB }}</td>
+					<td>{{ $participant->user()->first()->name }}</td>
+					<td>{{ $participant->user()->first()->posisi()->first()->job_title }}</td>
+					<td>{{ $participant->user()->first()->jobDesc()->first()
+					->kabupaten()->first()->NAMA_KAB ?? 'OSP'}}</td>
 				</tr>
 				@endforeach
 			</tbody>
@@ -65,12 +67,13 @@
 				</tr>
 			</thead>
 			<tbody>
-				@foreach($panitia_panitia as $panitia)
+				@foreach($participants->where('role', 'PANITIA') as $participant)
 				<tr>
 					<th scope="row">{{ $loop->iteration }}</th>
-					<td>{{ $panitia->name }}</td>
-					<td>{{ $panitia->job_title }}</td>
-					<td>{{ $panitia->NAMA_KAB }}</td>
+					<td>{{ $participant->user()->first()->name }}</td>
+					<td>{{ $participant->user()->first()->posisi()->first()->job_title }}</td>
+					<td>{{ $participant->user()->first()->jobDesc()->first()
+					->kabupaten()->first()->NAMA_KAB ?? 'OSP'}}</td>
 				</tr>
 				@endforeach
 			</tbody>

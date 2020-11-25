@@ -15,7 +15,6 @@
 					<th>Kwartal</th>
 					<th>Tahun</th>
 					<th>Status Peng-input-an</th>
-					<th>Status Penilaian</th>
 					<th>Aksi</th>
 				</tr>
 			</thead>
@@ -44,37 +43,21 @@
 														
 						@endif
 					</td>
-					
-					<td>
-						@if(isset($myevaluation)) 
-						
-							@if($myEvaluations->where('settingId', $setting->id)->first()['ready'] == 1 )			
-								Sudah Dinilai 
-							@else 
-								Belum Dinilai 
-							@endif
-							
-						@else
-						
-							Belum Dinilai
-														
-						@endif
-					</td>
-					
+										
 					<td>
 						<a href="personnel-evaluation-input/{{ $setting->id }}/{{Auth::user()->id }}">
 						@if(isset($myevaluation)) 
 						
 							@if($myEvaluations->where('settingId', $setting->id)->first()['ok_by_user'] == 1 )
-								<button class="btn btn-primary">Lihat</button>								 
+								<button class="btn btn-primary">Lihat</button> 
 							@else 
-								<button class="btn btn-success">Selesaikan</button>	
+								<button class="btn btn-success">Selesaikan</button>
 							@endif
 						@else
 						
-							<button class="btn btn-danger">Isi Sekarang</button>	
+							<button class="btn btn-danger">Isi Sekarang</button>
 							
-						@endif	
+						@endif
 						</a> 						
 					</td>
 				</tr>

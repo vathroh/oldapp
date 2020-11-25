@@ -8,7 +8,7 @@
 	</div>
 	@include('activities.navbar')
 	<div class="card-body">
-		
+
 		<div class="monitoring-container d-flex">			
 			<div style="border: 1px solid black; border-radius: 5px; padding: 20px; margin: 10px; width:50%;">
 				<h5>Sudah Mengisi Daftar Hadir</h5>		
@@ -21,12 +21,17 @@
 						$day1 =  $day->format('Y-m-d');
 						@endphp
 						{{ $day->format('l, d F Y') }}
-
 					</div>					
 					<div>
 						<ol>				
-						@foreach($attendances->where('tanggal', $day1) as $attendance)					
-							<li>{{$attendance->name }}</li>						
+							@foreach($attendances->where('tanggal', $day1) as $attendance)					
+							<li>								
+								<tr>		
+									<td>{{ App\User::find($attendance->user_id)->name }}</td>
+									<td>{{ App\User::find($attendance->user_id)->posisi()->first()->job_title }}</td>
+									<td>{{ App\User::find($attendance->user_id)->jobDesc()->first()->kabupaten()->first()->NAMA_KAB ?? "OSP" }}</td>	
+								</tr>		
+							</li>				
 						@endforeach
 						</ol>
 					</div>				
@@ -49,7 +54,8 @@
 					<div>
 						<ol>				
 						@foreach($noAttendances->whereNotIn('id', $attendances->where('tanggal', $day1)->pluck('id') )->groupBy('id') as $noAttendance)			
-							<li>{{ $noAttendance->first()->name }}</li>						
+							<li>
+														</li>						
 						@endforeach
 						</ol>
 					</div>				
@@ -57,6 +63,8 @@
 				@endfor
 			</div>
 		</div>
+
+
 	</div>
 </div>
 @endsection

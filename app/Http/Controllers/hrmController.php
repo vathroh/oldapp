@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\allvillage;
+use App\User;
 
 class hrmController extends Controller
 {
@@ -15,9 +17,10 @@ class hrmController extends Controller
 
     public function index()
     {
-        $kabupaten = allvillage::distinct()->select('KD_KAB', 'NAMA_KAB')->get();
+        $myZones    = explode(", ", User::find( Auth::user()->id )->areaKerja()->pluck('zone')->first());
+        $kabupaten  = allvillage::distinct()->whereIn('KD_KAB', $myZones )->select('KD_KAB', 'NAMA_KAB')->get();
 
-        $users = [];
+        $users      = [];
         foreach($kabupaten as $kab)
         {
             $users[$kab->KD_KAB] = $kab->jobDesc()->orderBy('job_title_id')->get();

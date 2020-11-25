@@ -60,6 +60,28 @@
 							</a>
 						</td>
 						@endif
+
+						@if($evaluasi == "edit")
+						<td class="text-center">
+							<form method="post" action="/personnel-evaluation-edit-grant/{{ $user->evaluationValue()->first()->id }}">
+								@method('put') @csrf
+								<button type="submit" class="btn btn-success">izin</button>
+							</form>
+							<form method="post" action="/personnel-evaluation-edit-denied/{{ $user->evaluationValue()->first()->id }}">
+								@method('put') @csrf
+								<button type="submit" class="btn btn-success">tolak</button>
+							</form>
+						</td>
+						@endif
+
+					@if($evaluasi == "tolak")
+						<td class="text-center">
+							<form method="post" action="/personnel-evaluation-edit-grant/{{ $user->evaluationValue()->first()->id }}">
+								@method('put') @csrf
+								<button type="submit" class="btn btn-success">izin</button>
+							</form>
+						</td>
+						@endif
 					</tr>
 					@endforeach
 

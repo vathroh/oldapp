@@ -263,20 +263,16 @@ class evaluation extends Controller
 	}
 	
 	public function monitoring()
-    {
-		$evaluators = personnel_evaluator::where('evaluator', job_desc::where('user_id', Auth::user()->id)->pluck('job_title_id')->first())->get();        
-		$job_titles	= job_title::distinct('job_titles.id')->leftjoin('job_descs', 'job_titles.id', '=', 'job_descs.job_title_id')
-					->select('job_titles.id', 'job_titles.job_title', 'level')->get();
-		$districts	= allvillage::get()->unique('KD_KAB');
-		$evaluators = personnel_evaluator::where('evaluator', job_desc::where('user_id', Auth::user()->id)->pluck('job_title_id')->first())->get();
-		$isUser		= personnel_evaluation_value::join('users', 'users.id', '=', 'personnel_evaluation_values.userId')->get();			
-		$notUser	= User::join('job_descs', 'job_descs.user_id', '=', 'users.id')->select('users.id', 'name', 'job_title_id')->get();						
-		$settings 	= personnel_evaluation_setting::join('job_titles', 'personnel_evaluation_settings.jobTitleId', '=', 'job_titles.id')
-					->orderBy('year', 'desc')->select('personnel_evaluation_settings.id', 'quarter', 'year', 'job_title', 'jobTitleId')
-					->where('status', 1)->get();					
-		return view('personnelEvaluation.monitoring', compact(['isUser', 'notUser', 'settings', 'evaluators', 'job_titles', 'districts', 'evaluators']));
+	{
+		$id 					= Auth::user()->id;
+		$lastYear 		= personnel_evaluation_setting::max('year');
+		$lastQuarter 	= personnel_evaluation_setting::where('year', $lastYear)->max('quarter');
+		$evaluators 	= personnel_evaluator::where('evaluator', job_desc::where('user_id', Auth::user()->id)->pluck('job_title_id')->first())->get();        			
+		$settings 		= personnel_evaluation_setting::where('year', $lastYear)->where('quarter', $lastQuarter)->get();					
+		return view('personnelEvaluation.monitoring', compact(['id', 'lastYear', 'lastQuarter','evaluators', 'settings']));
 	}
-	
+
+//======================================================= monitoring ==========================================================================================	
 	
 	public function edit($id)
 	{
@@ -547,7 +543,7 @@ class evaluation extends Controller
 					->join('job_titles', 'job_titles.id', '=', 'job_descs.job_title_id')
 					->join('allvillages', 'allvillages.KD_KAB', '=', 'work_zones.district')
 					->join('personnel_evaluators', 'personnel_evaluators.jobId', '=', 'job_descs.job_title_id')
-					->select('users.id', 'name', 'personnel_evaluators.evaluator', 'job_title', 'district', 'NAMA_KAB')
+					->select('users.id', 'personnel_evaluation_values.id as valueId', 'name', 'personnel_evaluators.evaluator', 'job_title', 'district', 'NAMA_KAB')
 					->get();
 					
 		return view('personnelEvaluation.edit', compact(['personnels', 'evaluators', 'myJobId', 'myZone']));
@@ -561,7 +557,7 @@ class evaluation extends Controller
 			'ready' => 0
 		]);
 		
-		return redirect('personnel-evaluation-edit');
+		return redirect('personnel-evaluation-monitoring');
 	}
 	
 	public function editDenied($valueId)
@@ -570,12 +566,14 @@ class evaluation extends Controller
 			'edit' 	=> 2
 		]);
 		
-		return redirect('personnel-evaluation-edit');
+		return redirect('personnel-evaluation-monitoring');
 	}
 	
-	
+// ============================================================= editDenied =============================================================================	
+
 	public function userEditGrant($valueId)
 	{
+
 		personnel_evaluation_value::where('id', $valueId)->update([
 			'edit_by_user' 	=> 0,
 			'ok_by_user' => 0
@@ -593,7 +591,8 @@ class evaluation extends Controller
 		return redirect('personnel-evaluation-edit');
 	}
 	
-	
+	// =================================================================== userEditGrant ===========================================================================
+		
 	public function ajaxHome(Request $request)
 	{
 		$evaluators = personnel_evaluator::where('evaluator', job_desc::where('user_id', Auth::user()->id)->pluck('job_title_id')->first())->get();
@@ -619,6 +618,63 @@ class evaluation extends Controller
 		$evaluators		= personnel_evaluator::where('evaluator', $myTitleId)->get();
 				
 		return view('personnelEvaluation.evaluation.myEvaluation', compact(['settings', 'evaluators', 'myEvaluations']));
+	}
+
+	// =============================================================
+	
+	public function extendedMonitoring($evaluasi, $jobId)
+	{
+		$id 					= Auth::user()->id;
+		$lastYear 		= personnel_evaluation_setting::max('year');
+		$lastQuarter 	= personnel_evaluation_setting::where('year', $lastYear)->max('quarter');
+		$evaluators 	= personnel_evaluator::where('evaluator', job_desc::where('user_id', Auth::user()->id)->pluck('job_title_id')->first())->get();   
+		$lastSetting 	= personnel_evaluation_setting::where('year', $lastYear)->where('quarter', $lastQuarter)->where('jobTitleId', $jobId)->get();
+
+		if($evaluasi == 'jumlah-personil'){
+		 $users = User::find($lastSetting->first()->jobDesc()->pluck('user_id'));
+
+		} elseif($evaluasi == 'belum-input') {
+			$users = User::find($lastSetting->first()->jobDesc()->whereNotIn('user_id', $lastSetting->first()->evaluationValue()->pluck('userId'))->pluck('user_id'));
+
+		} elseif($evaluasi == 'proses-input'){
+			$users = User::find($lastSetting->first()->evaluationValue()->where('ok_by_user', 0)->pluck('userId'));
+
+		} elseif($evaluasi == 'selesai-input'){
+			 $users = User::find($lastSetting->first()->evaluationValue()->where('ok_by_user', 1)->pluck('userId'));
+
+		} elseif($evaluasi == 'siap-dievaluasi'){
+			 $users = User::find($lastSetting->first()->evaluationValue()->where('ok_by_user', 1)->where('totalScore', '==', '0.00')->pluck('userId'));
+
+		} elseif($evaluasi == 'proses-evaluasi'){
+				 $users = User::find($lastSetting->first()->evaluationValue()->where('ok_by_user', 1)->where('totalScore', '!=', '0.00')->where('ready', 0)->pluck('userId'));
+
+		} elseif($evaluasi == 'selesai-evaluasi'){
+				$users = User::find($lastSetting->first()->evaluationValue()->where('ready', 1)->pluck('userId'));
+
+		} elseif($evaluasi == 'edit'){
+				$users = User::find($lastSetting->first()->evaluationValue()->where('edit', 1)->get()->pluck('userId'));
+
+		} elseif($evaluasi == 'tolak'){
+			$users = User::find($lastSetting->first()->evaluationValue()->where('edit', 2)->get()->pluck('userId'));
+		}
+
+		return view('personnelEvaluation.evaluation.index', compact(['evaluators', 'evaluasi', 'lastSetting', 'users']));
+	}
+//========================================================================== extendedMonitoring ===============================================================
+
+	public function upload($valueId)
+	{
+		$id 					= Auth::user()->id;
+		$lastYear 		= personnel_evaluation_setting::max('year');
+		$lastQuarter 	= personnel_evaluation_setting::where('year', $lastYear)->max('quarter');
+		$evaluators 	= personnel_evaluator::where('evaluator', job_desc::where('user_id', Auth::user()->id)->pluck('job_title_id')->first())->get();   
+		$lastSetting 	= personnel_evaluation_setting::where('year', $lastYear)->where('quarter', $lastQuarter)->where('jobTitleId', Auth::user()->posisi()->first()->id)->get();
+		$aspects 			= personnel_evaluation_aspect::get();
+		$value 				= personnel_evaluation_value::find($valueId);
+		$criterias 		= personnel_evaluation_criteria::orderBy('created_at', 'desc')->get();
+		$criteriIds		= unserialize(personnel_evaluation_setting::where('id',$value->settingId)->pluck('aspectId')->first());		
+
+		return view('personnelEvaluation.evaluation.upload', compact(['evaluators', 'value', 'lastSetting', 'criteriIds', 'criterias', 'aspects']));
 	}
 	
 }

@@ -33,7 +33,9 @@
 					<div class="col-md-9"><h6>: {{ $user[0]->NAMA_KAB }}</h6></h6></div>					
 				</div>
 			</div>
-			
+			@if($user[0]->id == Auth::user()->id)			
+				<a href="/personnel-evaluation-upload/{{ $value[0]->id }}" target="_blank"><button type="submit" class="btn btn-primary">Upload Bukti PEnilaian</button></a>
+			@endif
 			<table class=" table table-bordered" style="width:100%;">
 				<thead>
 					<tr>
@@ -133,8 +135,7 @@
 							
 									@if(isset($content[$criterias->where('id',$criteriId[0])->pluck('id')->first()][$aspects->where('id', $criteriIds[$i-1][$x] )->pluck('id')->first()]['evidences'])) value="{{ $content[$criterias->where('id',$criteriId[0])->pluck('id')->first()][$aspects->where('id', $criteriIds[$i-1][$x] )->pluck('id')->first()]['evidences'] }}" @endif
 									>
-									@else 
-									<button type="submit" class="btn btn-primary">Upload</button>
+									
 									@endif
 								</td>
 								@if($user[0]->id != Auth::user()->id)

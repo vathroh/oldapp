@@ -56,7 +56,7 @@
 					<div>
 						<ol>
 						
-						@foreach($noAttendances->whereNotIn('user_id', $attendances->where('tanggal', $day1)->pluck('user_id') ) as $noAttendance)			
+							@foreach($noAttendances->whereNotIn('user_id', $attendances->where('tanggal', $day1)->pluck('user_id') )->unique('user_id') as $noAttendance)			
 							<li>
 								{{ $noAttendance->user()->first()->name }}
 								{{ $noAttendance->user()->first()->posisi()->pluck('job_title')->first() }}

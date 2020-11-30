@@ -662,19 +662,6 @@ class evaluation extends Controller
 	}
 //========================================================================== extendedMonitoring ===============================================================
 
-	public function upload($valueId)
-	{
-		$id 					= Auth::user()->id;
-		$lastYear 		= personnel_evaluation_setting::max('year');
-		$lastQuarter 	= personnel_evaluation_setting::where('year', $lastYear)->max('quarter');
-		$evaluators 	= personnel_evaluator::where('evaluator', job_desc::where('user_id', Auth::user()->id)->pluck('job_title_id')->first())->get();   
-		$lastSetting 	= personnel_evaluation_setting::where('year', $lastYear)->where('quarter', $lastQuarter)->where('jobTitleId', Auth::user()->posisi()->first()->id)->get();
-		$aspects 			= personnel_evaluation_aspect::get();
-		$value 				= personnel_evaluation_value::find($valueId);
-		$criterias 		= personnel_evaluation_criteria::orderBy('created_at', 'desc')->get();
-		$criteriIds		= unserialize(personnel_evaluation_setting::where('id',$value->settingId)->pluck('aspectId')->first());		
 
-		return view('personnelEvaluation.evaluation.upload', compact(['evaluators', 'value', 'lastSetting', 'criteriIds', 'criterias', 'aspects']));
-	}
 	
 }

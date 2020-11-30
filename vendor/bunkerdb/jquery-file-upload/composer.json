@@ -1,0 +1,23 @@
+{
+    "name": "bunkerdb/jquery-file-upload"
+  , "description": "File Upload server-side for jQuery."
+  , "keywords": ["jquery",
+        "file",
+        "upload",
+        "php",
+        "bootstrap"]
+  , "homepage": "https://github.com/bunkerdb/jQuery-File-Upload"
+  , "authors": [
+      {
+        "name": "Sebastian Tschan",
+        "homepage": "https://blueimp.net"
+      }
+    ]
+  , "support": {
+      "forum": "https://groups.google.com/forum/#!forum/jquery-fileupload"
+    }
+  , "license": "MIT"
+  , "autoload":{
+      "files": ["server/php/UploadHandler.php"]
+  }
+}

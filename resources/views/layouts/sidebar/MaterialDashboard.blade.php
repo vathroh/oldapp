@@ -17,7 +17,7 @@
 		<li class="nav-item active  ">				
 		<a class="nav-link" href="/hrm">
 			<i class="material-icons">library_books</i>
-			<p>HRM</p>
+			<p>Personnil</p>
 		</a>
     </li>
 	@endif

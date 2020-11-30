@@ -28,5 +28,14 @@ class personnel_evaluation_value extends Model
             'work_zone_id' //localkey on  job_desc 
         );
     }
-    
+
+    public function evaluationSetting()
+    {
+       return $this->belongsTo('App\personnel_evaluation_setting', 'settingId'); 
+    }
+
+    public function evaluationUpload()
+    {
+        return $this->hasMany('App\personnel_evaluation_upload');
+    } 
 }

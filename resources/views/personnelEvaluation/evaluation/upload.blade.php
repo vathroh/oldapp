@@ -16,8 +16,11 @@
 			<div id="ready" class="form-group text-center my-3" data-readyByUser="{{ $value->ok_by_user }}" data-ready="{{ $value->ready }}">
 				<h4>Bukti Evkinja {{ $lastSetting->pluck('job_title')->first() }}Kuartal {{ $lastSetting->pluck('quarter')->first() }} Tahun {{ $lastSetting->pluck('year')->first() }}</h4>
 			</div>
-			
-			
+		@foreach($uploads as $upload)	
+		helo	
+		@endforeach 
+
+
 			
 			<table class=" table table-bordered" style="width:100%;">
 				<thead>
@@ -43,9 +46,22 @@
 								<td class="text-right">{{ $y }} </td>
 								<td>{{ $aspects->where('id', $criteriIds[$i-1][$x] )->pluck('aspect')->first() }} </td>
 								<td>
-									<form method="post" action="personnel-evaluation-upload-file/{{ $value->id }}" enctype="multipart/form-data">
+									@foreach($uploads->where('personnel_evaluation_criteria_id', 1)->where('personnel_evaluation_aspect_id', $criteriIds[$i-1][$x]	) as $upload)	
+										<div class="d-flex">	
+												<form method="post" action="/personnel-evaluation-upload/{{ $upload->id }}" enctype="multipart/form-data">
+													@csrf
+													@method('delete')
+													<a onclick="return confirm('Yakin?')" >
+														<button class="btn btn-danger">delete</button>
+													</a>
+													{{ $loop->iteration }}.  {{ $upload->file_name }}
+												</form>
+										</div>
+									@endforeach 
+								
+									<form id="formInputFile" method="post" action="/personnel-evaluation-upload/{{ $value->id }}" enctype="multipart/form-data">
 										@csrf
-										<button type="submit" class="btn btn-primary" name="upload">upload</button>
+										<input type="submit" class="btn btn-primary" name="upload" value="upload">		
 										<input type="file" name="file" class="file-input" id="file">
 									</form>
 									<div class="progress">
@@ -69,34 +85,38 @@
 	
 </div>
 
+<script src="http://malsup.github.com/jquery.form.js"></script>
 <script>
 $(document).ready(function(){
-	$('form').ajaxForm({
+
+	$('#formInputFile').ajaxForm({
+
 			beforeSend:function(){
 				$('#success').empty();
+				$('#formInputFile').hide();
 			},
 			uploadProgress:function(event, position, total, percentComplete)
 			{
 				$('.progress-bar').text(percentComplete + '%');
-					$('progress-bar').css('width', percentComplete + '%');
+				$('progress-bar').css('width', percentComplete + '%');
 			},
 			success:function(data)
 			{
 				if(data.errors)
-						{
-							$('.progress-bar').text('0%');
-							$('.progress-bar').css('width', '0%');
-							$('#success').html('<span class="text-danger"><b>' + data.errors + '</b></span>');
-						}
+				{
+					$('.progress-bar').text('0%');
+					$('.progress-bar').css('width', '0%');
+					$('#success').html('<span class="text-danger"><b>' + data.errors + '</b></span>');
+				}
 				if(data.success)
-						{
-							$('.progress-bar').text('upload selesai');
-							$('.progress-bar').css('width', '100%');
-							$('#success').html('<span class="text-danger"><b>' + data.success + '</b></span>');
-						}
-			}
-		
+				{
+					$('.progress-bar').text('upload selesai');
+					$('.progress-bar').css('width', '100%');
+					$('#success').html('<span class="text-success"><b>' + data.success + '</b></span>');
+				}
+			}	
 	});
+ 
 });
 </script> 
 @endsection

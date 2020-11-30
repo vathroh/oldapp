@@ -216,7 +216,14 @@ Route::resource('personnel-evaluation', 'personnelEvaluation\evaluation');
 Route::resource('personnel-evaluation-setup', 'personnelEvaluation\setup');
 Route::resource('personnel-evaluation-aspect', 'personnelEvaluation\aspect');
 Route::resource('personnel-evaluation-criteria', 'personnelEvaluation\criteria');
-Route::get('personnel-evaluation-upload/{valueId}', 'personnelEvaluation\evaluation@upload');
+
+Route::get('personnel-evaluation-upload/{valueId}', 
+    'personnelEvaluation\upload@evidencePage');
+Route::post('personnel-evaluation-upload/{valueId}', 
+    'personnelEvaluation\upload@evidence');
+Route::delete('personnel-evaluation-upload/{valueId}', 
+    'personnelEvaluation\upload@destroy');
+
 Route::get('personnel-evaluation-rekap', 'personnelEvaluation\evaluation@rekap');
 Route::put('personnel-evaluation-setup-ready/{id}', 'personnelEvaluation\setup@ready');
 Route::get('personnel-evaluation-edit',  'personnelEvaluation\evaluation@editPermission');
@@ -253,3 +260,4 @@ Route::get('personnel-evaluator-select', 'personnelEvaluation\evaluator@getEvalu
 Route::get('personnel-evaluation-user-create', 'personnelEvaluation\evaluation@userCreate');
 Route::get('personnel-evaluation-home', 'personnelEvaluation\evaluation@ajaxHome');
 Route::get('search-aspect-id', 'personnelEvaluation\setup@ajaxAspect');
+Route::get('ajax-personnel-evaluation-upload', 'personnelEvaluation\upload@ajaxUploadFile');

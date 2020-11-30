@@ -56,7 +56,7 @@ class upload extends Controller
 
         $folder             = 'Evkinja/' . 'Triwulan_' . $evaluationSetting->quarter .'_Tahun_' . $evaluationSetting->year . '/' . $kota . '/' . $userName;
 
-        $uploadedFileName   = Storage::disk('public')->putFileAs($folder, $image, $fileName);
+        $uploadedFileName   = Storage::disk('google')->putFileAs($folder, $image, $fileName);
 
 
         personnel_evaluation_upload::create([

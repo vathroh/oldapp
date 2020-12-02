@@ -46,7 +46,7 @@ class rekapEvkinjaExport implements FromCollection, WithHeadings
             'Nama',
             'Jabatan',
             'Kabupaten/Kota',
-            'Status',
+            'Kinerja',
             'Nilai',
         ];
     }

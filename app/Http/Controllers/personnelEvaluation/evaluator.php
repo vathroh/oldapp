@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use App\job_title;
 use App\job_desc;
+use App\User;
 
 class evaluator extends Controller
 {
@@ -20,9 +21,11 @@ class evaluator extends Controller
 	
     public function index()
     {
-		$jobTitles	= job_title::get();
-		$evaluators = personnel_evaluator::get();
-		return view('personnelEvaluation.evaluator.index', compact(['evaluators', 'jobTitles']));
+			$jobTitles	= job_title::get();
+			$evaluatorTeams = personnel_evaluator::get();
+			$evaluators = personnel_evaluator::where('evaluator', User::find(Auth::user()->id )->posisi()->latest()->first()->id  )->get();	
+
+			return view('personnelEvaluation.evaluator.index', compact(['evaluatorTeams', 'evaluators', 'jobTitles']));
 	}
 	
 	
@@ -35,26 +38,7 @@ class evaluator extends Controller
 	
 	
 	public function store(Request $request)
-	{
-
-		/*
-		$i=0;
-		$requestArray = [];
-		foreach($request->all() as $req){
-			$requestArray[$i] = $req;
-			$i++;
-		}
-		
-		for($x= 2; $x < count($request->all()); $x++){
-			$evaluator[] = $requestArray[$x];
-		}
-		
-		personnel_evaluator::create([
-			'jobId'			=> $request->jobId,
-			'evaluator'		=> serialize($evaluator)
-		]);
-		*/
-		
+	{	
 		$i=0;
 		$requestArray = [];
 		foreach($request->all() as $req){
@@ -77,9 +61,11 @@ class evaluator extends Controller
 	
 	public function edit($id)
 	{
-		$jobTitles	= job_title::get();
-		$evaluators	= personnel_evaluator::where('jobId', $id)->get();
-		return view('personnelEvaluation.evaluator.edit', compact(['evaluators', 'jobTitles']));
+		$jobTitles			= job_title::get();
+		$evaluatorTeams	= personnel_evaluator::where('jobId', $id)->get();
+		$evaluators 		= personnel_evaluator::where('evaluator', User::find(Auth::user()->id )->posisi()->latest()->first()->id  )->get();	
+
+		return view('personnelEvaluation.evaluator.edit', compact(['evaluatorTeams', 'evaluators', 'jobTitles']));
 	}
 	
 	

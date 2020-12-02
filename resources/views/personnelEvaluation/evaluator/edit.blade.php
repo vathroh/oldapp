@@ -8,7 +8,7 @@
   </div>
   <div class="card-body">
 	    @include('personnelEvaluation.navbar')
-		<form method="post" action="/personnel-evaluator/{{ $evaluators->first()->jobId }}" enctype="multipart/form-data">
+		<form method="post" action="/personnel-evaluator/{{ $evaluatorTeams->first()->jobId }}" enctype="multipart/form-data">
 		@csrf
 		@method('put')
 
@@ -18,14 +18,14 @@
 				</div>
 				<div class="col-md-9">
 					<select id="jobId" type="text" class="form-control" name="jobId">
-						<option value="{{ $evaluators->first()->jobId }}">{{ $jobTitles->where('id', $evaluators->first()->jobId )->first()->job_title }}</option>
+						<option value="{{ $evaluatorTeams->first()->jobId }}">{{ $jobTitles->where('id', $evaluatorTeams->first()->jobId )->first()->job_title }}</option>
 					</select>
 				</div>
 			</div>
 			
 			<div id="evaluator">
 				
-				@foreach($evaluators as $evaluator)				
+				@foreach($evaluatorTeams as $evaluator)				
 				<div class="form-group row">
 					<div class="col-md-2 text-md-right">
 						<label for="evaluator1">Tim Penilai</label>

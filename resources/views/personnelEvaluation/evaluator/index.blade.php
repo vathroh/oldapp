@@ -25,13 +25,13 @@
 				</tr>
 			</thead>
 			<tbody>
-				@foreach($evaluators->unique('jobId') as $evaluator)
+				@foreach($evaluatorTeams->unique('jobId') as $evaluatorTeam)
 				<tr>
 					<th scope="row">{{ $loop->iteration }}</th>
-					<td>{{ $jobTitles->where('id', $evaluator->jobId)->first()->job_title }}</td>
-					<td>@foreach($evaluators->where('jobId', $evaluator->jobId) as $evaluator1) {{ $jobTitles->where('id',  $evaluator1->evaluator)->first()->job_title }}, @endforeach</td>
+					<td>{{ $jobTitles->where('id', $evaluatorTeam->jobId)->first()->job_title }}</td>
+					<td>@foreach($evaluatorTeams->where('jobId', $evaluatorTeam->jobId) as $evaluator1) {{ $jobTitles->where('id',  $evaluator1->evaluator)->first()->job_title }}, @endforeach</td>
 					<td class="d-flex">
-						<a href="/personnel-evaluator/{{ $evaluator->jobId }}/edit">
+						<a href="/personnel-evaluator/{{ $evaluatorTeam->jobId }}/edit">
 							<button class="btn btn-success">Edit</button>
 						</a>						
 					</td>

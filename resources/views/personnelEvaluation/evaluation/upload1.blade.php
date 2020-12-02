@@ -178,8 +178,6 @@ $(document).ready(function(){
 
 			beforeSend:function(){
 				$('#success').empty();
-				$('#formInputFile').hide();
-				$('#progress-wrapper').css('display', 'block');
 			},
 			uploadProgress:function(event, position, total, percentComplete)
 			{

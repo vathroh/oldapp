@@ -223,6 +223,7 @@ Route::post('personnel-evaluation-upload/{valueId}',
     'personnelEvaluation\upload@evidence');
 Route::delete('personnel-evaluation-upload/{valueId}', 
     'personnelEvaluation\upload@destroy');
+Route::get('personnel-evaluation-download-rekap-all', 'personnelEvaluation\download@rekapAll');
 
 Route::get('personnel-evaluation-rekap', 'personnelEvaluation\evaluation@rekap');
 Route::put('personnel-evaluation-setup-ready/{id}', 'personnelEvaluation\setup@ready');
@@ -247,6 +248,7 @@ Route::put('personnel-evaluation-value-not-ready-user/{valueId}',  'personnelEva
 Route::get('personnel-evaluation-setup-copy/{settingId}', 'personnelEvaluation\setup@copy');
 Route::get('personnel-evaluation-myevaluation', 'personnelEvaluation\evaluation@myevaluation');
 Route::get('personnel-evaluation-monitoring-extend/{evaluation}/{jobId}', 'personnelEvaluation\evaluation@extendedMonitoring');
+Route::get('personnel-evaluation-download-file/{fileId}', 'personnelEvaluation\upload@download');
 //Ajax
 Route::get('personnel-evaluation-setup-aspect-item-move-down', 'personnelEvaluation\setup@moveDownAspectItem');
 Route::get('personnel-evaluation-setup-aspect-item-move-up', 'personnelEvaluation\setup@moveUpAspectItem');

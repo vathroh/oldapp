@@ -12,4 +12,13 @@ class work_zone extends Model
     {
         return $this->hasMany('App\job_desc', 'work_zone_id');
     }
+
+    public function user()
+    {
+        return $this->hasManyThrough(
+            'App\User', 'App\job_desc',
+            'work_zone_id', 'id',
+            'id', 'user_id'
+        );
+    }
 }

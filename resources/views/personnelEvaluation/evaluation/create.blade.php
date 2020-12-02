@@ -121,22 +121,10 @@
 								</td>
 								<td class="text-center">
 								@if($user[0]->id != Auth::user()->id)
-									<input class="evidences" type="Text" size="3" id="{{ $criterias->where('id',$criteriId[0])->pluck('id')->first() }}-{{ $aspects->where('id', $criteriIds[$i-1][$x] )->pluck('id')->first() }}" data-aspect="{{ $aspects->where('id', $criteriIds[$i-1][$x] )->pluck('id')->first() }}" data-criteria="{{ $criterias->where('id',$criteriId[0])->pluck('id')->first() }}" data-value="{{ $value->first()->id }}" 
-							
-										@if(isset($content[$criterias->where('id',$criteriId[0])->pluck('id')->first()][$aspects->where('id', $criteriIds[$i-1][$x] )->pluck('id')->first()]['variabel'])) 							
-								
-											@if($content[$criterias->where('id',$criteriId[0])->pluck('id')->first()][$aspects->where('id', $criteriIds[$i-1][$x] )->pluck('id')->first()]['variabel'] == 0 )
-							
-												disabled style="background-color:grey;" 
-								
-											@endif @else disabled style="background-color:grey;" 
-							
-										@endif
-							
-									@if(isset($content[$criterias->where('id',$criteriId[0])->pluck('id')->first()][$aspects->where('id', $criteriIds[$i-1][$x] )->pluck('id')->first()]['evidences'])) value="{{ $content[$criterias->where('id',$criteriId[0])->pluck('id')->first()][$aspects->where('id', $criteriIds[$i-1][$x] )->pluck('id')->first()]['evidences'] }}" @endif
-									>
-									
-									@endif
+									@foreach($files->where('personnel_evaluation_criteria_id', $criteriId[0])->where('personnel_evaluation_aspect_id', $criteriIds[$i-1][$x]) as $file)
+										<a href="/personnel-evaluation-download-file/{{ $file->id }}"> bukti-{{ $loop->iteration }}</a>
+									@endforeach 
+								@endif
 								</td>
 								@if($user[0]->id != Auth::user()->id)
 								<td class="text-center">

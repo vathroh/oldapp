@@ -260,7 +260,7 @@ class activityController extends Controller
 */
 //    return activity_participant::where('role', 'PESERTA')->get();
 
-    $attendances   = attendance_record::where('activity_id', $activity_item)
+    $attendances   = attendance_record::distinct()->where('activity_id', $activity_item)
         ->selectRaw('Date(created_at) as tanggal, user_id')->get();
 
     $noAttendances = activity_participant::where('activity_id', $activity_item)->get();

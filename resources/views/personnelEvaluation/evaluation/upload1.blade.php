@@ -126,7 +126,8 @@
 													<a onclick="return confirm('Hapus File?')" >
 														<button class="btn btn-danger">delete</button>
 													</a>
-													{{ $loop->iteration }}.  {{ $upload->file_name }}
+													{{ $loop->iteration }}.  {{ $upload->file_name }} 
+														<a href="/personnel-evaluation-download-file/{{$upload->id}}" >download</a>
 												</form>
 										</div>
 									@endforeach 

@@ -56,7 +56,7 @@ class upload extends Controller
 
         $folder             = 'Evkinja/' . 'Triwulan_' . $evaluationSetting->quarter .'_Tahun_' . $evaluationSetting->year . '/' . $kota . '/' . $userName;
 
-        $uploadedFileName   = Storage::disk('google')->putFileAs($folder, $image, $fileName);
+        $uploadedFileName   = Storage::disk('public')->putFileAs($folder, $image, $fileName);
 
 
         personnel_evaluation_upload::create([
@@ -104,8 +104,14 @@ class upload extends Controller
 
     public function destroy($id)
     {
-        $value =  personnel_evaluation_upload::find($id)->evaluationValue()->first();
-        personnel_evaluation_upload::find($id)->delete();
+        $value  = personnel_evaluation_upload::find($id)->evaluationValue()->first();
+        $file   = personnel_evaluation_upload::find($id);
+        
+
+        Storage::disk('public')->delete($file->path . '/' . $file->file_name); 
+
+        $file->delete();
+
         return redirect('/personnel-evaluation-upload/' . $value->id);
     }
 
@@ -113,6 +119,13 @@ class upload extends Controller
     {
         $aspects    = personnel_evaluation_aspect::where('criteria_id', $request->criteria)->where('evaluate_to', $request->jobTitleId)->get();
         return response()->json($aspects);
+    }
+
+
+    public function download($fileId)
+    {
+        $file = personnel_evaluation_upload::find($fileId);
+        return Storage::disk('public')->download($file->path . '/' . $file->file_name); 
     } 
 
 

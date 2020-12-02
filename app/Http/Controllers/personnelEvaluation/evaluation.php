@@ -26,6 +26,7 @@ use App\personnel_evaluation_aspect;
 use App\Http\Controllers\Controller;
 use App\personnel_evaluation_value;
 use App\personnel_evaluation_edit;
+use App\personnel_evaluation_upload;
 use Illuminate\Http\Request;
 use App\personnel_evaluator;
 use Illuminate\Support\Arr;
@@ -240,7 +241,6 @@ class evaluation extends Controller
 			}	
 				
 				
-				
 			$evaluationValues = collect($evaluationValue);
 		}	
 					  
@@ -328,6 +328,7 @@ class evaluation extends Controller
 		
 	}
 	
+//=============================================================================================================================================================	
 	
 	public function userCreate(Request $request)
 	{	
@@ -410,9 +411,12 @@ class evaluation extends Controller
 						->select('users.id', 'name', 'job_title_id', 'job_title', 'NAMA_KAB')
 						->get();
 						
-						
+
 		
-		$value = personnel_evaluation_value::where('settingId', $settingId)->where('userId', $userId)->get();		
+		$value = personnel_evaluation_value::where('settingId', $settingId)->where('userId', $userId)->get();
+
+
+		$files = personnel_evaluation_upload::where('personnel_evaluation_value_id', $value->first()->id)->get();
 		
 		if(!empty($value[0]->content)){
 			$content	= unserialize($value[0]->content);
@@ -420,7 +424,7 @@ class evaluation extends Controller
 			$content ="";
 		}
 				
-		return view('personnelEvaluation.evaluation.create', compact(['aspects', 'criterias', 'criteriIds', 'setting', 'user', 'value', 'content', 'evaluators']));
+		return view('personnelEvaluation.evaluation.create', compact(['files', 'aspects', 'criterias', 'criteriIds', 'setting', 'user', 'value', 'content', 'evaluators']));
 	}
 	
 	

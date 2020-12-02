@@ -12,15 +12,7 @@
 	<div class="row">
 		<div class="col">
 			<h5 class="my-5 text-center">REKAP EVALUASI KINERJA PERSONIL </h5>
-		
-			<div>
-				<a href="/personnel-evaluation-download-rekap-all" >
-					<button class="btn btn-primary" type="button">
-						Download Excel
-					</button>
-				</a>
-			</div>
-
+			
 			<table class=" table-striped"style="width:100%;">
 				<thead>
 					<tr>
@@ -33,7 +25,7 @@
 					</tr>
 				</thead>
 				<tbody>
-				@if($jobDescs->where('user_id', Auth::user()->id )->first()->level == "Korkot" || "Askot Mandiri")
+				@if($jobDescs->where('user_id', Auth::user()->id )->first()->level == "Korkot")
 					@foreach($users->whereIn('jobTitleId', $evaluators->pluck('jobId'))->where('ready', 1) as $user)
 					<tr>
 						<th scope="row">{{ $loop->iteration }}</th>

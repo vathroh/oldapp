@@ -102,6 +102,35 @@ class upload extends Controller
 //        return redirect('/personnel-evaluation-upload/5');
     }
 
+
+    public function evidence2(Request $request, $valueId)
+    {
+        $image              = $request->file('file');
+        $originalFileName   = $image->getClientOriginalName();
+        $fileExtension      = $image->getClientOriginalExtension();
+        $fileNameOnly       = pathinfo($originalFileName, PATHINFO_FILENAME);
+        $fileName           = str_slug($fileNameOnly) . "-" . time() . "." . $fileExtension;
+        $kota               = str_slug(Auth::user()->jobDesc()->first()->kabupaten()->first()->NAMA_KAB);
+        $evaluationSetting  = personnel_evaluation_value::find($valueId)->evaluationSetting()->first();
+        $userName           = str_slug(Auth::user()->name);
+
+        $folder             = 'Evkinja/' . 'Triwulan_' . $evaluationSetting->quarter .'_Tahun_' . $evaluationSetting->year . '/' . $kota . '/' . $userName;
+
+        $uploadedFileName   = Storage::disk('public')->putFileAs($folder, $image, $fileName);
+
+
+        personnel_evaluation_upload::create([
+            'path'                              => $folder,
+            'file_name'                         => $fileName,
+            'personnel_evaluation_value_id'     => 3,
+            'personnel_evaluation_criteria_id'  => 1,
+            'personnel_evaluation_aspect_id'    => 2
+        ]);
+
+        $output     = array('success' => 'File sudah selesai diupload');
+        return response()->json($request);
+    }
+
     public function destroy($id)
     {
         $value  = personnel_evaluation_upload::find($id)->evaluationValue()->first();

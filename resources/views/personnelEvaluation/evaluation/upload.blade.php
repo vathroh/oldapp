@@ -93,7 +93,6 @@ $(document).ready(function(){
 
 			beforeSend:function(){
 				$('#success').empty();
-				$('#formInputFile').hide();
 			},
 			uploadProgress:function(event, position, total, percentComplete)
 			{

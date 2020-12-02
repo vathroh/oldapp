@@ -13,6 +13,7 @@
 	border 				: 1px solid grey;
 	border-radius : 5px;
 	margin 				: 20px 0;
+	display 			: none;
 }
 </style>
 @endsection

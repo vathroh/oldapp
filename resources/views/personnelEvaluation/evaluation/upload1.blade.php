@@ -104,7 +104,7 @@
 				<tbody>
 					@if($criteriIds != "")
 					@php $i = 1 @endphp
-					@foreach($criteriIds as $criteriId)
+					@foreach($criteriIds as $key=>$criteriId)
 						<tr style="background-color:#c2f0fc;">
 							<th>{{ $i }}</th>
 							<th colspan="@if($value->userId != Auth::user()->id) 6 @else 5 @endif">{{ $criterias->where('id',$criteriId[0])->pluck('criteria')->first() }}</th>
@@ -116,7 +116,7 @@
 							<tr>
 								<td class="text-right">{{ $y }} </td>
 								<td>{{ $aspects->where('id', $criteriIds[$i-1][$x] )->pluck('aspect')->first() }} </td>
-								<td class="fileList">
+								<td class="fileList" id="{{ $criteriIds[$i-1][$x] }}" data-criteria="{{ $key+1 }}">
 									@foreach($uploads->where('personnel_evaluation_criteria_id', $i)->where('personnel_evaluation_aspect_id', $criteriIds[$i-1][$x]	) as $upload)	
 										<div class="d-flex">	
 												<form method="post" action="/personnel-evaluation-upload/{{ $upload->id }}" enctype="multipart/form-data">
@@ -125,7 +125,7 @@
 													<a onclick="return confirm('Hapus File?')" >
 														<button class="btn btn-danger">delete</button>
 													</a>
-													{{ $loop->iteration }}.  {{ $upload->file_name }} 
+													{{ $upload->file_name }} 
 														<a href="/personnel-evaluation-download-file/{{$upload->id}}" >download</a>
 												</form>
 										</div>
@@ -168,8 +168,6 @@ $(document).ready(function(){
 								'<option value=" '+ aspectObj.id +' ">' + aspectObj.aspect +'</option>'
 							);
 						});
-
-						
 					}
 			});
 	});
@@ -178,6 +176,7 @@ $(document).ready(function(){
 
 			beforeSend:function(){
 				$('#success').empty();
+				$('#formButton').hide();
 			},
 			uploadProgress:function(event, position, total, percentComplete)
 			{
@@ -186,26 +185,51 @@ $(document).ready(function(){
 			},
 			success:function(data)
 			{
-				if(data.errors)
+				if(data[0].errors)
 				{
 					$('.progress-bar').text('0%');
 					$('.progress-bar').css('width', '0%');
-					$('#success').html('<span class="text-danger"><b>' + data.errors + '</b></span>');
+					$('#success').html('<span class="text-danger"><b>' + data[0].errors + '</b></span>');
 				}
-				if(data.success)
+				if(data[0].success)
 				{
+					console.log(data[1]);
+					$('#file').val("");
 					$('#formInputFile').show();
 					$('.progress-bar').text('upload selesai');
 					$('.progress-bar').css('width', '100%');
-					$('#success').html('<span class="text-success"><b>' + data.success + '</b></span>');
+					$('#success').html('<span class="text-success"><b>' + data[0].success + '</b></span>');
 					$('.fileList').empty();
+					$('#criteriaSelect').empty();
+					$('#aspectSelect').empty();
 
+					$.each(data[1], function (index, fileObj) {
+						$('#' + fileObj.personnel_evaluation_aspect_id +'.fileList').append(
+							'<div class="d-flex">'
+							+ '<form method="post" action="/personnel-evaluation-upload/' + fileObj.id +'" enctype="multipart/form-data">'
+							+'{!! method_field("delete") !!}    {!! csrf_field() !!}'
+							+'<a onclick="return confirm(\'Hapus File?\')" >'
+							+'<button class="btn btn-danger">delete</button></a>'
 
+							+'</form>'
+							+ fileObj.file_name 
+							+'<a href="/personnel-evaluation-download-file/' + fileObj.id +'" >download</a>'
+							+ '</div>'
+						);
+					});
 
+					$('#criteriaSelect').append(
+						'<option>Pilih Kriteria</option>'
+					)
+					$.each(data[2], function (index, criteriaObj) {
+						$('#criteriaSelect').append(
+							'<option value="' + criteriaObj.id + '">' + criteriaObj.criteria + '</option>'
+
+						);
+					});
 				}
-			}	
+		}
 	});
- 
 });
 </script> 
 @endsection

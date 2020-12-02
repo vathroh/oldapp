@@ -69,8 +69,9 @@ class upload extends Controller
         ]);
 
         $output     = array('success' => 'File sudah selesai diupload');
-        return response()->json($output);
-//        return redirect('/personnel-evaluation-upload/5');
+        $uploads            = personnel_evaluation_upload::where('personnel_evaluation_value_id', $request->valueId )->get();
+        $criterias 		= personnel_evaluation_criteria::orderBy('created_at', 'desc')->get();
+        return response()->json([$output, $uploads, $criterias]);
     }
 
     public function evidence1(Request $request, $valueId)

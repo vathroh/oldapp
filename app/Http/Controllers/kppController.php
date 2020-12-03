@@ -968,6 +968,6 @@ public function searchIndex(Request $request)
     public function downloadFotoPengecekanFisik($id)
     {
         $file = data_pengecekan_fisik::find($id)->pluck('foto_pengecekan_fisik')->first();
-        Storage::disk('local')->download('/kpp/' . $file);
+        Storage::disk('local')->download('storage/kpp/' . $file);
     }
 }

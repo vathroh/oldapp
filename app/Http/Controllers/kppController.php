@@ -967,6 +967,7 @@ public function searchIndex(Request $request)
 
     public function downloadFotoPengecekanFisik($id)
     {
+        return storage_path();
         $file = data_pengecekan_fisik::find($id)->pluck('foto_pengecekan_fisik')->first();
         Storage::disk('local')->download('storage/app/public/kpp/' . $file);
     }

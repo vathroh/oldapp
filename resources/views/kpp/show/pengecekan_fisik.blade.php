@@ -31,7 +31,11 @@
       <th scope="row">{{ $loop->iteration }}</th>
       <td>{{ $data_pengecekan_fisik->tanggal }}</td>
       <td>{{ $data_pengecekan_fisik->keterangan }}</td>
-      <td><img src ="{{ asset('storage/kpp/' . $data_pengecekan_fisik->foto_pengecekan_fisik) }}" style = "height:100px;"></td>
+      <td>
+        <a href="/kpp-download-foto-pengecekan-fisik/{{ $data_pengecekan_fisik->id }}">
+          <img src ="{{ asset('storage/kpp/' . $data_pengecekan_fisik->foto_pengecekan_fisik) }}" style = "height:100px;">
+        </a>
+      </td>
       <th><a href = "/kpp/data-pengecekan-fisik/{{ $data_pengecekan_fisik->id }}/edit"><button class = "btn btn-primary">Edit</button></a></th>
     </tr>
     @endforeach

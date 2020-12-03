@@ -37,7 +37,7 @@ class upload extends Controller
     		$value 				= personnel_evaluation_value::find($valueId);
 		    $criterias 		= personnel_evaluation_criteria::orderBy('created_at', 'desc')->get();
         $criteriIds		= unserialize(personnel_evaluation_setting::where('id',$value->settingId)->pluck('aspectId')->first());
-        $uploads       = personnel_evaluation_upload::where('personnel_evaluation_value_id', $valueId)->get();
+        $uploads      = personnel_evaluation_upload::where('personnel_evaluation_value_id', $valueId)->get();
             
 		    return view('personnelEvaluation.evaluation.upload1', compact(['uploads', 'evaluators', 'value', 'lastSetting', 'criteriIds', 'criterias', 'aspects']));
 
@@ -45,7 +45,7 @@ class upload extends Controller
     
     public function evidence(Request $request, $valueId)
     {
-        $image              = $request->file('file');
+        $image               = $request->file('file');
         $originalFileName   = $image->getClientOriginalName();
         $fileExtension      = $image->getClientOriginalExtension();
         $fileNameOnly       = pathinfo($originalFileName, PATHINFO_FILENAME);
@@ -56,7 +56,9 @@ class upload extends Controller
 
         $folder             = 'Evkinja/' . 'Triwulan_' . $evaluationSetting->quarter .'_Tahun_' . $evaluationSetting->year . '/' . $kota . '/' . $userName;
 
-        $uploadedFileName   = Storage::disk('public')->putFileAs($folder, $image, $fileName);
+        //$uploadedFileName   = Storage::disk('public')->putFileAs($folder, $image, $fileName);
+
+        $uploadedFileName   = Storage::disk('google')->putFileAs('1smwHooFqkLU5T7G2ucvJt_qhcGFqq92q', $image, $fileName);
 
 
         personnel_evaluation_upload::create([
@@ -76,7 +78,7 @@ class upload extends Controller
 
     public function evidence1(Request $request, $valueId)
     {
-        $image              = $request->file('file');
+        $image               = $request->file('file');
         $originalFileName   = $image->getClientOriginalName();
         $fileExtension      = $image->getClientOriginalExtension();
         $fileNameOnly       = pathinfo($originalFileName, PATHINFO_FILENAME);
@@ -87,20 +89,24 @@ class upload extends Controller
 
         $folder             = 'Evkinja/' . 'Triwulan_' . $evaluationSetting->quarter .'_Tahun_' . $evaluationSetting->year . '/' . $kota . '/' . $userName;
 
-        $uploadedFileName   = Storage::disk('public')->putFileAs($folder, $image, $fileName);
+        //$uploadedFileName   = Storage::disk('public')->putFileAs($folder, $image, $fileName);
+
+        $uploadedFileName   = Storage::disk('google')->putFileAs('1smwHooFqkLU5T7G2ucvJt_qhcGFqq92q', $image, $fileName);
 
 
         personnel_evaluation_upload::create([
             'path'                              => $folder,
             'file_name'                         => $fileName,
-            'personnel_evaluation_value_id'     => 3,
-            'personnel_evaluation_criteria_id'  => 1,
-            'personnel_evaluation_aspect_id'    => 2
+            'personnel_evaluation_value_id'     => $request->valueId,
+            'personnel_evaluation_criteria_id'  => $request->criteriaId,
+            'personnel_evaluation_aspect_id'    => $request->aspectId
+
         ]);
 
         $output     = array('success' => 'File sudah selesai diupload');
-        return response()->json($request);
-//        return redirect('/personnel-evaluation-upload/5');
+        $uploads            = personnel_evaluation_upload::where('personnel_evaluation_value_id', $request->valueId )->get();
+        $criterias 		= personnel_evaluation_criteria::orderBy('created_at', 'desc')->get();
+        return response()->json([$output, $uploads, $criterias]);
     }
 
 

@@ -9,13 +9,13 @@
 	<div class="card-body">
 		@include('personnelEvaluation.navbar')
 
-	@if($myEvaluationValues->count() == 0 )	
+		@if($myEvaluationValues->count() == 0 && $lastSetting->where('jobTitleId', Auth::user()->jobDesc()->get()->first()->job_title_id)->count() > 0 )	
 				<div class="my-3 text-center" style="border: 2px solid red; border-radius: 5px; padding: 20px;">
 					<h5 style="color:red;">Anda Belum Mengisi Evaluasi Kinerja. </h5>
 					<a href="personnel-evaluation-input/{{ $myEvaluationSetting->pluck('id')->first() }}/{{ Auth::user()->id }}"><button class="btn btn-danger">Isi Sekarang</button></a>
 				</div>
 			
-	@else	
+			@elseif($myEvaluationValues->count() > 0 )
 			
 				<div class="my-3 text-center" style="border: 2px solid grey; border-radius: 5px; padding: 20px;">
 					<h5 style="color:grey;">
@@ -31,7 +31,7 @@
 @if($myEvaluationValues->get()->first()->ok_by_user == 1 )
 							<button class="btn btn-primary">Lihat</button>
 							@else
-							<button class="btn btn-success">Selesaikan</button>
+							<button class="btn btn-success">Selesaikan</buton>
 							@endif
 					</a>
 				</div>

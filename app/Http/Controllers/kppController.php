@@ -958,11 +958,15 @@ public function searchIndex(Request $request)
             })->get()
               ->pluck('zone')            
             )))->get();
-              
 
         return view('kpp.rekap', compact(['kabupaten', 'kppdatas']));
-
-
     }
 
+
+
+    public function downloadFotoPengecekanFisik($id)
+    {
+        $file = data_pengecekan_fisik::find($id)->pluck('foto_pengecekan_fisik')->first();
+        Storage::download('kpp/' . $file);
+    }
 }

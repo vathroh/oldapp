@@ -58,6 +58,8 @@ class evaluation extends Controller
 		$allvillages 						= allvillage::all();
 
 
+
+
 		$evaluationValue = [];
 
 		for( $i = 0; $i < count($myZones); $i++  )

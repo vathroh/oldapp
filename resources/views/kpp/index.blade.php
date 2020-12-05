@@ -23,7 +23,7 @@
       <table class="table table-bordered" style = "display: block; position: relative" >
         <thead class=" text-primary text-center">
           <tr>
-            <td widtd = "10%" rowspan="2">NO</td>
+            <td width = "10%" rowspan="2">NO</td>
             <td rowspan="2">KABUPATEN/KOTA</td>
             <td rowspan="2">KECAMATAN</td>
             <td rowspan="2">KELURAHAN/DESA</td>

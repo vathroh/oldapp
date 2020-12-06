@@ -126,7 +126,14 @@
 														<button class="btn btn-danger">delete</button>
 													</a>
 													{{ $upload->file_name }} 
-														<a href="/personnel-evaluation-download-file/{{$upload->id}}" >download</a>
+													@if(is_null($upload->file_id))
+														<a href="/personnel-evaluation-download-file/{{$upload->id}}" >
+															 download
+													@else
+														<a href="https://drive.google.com/file/d/{{$upload->file_id}}/view" >
+															lihat
+														</a>
+													@endif
 												</form>
 										</div>
 									@endforeach 

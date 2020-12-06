@@ -12,7 +12,7 @@
 		@if($myEvaluationValues->count() == 0 && $lastSetting->where('jobTitleId', Auth::user()->jobDesc()->get()->first()->job_title_id)->count() > 0 )	
 				<div class="my-3 text-center" style="border: 2px solid red; border-radius: 5px; padding: 20px;">
 					<h5 style="color:red;">Anda Belum Mengisi Evaluasi Kinerja. </h5>
-					<a href="personnel-evaluation-input/{{ $myEvaluationSetting->pluck('id')->first() }}/{{ Auth::user()->id }}"><button class="btn btn-danger">Isi Sekarang</button></a>
+					<a href="/personnel-evaluation-input/{{ $myEvaluationSetting->pluck('id')->first() }}/{{ Auth::user()->id }}"><button class="btn btn-danger">Isi sekarang</button></a>
 				</div>
 			
 			@elseif($myEvaluationValues->count() > 0 )
@@ -27,11 +27,11 @@
 							@endif
 						Diinput.	
 					</h5>
-					<a href="personnel-evaluation-input/{{ $myEvaluationSetting->pluck('id')->first() }}/{{ Auth::user()->id }}">
-@if($myEvaluationValues->get()->first()->ok_by_user == 1 )
+					<a href="/personnel-evaluation-input/{{ $myEvaluationSetting->pluck('id')->first() }}/{{ Auth::user()->id }}">
+							@if($myEvaluationValues->get()->first()->ok_by_user == 1 )
 							<button class="btn btn-primary">Lihat</button>
 							@else
-							<button class="btn btn-success">Selesaikan</buton>
+							<button class="btn btn-success">Selesaikan</button>
 							@endif
 					</a>
 				</div>
@@ -70,10 +70,12 @@
 					
 					@foreach($evaluators as $evaluator)
 					<tr>
-						<td>Kuartal  Tahun </td>
+						<td>
+							Kuartal  Tahun 
+						</td>
 						
-						<td>{{ $evaluator->jabatanYangDinilai()->pluck('job_title')->first() }}
-							
+						<td>
+							{{ $evaluator->jabatanYangDinilai()->pluck('job_title')->first() }}
 						</td>
 						
 						<td class="text-center">

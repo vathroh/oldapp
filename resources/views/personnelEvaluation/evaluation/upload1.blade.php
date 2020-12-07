@@ -127,10 +127,10 @@
 													</a>
 													{{ $upload->file_name }} 
 													@if(is_null($upload->file_id))
-														<a href="/personnel-evaluation-download-file/{{$upload->id}}" >
+														<a href="/personnel-evaluation-download-file/{{$upload->id}}">
 															 download
 													@else
-														<a href="https://drive.google.com/file/d/{{$upload->file_id}}/view" >
+														<a href="https://drive.google.com/file/d/{{$upload->file_id}}/view" target="_blank">
 															lihat
 														</a>
 													@endif
@@ -217,10 +217,13 @@ $(document).ready(function(){
 							+'{!! method_field("delete") !!}    {!! csrf_field() !!}'
 							+'<a onclick="return confirm(\'Hapus File?\')" >'
 							+'<button class="btn btn-danger">delete</button></a>'
-
 							+'</form>'
-							+ fileObj.file_name 
+							+ fileObj.file_name
+							+ '@if(is_null($upload->file_id))'
 							+'<a href="/personnel-evaluation-download-file/' + fileObj.id +'" >download</a>'
+							+ '@else'
+							+ '<a href="https://drive.google.com/file/d/' + fileObj.file_id + '/view" target="_blank"> lihat </a>'
+							+ '@endif'
 							+ '</div>'
 						);
 					});

@@ -219,7 +219,7 @@ $(document).ready(function(){
 							+'<button class="btn btn-danger">delete</button></a>'
 							+'</form>'
 							+ fileObj.file_name
-							+ '@if(is_null($upload->file_id))'
+							+ '@if(is_null(' + fileObj.file_id + '))'
 							+'<a href="/personnel-evaluation-download-file/' + fileObj.id +'" >download</a>'
 							+ '@else'
 							+ '<a href="https://drive.google.com/file/d/' + fileObj.file_id + '/view" target="_blank"> lihat </a>'

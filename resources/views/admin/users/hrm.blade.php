@@ -10,6 +10,7 @@
 <div class="card">
     <div class="card-header-primary">Personil OSP 1 Jawa Tengah1</div>
         <div id="users" class="card-body">
+            @include('admin.users.navbar')
             <table class="table table-bordered">
                 <thead>
                     <tr>
@@ -17,13 +18,13 @@
                         <th scope="col">Nama</th>
                         <th scope="col">Posisi</th>
                         <th scope="col">Kabupaten/Kota</th>
-                        <th scope="col">Kabupaten/Kota</th>
+                        <th scope="col">Email/Username</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($kabupaten as $kab)
                     <tr>
-                        <th colspan="4">{{ $kab->NAMA_KAB }}</php>
+                        <th colspan="5">{{ $kab->NAMA_KAB }}</php>
                     </tr>
                     @foreach($users[$kab->KD_KAB] as $user )
                     <tr>

@@ -28,8 +28,9 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->middleware('can:mana
     Route::resource('/users', 'UsersController', ['except' => ['create', 'store']]);
     Route::get('users-index', 'UsersController@ajaxIndex');
 });
-
 Route::get('hrm', 'hrmController@index');
+Route::get('hrm-rekap', 'hrmController@rekap');
+Route::get('hrm-users/{district}/{jobId}', 'hrmController@userList');
 
 // BLOG
 Route::get('/blog-osp1', 'Blog\blogController@index');

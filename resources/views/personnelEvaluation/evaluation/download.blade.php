@@ -21,29 +21,35 @@
 
 </head>
 
-<body class="">	
-	
-	<div class="form-group text-center">
-		<h4>Evaluasi Kinerja {{ $setting->pluck('job_title')->first() }}</h4>
-		<h4>Kuartal {{ $setting->pluck('quarter')->first() }} Tahun {{ $setting->pluck('year')->first() }}</h4>
+<body class="">
+
+
+
+
+    <input type="button" id="create_pdf" value="download PDF">  
+	<form class="form" >  
+	<div >
+		<div style="text-align: center;">Evaluasi Kinerja {{ $setting->pluck('job_title')->first() }}</div>
+		<div style="text-align: center;">Kuartal {{ $setting->pluck('quarter')->first() }} Tahun {{ $setting->pluck('year')->first() }}</div>
 	</div>
 
 	<table style="width:100%;">
 				<tbody>
 					<tr>
-						<td scope="col" style="width:20%"><h6>Nama Personil</h6></td>
-						<td><h6>: {{ $user[0]->name }}</h6></td>
+						<td style="width:20%">Nama Personil</td>
+						<td>: {{ $user[0]->name }}</td>
 					</tr>
 					<tr>
-						<td style="width:20%"><h6>Tim</h6></td>
-						<td><div><h6>: {{ $value[0]->team }} </h6></div></td>
+						<td style="width:20%">Tim</td>
+						<td>: {{ $value[0]->team }} </td>
 					</tr>
 					<tr>
-						<td style="width:20%"><h6>Kabupaten/Kota</h6></td>
-						<td><h6>: {{ $user[0]->NAMA_KAB }}</h6></td>
+						<td style="width:20%">Kabupaten/Kota</h6></td>
+						<td>: {{ $user[0]->NAMA_KAB }}</td>
 					</tr>
 				</tbody>
 			</table>
+
 			
 			
 			<table class="table-striped table-bordered" style="width:100%;">
@@ -158,37 +164,91 @@
 			</table>			
 
 
+	</form>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js"></script>
 
 
-<script>
+    <script>  
+var form = $('.form'),
+  cache_width = form.width(),
+  a4 = [595.28, 990.89]; // for a4 size paper width and height
 
-$(document).ready(function() {
-		var totalScores = 0;
-		for(i=1; i < 4; i++){
-			
-			var sumScores = 0;
-			
-			$("td.score[data-criteria=" + i + "]").each(function(){
-				var assesmentValue = $(this).text();
-				if ($.isNumeric(assesmentValue)) {
-					sumScores += parseFloat(assesmentValue);				
-				}				
-			});
-			
-			var variabel = $("td[data-variabel='1'][ data-criteria='" + i + "']#checkbox").length;
-			var proportion = $("#sumScores"+i).data('proportion');			
-			
-			$("#sumVariabel"+i).text(variabel);
-			$("#sumScores"+i).text(sumScores.toFixed(2));
-			totalScores += parseFloat(sumScores * proportion / variabel);
-		}
-		
-	$("#totalScores").text(totalScores.toFixed(2) + '%');
-	
-	
+var canvasImage,
+  winHeight = a4[1],
+  formHeight = form.height(),
+  formWidth = form.width();
+
+var imagePieces = [];
+
+// on create pdf button click
+$('#create_pdf').on('click', function() {
+  $('body').scrollTop(0);
+  imagePieces = [];
+  imagePieces.length = 0;
+  main();
 });
-    
-  </script>
+
+// main code
+function main() {
+  getCanvas().then(function(canvas) {
+    canvasImage = new Image();
+    canvasImage.src = canvas.toDataURL('image/png');
+    canvasImage.onload = splitImage;
+  });
+}
+
+// create canvas object
+function getCanvas() {
+  form.width(a4[0] * 1.33333 - 80).css('max-width', 'none');
+  return html2canvas(form, {
+    imageTimeout: 2000,
+    removeContainer: true,
+  });
+}
+
+// chop image horizontally
+function splitImage(e) {
+  var totalImgs = Math.round(formHeight / winHeight);
+  for (var i = 0; i < totalImgs; i++) {
+    var canvas = document.createElement('canvas'),
+      ctx = canvas.getContext('2d');
+    canvas.width = formWidth;
+    canvas.height = winHeight;
+    //                    source region                   dest. region
+    ctx.drawImage(
+      canvasImage,
+      0,
+      i * winHeight,
+      formWidth,
+      winHeight,
+      0,
+      0,
+      canvas.width,
+      canvas.height,
+    );
+
+    imagePieces.push(canvas.toDataURL('image/png'));
+  }
+  console.log(imagePieces.length);
+  createPDF();
+}
+
+// crete pdf using chopped images
+function createPDF() {
+  var totalPieces = imagePieces.length - 1;
+  var doc = new jsPDF({
+    unit: 'px',
+    format: 'a4',
+  });
+  imagePieces.forEach(function(img) {
+    doc.addImage(img, 'JPEG', 20, 40);
+    if (totalPieces) doc.addPage();
+    totalPieces--;
+  });
+  doc.save('techumber-html-to-pdf.pdf');
+  form.width(cache_width);
+}   
+		</script>  
 
 </body>
 

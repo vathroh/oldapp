@@ -7,6 +7,7 @@
 				<li><a href="/blog-osp1">BLOG</a></li>
 				<li><a href="/pustaka-osp1/pengumuman">PENGUMUMAN</a></li>
 				<li><a href="/pustaka-osp1/pustaka">PUSTAKA</a></li>
+				<li><a href="/gis">GIS</a></li>
 			</ul>
 		</nav>
 		<div class="fl_right">

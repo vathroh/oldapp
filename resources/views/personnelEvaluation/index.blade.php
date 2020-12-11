@@ -43,18 +43,18 @@
 			<table class="table table-bordered">
 				<thead class=" text-primary text-center">
 					<tr class="text-center" style="background-color: purple; color:white;">
-						<th rowspan="2">Kuartal | Tahun</th>
+						<!-- <th rowspan="2">Kuartal | Tahun</th> -->
 						<th rowspan="2">Posisi Yang Dievaluasi</th>
 						<th rowspan="2">Jumlah Personil</th>
-						<th colspan="3">Diisi Oleh Personil</th>
+						<th colspan="3">Personil</th>
 												
-						<th colspan="4">Diisi Oleh Tim Penilai</th>
+						<th colspan="3">Tim Penilai</th>
 					</tr>
 					<tr class="text-center" style="background-color: purple; color:white;">						
 						<th>Belum Mengisi</th>
 						<th>Proses</th>
 						<th>Sudah Mengisi</th>
-						<th>Belum Dievaluasi</th>
+						<!--						<th>Belum Dievaluasi</th> -->
 						<th>Siap Dievaluasi</th>
 						<th>Sedang Dievaluasi</th>
 						<th>Selesai Dievaluasi</th>
@@ -69,11 +69,11 @@
 					</tr>
 					
 					@foreach($evaluators as $evaluator)
-					<tr>
+					<tr> <!--
 						<td>
 							Kuartal  Tahun 
 						</td>
-						
+					-->
 						<td>
 							{{ $evaluator->jabatanYangDinilai()->pluck('job_title')->first() }}
 						</td>
@@ -100,11 +100,11 @@
 							{{ count($evaluationValues[$myZones[$i]][$evaluator->jobId]['SelesaiMengisi']) }}
 							</a>
 						</td>
-						
+						<!-- /*
 						<td class="text-center">
 								{{ count($evaluationValues[$myZones[$i]][$evaluator->jobId]['BelumDievaluasi']) }}
 						</td>
-						
+*/						-->
 						<td class="text-center" style="color:red; font-weight:bold;" >
 							<a href="/personnel-evaluation-home/{{ $myZones[$i] }}/{{ $evaluator->jobId }}/siap-dievaluasi">
 								{{ count($evaluationValues[$myZones[$i]][$evaluator->jobId]['SiapDievaluasi']) }}

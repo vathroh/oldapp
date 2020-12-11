@@ -115,17 +115,24 @@
 										@endif
 										<option value=0>0</option>
 										<option value=1>1</option>
-									</select>
-									
+									</select>	
 									@endif
 								</td>
+
 								<td class="text-center">
 								@if($user[0]->id != Auth::user()->id)
 									@foreach($files->where('personnel_evaluation_criteria_id', $criteriId[0])->where('personnel_evaluation_aspect_id', $criteriIds[$i-1][$x]) as $file)
-										<a href="/personnel-evaluation-download-file/{{ $file->id }}"> bukti-{{ $loop->iteration }}</a>
+										@if(is_null($file->file_id))
+											<a href="/personnel-evaluation-download-file/{{ $file->id }}">
+										@else
+											<a href="https://drive.google.com/file/d/{{$file->file_id}}/view" target="_blank">
+										@endif
+											bukti-{{ $loop->iteration }}
+											</a>
 									@endforeach 
 								@endif
 								</td>
+
 								@if($user[0]->id != Auth::user()->id)
 								<td class="text-center">
 									@if($criterias->where('id',$criteriId[0])->pluck('id')->first() == 1)
@@ -284,14 +291,16 @@
 							<button type="submit" class="btn btn-primary">SUDAH OK, KIRIM</button>
 						</div>
 					</form>
-				@else
+				@elseif($value[0]->ok_by_user == 1 && $value[0]->edit_by_user == 0)
 					<form method="post" action="/personnel-evaluation-value-not-ready-user/{{ $value[0]->id }}" enctype="multipart/form-data">
 						@method('put')
 						@csrf
 						<div class="text-center mt-5">
-							<button type="submit" class="btn btn-primary">AJUKAN PERMINTAAN EDIT</button>
+							<button type="submit" class="btn btn-primary">AJUKAN PERMOHONAN EDIT</button>
 						</div>
-					</form>					
+					</form>
+				@elseif($value[0]->edit_by_user == 1)
+					<h6 class="text-center">Permohonan untuk edit telah diajukan</h6>
 				@endif
 
 			@else
@@ -304,7 +313,7 @@
 							<button type="submit" class="btn btn-primary">SUDAH OK, KIRIM</button>
 						</div>
 					</form>
-				@else
+				@elseif($value[0]->ready== 1 && $value[0]->edit == 0)
 					<form method="post" action="/personnel-evaluation-value-not-ready/{{ $value[0]->id }}" enctype="multipart/form-data">
 						@method('put')
 						@csrf
@@ -312,6 +321,8 @@
 							<button type="submit" class="btn btn-primary">AJUKAN PERMINTAAN EDIT</button>
 						</div>
 					</form>
+				@elseif($value[0]->edit == 1)
+					<h6 class="text-center">Permohonan untuk edit telah diajukan</h6>
 				@endif
 				
 			@endif

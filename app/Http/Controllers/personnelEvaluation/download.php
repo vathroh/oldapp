@@ -22,17 +22,19 @@ class download extends Controller
 
         foreach( $myZones as $myZone )
         {
-            $workZone =  work_zone::where('district', $myZone)->first();     
-            $users[] = $workZone->user()->get();
+            $workZones =  work_zone::where('district', $myZone)->get();
+
+            foreach( $workZones as $workZone )
+            {
+                $users[] = $workZone->user()->get();
+            }
         }
-
-        Arr::pluck( Arr::collapse($users), 'id');
-
+        
         $values     = personnel_evaluation_value::whereIn('userId', Arr::pluck( Arr::collapse($users), 'id') )->where('ready', 1)->get();
+        
         if($values->count() > 0 )
         {
-            return Excel::download(new rekapEvkinjaExport($values), 'export.xlsx');
-            
+            return Excel::download(new rekapEvkinjaExport($values), 'Rekap-Evkinja.xlsx');    
         } else {
             return "Personnel belum ada yang dinilai";
         }

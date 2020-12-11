@@ -174,7 +174,7 @@ Route::get('/pass-by-user/{id}/edit', 'passwordController@user');
 Route::put('/pass-by-user/{id}', 'passwordController@storeByUser');
 
 
-//ACTIVITIES : PELATIHAN | RAKOR | KBIK | EVALUASI | TES
+//ACTIVITIES : PELATIHAN | RAKOR | KBIK 
 Route::resource('/activity', 'activityController');
 Route::resource('/subjects', 'subjectsController');
 Route::get('/activities', 'activityController@activities');
@@ -267,3 +267,7 @@ Route::get('personnel-evaluation-user-create', 'personnelEvaluation\evaluation@u
 Route::get('personnel-evaluation-home', 'personnelEvaluation\evaluation@ajaxHome');
 Route::get('search-aspect-id', 'personnelEvaluation\setup@ajaxAspect');
 Route::get('ajax-personnel-evaluation-upload', 'personnelEvaluation\upload@ajaxUploadFile');
+
+
+// GIS
+Route::resource('gis', 'gis\gisController');

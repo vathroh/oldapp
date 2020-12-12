@@ -432,7 +432,16 @@ class evaluation extends Controller
 	
 	public function download($settingId, $userId)
 	{
+		$myZones		= array(explode(", ", Auth::user()->areaKerja()->pluck('zone')->first()));
+
 		$evaluators = personnel_evaluator::where('evaluator', job_desc::where('user_id', Auth::user()->id)->pluck('job_title_id')->first())->get();
+
+		$thisPersonnelEvaluators = job_desc::
+			whereIn('job_title_id', personnel_evaluator::where('jobId',job_desc::where('user_id', $userId)->pluck('job_title_id')->first())->pluck('evaluator')
+			)->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')->whereIn('district', $myZones)
+->get();
+		
+
 		$aspects 	= personnel_evaluation_aspect::get();
 		$criterias 	= personnel_evaluation_criteria::orderBy('created_at', 'desc')->get();
 		$criteriIds	= unserialize(personnel_evaluation_setting::where('id', $settingId)->pluck('aspectId')->first());		
@@ -452,11 +461,11 @@ class evaluation extends Controller
 		if(!empty($value[0]->content)){
 				$content	= unserialize($value[0]->content);
 		} else {
-			$content ="";
+				$content ="";
 		}
 
 		
-		return view('personnelEvaluation.evaluation.download', compact(['aspects', 'criterias', 'criteriIds', 'setting', 'user', 'value', 'content', 'evaluators']));
+		return view('personnelEvaluation.evaluation.download', compact(['aspects', 'criterias', 'criteriIds', 'setting', 'user', 'value', 'content', 'evaluators', 'thisPersonnelEvaluators']));
 		$pdf = PDF::loadView('personnelEvaluation.evaluation.download', compact(['aspects', 'criterias', 'criteriIds', 'setting', 'user', 'value', 'content']));
 		return $pdf->setPaper('a4', 'portrait')->download('Evkinja.pdf');
 	}

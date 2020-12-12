@@ -20,6 +20,18 @@ class personnel_evaluator extends Model
         );
     }
 
+    public function evaluatorsUser()
+    {
+        return $this->hasManyThrough(
+            'App\User', 'App\job_desc',
+            'job_title_id',
+            'id',
+            'evaluator',
+            'user_id'
+
+        );
+    }
+
     public function jabatanPenilai()
     {
         return $this->belongsTo('App\job_title', 'evaluator');

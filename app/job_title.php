@@ -22,6 +22,6 @@ class job_title extends Model
     {
         return $this->hasMany('App\personnel_evaluation_setting', 'jobTitleId');
     }
-    
+
 
 }

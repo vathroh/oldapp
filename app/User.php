@@ -105,5 +105,7 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\personnel_evaluation_value', 'userId');
     }
+
+
     
 }

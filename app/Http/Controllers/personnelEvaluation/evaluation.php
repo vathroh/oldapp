@@ -270,7 +270,9 @@ class evaluation extends Controller
 		$lastYear 		= personnel_evaluation_setting::max('year');
 		$lastQuarter 	= personnel_evaluation_setting::where('year', $lastYear)->max('quarter');
 		$evaluators 	= personnel_evaluator::where('evaluator', job_desc::where('user_id', Auth::user()->id)->pluck('job_title_id')->first())->get();        			
-		$settings 		= personnel_evaluation_setting::where('year', $lastYear)->where('quarter', $lastQuarter)->get();					
+		$settings 		= personnel_evaluation_setting::where('year', $lastYear)->where('quarter', $lastQuarter)->get();
+
+
 		return view('personnelEvaluation.monitoring', compact(['id', 'lastYear', 'lastQuarter','evaluators', 'settings']));
 	}
 

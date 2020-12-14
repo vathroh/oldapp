@@ -31,6 +31,9 @@
 	text-align: center;
 	font-weight: bold;
 }
+@media print{
+	.btn-print{ display:none; }
+}											
 </style>
   
   <!-- CSS Files -->
@@ -41,7 +44,7 @@
 </head>
 
 <body class="">	
-	
+	<button class="btn-print" onClick="window.print()">Print</button>
 	<div class="form-group text-center">
 		<h4>Evaluasi Kinerja {{ $setting->pluck('job_title')->first() }}</h4>
 		<h4>Kuartal {{ $setting->pluck('quarter')->first() }} Tahun {{ $setting->pluck('year')->first() }}</h4>
@@ -72,7 +75,7 @@
 						<th class="text-center" scope="col">Aspek Kinerja</th>
 						<th class="text-center" scope="col">Variabel Target</th>
 						<th class="text-center" scope="col">Tercapai %</th>
-						<th class="text-center" scope="col">No. Bukti</th>
+						<!--	<th class="text-center" scope="col">No. Bukti</th> -->
 						<th class="text-center" scope="col">Penilaian Ketercapaian (%)</th>
 						<th class="text-center" scope="col">Skor</th>
 					</tr>
@@ -83,7 +86,7 @@
 					@foreach($criteriIds as $criteriId)
 						<tr style="background-color:#c2f0fc;">
 							<th>{{ $i }}</th>
-							<th colspan="6">{{ $criterias->where('id',$criteriId[0])->pluck('criteria')->first() }}</th>
+							<th colspan="5">{{ $criterias->where('id',$criteriId[0])->pluck('criteria')->first() }}</th>
 						</tr>
 					
 						@php $y = 1;  $countAspect = count($criteriIds[$i-1]) @endphp
@@ -124,6 +127,7 @@
 									@else 0	
 									@endif
 								</td>
+								{{--
 								<td class="text-center">
 									@if(isset($content[$criterias->where('id',$criteriId[0])->pluck('id')->first()][$aspects->where('id', $criteriIds[$i-1][$x] )->pluck('id')->first()]['evidences']))
 				
@@ -131,6 +135,7 @@
 										
 									@endif
 								</td>
+								--}}
 								<td class="text-center">
 									@if(isset($content[$criterias->where('id',$criteriId[0])->pluck('id')->first()][$aspects->where('id', $criteriIds[$i-1][$x] )->pluck('id')->first()]['assesment']))
 				
@@ -159,7 +164,7 @@
 						<tr>
 							<th class="text-center" colspan="2">Jumlah</th>
 							<th class="text-center" id="sumVariabel{{$criterias->where('id',$criteriId[0])->pluck('id')->first()}}"></th>
-							<th colspan="3"></th>
+							<th colspan="2"></th>
 							<th data-proportion="{{ $criterias->where('id',$criteriId[0])->pluck('proportion')->first() }}" class="text-center" id="sumScores{{$criterias->where('id',$criteriId[0])->pluck('id')->first()}}">
 
 							</th>
@@ -170,7 +175,7 @@
 					@endif
 					<tr>
 							<th class="text-center" colspan="2">T O T A L</th>
-							<th colspan="4"></th>
+							<th colspan="3"></th>
 							<th class="text-center" id="totalScores"></th>
 						</tr>
 				</tbody>

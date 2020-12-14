@@ -21,11 +21,11 @@
 						<th scope="col">No</th>
 						<th scope="col">Nama</th>
 						<th scope="col">Posisi</th>
-						<th>Kabupaten/Kota</th>
+						<th scope="col">>Kabupaten/Kota</th>
 						<th scope="col">Aksi</th>
 						@if($evaluasi == "selesai-dievaluasi")
 						<th class="text-center" scope="col">
-							<button class="btn btn-success">Download Semua</button>
+							Form
 						</th>
 						@endif
 					</tr>
@@ -49,7 +49,7 @@
 							<a href="/personnel-evaluation-input/{{ $lastSetting->first()->id }}/{{ $user->id }}"><button class="btn btn-success">Lihat</button></a>
 						</td>
 						<td class="text-center">
-							<a href="/personnel-evaluation-download/{{ $lastSetting->first()->id }}/{{ $user->id }}"><button class="btn btn-success">Download</button></a>
+							<a href="/personnel-evaluation-download/{{ $lastSetting->first()->id }}/{{ $user->id }}" target="_blank"><button class="btn btn-success">Print</button></a>
 						</td>
 						@endif
 						

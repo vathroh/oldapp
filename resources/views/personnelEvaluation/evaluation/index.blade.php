@@ -21,7 +21,7 @@
 						<th scope="col">No</th>
 						<th scope="col">Nama</th>
 						<th scope="col">Posisi</th>
-						<th scope="col">>Kabupaten/Kota</th>
+						<th scope="col">Kabupaten/Kota</th>
 						<th scope="col">Aksi</th>
 						@if($evaluasi == "selesai-dievaluasi")
 						<th class="text-center" scope="col">

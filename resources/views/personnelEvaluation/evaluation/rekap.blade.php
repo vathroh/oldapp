@@ -33,7 +33,8 @@
 				</thead>
 				<tbody>
 				@if($jobDescs->where('user_id', Auth::user()->id )->first()->level == "Korkot" || "Askot Mandiri")
-					@foreach($users->whereIn('jobTitleId', $evaluators->pluck('jobId'))->where('ready', 1) as $user)
+
+					@foreach($users->whereIn('jobTitleId', $evaluators->pluck('jobId'))->where('ready', 1)->sortBy('jobTitleId') as $user)
 					<tr>
 						<th scope="row">{{ $loop->iteration }}</th>
 						<td>{{ $user->name }}</td>

@@ -492,7 +492,7 @@ class evaluation extends Controller
 					->leftjoin('allvillages', 'allvillages.KD_KAB', '=', 'work_zones.district')
 					->get();
 					
-		return view('personnelEvaluation.evaluation.rekap', compact(['users', 'jobDescs', 'evaluations', 'evaluators']));
+		return view('personnelEvaluation.evaluation.rekap', compact(['users', 'jobDescs', 'evaluations', 'evaluators', 'myZones']));
 	}
 	
 	

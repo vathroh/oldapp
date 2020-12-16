@@ -183,7 +183,7 @@ $(document).ready(function(){
 
 			beforeSend:function(){
 				$('#success').empty();
-				$('#formInputFile').hide();
+				$('#uploadFile').hide();
 			},
 			uploadProgress:function(event, position, total, percentComplete)
 			{
@@ -196,7 +196,7 @@ $(document).ready(function(){
 				{
 					$('.progress-bar').text('0%');
 					$('.progress-bar').css('width', '0%');
-					$('#formInputFile').show();
+					$('#uploadFile').show();
 					$('#success').html('<span class="text-danger"><b>' + data[0].errors + '</b></span>');
 				}
 				if(data[0].success)

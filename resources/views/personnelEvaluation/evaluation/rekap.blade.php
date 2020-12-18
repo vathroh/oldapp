@@ -20,6 +20,7 @@
 				</a>
 			</div>
 
+
 			<table class=" table-striped"style="width:100%;">
 				<thead>
 					<tr>
@@ -32,6 +33,19 @@
 					</tr>
 				</thead>
 				<tbody>
+				@if (Auth::user()->hasRole('hrm'))
+				@foreach($users->where('ready', 1)->sortBy('jobTitleId') as $user)
+					<tr>
+						<th scope="row">{{ $loop->iteration }}</th>
+						<td>{{ $user->name }}</td>
+						<td>{{ $jobDescs->where('user_id', $user->id)->first()->job_title }}</td>
+						<td>{{ $jobDescs->where('user_id', $user->id)->first()->NAMA_KAB }}</td>
+						<td>{{ $evaluations->where('userId', $user->id)->first()->totalScore }}</td>
+						<td>{{ $evaluations->where('userId', $user->id)->first()->finalResult }}</td>
+					</tr>
+					@endforeach
+				@endif
+
 				@if($jobDescs->where('user_id', Auth::user()->id )->first()->level == "Korkot" || "Askot Mandiri")
 
 					@foreach($users->whereIn('jobTitleId', $evaluators->pluck('jobId'))->where('ready', 1)->sortBy('jobTitleId') as $user)
@@ -83,6 +97,8 @@
 					</tr>
 					@endforeach
 					@endforeach
+	
+
 				@endif
 				</tbody>
 			</table>

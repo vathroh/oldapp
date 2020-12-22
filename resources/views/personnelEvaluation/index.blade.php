@@ -53,7 +53,7 @@
 					<tr class="text-center" style="background-color: purple; color:white;">						
 						<th>Belum Mengisi</th>
 						<th>Proses</th>
-						<th>Sudah Mengisi</th>
+						<th>Selesai Mengisi</th>
 						<!--						<th>Belum Dievaluasi</th> -->
 						<th>Siap Dievaluasi</th>
 						<th>Sedang Dievaluasi</th>
@@ -61,7 +61,48 @@
 					</tr>
 				</thead>
 				<tbody>
-
+					@if(Auth::user()->posisi->level === "OSP" )
+						@foreach($evaluators as $evaluator)
+							<tr>
+								<td>{{ $evaluator->jabatanYangDinilai->job_title }}</td>
+								<td>
+									<a href="/personnel-evaluation-home-osp/{{ $evaluator->jobId }}/semua-personil">
+										{{ $evaluator->user->count() }}
+									</a>
+								</td>
+								<td>
+									<a href="/personnel-evaluation-home-osp/{{ $evaluator->jobId }}/belum-mengisi-evkinja">
+										{{ $evaluator->user->count() - $evaluator->value->count() }}
+									</a>
+								</td>
+								<td>
+									<a href="/personnel-evaluation-home-osp/{{ $evaluator->jobId }}/proses">
+										{{ $evaluator->value->where('ok_by_user', 0)->count() }}
+									</a>
+								</td>
+								<td>
+									<a href="/personnel-evaluation-home-osp/{{ $evaluator->jobId }}/selesai">
+										{{ $evaluator->value->where('ok_by_user', 1)->count() }}
+									</a>
+								</td>
+								<td>
+									<a href="/personnel-evaluation-home-osp/{{ $evaluator->jobId }}/siap-dievaluasi">
+										{{ $evaluator->value->where('ok_by_user', 1)->where('totalScore', '=', '0.00')->count() }}
+									</a>
+								</td>
+								<td>
+									<a href="/personnel-evaluation-home-osp/{{ $evaluator->jobId }}/sedang-dievaluasi">
+										{{ $evaluator->value->where('ready', 0)->where('totalScore', '!=', '0.00')->count() }}
+									</a>
+								</td>
+								<td>
+									<a href="/personnel-evaluation-home-osp/{{ $evaluator->jobId }}/selesai-dievaluasi">
+										{{ $evaluator->value->where('ready', 1)->count() }}
+									</a>
+								</td>
+							</tr>
+						@endforeach
+					@else
 					@for( $i = 0; $i < count($myZones); $i++)
 					
 					<tr>
@@ -125,6 +166,7 @@
 					</tr>
 					@endforeach
 					@endfor
+					@endif
 				</tbody>
 			</table>
 			@endif

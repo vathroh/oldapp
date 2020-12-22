@@ -32,6 +32,21 @@ class personnel_evaluator extends Model
         );
     }
 
+
+    public function value()
+    {
+        return $this->hasManyThrough(
+            'App\personnel_evaluation_value', 'App\personnel_evaluation_setting',
+            'jobTitleId', 'settingId',
+            'jobId', 'id'
+        );
+    }
+
+    public function setting()
+    {
+        return $this->hasMany('App\personnel_evaluation_setting', 'jobTitleId', 'jobId');
+    }
+
     public function jabatanPenilai()
     {
         return $this->belongsTo('App\job_title', 'evaluator');

@@ -522,9 +522,8 @@ class evaluation extends Controller
 	{
 
 		personnel_evaluation_value::where('id', $valueId)->update([
-			'ok_by_user' => '1',
-		]);
-		
+			'ok_by_user' => 1
+			]);
 		return redirect('personnel-evaluation');
 	}
 	
@@ -543,26 +542,36 @@ class evaluation extends Controller
 	
 	public function editPermission()
 	{
-		
+
 		$myZone	= explode(", ", User::join('job_descs', 'job_descs.user_id', '=',  'users.id')
 					  ->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')
 					  ->where('users.id', Auth::user()->id)->pluck('zone')->first());
 					  
 		$evaluators = personnel_evaluator::where('evaluator', job_desc::where('user_id', Auth::user()->id)->pluck('job_title_id')->first())->pluck('jobId');
 		
+				
 		$myJobId	= job_desc::where('user_id', Auth::user()->id)->pluck('job_title_id')->first();
+
 		
-		$personnels = personnel_evaluation_value::where('edit_by_user', 1)->distinct('personnel_evaluators.jobId')
-					->join('personnel_evaluation_settings', 'personnel_evaluation_values.settingId', '=', 'personnel_evaluation_settings.id')					
-					->join('job_descs', 'job_descs.user_id', '=', 'personnel_evaluation_values.userId')
-					->join('users', 'users.id', '=', 'personnel_evaluation_values.userId' )
-					->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')
-					->join('job_titles', 'job_titles.id', '=', 'job_descs.job_title_id')
-					->join('allvillages', 'allvillages.KD_KAB', '=', 'work_zones.district')
-					->join('personnel_evaluators', 'personnel_evaluators.jobId', '=', 'job_descs.job_title_id')
-					->select('users.id', 'personnel_evaluation_values.id as valueId', 'name', 'personnel_evaluators.evaluator', 'job_title', 'district', 'NAMA_KAB')
-					->get();
-					
+		if(Auth::user()->hasAnyRoles(['hrm']))
+		{
+			$personnels = personnel_evaluation_value::where('edit_by_user', 1)->get();
+		}else{
+			foreach($evaluators as $evaluator){
+				$myEvaluationUsers[$evaluator] =job_title::find($evaluator)->user; 
+			}
+			$myEvaluationUserIds = Arr::pluck(Arr::collapse($myEvaluationUsers), 'id');
+			$myWorkZones = work_zone::whereIn('district', $myZone)->get();
+
+			foreach($myWorkZones as $myWorkZone){
+				$myWorkZonesUsers[$myWorkZone->id] = $myWorkZone->user;
+			}
+			$myWorkZonesUsersIds = Arr::pluck(Arr::collapse($myWorkZonesUsers), 'id');
+ 			$usersId = array_intersect($myWorkZonesUsersIds, $myEvaluationUserIds);
+
+			$personnels = personnel_evaluation_value::whereIn('userId', $usersId)->where('edit_by_user', 1)->get();
+		}
+
 		return view('personnelEvaluation.edit', compact(['personnels', 'evaluators', 'myJobId', 'myZone']));
 	}
 	

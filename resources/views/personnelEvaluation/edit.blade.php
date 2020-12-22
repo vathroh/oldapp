@@ -20,26 +20,28 @@
 					</tr>
 				</thead>
 				<tbody>
-					@foreach($personnels->where('evaluator', $myJobId)->whereIn('district', $myZone) as $personnel)				
-					<tr>
-						<td>Kuartal {{ $personnel->quarter }} Tahun {{ $personnel->year }}</td>
-						<td>{{ $personnel->name }}</td>
-						<td>{{ $personnel->job_title }}</td>
-						<td>{{ $personnel->NAMA_KAB }}</td>
-						<td class="text-center d-flex">
-							<form method="post" action="personnel-evaluation-edit-grant-user/{{$personnel->valueId}}">
-							@method('put')
-							@csrf							
-							<button class="btn btn-primary">Izinkan</button>
-							</form>
-							<form method="post" action="personnel-evaluation-edit-denied-user/{{$personnel->valueId}}">
-							@method('put')
-							@csrf
-							<button class="btn btn-warning">Tolak</button>
-							</form>
+
+
+						@foreach($personnels as $personnel)
+						<tr>
+							<td></td>
+							<td>{{$personnel->user->name}}</td>
+							<td>{{$personnel->user->posisi->job_title}}</td>
+							<td>{{$personnel->jobDesc->kabupaten->first()->NAMA_KAB}}</td>
+							<td class="text-center d-flex">
+								<form method="post" action="personnel-evaluation-edit-grant-user/{{$personnel->id}}">
+									@method('put')
+									@csrf							
+									<button class="btn btn-primary">Izinkan</button>
+								</form>
+								<form method="post" action="personnel-evaluation-edit-denied-user/{{$personnel->id}}">
+									@method('put')
+									@csrf
+									<button class="btn btn-warning">Tolak</button>
+								</form>
 						</td>
-					</tr>
-					@endforeach
+						</tr>
+						@endforeach
 				</tbody>
 			</table>
 		</div>
@@ -49,3 +51,4 @@
 
 
 @endsection
+

@@ -1,7 +1,7 @@
 <?php
 	/*
  			$user = User::find(58);
-			return $user->jobDesc()->first()->kabupaten()->get();
+			return $user->jobDesc->kabupaten->get();
 			 
 
 
@@ -52,8 +52,9 @@ class evaluation extends Controller
 		$lastQuarter 						= personnel_evaluation_setting::where('year', $lastYear)->max('quarter');
 		$myEvaluationSetting 		= User::find($id)->evaluationSetting->where('year', $lastYear)->where('quarter', $lastQuarter);
 	 	$myEvaluationValues			= User::find( $id )->evaluationValue()->where('settingId', $myEvaluationSetting->pluck('id')->first());
-		$evaluators 						= personnel_evaluator::where('evaluator', User::find($id)->posisi()->latest()->first()->id  )->get();	
 	 	$lastSetting 						= personnel_evaluation_setting::where('year', $lastYear)->where('quarter', $lastQuarter)->get();
+		$evaluators 						= personnel_evaluator::where('evaluator', User::find($id)->posisi()->latest()->first()->id  )
+															->join('job_titles', 'job_titles.id', '=', 'personnel_evaluators.jobId')->orderBy('sort')->get();	
 		$myZones								= explode(", ", User::find( $id )->areaKerja()->pluck('zone')->first());
 		$allvillages 						= allvillage::all();
 
@@ -139,14 +140,48 @@ class evaluation extends Controller
 			}
 
 			$evaluationValues = collect($evaluationValue);
-		} 
+		}
+
 
 		return view('personnelEvaluation.index', compact(['myEvaluationSetting', 'myEvaluationValues', 'evaluators', 'evaluationValues', 'myZones', 'allvillages',
 		'lastYear', 'lastQuarter', 'lastSetting']));
 	}
 
 	//====================================================== index ==============================================================================================	
-	
+
+	public function homeOSP($jobId, $evaluasi)
+	{
+		$evaluators = personnel_evaluator::where('evaluator', Auth::user()->posisi()->latest()->first()->id)->get();
+
+		if($evaluasi =="semua-personil"){
+			$users = personnel_evaluator::where('evaluator', Auth::user()->posisi()->latest()->first()->id)->where('jobId', $jobId)->latest()->first()->user;
+		}elseif($evaluasi =="belum-mengisi-evkinja"){
+			$users = personnel_evaluator::where('evaluator', Auth::user()->posisi()->latest()->first()->id)->where('jobId', $jobId)->latest()->first()->user
+							 ->whereNotIn('id', personnel_evaluator::where('evaluator', Auth::user()->posisi()->latest()->first()->id)->where('jobId', $jobId)->latest()->first()
+				->value->pluck('userId'));
+		}elseif($evaluasi == "proses"){
+			$users = User::find( personnel_evaluator::where('evaluator', Auth::user()->posisi()->latest()->first()->id)->where('jobId', $jobId)->latest()->first()
+				->value->where('ok_by_user', 0)->pluck('userId'));
+		}elseif($evaluasi == "selesai"){
+			$users = User::find( personnel_evaluator::where('evaluator', Auth::user()->posisi()->latest()->first()->id)->where('jobId', $jobId)->latest()->first()
+				->value->where('ok_by_user', 1)->pluck('userId'));
+		}elseif($evaluasi == "siap-dievaluasi"){
+			$users = User::find( personnel_evaluator::where('evaluator', Auth::user()->posisi()->latest()->first()->id)->where('jobId', $jobId)->latest()->first()
+				->value->where('ok_by_user', 1)->where('totalScore', '=', '0.00')->pluck('userId'));
+		}elseif($evaluasi == "sedang-dievaluasi"){
+			$users = User::find( personnel_evaluator::where('evaluator', Auth::user()->posisi()->latest()->first()->id)->where('jobId', $jobId)->latest()->first()
+				->value->where('ok_by_user', 1)->where('totalScore', '!=', '0.00')->where('ready', 0)->pluck('userId'));
+		}elseif($evaluasi == "selesai-dievaluasi"){
+			$users = User::find( personnel_evaluator::where('evaluator', Auth::user()->posisi()->latest()->first()->id)->where('jobId', $jobId)->latest()->first()
+				->value->where('ok_by_user', 1)->where('ready', 1)->pluck('userId'));
+		}
+
+		return view('personnelEvaluation.evaluation.indexOSP', compact(['users', 'evaluators','evaluasi']));
+	}
+
+	// ==========================================================================================================================================================
+
+
 	public function home($district, $jobId, $evaluasi)
 	{
 		$id 										= Auth::user()->id;
@@ -270,7 +305,8 @@ class evaluation extends Controller
 		$lastYear 		= personnel_evaluation_setting::max('year');
 		$lastQuarter 	= personnel_evaluation_setting::where('year', $lastYear)->max('quarter');
 		$evaluators 	= personnel_evaluator::where('evaluator', job_desc::where('user_id', Auth::user()->id)->pluck('job_title_id')->first())->get();        			
-		$settings 		= personnel_evaluation_setting::where('year', $lastYear)->where('quarter', $lastQuarter)->get();
+		$settings 		= personnel_evaluation_setting::where('year', $lastYear)->where('quarter', $lastQuarter)
+										->join('job_titles', 'job_titles.id', '=', 'personnel_evaluation_settings.jobTitleId')->orderBy('job_titles.sort')->get();
 
 
 		return view('personnelEvaluation.monitoring', compact(['id', 'lastYear', 'lastQuarter','evaluators', 'settings']));

@@ -21,7 +21,6 @@
 				</thead>
 				<tbody>
 
-
 						@foreach($personnels as $personnel)
 						<tr>
 							<td></td>

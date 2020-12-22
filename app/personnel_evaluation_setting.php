@@ -24,6 +24,7 @@ class personnel_evaluation_setting extends Model
         );
     }
 
+
     public function evaluationValue()
     {
         return $this->hasMany('App\personnel_evaluation_value', 'settingId');

@@ -1,20 +1,4 @@
 <?php
-	/*
- 			$user = User::find(58);
-			return $user->jobDesc->kabupaten->get();
-			 
-
-
-			//return $district = allvillage::where('KD_KAB', '3321')->first();
-
-			$district = allvillage::find(410);
-
-			return $district->jobDesc()->get();
-			return User::find($district->jobDesc()->pluck('user_id'));
-			 */
-
-
-
 
 namespace App\Http\Controllers\personnelEvaluation;
 
@@ -47,16 +31,16 @@ class evaluation extends Controller
 
     public function index()
 		{
-		$id 										= Auth::user()->id;
-		$lastYear 							= personnel_evaluation_setting::max('year');
-		$lastQuarter 						= personnel_evaluation_setting::where('year', $lastYear)->max('quarter');
+		$id 						= Auth::user()->id;
+		$lastYear 					= personnel_evaluation_setting::max('year');
+		$lastQuarter 				= personnel_evaluation_setting::where('year', $lastYear)->max('quarter');
 		$myEvaluationSetting 		= User::find($id)->evaluationSetting->where('year', $lastYear)->where('quarter', $lastQuarter);
 	 	$myEvaluationValues			= User::find( $id )->evaluationValue()->where('settingId', $myEvaluationSetting->pluck('id')->first());
-	 	$lastSetting 						= personnel_evaluation_setting::where('year', $lastYear)->where('quarter', $lastQuarter)->get();
-		$evaluators 						= personnel_evaluator::where('evaluator', User::find($id)->posisi()->latest()->first()->id  )
-															->join('job_titles', 'job_titles.id', '=', 'personnel_evaluators.jobId')->orderBy('sort')->get();	
-		$myZones								= explode(", ", User::find( $id )->areaKerja()->pluck('zone')->first());
-		$allvillages 						= allvillage::all();
+	 	$lastSetting 				= personnel_evaluation_setting::where('year', $lastYear)->where('quarter', $lastQuarter)->get();
+		$evaluators 				= personnel_evaluator::where('evaluator', User::find($id)->posisi()->latest()->first()->id  )
+												->join('job_titles', 'job_titles.id', '=', 'personnel_evaluators.jobId')->orderBy('sort')->get();	
+		$myZones					= explode(", ", User::find( $id )->areaKerja()->pluck('zone')->first());
+		$allvillages 				= allvillage::all();
 
 
 
@@ -301,14 +285,13 @@ class evaluation extends Controller
 	
 	public function monitoring()
 	{
-		$id 					= Auth::user()->id;
+		$id 			= Auth::user()->id;
 		$lastYear 		= personnel_evaluation_setting::max('year');
 		$lastQuarter 	= personnel_evaluation_setting::where('year', $lastYear)->max('quarter');
 		$evaluators 	= personnel_evaluator::where('evaluator', job_desc::where('user_id', Auth::user()->id)->pluck('job_title_id')->first())->get();        			
 		$settings 		= personnel_evaluation_setting::where('year', $lastYear)->where('quarter', $lastQuarter)
-										->join('job_titles', 'job_titles.id', '=', 'personnel_evaluation_settings.jobTitleId')->orderBy('job_titles.sort')->get();
-
-
+										->join('job_titles', 'job_titles.id', '=', 'personnel_evaluation_settings.jobTitleId')->orderBy('job_titles.sort')
+										->select('personnel_evaluation_settings.*', 'job_titles.sort')->get();
 		return view('personnelEvaluation.monitoring', compact(['id', 'lastYear', 'lastQuarter','evaluators', 'settings']));
 	}
 

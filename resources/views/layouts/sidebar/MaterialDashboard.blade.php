@@ -21,12 +21,14 @@
 		</a>
     </li>
 	@endif
+	<!--
     <li class="nav-item active  ">
         <a class="nav-link" href="/profil">
             <i class="material-icons">person</i>
             <p>PROFIL</p>
         </a>
     </li>
+    -->
     <li class="nav-item ">
         <a class="nav-link" href ="{{'/pass-by-user/' . Auth::user()->id . '/edit' }} ">
             <i class="material-icons">line_style</i>

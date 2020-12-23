@@ -56,11 +56,26 @@
 				<tbody>
 				@foreach($settings as $setting)
 					<tr>
+						
 						<td>Kuartal {{ $setting->quarter }} Tahun {{ $setting->year }}</td>
 						<td>{{ $setting->jobTitle()->first()->job_title }}</td>
-						<td><a href="/personnel-evaluation-monitoring-extend/jumlah-personil/{{ $setting->jobTitleId }}"> {{ $setting->jobDesc()->count() }} </a></td>
-						<td><a href="/personnel-evaluation-monitoring-extend/belum-input/{{ $setting->jobTitleId }}">{{ $setting->jobDesc()->whereNotIn('user_id', $setting->evaluationValue()->pluck('userId'))->count() }} </a></td>
-						<td><a href="/personnel-evaluation-monitoring-extend/proses-input/{{ $setting->jobTitleId }}">{{ $setting->evaluationValue()->where('ok_by_user', 0)->count() }} </a></td>
+						
+						<td>
+							<a href="/personnel-evaluation-monitoring-extend/jumlah-personil/{{ $setting->jobTitleId }}"> {{ $setting->jobDesc()->count() }} </a>
+						</td>
+						
+						<td>
+							<a href="/personnel-evaluation-monitoring-extend/belum-input/{{ $setting->jobTitleId }}">				
+								{{ $setting->jobDesc()->whereNotIn('user_id', $setting->evaluationValue()->pluck('userId'))->count() }}
+							</a>
+						</td>
+						
+						<td>
+							<a href="/personnel-evaluation-monitoring-extend/proses-input/{{ $setting->jobTitleId }}">
+							{{ $setting->evaluationValue()->where('ok_by_user', 0)->count() }} 
+							</a>
+						</td>
+						
 						<td><a href="/personnel-evaluation-monitoring-extend/selesai-input/{{ $setting->jobTitleId }}">{{ $setting->evaluationValue()->where('ok_by_user', 1)->count() }}</a></td>
 						<td><a href="/personnel-evaluation-monitoring-extend/siap-dievaluasi/{{ $setting->jobTitleId }}">{{ $setting->evaluationValue()->where('ok_by_user', 1)->where('totalScore', '==', '0.00')->count() }}</a></td>
 						<td><a href="/personnel-evaluation-monitoring-extend/proses-evaluasi/{{ $setting->jobTitleId }}">{{ $setting->evaluationValue()->where('ok_by_user', 1)->where('totalScore', '!=', '0.00')->where('ready', 0)->count() }}</a></td>

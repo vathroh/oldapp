@@ -810,7 +810,7 @@ $("input#checkbox").click(function(){
 	if($(this).prop('checked')) {
 		var variabel = 1;
         $("input[id=" + id + "].assesment").prop('disabled', false);
-        //$("select[id=" + id + "].capaian").prop('disabled', false);        
+        $("select[id=" + id + "].assesment").prop('disabled', false);        
         $("select[id=" + id + "]").css('background-color', 'white');
 		$("input[id=" + id + "].assesment").css('background-color', 'white');
 		$("input[id=" + id + "].assesment").css('color', 'black');		

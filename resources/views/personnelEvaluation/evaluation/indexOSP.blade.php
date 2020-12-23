@@ -12,8 +12,9 @@
 	
 	<div class="row">
 		<div class="col">
-			<h5 class="mt-3 text-center">Daftar Personil Yang {{ $evaluasi }}</h5>
-			<h6 class="mb-3 text-center">Kuartal {{ $lastSetting->first()->quarter }} Tahun {{ $lastSetting->first()->year }}</h6>
+			<h5 class="mt-3 text-center">{{ $evaluators[0]->jabatanYangDinilai->job_title }}</h5>
+			<h5 class="mt-3 text-center">@foreach(explode('-', $evaluasi) as $string) {{ ucfirst($string) }}@endforeach</h5>
+			<h6 class="mb-3 text-center">Kuartal {{ $evaluators[0]->setting->last()->quarter }}  Tahun {{ $evaluators[0]->setting->last()->year }} </h6>
 			
 			<table class=" table-striped"style="width:100%;">
 				<thead>
@@ -33,29 +34,31 @@
 				<tbody>
 
 					@foreach($users as $user)
+						
 					<tr>
 						<th scope="row">{{ $loop->iteration }}</th>
-						<td>{{ $user->name }}</td>
-						<td>{{ $user->posisi()->first()->job_title }}</td>
-						<td>{{ $user->jobDesc()->first()->kabupaten()->first()->NAMA_KAB }}</td>
+						<td>{{ strtoupper($user->name) }}</td>
+						<td>{{ strtoupper($user->posisi->job_title) }}</td>
+						<td>{{ $user->jobDesc->last()->kabupaten->first()->NAMA_KAB}}</td>
+
 						@if($evaluasi == "siap-dievaluasi")
 						<td>
-							<a href="/personnel-evaluation-input/{{ $lastSetting->first()->id }}/{{ $user->id }}"><button class="btn btn-success">Evaluasi Sekarang</button></a>							
+							<a href="/personnel-evaluation-input/{{ $evaluators[0]->setting->last()->id }}/{{ $user->id }}"><button class="btn btn-success">Evaluasi Sekarang</button></a>							
 						</td>
 						@endif
 						
 						@if($evaluasi == "selesai-dievaluasi")
 						<td class="text-center">
-							<a href="/personnel-evaluation-input/{{ $lastSetting->first()->id }}/{{ $user->id }}"><button class="btn btn-success">Lihat</button></a>
+							<a href="/personnel-evaluation-input/{{ $user->evaluationSetting()->latest()->first()->id }}/{{ $user->id }}"><button class="btn btn-success">Lihat</button></a>
 						</td>
 						<td class="text-center">
-							<a href="/personnel-evaluation-download/{{ $lastSetting->first()->id }}/{{ $user->id }}" target="_blank"><button class="btn btn-success">Print</button></a>
+							<a href="/personnel-evaluation-download/{{ $user->evaluationSetting()->latest()->first()->id }}/{{ $user->id }}" target="_blank"><button class="btn btn-success">Print</button></a>
 						</td>
 						@endif
 						
 						@if($evaluasi == "sedang-dievaluasi")
-						<td class="text-center">
-							<a href="/personnel-evaluation-input/{{ $lastSetting->first()->id }}/{{ $user->id }}">
+							<td class="text-center">
+							<a href="/personnel-evaluation-input/{{ $user->evaluationSetting()->latest()->first()->id }}/{{ $user->id }}">
 								<button class="btn btn-success">Lanjutkan Evaluasi</button>
 							</a>
 						</td>
@@ -82,7 +85,8 @@
 							</form>
 						</td>
 						@endif
-					</tr>
+
+					</tr> 
 					@endforeach
 
 				</tbody>

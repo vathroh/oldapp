@@ -8,6 +8,7 @@
 		<a class="nav-link" href="/personnel-evaluation-edit">Permintaan Edit</a>
 		@endif
 		@if (Auth::user()->hasAnyRoles(['hrm']))
+		<a class="nav-link" href="/personnel-evaluation-edit">Permintaan Edit</a>
 		<a class="nav-link" href="/personnel-evaluation-monitoring">Monitoring</a>
 		<a class="nav-link" href="/personnel-evaluation-rekap">Rekap</a>
 		<a class="nav-link" href="/personnel-evaluation-setup/">Setup</a>	

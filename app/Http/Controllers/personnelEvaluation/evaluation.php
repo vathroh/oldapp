@@ -3,12 +3,8 @@
  			$user = User::find(58);
 			return $user->jobDesc()->first()->kabupaten()->get();
 			 
-
-
 			//return $district = allvillage::where('KD_KAB', '3321')->first();
-
 			$district = allvillage::find(410);
-
 			return $district->jobDesc()->get();
 			return User::find($district->jobDesc()->pluck('user_id'));
 			 */
@@ -270,7 +266,8 @@ class evaluation extends Controller
 		$lastYear 		= personnel_evaluation_setting::max('year');
 		$lastQuarter 	= personnel_evaluation_setting::where('year', $lastYear)->max('quarter');
 		$evaluators 	= personnel_evaluator::where('evaluator', job_desc::where('user_id', Auth::user()->id)->pluck('job_title_id')->first())->get();        			
-		$settings 		= personnel_evaluation_setting::where('year', $lastYear)->where('quarter', $lastQuarter)->get();
+		$settings 		= personnel_evaluation_setting::where('year', $lastYear)->where('quarter', $lastQuarter)
+										->join('job_titles', 'job_titles.id', '=', 'personnel_evaluation_settings.jobTitleId')->orderBy('job_titles.sort')->get();
 
 
 		return view('personnelEvaluation.monitoring', compact(['id', 'lastYear', 'lastQuarter','evaluators', 'settings']));
@@ -492,7 +489,7 @@ class evaluation extends Controller
 					->leftjoin('allvillages', 'allvillages.KD_KAB', '=', 'work_zones.district')
 					->get();
 					
-		return view('personnelEvaluation.evaluation.rekap', compact(['users', 'jobDescs', 'evaluations', 'evaluators']));
+		return view('personnelEvaluation.evaluation.rekap', compact(['users', 'jobDescs', 'evaluations', 'evaluators', 'myZones']));
 	}
 	
 	

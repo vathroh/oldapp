@@ -58,9 +58,13 @@ class upload extends Controller
         // Storage::disk('public')->delete($file->path . '/' . $file->file_name); 
         
         //use Google Drive
-        Storage::disk('google')->delete($file->google->file_id);
+        if($file->google == ""){
+        }else{
+            Storage::disk('google')->delete($file->google->file_id);
+            $file->google->delete();
+        }
+
         
-        $file->google->delete();
         $file->delete();
         return redirect('/personnel-evaluation-upload/' . $value->id);
     }

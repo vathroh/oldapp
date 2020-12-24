@@ -125,7 +125,7 @@
 										@if(is_null($file->file_id))
 											<a href="/personnel-evaluation-download-file/{{ $file->id }}">
 										@else
-											<a href="https://drive.google.com/file/d/{{$file->file_id}}/view" target="_blank">
+											<a href="https://drive.google.com/file/d/{{$file->google->file_id}}/view" target="_blank">
 										@endif
 											bukti-{{ $loop->iteration }}
 											</a>
@@ -604,14 +604,14 @@ $("select.capaian").change(function(){
 		type: 'get',
 		url: '/personnel-evaluation-user-create',
 		data: {
-			'team'			: team,
+			'team'				: team,
 			'totalScores'	: totalScores,
-			'kinerja'		: kinerja,
-			'criteria'	 	: criteria,
-			'aspect'	 	: aspect,
-			'value'			: value,
-			'capaian'		: capaian,
-			'score'			: score
+			'kinerja'			: kinerja,
+			'criteria'		: criteria,
+			'aspect'	 		: aspect,
+			'value'				: value,
+			'capaian'			: capaian,
+			'score'				: score
 		},
 		
 		success: function(data) {

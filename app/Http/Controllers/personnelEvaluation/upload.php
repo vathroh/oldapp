@@ -24,24 +24,28 @@ use Pion\Laravel\ChunkUpload\Handler\HandlerFactory;
 use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
 use App\CustomFunctions\googleFolderParent;
 use App\google_folder;
+use App\google_file;
 
 
 class upload extends Controller
 {
     public function evidencePage($valueId)
     {
-    		$id 					= Auth::user()->id;
-		    $lastYear 		= personnel_evaluation_setting::max('year');
-    		$lastQuarter 	= personnel_evaluation_setting::where('year', $lastYear)->max('quarter');
-		    $evaluators 	= personnel_evaluator::where('evaluator', job_desc::where('user_id', Auth::user()->id)->pluck('job_title_id')->first())->get();   
-    		$lastSetting 	= personnel_evaluation_setting::where('year', $lastYear)->where('quarter', $lastQuarter)->where('jobTitleId', Auth::user()->posisi()->first()->id)->get();
-		    $aspects 			= personnel_evaluation_aspect::get();
-    		$value 				= personnel_evaluation_value::find($valueId);
-		    $criterias 		= personnel_evaluation_criteria::orderBy('created_at', 'desc')->get();
-        $criteriIds		= unserialize(personnel_evaluation_setting::where('id',$value->settingId)->pluck('aspectId')->first());
-        $uploads      = personnel_evaluation_upload::where('personnel_evaluation_value_id', $valueId)->get();
-            
-		    return view('personnelEvaluation.evaluation.upload1', compact(['uploads', 'evaluators', 'value', 'lastSetting', 'criteriIds', 'criterias', 'aspects']));
+        $id 			      = Auth::user()->id;
+		    $lastYear 		  = personnel_evaluation_setting::max('year');
+    	  $lastQuarter 	  = personnel_evaluation_setting::where('year', $lastYear)->max('quarter');
+		    $evaluators 	  = personnel_evaluator::where('evaluator', job_desc::where('user_id', Auth::user()->id)->pluck('job_title_id')->first())->get();   
+    	  $lastSetting 	  = personnel_evaluation_setting::where('year', $lastYear)->where('quarter', $lastQuarter)->where('jobTitleId', Auth::user()->posisi()->first()->id)->get();
+		    $aspects 		    = personnel_evaluation_aspect::get();
+    	  $value 			    = personnel_evaluation_value::find($valueId);
+		    $criterias 		  = personnel_evaluation_criteria::orderBy('created_at', 'desc')->get();
+        $criteriIds		  = unserialize(personnel_evaluation_setting::where('id',$value->settingId)->pluck('aspectId')->first());
+        $uploads        = personnel_evaluation_upload::where('personnel_evaluation_value_id', $valueId)->get();
+
+//return $folder             = 'WEBAPP/Evkinja/' . 'Triwulan_' . $evaluationSetting->quarter .'_Tahun_' . $evaluationSetting->year . '/' . $kota . '/' . str_slug(Auth::user()->name);
+
+
+		return view('personnelEvaluation.evaluation.upload1', compact(['uploads', 'evaluators', 'value', 'lastSetting', 'criteriIds', 'criterias', 'aspects']));
     }
     
 
@@ -54,8 +58,13 @@ class upload extends Controller
         // Storage::disk('public')->delete($file->path . '/' . $file->file_name); 
         
         //use Google Drive
-        Storage::disk('google')->delete($file->google_folder_id . '/' . $file->file_id);
+        if($file->google == ""){
+        }else{
+            Storage::disk('google')->delete($file->google->file_id);
+            $file->google->delete();
+        }
 
+        
         $file->delete();
         return redirect('/personnel-evaluation-upload/' . $value->id);
     }
@@ -117,11 +126,10 @@ class upload extends Controller
         ]);
 
         $this->googleFileId($folder_id);
-
-        //end "Google Drive" =====================================================================
-
-        $output     = array('success' => 'File sudah selesai diupload');
-        $uploads            = personnel_evaluation_upload::where('personnel_evaluation_value_id', $request->valueId )->get();
+        //end "Google Drive" =======================================================================
+        
+        $output     	= array('success' => 'File sudah selesai diupload');
+        $uploads        = personnel_evaluation_upload::where('personnel_evaluation_value_id', $request->valueId )->get();
         $criterias 		= personnel_evaluation_criteria::orderBy('created_at', 'desc')->get();
         return response()->json([$output, $uploads, $criterias]);
     }
@@ -133,12 +141,24 @@ class upload extends Controller
         $FilesCount = count($AllFiles);
         for ($x = 0; $x < $FilesCount; $x++) {
             $file_id = substr($AllFiles[$x], 34, 33);
+            $fileMetaData = Storage::disk('google')->getAdapter()->getMetadata($file_id);
+            
+            while(google_file::where('file_id', $file_id)->doesntExist()) {
+                google_file::create([
+                    'file_name'         => $fileMetaData["name"],
+                    'file_id'           => $file_id,
+                    'folder_id'         => $folder_id
+                ]);
+            }
+
+           /* 
             if (personnel_evaluation_upload::where('file_id', $file_id)->doesntExist()) {
                 personnel_evaluation_upload::where('id', personnel_evaluation_upload::max('id'))->update([
                     'file_id'           => $file_id,
                     'google_folder_id'  => $folder_id
                 ]);
             }
+            */
         }
     }
 

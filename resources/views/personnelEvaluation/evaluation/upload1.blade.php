@@ -126,11 +126,10 @@
 														<button class="btn btn-danger">delete</button>
 													</a>
 													{{ $upload->file_name }} 
-													@if(is_null($upload->file_id))
-														<a href="/personnel-evaluation-download-file/{{$upload->id}}">
-															 download
+													@if(is_null($upload->google))
+
 													@else
-														<a href="https://drive.google.com/file/d/{{$upload->file_id}}/view" target="_blank">
+														<a href="https://drive.google.com/file/d/{{$upload->google->file_id}}/view" target="_blank">
 															lihat
 														</a>
 													@endif
@@ -183,7 +182,7 @@ $(document).ready(function(){
 
 			beforeSend:function(){
 				$('#success').empty();
-				$('#uploadFile').hide();
+				$('#formInputFile').hide();
 			},
 			uploadProgress:function(event, position, total, percentComplete)
 			{

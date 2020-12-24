@@ -12,4 +12,9 @@ class personnel_evaluation_upload extends Model
     {
         return $this->belongsTo('App\personnel_evaluation_value', 'personnel_evaluation_value_id');
     }
+    
+    public function google()
+    {
+		return $this->hasOne('App\google_file', 'file_name', 'file_name');
+	}
 }

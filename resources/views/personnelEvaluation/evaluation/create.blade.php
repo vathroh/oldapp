@@ -835,7 +835,7 @@ $("input#checkbox").click(function(){
         $("input[id=" + id + "].assesment").prop('disabled', true);		
 		$("select[id=" + id + "].assesment").prop('disabled', true);
 		$("input[id=" + id + "].assesment").css('background-color', 'grey');
-        $("select[id=" + id + "].assesment").css('background-color', 'grey');
+        $("select[id=" + id + "]").css('background-color', 'grey');
 		$("input[id=" + id + "].capaian").css('background-color', 'grey');
 		$("input[id=" + id + "].capaian").css('color', 'grey');
         $("input[id=" + id + "].score").attr('data-variabel', '0');	

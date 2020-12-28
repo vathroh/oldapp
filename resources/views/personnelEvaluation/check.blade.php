@@ -122,7 +122,8 @@
 								<td class="text-center">
 								@if($user[0]->id != Auth::user()->id)
 									@foreach($files->where('personnel_evaluation_criteria_id', $criteriId[0])->where('personnel_evaluation_aspect_id', $criteriIds[$i-1][$x]) as $file)
-										@if(is_null($file->google))
+										@if(is_null($file->file_id))
+											<a href="/personnel-evaluation-download-file/{{ $file->id }}">
 										@else
 											<a href="https://drive.google.com/file/d/{{$file->google->file_id}}/view" target="_blank">
 										@endif

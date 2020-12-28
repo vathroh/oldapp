@@ -21,7 +21,7 @@ Route::get('/', 'Blog\blogController@home');
 Auth::routes();
 // Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/home', 'DashboardController@index')->name('home');
-Route::resource('/profil', 'profilController');
+//Route::resource('/profil', 'profilController');
 
 //User Management Control
 Route::namespace('Admin')->prefix('admin')->name('admin.')->middleware('can:manage-users')->group(function () {

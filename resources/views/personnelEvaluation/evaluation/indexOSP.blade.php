@@ -12,7 +12,6 @@
 	
 	<div class="row">
 		<div class="col">
-			<h5 class="mt-3 text-center">{{ $evaluators[0]->jabatanYangDinilai->job_title }}</h5>
 			<h5 class="mt-3 text-center">@foreach(explode('-', $evaluasi) as $string) {{ ucfirst($string) }}@endforeach</h5>
 			<h6 class="mb-3 text-center">Kuartal {{ $evaluators[0]->setting->last()->quarter }}  Tahun {{ $evaluators[0]->setting->last()->year }} </h6>
 			
@@ -32,7 +31,7 @@
 					</tr>
 				</thead>
 				<tbody>
-
+halo
 					@foreach($users as $user)
 						
 					<tr>
@@ -43,7 +42,7 @@
 
 						@if($evaluasi == "siap-dievaluasi")
 						<td>
-							<a href="/personnel-evaluation-input/{{ $evaluators[0]->setting->last()->id }}/{{ $user->id }}"><button class="btn btn-success">Evaluasi Sekarang</button></a>							
+							<a href="/personnel-evaluation-input/{{ $user->evaluationSetting()->latest()->first()->id }}/{{ $user->id }}"><button class="btn btn-success">Evaluasi Sekarang</button></a>							
 						</td>
 						@endif
 						

@@ -56,6 +56,7 @@ Route::get('download/{folder}/{file}', 'downloadController@download');
 
 Route::get('/doc', 'DocumentsController@index');
 Route::get('/table', 'DocumentsController@table');
+
 // Route::get('/create', 'DocumentsController@create');
 Route::get('/bkm', 'DocumentsController@create');
 Route::get('/ksm', 'DocumentsController@ksm');

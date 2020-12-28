@@ -92,7 +92,7 @@
 								</td>
 								<td>
 									<a href="/personnel-evaluation-home-osp/{{ $evaluator->jobId }}/sedang-dievaluasi">
-										{{ $evaluator->value->where('ready', 0)->where('totalScore', '!=', '0.00')->count() }}
+										{{ $evaluator->value->where('ready', 0)->where('totalScore', '!=', '0.00')->where('ok_by_user', 1)->count() }}
 									</a>
 								</td>
 								<td>

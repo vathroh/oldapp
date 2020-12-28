@@ -221,6 +221,8 @@
 			</table>
 			
 			@if($user[0]->id != Auth::user()->id)
+			
+
 			<div class="row">
 								
 				<div class="col-md-6">
@@ -283,6 +285,12 @@
 			@if($user[0]->id == Auth::user()->id)
 			
 				@if($value[0]->ok_by_user == 0)
+				<div class="text-center mt-3">
+						<a href="/personnel-evaluation-create/{{ $value[0]->evaluationSetting->id }}/{{ $value[0]->user->id }}">
+							<button class="btn btn-primary">Refresh</button>
+						</a>
+						<p>Silahkan <span class="font-weight-bold">refresh</span> untuk memeriksa nilai dan <span class="font-weight-bold">Total Nilai</span> yang telah diinput sebelum klik OK, untuk memastikan apa yang anda input sudah tersimpan secara sempurna</p>
+					</div>
 					<form method="post" action="/personnel-evaluation-value-ready-user/{{ $value[0]->id }}" enctype="multipart/form-data">
 						@method('put')
 						@csrf
@@ -303,8 +311,13 @@
 				@endif
 
 			@else
-	
 				@if($value[0]->ready==0)
+					<div class="text-center mt-3">
+						<a href="/personnel-evaluation-create/{{ $value[0]->evaluationSetting->id }}/{{ $value[0]->user->id }}">
+							<button class="btn btn-primary">Refresh</button>
+						</a>
+						<p>Silahkan <span class="font-weight-bold">refresh</span> untuk memeriksa nilai dan <span class="font-weight-bold">Total Nilai</span> yang telah diinput sebelum klik OK, untuk memastikan apa yang anda input sudah tersimpan secara sempurna</p>
+					</div>
 					<form method="post" action="/personnel-evaluation-value-ready/{{ $value[0]->id }}" enctype="multipart/form-data">
 						@method('put')
 						@csrf
@@ -811,6 +824,8 @@ $("input#checkbox").click(function(){
         $("input[id=" + id + "].assesment").prop('disabled', false);
         $("select[id=" + id + "].assesment").prop('disabled', false);        
         $("select[id=" + id + "]").css('background-color', 'white');
+		$("input[id=" + id + "].capaian").css('background-color', 'white');
+		$("input[id=" + id + "].capaian").css('color', 'black');
 		$("input[id=" + id + "].assesment").css('background-color', 'white');
 		$("input[id=" + id + "].assesment").css('color', 'black');		
 		$("input[id=" + id + "].score").attr('data-variabel', '1');		
@@ -821,6 +836,8 @@ $("input#checkbox").click(function(){
 		$("select[id=" + id + "].assesment").prop('disabled', true);
 		$("input[id=" + id + "].assesment").css('background-color', 'grey');
         $("select[id=" + id + "].assesment").css('background-color', 'grey');
+		$("input[id=" + id + "].capaian").css('background-color', 'grey');
+		$("input[id=" + id + "].capaian").css('color', 'grey');
         $("input[id=" + id + "].score").attr('data-variabel', '0');	
 		$("input[id=" + id + "].assesment").css('color', 'grey');		
 		

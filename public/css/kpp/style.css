@@ -1,0 +1,188 @@
+.wrapper{
+	box-sizing: border-box;
+	margin: 0;
+	background-color: #e5e6e1;
+	position: relative;
+	width: 100%
+}
+
+h3{
+	text-align: center;
+
+}
+
+.sidebar{
+	
+}
+
+.mainbar{
+	position: absolute;
+	padding: 30px;
+	width: 100%;
+	justify-content: center;
+	align-items: center;
+	align-content: center;
+}
+
+.mainbar .logo img{
+	width: 100px;
+}
+
+.logo {
+	margin: 30px;
+	text-align: center;
+}
+
+.data-group {
+	margin-top: 30px;
+	display: flex;
+	flex-direction: column;
+}
+
+.data-group-title {
+	padding: 5px 10px;
+	background-color: #baffcd;
+	font-weight: bold;
+	font-size: 16px;
+}
+
+
+.form-group{
+	display: flex;
+	width: 100%;
+}
+
+.form-group label{
+	flex:1;
+	padding-left: 10px;
+}
+
+.form-group input{
+	flex:2;
+	color: #000;
+	background-color: transparent;
+	border:0;
+	border-bottom: 1px solid #000;
+}
+
+.data-group-label1{
+	width: 70px;
+}
+
+.data-group-isi1{
+	width: 50px;
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.form-group .data-group-isi{
+	flex:2;
+	display: flex;
+	color: #000;
+	background-color: transparent;
+	border:0;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.data-group-isi form{
+	display: flex;
+}
+
+.data-group-isi form .input{
+	width: 250px;
+}
+
+.data-group-isi form .isifile{
+	width: 200px;
+}
+
+.form-group select{
+	flex:2;
+	color: #fff;
+	background-color: rgba(0,0,0,0.3);
+}
+
+.document-group {
+	border: 1px solid #ddd;
+	padding: 0 20px;
+	border-radius: 5px;;
+	margin: 10px 0;
+}
+
+.document_item {
+	display: flex;
+	padding: 10px 0;
+}
+
+.document_item h6{
+	flex:3;
+}
+
+.document_item .form-check{
+	flex:1;
+}
+
+.document_item p{
+	flex:2;
+	text-align: right;
+	padding-right: 10px;
+}
+
+.document_item input{
+	flex:3;
+}
+
+.image-wrapper{
+    position: relative;
+    display: flex;
+    margin-top: 10px;
+    padding: 10px;
+}
+
+.form-image{
+    width: 30%;
+    padding: 5px;
+    border: 1px solid black;
+    border-radius: 5px;
+    height: 300px;
+    margin: auto;
+}
+
+.form-image img{
+    max-width: 100%;
+    max-height:170px;
+    border-radius: 10px;
+}
+
+.form-image p{
+    padding-top: 5px;
+}
+
+.table{
+    width: 100%;
+    overflow: auto;
+}
+
+.document_item.keterangan_tambahan {
+    padding : 10px;
+    border-radius : 10px;
+    height : 100px;
+    border : 1px solid black;
+    width : 100%;
+    overflow : auto;
+}
+
+.card-body .row {
+    display:flex;
+    flex-wrap : wrap;
+    margin: 20px;
+    padding : 20px 20px;
+    border : 1px solid #9a9e9b;
+    border-radius : 10px;
+}
+
+.row .column{
+    display : flex;
+    flex-wrap : wrap;
+}

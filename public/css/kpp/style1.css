@@ -1,0 +1,36 @@
+        return $level;
+            .wrapper{
+	box-sizing: border-box;
+	margin: 0;
+	background-color: #e5e6e1;
+	position: relative;
+	width: 100%
+}
+
+h3{
+	text-align: center;
+
+}
+
+.sidebar{
+	
+}
+
+.mainbar{
+	position: absolute;
+	padding: 30px;
+	width: 90%;
+	justify-content: center;
+	align-items: center;
+	align-content: center;
+}
+
+.data-group {
+	
+	border: 1px solid black;
+	border-radius: 5px;
+	margin-top: 30px;
+	padding: 20px 100px;
+	display: flex;
+	flex-direction: column;
+}

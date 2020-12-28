@@ -5,22 +5,30 @@ namespace App\Http\Controllers;
 use App\tahun;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\personnel_evaluation_setting;
+use Illuminate\Support\Facades\Auth;
 use App\google_folder;
 use App\Document;
 use App\kegiatanksmnew;
 use App\kegiatanksm;
-
+use App\job_desc;
 
 class DashboardController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+
     public function index()
     {
-        $tahun = tahun::all();
+        $tahun 				= tahun::all();
         return view('dashboard.index', compact('tahun'));
     }
 

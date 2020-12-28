@@ -5,6 +5,9 @@ namespace App;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Model;
+//use App\job_desc;
+//use App\job_title;
 
 class User extends Authenticatable
 {
@@ -16,7 +19,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'nik',
     ];
 
     /**
@@ -57,4 +60,52 @@ class User extends Authenticatable
         }
         return false;
     }
+
+    public function jobDesc()
+    {
+        return $this->hasMany('App\job_desc');
+    }
+
+    
+    public function posisi()
+    {
+        return $this->hasOneThrough(
+            'App\job_title', 'App\job_desc', 
+            'user_id', //foreign key on job_desc 
+            'id', //foreign key on job_title 
+            'id', //local key on User 
+            'job_title_id' // localkey on job_desc 
+        );
+    }
+
+    public function areaKerja()
+    {
+        return $this->hasManyThrough(
+            'App\work_zone', 'App\job_desc',
+            'user_id', // foreign key on job_desc 
+            'id', //foreign key on work_zone 
+            'id', // local key on user 
+            'work_zone_id' //localkey on  job_desc 
+        );
+    }
+
+    public function evaluationSetting()
+    {
+        return $this->hasManyThrough(
+            'App\personnel_evaluation_setting', 'App\job_desc',
+            'user_id',
+            'jobTitleId',
+            'id',
+            'job_title_id'
+        );
+
+    }
+
+    public function evaluationValue()
+    {
+        return $this->hasMany('App\personnel_evaluation_value', 'userId');
+    }
+
+
+    
 }

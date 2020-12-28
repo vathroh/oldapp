@@ -31,7 +31,7 @@
 					</tr>
 				</thead>
 				<tbody>
-halo
+
 					@foreach($users as $user)
 						
 					<tr>

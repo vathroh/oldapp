@@ -29,6 +29,7 @@ Route::get('/blog/dashboard', 'Blog\UserController@index');
 
 Route::get('/doc', 'DocumentsController@index');
 Route::get('/table', 'DocumentsController@table');
+
 // Route::get('/create', 'DocumentsController@create');
 Route::get('/bkm', 'DocumentsController@create');
 Route::get('/ksm', 'DocumentsController@ksm');

@@ -51,6 +51,7 @@
 					</tr>
 				</thead>
 				<tbody>
+					
 					@if($criteriIds != "")
 					@php $i = 1 @endphp
 					@foreach($criteriIds as $criteriId)
@@ -68,7 +69,7 @@
 								<td class="text-center">
 									<input type="checkbox" value="1" id="checkbox" data-id="{{ $criterias->where('id',$criteriId[0])->pluck('id')->first() }}-{{ $aspects->where('id', $criteriIds[$i-1][$x] )->pluck('id')->first() }}" data-aspect="{{ $aspects->where('id', $criteriIds[$i-1][$x] )->pluck('id')->first() }}" data-criteria="{{ $criterias->where('id',$criteriId[0])->pluck('id')->first() }}"
 									
-									data-value="{{ $value[0]->id }}"
+									data-value="{{ $value[0]->id }}" name="checkbox"
 										
 										@if(isset($content[$criterias->where('id',$criteriId[0])->pluck('id')->first()][$aspects->where('id', $criteriIds[$i-1][$x] )->pluck('id')->first()]['variabel'])) 
 										
@@ -286,9 +287,8 @@
 			
 				@if($value[0]->ok_by_user == 0)
 				<div class="text-center mt-3">
-						<a href="/personnel-evaluation-create/{{ $value[0]->evaluationSetting->id }}/{{ $value[0]->user->id }}">
-							<button class="btn btn-primary">Refresh</button>
-						</a>
+						<!-- <a href="/personnel-evaluation-create/{{ $value[0]->evaluationSetting->id }}/{{ $value[0]->user->id }}"> -->
+						<button id="check" class="btn btn-primary">Refresh</button>
 						<p>Silahkan <span class="font-weight-bold">refresh</span> untuk memeriksa nilai dan <span class="font-weight-bold">Total Nilai</span> yang telah diinput sebelum klik OK, untuk memastikan apa yang anda input sudah tersimpan secara sempurna</p>
 					</div>
 					<form method="post" action="/personnel-evaluation-value-ready-user/{{ $value[0]->id }}" enctype="multipart/form-data">
@@ -313,9 +313,9 @@
 			@else
 				@if($value[0]->ready==0)
 					<div class="text-center mt-3">
-						<a href="/personnel-evaluation-create/{{ $value[0]->evaluationSetting->id }}/{{ $value[0]->user->id }}">
-							<button class="btn btn-primary">Refresh</button>
-						</a>
+						<!-- <a href="/personnel-evaluation-create/{{ $value[0]->evaluationSetting->id }}/{{ $value[0]->user->id }}"> -->
+							<button id="check" class="btn btn-primary">Refresh</button>
+						
 						<p>Silahkan <span class="font-weight-bold">refresh</span> untuk memeriksa nilai dan <span class="font-weight-bold">Total Nilai</span> yang telah diinput sebelum klik OK, untuk memastikan apa yang anda input sudah tersimpan secara sempurna</p>
 					</div>
 					<form method="post" action="/personnel-evaluation-value-ready/{{ $value[0]->id }}" enctype="multipart/form-data">
@@ -338,6 +338,7 @@
 				@endif
 				
 			@endif
+
 		</div>
 	</div>
 	
@@ -687,6 +688,35 @@ function ready(){
 	$("#totalVariabel").text(totalVariabel);
 	$("#totalScores").text(totalScores.toFixed(2) + '%');	
 }
+
+$("button#check").click(function(){
+	var checkbox = [];
+	$("#checkbox").each(function(){
+		checkbox[0] = $("#checkbox").val();
+	});
+	console.log(checkbox);
+	var criteria	= $(this).data('criteria');
+	var aspect		= $(this).data('aspect');
+	var value		= $(this).data('value');
+	var evidences	= $(this).val();
+	var team		= $("input#team").val();
+
+	$.ajax({			
+		type: 'post',
+		url: '/personnel-evaluation-check',
+		data: {
+			'team'		: team,
+			'criteria' 	: criteria,
+			'aspect' 	: aspect,
+			'value'		: value,
+			'evidences'	: evidences
+		},
+		
+		success: function(data) {
+			console.log(data);
+		}
+	});
+});
 </script>
 
 @else
@@ -1027,8 +1057,6 @@ $("input[type=text].assesment").keyup(function(){
 			console.log(data);
 		}
 	});
-	 
-	
 });
 
 $("select.assesment").change(function(){	

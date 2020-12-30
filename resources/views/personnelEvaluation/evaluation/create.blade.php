@@ -690,16 +690,24 @@ function ready(){
 }
 
 $("button#check").click(function(){
-	var checkbox = [];
-	$("#checkbox").each(function(){
-		checkbox[0] = $("#checkbox").val();
-	});
-	console.log(checkbox);
-	var criteria	= $(this).data('criteria');
-	var aspect		= $(this).data('aspect');
-	var value		= $(this).data('value');
-	var evidences	= $(this).val();
-	var team		= $("input#team").val();
+
+		var checkbox 			= $("input#checkbox[data-criteria]");
+		var array 				= [];
+		checkbox.each(function(index){
+				var criteria 	= $(this).data('criteria');
+				var aspect 		= $(this).data('aspect');
+				var variabel 	= $(this).data('variabel');
+
+				var ijo = [ {"nama" : "hana" }];
+				array.push({
+					"criteria" 	: criteria,
+						"aspect" 	: aspect,
+						"variabel": variabel
+				});
+		});
+
+console.log(array);
+
 
 	$.ajax({			
 		type: 'post',

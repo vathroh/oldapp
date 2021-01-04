@@ -29,7 +29,8 @@
 						<th scope="col">Posisi</th>
 						<th scope="col">Kabupaten/Kota</th>
 						<th scope="col">Nilai (%)</th>
-						<th scope="col">Kinerja</th>
+						<th scope="col">Isu</th>
+						<th scope="col">Rekomendasi</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -42,6 +43,8 @@
 						<td>{{ $jobDescs->where('user_id', $user->id)->first()->NAMA_KAB }}</td>
 						<td>{{ $evaluations->where('userId', $user->id)->first()->totalScore }}</td>
 						<td>{{ $evaluations->where('userId', $user->id)->first()->finalResult }}</td>
+						<td>{{ $evaluations->where('userId', $user->id)->first()->issue }}</td>
+						<td>{{ $evaluations->where('userId', $user->id)->first()->recommendation }}</td>
 					</tr>
 					@endforeach
 				@endif

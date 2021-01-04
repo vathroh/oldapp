@@ -275,3 +275,6 @@ Route::get('ajax-personnel-evaluation-upload', 'personnelEvaluation\upload@ajaxU
 //GIS
 Route::resource('gis', 'gis\gisController');
 
+
+//BDI
+Route::get('bdi/{any}', 'bdiController@index');

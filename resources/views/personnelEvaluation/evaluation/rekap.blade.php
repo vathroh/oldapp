@@ -29,6 +29,7 @@
 						<th scope="col">Posisi</th>
 						<th scope="col">Kabupaten/Kota</th>
 						<th scope="col">Nilai (%)</th>
+						<th scope="col">Kualifikasi</th>
 						<th scope="col">Isu</th>
 						<th scope="col">Rekomendasi</th>
 					</tr>

@@ -26,12 +26,15 @@ class rekapEvkinjaExport implements FromCollection, WithHeadings
         {
             $array[$key] = collect([
                 [
-                    'no'        => $key+1,
-                    'nama'      => $value->user()->first()->name,
-                    'posisi'    => $value->user()->first()->posisi()->first()->job_title,
-                    'kabupaten' => $value->jobDesc()->first()->kabupaten()->first()->NAMA_KAB,
-                    'status'    => $value->finalResult,
-                    'score'     => $value->totalScore
+                    'no'            => $key+1,
+                    'nama'          => $value->user()->first()->name,
+                    'posisi'        => $value->user()->first()->posisi()->first()->job_title,
+                    'kabupaten'     => $value->jobDesc()->first()->kabupaten()->first()->NAMA_KAB,
+                    'status'        => $value->finalResult,
+                    'score'         => $value->totalScore,
+                    'Isu'           => $value->issue,
+                    'Rekomendasi'   => $value->recommendation
+
                  ]
             ]); 
         }   
@@ -48,6 +51,8 @@ class rekapEvkinjaExport implements FromCollection, WithHeadings
             'Kabupaten/Kota',
             'Kinerja',
             'Nilai',
+            'Isu',
+            'Rekomendasi',
         ];
     }
 }

@@ -504,7 +504,7 @@ class evaluation extends Controller
 						  ->join('personnel_evaluation_settings', 'personnel_evaluation_settings.id', '=', 'personnel_evaluation_values.settingId')
 						  ->join('job_descs', 'job_descs.user_id', '=', 'users.id')->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')
 						  ->select('users.id', 'settingId', 'userId', 'totalScore', 'userTotalScore', 'ok_by_user', 'edit_by_user', 'ready', 'edit', 'name', 'district', 'jobTitleId')->whereIn('district', $myZones)
-						  ->get();
+						  ->paginate(20);
 					
 		$jobDescs	= job_desc::join('job_titles', 'job_titles.id', '=', 'job_descs.job_title_id')
 					->join('work_zones', 'work_zones.id','=', 'job_descs.work_zone_id')

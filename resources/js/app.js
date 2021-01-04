@@ -2,17 +2,8 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
-import Formupload from './components/Inputfile/FormUpload'
+Vue.component('Index', require('./components/bdi/Index').default);
 
 const app = new Vue({
-    // el: '#app',
-    // components: {
-    //     Dashboardmenu
-    // },
-    // router
     el: '#app',
-    components: {
-        Formupload
-    },
-
 });

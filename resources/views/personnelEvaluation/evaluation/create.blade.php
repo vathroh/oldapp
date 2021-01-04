@@ -286,11 +286,12 @@
 			@if($user[0]->id == Auth::user()->id)
 			
 				@if($value[0]->ok_by_user == 0)
-				<div class="text-center mt-3">
-						<!-- <a href="/personnel-evaluation-create/{{ $value[0]->evaluationSetting->id }}/{{ $value[0]->user->id }}"> -->
-						<button id="check" class="btn btn-primary">Refresh</button>
-						<p>Silahkan <span class="font-weight-bold">refresh</span> untuk memeriksa nilai dan <span class="font-weight-bold">Total Nilai</span> yang telah diinput sebelum klik OK, untuk memastikan apa yang anda input sudah tersimpan secara sempurna</p>
+					<div class="text-center mt-3">
+						<a href="/personnel-evaluation-create/{{ $value[0]->evaluationSetting->id }}/{{ $value[0]->user->id }}">
+							<button id="check" class="btn btn-primary">Refresh</button>
+						</a>
 					</div>
+					<p>Silahkan <span class="font-weight-bold">refresh</span> dan periksa nilai dan <span class="font-weight-bold">Total Nilai</span> yang telah diinput sebelum klik OK, untuk memastikan apa yang anda input sudah tersimpan secara sempurna</p>
 					<form method="post" action="/personnel-evaluation-value-ready-user/{{ $value[0]->id }}" enctype="multipart/form-data">
 						@method('put')
 						@csrf
@@ -313,10 +314,10 @@
 			@else
 				@if($value[0]->ready==0)
 					<div class="text-center mt-3">
-						<!-- <a href="/personnel-evaluation-create/{{ $value[0]->evaluationSetting->id }}/{{ $value[0]->user->id }}"> -->
+						<a href="/personnel-evaluation-create/{{ $value[0]->evaluationSetting->id }}/{{ $value[0]->user->id }}">
 							<button id="check" class="btn btn-primary">Refresh</button>
-						
-						<p>Silahkan <span class="font-weight-bold">refresh</span> untuk memeriksa nilai dan <span class="font-weight-bold">Total Nilai</span> yang telah diinput sebelum klik OK, untuk memastikan apa yang anda input sudah tersimpan secara sempurna</p>
+						</a>
+					<p>Silahkan <span class="font-weight-bold">refresh</span> dan periksa nilai dan <span class="font-weight-bold">Total Nilai</span> yang telah diinput sebelum klik OK, untuk memastikan apa yang anda input sudah tersimpan secara sempurna</p>
 					</div>
 					<form method="post" action="/personnel-evaluation-value-ready/{{ $value[0]->id }}" enctype="multipart/form-data">
 						@method('put')
@@ -688,43 +689,6 @@ function ready(){
 	$("#totalVariabel").text(totalVariabel);
 	$("#totalScores").text(totalScores.toFixed(2) + '%');	
 }
-
-$("button#check").click(function(){
-
-		var checkbox 			= $("input#checkbox[data-criteria]");
-		var array 				= [];
-		checkbox.each(function(index){
-				var criteria 	= $(this).data('criteria');
-				var aspect 		= $(this).data('aspect');
-				var variabel 	= $(this).data('variabel');
-
-				var ijo = [ {"nama" : "hana" }];
-				array.push({
-					"criteria" 	: criteria,
-						"aspect" 	: aspect,
-						"variabel": variabel
-				});
-		});
-
-console.log(array);
-
-
-	$.ajax({			
-		type: 'post',
-		url: '/personnel-evaluation-check',
-		data: {
-			'team'		: team,
-			'criteria' 	: criteria,
-			'aspect' 	: aspect,
-			'value'		: value,
-			'evidences'	: evidences
-		},
-		
-		success: function(data) {
-			console.log(data);
-		}
-	});
-});
 </script>
 
 @else

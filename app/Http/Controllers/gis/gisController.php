@@ -4,6 +4,8 @@ namespace App\Http\Controllers\gis;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\arcgis_map;
+use App\kabupaten;
 
 class gisController extends Controller
 {
@@ -14,7 +16,8 @@ class gisController extends Controller
      */
     public function index()
     {
-        return view('gis.index');
+        $maps = arcgis_map::orderBy('district_id')->get();
+        return view('gis.index', compact(['maps']));
     }
 
     /**
@@ -46,7 +49,8 @@ class gisController extends Controller
      */
     public function show($id)
     {
-        //
+        $map = arcgis_map::where('district_id', $id)->pluck('code')[0];
+        return response($map);
     }
 
     /**

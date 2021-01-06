@@ -62,14 +62,17 @@ return [
                 PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
 
-	    'modes' => [
-        	'STRICT_ALL_TABLES',
-        	'ERROR_FOR_DIVISION_BY_ZERO',
-        	'NO_ZERO_DATE',
-        	'NO_ZERO_IN_DATE',
-        	'NO_AUTO_CREATE_USER',
-    	    ],
+            'modes' => [
+                'ONLY_FULL_GROUP_BY',
+                'STRICT_TRANS_TABLES',
+                'NO_ZERO_IN_DATE',
+                'NO_ZERO_DATE',
+                'ERROR_FOR_DIVISION_BY_ZERO',
+                'NO_ENGINE_SUBSTITUTION',
+            ],
         ],
+
+
 
         'pgsql' => [
             'driver' => 'pgsql',

@@ -177,6 +177,15 @@ Route::put('/pass-by-user/{id}', 'passwordController@storeByUser');
 
 
 //ACTIVITIES : PELATIHAN | RAKOR | KBIK 
+Route::namespace('projectActivity\peserta')->prefix('kegiatan/peserta')->name('peserta.')->group(function () {
+    //Route::resource('/users', 'UsersController', ['except' => ['create', 'store']]);
+    Route::resource('sertifikat', 'certificateController');
+    Route::resource('absensi', 'attendaceRecordsController');
+    Route::post('download-sertifikat/{activity_id}', 'certificateController@download');
+});
+
+
+
 Route::resource('/activity', 'activityController');
 Route::resource('/subjects', 'subjectsController');
 Route::get('/activities', 'activityController@activities');
@@ -187,7 +196,9 @@ Route::resource('/activities-category', 'activitiesCategoryController');
 Route::get('/dropdown-question', 'evaluationAnswerController@dropdown');
 Route::resource('/evaluation-questions', 'evaluationQuestionController');
 Route::get('/lesson/{activity}/{activity_item}', 'activityController@lesson');
+
 Route::post('/certificate/{activity_item}', 'activityController@certificate');
+
 Route::get('/lesson-download/{library_id}', 'activityController@lesson_download');
 Route::get('/schedule/{activity}/{activity_item}', 'activityController@schedule');
 Route::get('/attendance/{activity}/{activity_item}', 'activityController@attendance');
@@ -202,6 +213,7 @@ Route::get('/listing-attendant/{activity}/{activity_item}', 'activityController@
 Route::get('/evaluation-result/{activity}/{activity_item}', 'activityController@evaluation_result');
 Route::post('/activity-evaluation/{activity_id}', 'evaluationController@evaluationActivityStore');
 Route::get('/certificate_page/{activity}/{activity_item}', 'activityController@certificate_page');
+
 Route::get('/evaluation-check/{activity}/{activity_item}', 'activityController@evaluation_check');
 //Ajax
 Route::get('/ajax-listing-attendant-find-registered-name/', 'activityController@ajaxAttendanceFindRegisteredName');
@@ -223,12 +235,18 @@ Route::resource('personnel-evaluation-setup', 'personnelEvaluation\setup');
 Route::resource('personnel-evaluation-aspect', 'personnelEvaluation\aspect');
 Route::resource('personnel-evaluation-criteria', 'personnelEvaluation\criteria');
 
-Route::get('personnel-evaluation-upload/{valueId}', 
-    'personnelEvaluation\upload@evidencePage');
-Route::post('personnel-evaluation-upload/{valueId}', 
-    'personnelEvaluation\upload@evidence');
-Route::delete('personnel-evaluation-upload/{valueId}', 
-    'personnelEvaluation\upload@destroy');
+Route::get(
+    'personnel-evaluation-upload/{valueId}',
+    'personnelEvaluation\upload@evidencePage'
+);
+Route::post(
+    'personnel-evaluation-upload/{valueId}',
+    'personnelEvaluation\upload@evidence'
+);
+Route::delete(
+    'personnel-evaluation-upload/{valueId}',
+    'personnelEvaluation\upload@destroy'
+);
 Route::get('personnel-evaluation-download-rekap-all', 'personnelEvaluation\download@rekapAll');
 
 Route::get('personnel-evaluation-rekap', 'personnelEvaluation\evaluation@rekap');

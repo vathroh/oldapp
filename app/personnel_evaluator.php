@@ -11,7 +11,8 @@ class personnel_evaluator extends Model
     public function user()
     {
         return $this->hasManyThrough(
-            'App\User', 'App\job_desc',
+            'App\User',
+            'App\job_desc',
             'job_title_id',
             'id',
             'jobId',
@@ -22,8 +23,9 @@ class personnel_evaluator extends Model
 
     public function evaluatorsUser()
     {
-        return $this->hasManyThrough(
-            'App\User', 'App\job_desc',
+        return $this->hasOneThrough(
+            'App\User',
+            'App\job_desc',
             'job_title_id',
             'id',
             'evaluator',
@@ -36,9 +38,12 @@ class personnel_evaluator extends Model
     public function value()
     {
         return $this->hasManyThrough(
-            'App\personnel_evaluation_value', 'App\personnel_evaluation_setting',
-            'jobTitleId', 'settingId',
-            'jobId', 'id'
+            'App\personnel_evaluation_value',
+            'App\personnel_evaluation_setting',
+            'jobTitleId',
+            'settingId',
+            'jobId',
+            'id'
         );
     }
 
@@ -55,7 +60,10 @@ class personnel_evaluator extends Model
     public function jabatanYangDinilai()
     {
         return $this->belongsTo('App\job_title', 'jobId');
-   }
-    
+    }
 
+    public function personil()
+    {
+        return $this->hasOne('App\User', 'id', 'evaluator');
+    }
 }

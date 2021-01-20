@@ -62,6 +62,9 @@ return [
                 PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
 
+<<<<<<< HEAD
+
+=======
             'modes' => [
                 'ONLY_FULL_GROUP_BY',
                 'STRICT_TRANS_TABLES',
@@ -70,6 +73,7 @@ return [
                 'ERROR_FOR_DIVISION_BY_ZERO',
                 'NO_ENGINE_SUBSTITUTION',
             ],
+>>>>>>> 576c1917c4de827a4fdc928788157d924350a94c
         ],
 
 

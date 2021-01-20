@@ -52582,6 +52582,8 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+<<<<<<< HEAD
+=======
 /***/ "./resources/js/views/gis/index.vue":
 /*!******************************************!*\
   !*** ./resources/js/views/gis/index.vue ***!
@@ -52635,6 +52637,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+>>>>>>> 576c1917c4de827a4fdc928788157d924350a94c
 /***/ "./resources/sass/app.scss":
 /*!*********************************!*\
   !*** ./resources/sass/app.scss ***!
@@ -52653,8 +52656,13 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
+<<<<<<< HEAD
+__webpack_require__(/*! /home/fathur/GoogleDriveN/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/fathur/GoogleDriveN/resources/sass/app.scss */"./resources/sass/app.scss");
+=======
 __webpack_require__(/*! /home/vath/Documents/GoogleDriveN/resources/js/app.js */"./resources/js/app.js");
 module.exports = __webpack_require__(/*! /home/vath/Documents/GoogleDriveN/resources/sass/app.scss */"./resources/sass/app.scss");
+>>>>>>> 576c1917c4de827a4fdc928788157d924350a94c
 
 
 /***/ })

@@ -195,7 +195,7 @@
 	</form>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js"></script>
 
-	<h2></h2>
+
 
 
 	@if($user[0]->id != Auth::user()->id)

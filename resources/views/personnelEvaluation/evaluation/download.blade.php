@@ -23,7 +23,7 @@
 
 		#personnelEvaluator {
 			margin-top: 20px;
-			width: 33%;
+			width: 40%;
 		}
 
 		.evaluatorTitle {
@@ -38,7 +38,14 @@
 			.btn-print {
 				display: none;
 			}
+
+			h2 {
+				page-break-before: always;
+			}
 		}
+	</style>
+	<h1></h1>
+
 	</style>
 
 	<!-- CSS Files -->
@@ -188,7 +195,7 @@
 	</form>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js"></script>
 
-
+	<h2></h2>
 
 
 	@if($user[0]->id != Auth::user()->id)
@@ -269,11 +276,11 @@
 
 		<div id="personnelEvaluator">
 			<div>
-				{{ $thisPersonnelEvaluator->evaluatorsUser->name }}
+				{{ $thisPersonnelEvaluator->evaluatorsUser->posisi->job_title }}
 			</div>
 			<br><br><br>
 			<div>
-				{{ $thisPersonnelEvaluator->evaluatorsUser->posisi->job_title }}
+				{{ $thisPersonnelEvaluator->evaluatorsUser->name }}
 			</div>
 		</div>
 		@endforeach
@@ -287,11 +294,11 @@
 
 		<div id="personnelEvaluator">
 			<div>
-				{{ $thisPersonnelEvaluator->evaluatorsUser->name }}
+				{{ $thisPersonnelEvaluator->evaluatorsUser->posisi->job_title }}
 			</div>
 			<br><br><br>
 			<div>
-				{{ $thisPersonnelEvaluator->evaluatorsUser->posisi->job_title }}
+				{{ $thisPersonnelEvaluator->evaluatorsUser->name }}
 			</div>
 		</div>
 		@endforeach
@@ -312,11 +319,11 @@
 
 		<div id="personnelEvaluator">
 			<div>
-				{{ $thisPersonnelEvaluator->posisi->job_title }}
+				{{ $thisPersonnelEvaluator->user->name }}
 			</div>
 			<br><br><br>
 			<div>
-				{{ $thisPersonnelEvaluator->user->name }}
+				{{ $thisPersonnelEvaluator->posisi->job_title }}
 			</div>
 		</div>
 		@endforeach
@@ -330,11 +337,11 @@
 
 		<div id="personnelEvaluator">
 			<div>
-				{{ $thisPersonnelEvaluator->posisi->job_title }}
+				{{ $thisPersonnelEvaluator->user->name }}
 			</div>
 			<br><br><br>
 			<div>
-				{{ $thisPersonnelEvaluator->user->name }}
+				{{ $thisPersonnelEvaluator->posisi->job_title }}
 			</div>
 		</div>
 		@endforeach

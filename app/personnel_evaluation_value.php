@@ -10,7 +10,7 @@ class personnel_evaluation_value extends Model
 
     public function user()
     {
-       return $this->belongsTo('App\User', 'userId');
+        return $this->belongsTo('App\User', 'userId');
     }
 
     public function jobDesc()
@@ -21,7 +21,8 @@ class personnel_evaluation_value extends Model
     public function areaKerja()
     {
         return $this->hasManyThrough(
-            'App\work_zone', 'App\job_desc',
+            'App\work_zone',
+            'App\job_desc',
             'user_id', // foreign key on job_desc 
             'id', //foreign key on work_zone 
             'userId', // local key on user 
@@ -29,13 +30,25 @@ class personnel_evaluation_value extends Model
         );
     }
 
+    public function evaluator()
+    {
+        return $this->hasManyThrough(
+            'App\personnel_evaluator',
+            'App\job_desc',
+            'user_id',                           // foreign key on jobDesc
+            'jobId',                            // foreign key on personnel_evaluator
+            'userId',
+            'job_title_id'
+        );
+    }
+
     public function evaluationSetting()
     {
-       return $this->belongsTo('App\personnel_evaluation_setting', 'settingId'); 
+        return $this->belongsTo('App\personnel_evaluation_setting', 'settingId');
     }
 
     public function evaluationUpload()
     {
         return $this->hasMany('App\personnel_evaluation_upload');
-    } 
+    }
 }

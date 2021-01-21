@@ -61,16 +61,18 @@ class User extends Authenticatable
         return false;
     }
 
+    // ========================================================= Job Description =================
     public function jobDesc()
     {
         return $this->hasMany('App\job_desc');
     }
 
-    
+
     public function posisi()
     {
         return $this->hasOneThrough(
-            'App\job_title', 'App\job_desc', 
+            'App\job_title',
+            'App\job_desc',
             'user_id', //foreign key on job_desc 
             'id', //foreign key on job_title 
             'id', //local key on User 
@@ -81,7 +83,8 @@ class User extends Authenticatable
     public function areaKerja()
     {
         return $this->hasManyThrough(
-            'App\work_zone', 'App\job_desc',
+            'App\work_zone',
+            'App\job_desc',
             'user_id', // foreign key on job_desc 
             'id', //foreign key on work_zone 
             'id', // local key on user 
@@ -89,16 +92,17 @@ class User extends Authenticatable
         );
     }
 
+    // ============================================= Evaluasi Kinerja ====================================
     public function evaluationSetting()
     {
         return $this->hasManyThrough(
-            'App\personnel_evaluation_setting', 'App\job_desc',
+            'App\personnel_evaluation_setting',
+            'App\job_desc',
             'user_id',
             'jobTitleId',
             'id',
             'job_title_id'
         );
-
     }
 
     public function evaluationValue()
@@ -106,6 +110,24 @@ class User extends Authenticatable
         return $this->hasMany('App\personnel_evaluation_value', 'userId');
     }
 
+    // =========================================== Kegian : Rakor/KBIK/Pelatihan ==========================
+    public function ActivityParticipant()
+    {
+        return $this->hasMany('App\activity_participant');
+    }
 
-    
+    public function ActivityAttendances()
+    {
+        return $this->hasMany('App\attendance_record');
+    }
+
+    public function ActivityEvaluations()
+    {
+        return $this->hasMany('App\evaluation');
+    }
+
+    public function ActivityBlackList()
+    {
+        return $this->hasMany('App\activity_blacklist');
+    }
 }

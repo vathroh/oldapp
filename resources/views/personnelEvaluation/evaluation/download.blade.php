@@ -222,6 +222,8 @@
 		</div>
 	</div>
 	@endif
+
+	<h2></h2>
 	<div class="mt-3" style="width:100%; border: 1px solid grey; border-radius: 5px; padding: 30px;">
 		<div style="width: 600px; margin:auto;">
 			@if($user[0]->id != Auth::user()->id)

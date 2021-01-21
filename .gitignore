@@ -2,3 +2,4 @@
 .env.backup
 public/storage
 app/CustomFunctions/googleFolderParent.php
+config/database.php

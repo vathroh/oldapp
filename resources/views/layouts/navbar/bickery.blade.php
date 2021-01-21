@@ -1,8 +1,8 @@
 <div class="wrapper row0">
-	<div id="topbar" class="hoc clear"> 
+	<div id="topbar" class="hoc clear">
 		<nav id="mainav" class="fl_left">
 			<ul>
-				<li><img src = "{{ asset('favicon-32x32.png') }}"></li>
+				<li><img src="{{ asset('favicon-32x32.png') }}"></li>
 				<li><a href="/">Home</a></li>
 				<li><a href="/blog-osp1">BLOG</a></li>
 				<li><a href="/pustaka-osp1/pengumuman">PENGUMUMAN</a></li>
@@ -26,19 +26,19 @@
 				@endif
 				@else
 				<li>
-					<a href = "/profil">{{ Auth::user()->name }}</a>
+					<a href="/profil">{{ Auth::user()->name }}</a>
 				</li>
 				<li>
-					<a href = "/dashboard">DASHBOARD</a>
+					<a href="/dashboard">DASHBOARD</a>
 				</li>
 				<li>
 					<div class="dropdown-menu dropdown-menu-right">
-						<a class =	"dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
+						<a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
 									document.getElementById('logout-form').submit();">
-									{{ __('Logout') }}
+							{{ __('Logout') }}
 						</a>
 						<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-						@csrf
+							@csrf
 						</form>
 					</div>
 				</li>

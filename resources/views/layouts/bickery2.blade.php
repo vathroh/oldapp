@@ -4,7 +4,7 @@
 		<title>KOTAKU OSP-1 JATENG-1</title>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-		<script src="{{ asset('js/app.js') }}" defer></script>
+
 		<link href='http://fonts.googleapis.com/css?family=Oswald:400,300,700' rel='stylesheet' type='text/css'>
 		<link href="{{ asset('blog/css/layout.css') }}" rel="stylesheet" type="text/css" media="all">
 	</head>

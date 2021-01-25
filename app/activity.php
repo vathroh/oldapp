@@ -28,4 +28,19 @@ class activity extends Model
     {
         return $this->hasMany('App\subject');
     }
+
+    public function evaluation()
+    {
+        return $this->hasMany('App\evaluation');
+    }
+
+    public function trainingEvaluation()
+    {
+        return $this->hasMany('App\evaluation_question');
+    }
+
+    public function quiz()
+    {
+        return $this->hasMany('App\evaluation_question');
+    }
 }

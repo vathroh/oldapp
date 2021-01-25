@@ -20,7 +20,7 @@ class projectActivityParticipantMiddleware
 
         $role = Auth::user()->ActivityParticipant->where('activity_id', $request->route(array_keys($array)[0]));
 
-        if ($role->count() > 0 and $role->first()->role == "PESERTA") {
+        if ($role->whereIn('role', 'PESERTA')->first()) {
             return $next($request);
         } else {
             return redirect('/dashboard');

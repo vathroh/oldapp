@@ -61,20 +61,26 @@
 	@endforeach
 
 	@else
-	<div class="activity_item col-md-12">
+
+	@foreach($activity_categories as $activity_category)
+	<div class="activity_item col-md-4">
 		<div class="card">
 			<div class="card-header card-header-primary">
-				<h5 class="card-title ">PELATIHAN/RAKOR/KBIK</h4>
+				<h5 class="card-title ">{{ $activity_category->name }}</h4>
 			</div>
 
 			<div class="card-body" style="body-background: #f2e2c6;">
 				<div>
 					@foreach( Auth::User()->ActivityParticipant->sortByDesc('id') as $activity )
-					<li class="mt-2">
-						<div>
-							<a href="/kegiatan/peserta/absensi/{{ $activity->activity->id}}">
-								{{ $activity->activity->name }} Tanggal
 
+					<div class="mt-2">
+
+						@if( $activity->activity->category_id == $activity_category->id )
+						<li>
+
+							<a href="/kegiatan/{{ strtolower($activity->role) }}/absensi/{{ $activity->activity->id}}">
+
+								{{ $activity->activity->name }} Tanggal
 
 								@if(Carbon\Carbon::parse($activity->activity->start_date)!=
 								Carbon\Carbon::parse($activity->activity->finish_date) )
@@ -100,13 +106,15 @@
 								{{ Carbon\Carbon::parse($activity->activity->finish_date)->format('F') }}
 								{{ Carbon\Carbon::parse($activity->activity->finish_date)->format('Y') }}
 							</a>
-						</div>
-					</li>
+						</li>
+						@endif
+					</div>
 					@endforeach
 				</div>
 			</div>
 		</div>
 	</div>
+	@endforeach
 	@endif
 </div>
 

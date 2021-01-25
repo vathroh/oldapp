@@ -14,7 +14,7 @@ class certificateController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['auth', 'projectActivityParticipantMiddleware: $id']);
+        $this->middleware(['auth', 'projectActivityParticipantMiddleware']);
     }
 
 
@@ -62,16 +62,13 @@ class certificateController extends Controller
         $activity       = activity::findOrFail($id);
         $attendances    = attendance_record::where('activity_id', $id)->selectRaw('*, Date(created_at) as tanggal')->get();
 
-
-        if (Auth::User()->ActivityAttendances->where('activity_id', $id)->count() >= Carbon::parse($activity->start_date)->diffInDays(Carbon::parse($activity->finish_date)) + 1 and auth::User()->ActivityEvaluations->where('activity_id', $id)->unique('subject_id') >= $activity->subjects->where('evaluation_sheet', 1)) {
+        if (Auth::User()->ActivityAttendances->where('activity_id', $id)->count() >= Carbon::parse($activity->start_date)->diffInDays(Carbon::parse($activity->finish_date)) + 1 and auth::User()->ActivityEvaluations->where('activity_id', $id)->unique('subject_id')->count() >= $activity->subjects->where('evaluation_sheet', 1)->count()) {
             $certificate = "berhak";
         } else {
             $certificate = "tidak berhak";
         };
 
-
-
-        return view('activities.participants.certificate.show', compact(['activity', 'certificate', 'attendances', 'activity_item', 'role']));
+        return view('activities.participants.certificate.show', compact(['activity', 'certificate', 'attendances', 'activity_item', 'role', 'id']));
     }
 
     /**
@@ -112,8 +109,10 @@ class certificateController extends Controller
     {
         $activity       = activity::findOrFail($id);
 
-        if (Auth::User()->ActivityAttendances->where('activity_id', $id)->count() >= Carbon::parse($activity->start_date)->diffInDays(Carbon::parse($activity->finish_date)) + 1 and auth::User()->ActivityEvaluations->where('activity_id', $id)->unique('subject_id') >= $activity->subjects->where('evaluation_sheet', 1)) {
-            if (Auth::User()->ActivityBlackList->count() > 0) {
+
+
+        if (Auth::User()->ActivityAttendances->where('activity_id', $id)->count() >= Carbon::parse($activity->start_date)->diffInDays(Carbon::parse($activity->finish_date)) + 1 and auth::User()->ActivityEvaluations->where('activity_id', $id)->unique('subject_id')->count() >= $activity->subjects->where('evaluation_sheet', 1)->count()) {
+            if (Auth::User()->ActivityBlackList->count() == 0) {
                 $role       = "PESERTA";
                 $username   = Auth::User()->sertificate;
                 $name       = [$username];
@@ -121,8 +120,10 @@ class certificateController extends Controller
                 //return view('activities.participants.certificate.certificate', compact(['username', 'role']));
 
                 $pdf = PDF::loadView('activities.participants.certificate.certificate', compact(['username', 'role']));
+
                 return $pdf->setPaper('a4', 'landscape')->download('certificate.pdf');
             } else {
+
                 return redirect('/kegiatan/peserta/sertifikat/' . $id);
             };
         } else {

@@ -30,8 +30,9 @@
             <div class="button-area text-center" style="width:50%;">
                 @if( Carbon\carbon::parse($activity->finish_date)->addDays(1)->timestamp - Carbon\carbon::now()->timestamp > 0 AND Carbon\carbon::parse($activity->start_date)->timestamp - Carbon\carbon::now()->timestamp < 0) @if($activity_id->where('tanggal', Carbon\carbon::now()->format('Y-m-d'))->count() == 0 )
 
-                    <form method="post" action="/records-attendance/{{ $activity->category_id }}/{{ $activity->id }}">
+                    <form method="post" action="/kegiatan/panitia/absensi/{{$id}}">
                         @csrf
+                        <input type="hidden" name="activity_id" value="{{ $id }}">
                         <button type="submit" class="btn btn-large btn-primary">HADIR</button>
                     </form>
                     @endif

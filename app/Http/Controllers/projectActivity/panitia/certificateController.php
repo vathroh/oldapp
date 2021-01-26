@@ -63,9 +63,9 @@ class certificateController extends Controller
     public function download($id)
     {
         $activity       = activity::findOrFail($id);
-        $role       = "PANITIA";
-        $username   = Auth::User()->sertificate;
-        $name       = [$username];
+        $role           = "PANITIA";
+        $username       = Auth::User()->sertificate;
+        $name           = [$username];
 
         //return view('activities.organizer.certificate.certificate', compact(['username', 'role']));
 

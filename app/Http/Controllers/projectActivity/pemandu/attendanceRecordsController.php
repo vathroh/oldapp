@@ -12,12 +12,17 @@ class attendanceRecordsController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['auth', 'projectActivityOrganizerMiddleware']);
+        $this->middleware(['auth', 'projectActivityInstructorMiddleware']);
     }
 
     public function store(Request $request)
     {
-        //
+        attendance_record::create([
+            'user_id'        => Auth::user()->id,
+            'activity_id'     => $request->activity_id
+        ]);
+
+        return redirect('/kegiatan/pemandu/absensi/' . $request->activity_id);
     }
 
     public function show($id)

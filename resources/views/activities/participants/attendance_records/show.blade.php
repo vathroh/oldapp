@@ -27,10 +27,12 @@
                     </tbody>
                 </table>
             </div>
+
             <div class="button-area text-center" style="width:50%;">
                 @if( Carbon\carbon::parse($activity->finish_date)->addDays(1)->timestamp - Carbon\carbon::now()->timestamp > 0 AND Carbon\carbon::parse($activity->start_date)->timestamp - Carbon\carbon::now()->timestamp < 0) @if($activity_id->where('tanggal', Carbon\carbon::now()->format('Y-m-d'))->count() == 0 )
-                    <form method="post" action="/records-attendance/{{$activity->category->id}}/{{$activity_item}}">
+                    <form method="post" action="/kegiatan/peserta/absensi/{{$id}}">
                         @csrf
+                        <input type="hidden" name="activity_id" value="{{ $id }}">
                         <button type="submit" class="btn btn-large btn-primary">HADIR</button>
                     </form>
                     @endif
@@ -42,6 +44,7 @@
 @endsection
 
 @section('script')
-<script src="{{ asset('js/bootstrap.min.js') }}" defer></script>
+<script src="{{ asset('js/bootstrap.min.js') }}" defer>
+</script>
 <script src="{{ asset('js/jquery.form.min.js') }}" defer></script>
 @endsection

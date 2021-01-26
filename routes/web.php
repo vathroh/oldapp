@@ -16,6 +16,8 @@ Route::get('/', function () {
 });
 */
 
+
+
 Route::get('/', 'Blog\blogController@home');
 
 Auth::routes();
@@ -177,14 +179,37 @@ Route::put('/pass-by-user/{id}', 'passwordController@storeByUser');
 
 
 //ACTIVITIES : PELATIHAN | RAKOR | KBIK 
-Route::namespace('projectActivity\peserta')->prefix('kegiatan/peserta')->name('peserta.')->group(function () {
-    //Route::resource('/users', 'UsersController', ['except' => ['create', 'store']]);
-    Route::resource('sertifikat', 'certificateController');
-    Route::resource('absensi', 'attendaceRecordsController');
+Route::namespace('projectActivity\peserta')->prefix('kegiatan/peserta')->name('pesertaKegiatan.')->group(function () {
+    Route::post('evaluasi/pelatihan/{activity}', 'activityEvaluationInputController@store');
     Route::post('download-sertifikat/{activity_id}', 'certificateController@download');
+    //Route::resource('/users', 'UsersController', ['except' => ['create', 'store']]);
+    Route::get('evaluasi/materi/{activity}/{id}', 'evaluationInputController@show');
+    Route::post('evaluasi/materi/{activity}', 'evaluationInputController@store');
+    Route::resource('evaluasi/pelatihan', 'activityEvaluationInputController');
+    Route::resource('absensi', 'attendaceRecordsController');
+    Route::resource('sertifikat', 'certificateController');
+    Route::resource('evaluasi', 'evaluationController');
+    Route::resource('materi', 'materialsController');
+    Route::resource('jadwal', 'scheduleController');
 });
 
+Route::namespace('projectActivity\panitia')->prefix('kegiatan/panitia')->name('panitiaKegiatan.')->group(function () {
+    Route::post('download-sertifikat/{activity_id}', 'certificateController@download');
+    Route::resource('absensi', 'attendanceRecordsController');
+    Route::resource('sertifikat', 'certificateController');
+    Route::resource('materi', 'materialsController');
+    Route::resource('jadwal', 'scheduleController');
+});
 
+Route::namespace('projectActivity\pemandu')->prefix('kegiatan/pemandu')->name('pemanduKegiatan.')->group(function () {
+    Route::post('download-sertifikat/{activity_id}', 'certificateController@download');
+    Route::resource('absensi', 'attendanceRecordsController');
+    Route::resource('sertifikat', 'certificateController');
+    Route::resource('materi', 'materialsController');
+    Route::resource('jadwal', 'scheduleController');
+});
+
+Route::get('/training-evaluation/{activity_id}/{subject_id}', 'evaluationController@index');
 
 Route::resource('/activity', 'activityController');
 Route::resource('/subjects', 'subjectsController');
@@ -196,15 +221,12 @@ Route::resource('/activities-category', 'activitiesCategoryController');
 Route::get('/dropdown-question', 'evaluationAnswerController@dropdown');
 Route::resource('/evaluation-questions', 'evaluationQuestionController');
 Route::get('/lesson/{activity}/{activity_item}', 'activityController@lesson');
-
 Route::post('/certificate/{activity_item}', 'activityController@certificate');
-
 Route::get('/lesson-download/{library_id}', 'activityController@lesson_download');
 Route::get('/schedule/{activity}/{activity_item}', 'activityController@schedule');
 Route::get('/attendance/{activity}/{activity_item}', 'activityController@attendance');
 Route::get('/activity/{activity}/{activity_item}', 'activityController@activity_item');
 Route::get('/participants/{activity}/{activity_item}', 'activityController@participants');
-Route::get('/training-evaluation/{activity_id}/{subject_id}', 'evaluationController@index');
 Route::get('/activity-evaluation/{activity_id}', 'evaluationController@activityEvaluation');
 Route::post('/training-evaluation/{activity_id}/{subject_id}', 'evaluationController@store');
 Route::get('/training-monitoring/{activity}/{activity_item}', 'activityController@monitoring');
@@ -213,8 +235,8 @@ Route::get('/listing-attendant/{activity}/{activity_item}', 'activityController@
 Route::get('/evaluation-result/{activity}/{activity_item}', 'activityController@evaluation_result');
 Route::post('/activity-evaluation/{activity_id}', 'evaluationController@evaluationActivityStore');
 Route::get('/certificate_page/{activity}/{activity_item}', 'activityController@certificate_page');
-
 Route::get('/evaluation-check/{activity}/{activity_item}', 'activityController@evaluation_check');
+
 //Ajax
 Route::get('/ajax-listing-attendant-find-registered-name/', 'activityController@ajaxAttendanceFindRegisteredName');
 Route::get('/ajax-listing-attendant-find-name/', 'activityController@ajaxAttendanceFindName');
@@ -225,8 +247,6 @@ Route::post('/ajax-listing-register/', 'activityController@ajaxRegister');
 Route::delete('/ajax-listing-delete', 'activityController@deleteAjax');
 Route::get('/ajax-listing-moveReg', 'activityController@moveReg');
 Route::get('/ajax-listing-ready', 'activityController@ready');
-
-
 
 //EVALUASI KINERJA 
 Route::resource('personnel-evaluator', 'personnelEvaluation\evaluator');
@@ -247,6 +267,7 @@ Route::delete(
     'personnel-evaluation-upload/{valueId}',
     'personnelEvaluation\upload@destroy'
 );
+
 Route::get('personnel-evaluation-download-rekap-all', 'personnelEvaluation\download@rekapAll');
 
 Route::get('personnel-evaluation-rekap', 'personnelEvaluation\evaluation@rekap');
@@ -274,6 +295,7 @@ Route::get('personnel-evaluation-setup-copy/{settingId}', 'personnelEvaluation\s
 Route::get('personnel-evaluation-myevaluation', 'personnelEvaluation\evaluation@myevaluation');
 Route::get('personnel-evaluation-monitoring-extend/{evaluation}/{jobId}', 'personnelEvaluation\evaluation@extendedMonitoring');
 Route::get('personnel-evaluation-download-file/{fileId}', 'personnelEvaluation\upload@download');
+
 //Ajax
 Route::get('personnel-evaluation-setup-aspect-item-move-down', 'personnelEvaluation\setup@moveDownAspectItem');
 Route::get('personnel-evaluation-setup-aspect-item-move-up', 'personnelEvaluation\setup@moveUpAspectItem');

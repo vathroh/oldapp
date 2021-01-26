@@ -1,7 +1,19 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light" style="background-color:transparent;">
-    <a class="nav-link" href="/kegiatan/peserta/absensi/{{ $activity_item }}">Daftar Hadir</a>
-    <a class="nav-link" href="/activity/{{ $activity->category->id }}/{{ $activity_item }}">Evaluasi Belajar</a>
-    <a class="nav-link" href="/schedule/{{ $activity }}/{{ $activity_item }}">Jadwal</a>
-    <a class="nav-link" href="/lesson/{{ $activity }}/{{ $activity_item }}">Materi</a>
-    <a class="nav-link" href="/kegiatan/peserta/sertifikat/{{ $activity_item }}">Sertifikat</a>
+    <div class="d-flex">
+        @foreach(Auth::User()->ActivityParticipant->where('activity_id', $id) as $role)
+        <a href="/kegiatan/{{ strtolower($role->role) }}/absensi/{{ $activity->id }}">
+            <button class="btn btn-primary">
+                {{ $role->role }}
+            </button>
+            @endforeach
+        </a>
+    </div>
+    <a class="nav-link" href="/kegiatan/peserta/absensi/{{ $activity->id }}">Daftar Hadir</a>
+    <!-- <a class="nav-link" href="/activity/{{ $activity->category->id }}/{{ $activity->id }}">Evaluasi</a> -->
+    <a class="nav-link" href="/kegiatan/peserta/evaluasi/{{ $activity->id }}">Evaluasi</a>
+    <a class="nav-link" href="/kegiatan/peserta/jadwal/{{ $activity->id }}">Jadwal</a>
+    <a class="nav-link" href="/kegiatan/peserta/materi/{{ $activity->id }}">Materi</a>
+    @if($activity->id == 5)
+    <a class="nav-link" href="/kegiatan/peserta/sertifikat/{{ $activity->id }}">Sertifikat</a>
+    @endif
 </nav>

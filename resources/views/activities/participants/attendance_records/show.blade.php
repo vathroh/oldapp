@@ -3,7 +3,7 @@
 @section('content')
 <div class="card">
     <div class="card-header card-header-primary">
-        <h4 class="card-title "></h4>
+        <h4 class="card-title ">{{ $activity->name }}</h4>
     </div>
     @include('activities.participants.navbar')
     <div class="card-body">

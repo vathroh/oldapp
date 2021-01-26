@@ -185,7 +185,7 @@
 				<tr>
 					<th class="text-center" colspan="2">T O T A L</th>
 					<th colspan="3"></th>
-					<th class="text-center" id="totalScores"></th>
+					<th class="text-center">{{ $value[0]->totalScore }}</th>
 				</tr>
 		</tbody>
 	</table>
@@ -250,12 +250,8 @@
 					Hasil Akhir/Kualifikasi Kinerja
 				</div>
 				<div class="col">
-					<h6 id="finalResult" class="text-center" style="vertical-align: bottom;">
-						@if($user[0]->id == Auth::user()->id)
-						{{ $value[0]->userFinalResult }}
-						@else
+					<h6 class="text-center" style="vertical-align: bottom;">
 						{{ $value[0]->finalResult }}
-						@endif
 					</h6>
 				</div>
 			</div>

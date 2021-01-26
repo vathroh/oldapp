@@ -530,7 +530,6 @@ class evaluation extends Controller
 			'ok_by_user' => 1
 		]);
 
->>>>>>> 406508e108dedb3d741a00824c29369a7dd4733b
 		return redirect('personnel-evaluation');
 	}
 

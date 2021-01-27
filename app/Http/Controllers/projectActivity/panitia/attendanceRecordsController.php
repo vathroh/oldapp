@@ -6,6 +6,7 @@ use App\activity;
 use App\attendance_record;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use illuminate\Support\Facades\Auth;
 
 class attendanceRecordsController extends Controller
@@ -19,7 +20,8 @@ class attendanceRecordsController extends Controller
     {
         attendance_record::create([
             'user_id'           => Auth::user()->id,
-            'activity_id'       => $request->activity_id
+            'activity_id'       => $request->activity_id,
+            'date'              => date("Y-m-d")
         ]);
 
         return redirect('/kegiatan/panitia/absensi/' . $request->activity_id);

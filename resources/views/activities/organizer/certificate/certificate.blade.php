@@ -12,7 +12,7 @@
         body {
             @import url('https://fonts.googleapis.com/css2?family=Anton&family=EB+Garamond:wght@600&display=swap');
             background-color: grey;
-            color: #666;
+
         }
 
         img {
@@ -22,25 +22,24 @@
         }
 
         .name {
+            position: absolute;
             font-family: 'Anton', sans-serif;
             text-transform: uppercase;
             font-size: 44px;
-            position: absolute;
-            height: 187mm;
+            height: 100mm;
             width: 275mm;
             text-align: center;
-            margin-top: 48mm;
+            margin-top: 41mm;
         }
 
         .as {
+            position: absolute;
             font-family: 'EB Garamond', serif;
             text-transform: capitalize;
-            font-size: 24px;
-            position: absolute;
-            height: 187mm;
+            font-size: 30px;
             width: 275mm;
             text-align: center;
-            margin-top: 72mm;
+            margin-top: 61mm;
         }
 
         .activity_name {
@@ -48,7 +47,7 @@
             font-size: 24px;
             position: absolute;
             height: 187mm;
-            width: 265mm;
+            width: 275mm;
             text-align: center;
             margin-top: 92mm;
             margin-left: 5mm;
@@ -83,21 +82,12 @@
 
 <body>
     <img src="{{ public_path('SERTIFIKAT_01.png') }}">
+    <!-- <img src="{{ asset('SERTIFIKAT_01.png') }}"> -->
     <div class="name" style="">
         <h4>{{ $username }}</h4>
     </div>
     <div class="as" style="">
         <h4>Sebagai {{$role}}</h4>
-    </div>
-    <div class="activity_name">
-        Pelatihan Penguatan Kelompok Pemanfaat dan Pemelihara (KPP)
-        KEPADA askot bidang dan tim fasilitator
-    </div>
-    <div class="nsup">
-        NATIONAL SLUM UPGRADING PROGRAM (NSUP) PROGRAM KOTA TANPA KUMUH
-    </div>
-    <div class="date">
-        Diselenggarakan Pada Tanggal 27 - 28 Januari 2021
     </div>
 </body>
 

@@ -12,7 +12,8 @@ class certificatesController extends Controller
         $this->middleware(['auth', 'projectActivityAdminMiddleware']);
     }
 
-    public function index($activity_id){
-        return view('')
+    public function index($activity_id)
+    {
+        return view('');
     }
 }

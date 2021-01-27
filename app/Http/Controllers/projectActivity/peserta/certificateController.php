@@ -71,39 +71,7 @@ class certificateController extends Controller
         return view('activities.participants.certificate.show', compact(['activity', 'certificate', 'attendances', 'activity_item', 'role', 'id']));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 
     public function download($id)
     {
@@ -117,7 +85,7 @@ class certificateController extends Controller
                 $username   = Auth::User()->sertificate;
                 $name       = [$username];
 
-                //return view('activities.participants.certificate.certificate', compact(['username', 'role']));
+                // return view('activities.participants.certificate.certificate', compact(['username', 'role']));
 
                 $pdf = PDF::loadView('activities.participants.certificate.certificate', compact(['username', 'role']));
 

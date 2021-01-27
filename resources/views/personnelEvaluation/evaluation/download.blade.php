@@ -394,13 +394,11 @@
 				} else {
 					var allScores = 0;
 				}
-
 				totalScores += parseFloat(allScores);
 			}
 			var totalVariabel = $("td[data-variabel='1']#checkbox").length;
 			$("#totalVariabel").text(totalVariabel);
 			$("#totalScores").text(totalScores.toFixed(2) + '%');
-
 		});
 
 		$("textarea#recommendation").keyup(function() {

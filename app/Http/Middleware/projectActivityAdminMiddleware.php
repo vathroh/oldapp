@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 
-class projectActivityParticipantMiddleware
+class projectActivityAdminMiddleware
 {
     /**
      * Handle an incoming request.
@@ -16,11 +16,7 @@ class projectActivityParticipantMiddleware
      */
     public function handle($request, Closure $next)
     {
-        $array = $request->route()->parameters();
-
-        $role = Auth::user()->ActivityParticipant->where('activity_id', $request->route(array_keys($array)[0]));
-
-        if ($role->whereIn('role', 'PESERTA')->first()) {
+        if (Auth::user()->hasAnyRoles(['admin', 'author'])) {
             return $next($request);
         } else {
             return redirect('/activities');

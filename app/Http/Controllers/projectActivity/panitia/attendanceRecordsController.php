@@ -17,7 +17,12 @@ class attendanceRecordsController extends Controller
 
     public function store(Request $request)
     {
-        //
+        attendance_record::create([
+            'user_id'           => Auth::user()->id,
+            'activity_id'       => $request->activity_id
+        ]);
+
+        return redirect('/kegiatan/panitia/absensi/' . $request->activity_id);
     }
 
     public function show($id)

@@ -186,6 +186,7 @@ Route::namespace('projectActivity\peserta')->prefix('kegiatan/peserta')->name('p
     Route::get('evaluasi/materi/{activity}/{id}', 'evaluationInputController@show');
     Route::post('evaluasi/materi/{activity}', 'evaluationInputController@store');
     Route::resource('evaluasi/pelatihan', 'activityEvaluationInputController');
+    Route::post('absensi/{activity}', 'attendaceRecordsController@store');
     Route::resource('absensi', 'attendaceRecordsController');
     Route::resource('sertifikat', 'certificateController');
     Route::resource('evaluasi', 'evaluationController');
@@ -195,6 +196,7 @@ Route::namespace('projectActivity\peserta')->prefix('kegiatan/peserta')->name('p
 
 Route::namespace('projectActivity\panitia')->prefix('kegiatan/panitia')->name('panitiaKegiatan.')->group(function () {
     Route::post('download-sertifikat/{activity_id}', 'certificateController@download');
+    Route::post('absensi/{activity}', 'attendanceRecordsController@store');
     Route::resource('absensi', 'attendanceRecordsController');
     Route::resource('sertifikat', 'certificateController');
     Route::resource('materi', 'materialsController');
@@ -203,6 +205,7 @@ Route::namespace('projectActivity\panitia')->prefix('kegiatan/panitia')->name('p
 
 Route::namespace('projectActivity\pemandu')->prefix('kegiatan/pemandu')->name('pemanduKegiatan.')->group(function () {
     Route::post('download-sertifikat/{activity_id}', 'certificateController@download');
+    Route::post('absensi/{activity}', 'attendanceRecordsController@store');
     Route::resource('absensi', 'attendanceRecordsController');
     Route::resource('sertifikat', 'certificateController');
     Route::resource('materi', 'materialsController');
@@ -210,7 +213,6 @@ Route::namespace('projectActivity\pemandu')->prefix('kegiatan/pemandu')->name('p
 });
 
 Route::get('/training-evaluation/{activity_id}/{subject_id}', 'evaluationController@index');
-
 Route::resource('/activity', 'activityController');
 Route::resource('/subjects', 'subjectsController');
 Route::get('/activities', 'activityController@activities');

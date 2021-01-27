@@ -92,6 +92,18 @@ class User extends Authenticatable
         );
     }
 
+    public function workZone()
+    {
+        return $this->hasOneThrough(
+            'App\work_zone',
+            'App\job_desc',
+            'user_id', // foreign key on job_desc 
+            'id', //foreign key on work_zone 
+            'id', // local key on user 
+            'work_zone_id' //localkey on  job_desc 
+        );
+    }
+
     // ============================================= Evaluasi Kinerja ====================================
     public function evaluationSetting()
     {

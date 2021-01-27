@@ -12,4 +12,5 @@
     <a class="nav-link" href="/kegiatan/panitia/jadwal/{{ $activity->id }}">Jadwal</a>
     <a class="nav-link" href="/kegiatan/panitia/materi/{{ $activity->id }}">Materi</a>
     <a class="nav-link" href="/kegiatan/panitia/sertifikat/{{ $activity->id }}">Sertifikat</a>
+    <a class="nav-link" href="/kegiatan/panitia/monitoring/peserta/{{ $activity->id }}">Monitoring</a>
 </nav>

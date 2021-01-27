@@ -197,6 +197,11 @@ Route::namespace('projectActivity\peserta')->prefix('kegiatan/peserta')->name('p
 Route::namespace('projectActivity\panitia')->prefix('kegiatan/panitia')->name('panitiaKegiatan.')->group(function () {
     Route::post('download-sertifikat/{activity_id}', 'certificateController@download');
     Route::post('absensi/{activity}', 'attendanceRecordsController@store');
+    Route::get('monitoring/peserta/{activity}', 'monitoringController@participants');
+    Route::get('monitoring/assesment', 'monitoringController@assesment');
+    Route::get('monitoring/evaluasi', 'monitoringController@evaluation');
+    Route::get('monitoring/pemandu', 'monitoringController@instructor');
+    Route::get('monitoring/panitia', 'monitoringController@organizer');
     Route::resource('absensi', 'attendanceRecordsController');
     Route::resource('sertifikat', 'certificateController');
     Route::resource('materi', 'materialsController');
@@ -208,6 +213,11 @@ Route::namespace('projectActivity\pemandu')->prefix('kegiatan/pemandu')->name('p
     Route::post('absensi/{activity}', 'attendanceRecordsController@store');
     Route::resource('absensi', 'attendanceRecordsController');
     Route::resource('sertifikat', 'certificateController');
+    Route::resource('materi', 'materialsController');
+    Route::resource('jadwal', 'scheduleController');
+});
+
+Route::namespace('projectActivity\admin')->prefix('kegiatan/admin')->name('adminKegiatan.')->group(function () {
     Route::resource('materi', 'materialsController');
     Route::resource('jadwal', 'scheduleController');
 });

@@ -13,7 +13,7 @@ class certificateController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['auth', 'projectActivityOrganizerMiddleware: $id']);
+        $this->middleware(['auth', 'projectActivityInstructorMiddleware: $id']);
     }
 
 

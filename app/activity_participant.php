@@ -15,7 +15,7 @@ class activity_participant extends Model
 
     public function attendanceRecords()
     {
-        return $this->belongsToMany('App\attendance_record', 'user_id', 'user_id');
+        return $this->hasMany('App\attendance_record', 'user_id');
     }
 
     public function activity()

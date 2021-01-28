@@ -1,4 +1,13 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light" style="background-color:transparent;">
+	<div class="d-flex">
+		@foreach(Auth::User()->ActivityParticipant->where('activity_id', $activity_item) as $role)
+		<a href="/kegiatan/{{ strtolower($role->role) }}/absensi/{{ $activity_item }}">
+			<button class="btn btn-primary">
+				{{ $role->role }}
+			</button>
+			@endforeach
+		</a>
+	</div>
 	@if (Auth::user()->hasAnyRoles(['admin', 'training']))
 	<a class="nav-link" href="/listing-attendant/{{ $activity }}/{{ $activity_item }}">Register Peserta</a>
 	<a class="nav-link" href="/training-monitoring/{{ $activity }}/{{ $activity_item }}">Monitoring</a>

@@ -7,11 +7,13 @@
 
     </div>
     @include('activities.organizer.navbar')
-    <div style="margin: 0 20px;">Daftar Hadir : Peserta | Pemandu | Panitia | Evaluasi: Evaluasi Topik Belajar</div>
     <div class="card-body">
+        <div>Daftar Hadir : Peserta | Pemandu | Panitia</div>
         <div class="monitoring-container">
+
+
             <div class="my-3" style="border:1px solid black; padding: 20px;">
-                <h4 class="text-center">Peserta Sudah Mengisi Daftar Hadir</h4>
+                <h4>Sudah Mengisi Daftar Hadir</h4>
                 @for($i=0; $i<Carbon\Carbon::parse($activity->start_date)->diffInDays(Carbon\Carbon::parse($activity->finish_date)) + 1; $i++) @php $tanggal=Carbon\Carbon::parse($activity->start_date);
                     $day = $tanggal->addDays($i);
                     $day1 = $day->format('Y-m-d');

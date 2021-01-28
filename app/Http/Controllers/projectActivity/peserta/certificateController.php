@@ -80,7 +80,7 @@ class certificateController extends Controller
 
 
         if (Auth::User()->ActivityAttendances->where('activity_id', $id)->count() >= Carbon::parse($activity->start_date)->diffInDays(Carbon::parse($activity->finish_date)) + 1 and auth::User()->ActivityEvaluations->where('activity_id', $id)->unique('subject_id')->count() >= $activity->subjects->where('evaluation_sheet', 1)->count()) {
-            if (Auth::User()->ActivityBlackList->count() == 0) {
+            if (Auth::User()->ActivityBlackList->where('activity_id', $id)->count() == 0) {
                 $role       = "PESERTA";
                 $username   = Auth::User()->sertificate;
                 $name       = [$username];

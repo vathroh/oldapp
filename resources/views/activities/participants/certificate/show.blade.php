@@ -8,7 +8,7 @@
     @include('activities.participants.navbar')
     <div class="card-body">
         <div class="mt-5">
-            @if($certificate == "berhak" AND Auth::User()->ActivityBlackList->count() == 0)
+            @if($certificate == "berhak" AND Auth::User()->ActivityBlackList->where('activity_id', $id)->count() == 0)
             <form method="post" action="/kegiatan/peserta/download-sertifikat/{{ $activity->id }}">
                 @csrf
                 <div style="width:100%;" class="text-center">
@@ -77,9 +77,9 @@
 
                 <div style="color:red; font-weight:bold;">
                     <ul>
-                        @foreach( Auth::User()->ActivityBlackList as $blackList)
+                        @foreach( Auth::User()->ActivityBlackList->where('activity_id', $id) as $blackList)
                         <li>
-                            {{ $blackList }}
+                            {{ $blackList->reason }}
                         </li>
                         @endforeach
                     </ul>

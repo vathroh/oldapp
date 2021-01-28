@@ -21,7 +21,8 @@ class attendaceRecordsController extends Controller
     {
         attendance_record::create([
             'user_id'        => Auth::user()->id,
-            'activity_id'     => $request->activity_id
+            'activity_id'     => $request->activity_id,
+            'date'              => date("Y-m-d")
         ]);
 
         return redirect('/kegiatan/peserta/absensi/' . $request->activity_id);

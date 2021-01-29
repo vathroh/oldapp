@@ -42,57 +42,63 @@ class kppController extends Controller
     {
         $kppdatas = $this->coba2()->leftjoin('infrastruktures_maintenances', 'infrastruktures_maintenances.kelurahan_id', '=', 'kppdatas.kode_desa')->groupBy('kppdatas.kode_desa')->orderBy('kppdatas.updated_at', 'desc')->paginate(10);
         $BOPs = kpp_operating_fund::get();
-              
+
         return view('kpp.index', compact(['kppdatas', 'BOPs']));
     }
-    
+
     public function find()
     {
-		$kabupaten=alldistrict::whereIn('kode_kab', explode(', ', str_replace(array('["',  '"]'),'', DB::table('work_zones')
-            ->where('id', function($query){
-                $query->select('work_zone_id')
-                      ->from('job_descs')
-                      ->where('user_id', Auth::user()->id)
-                      ->get()
-                      ->pluck('work_zone_id');
-            })->get()
-              ->pluck('zone')            
-            )))->get();
-            
+        $kabupaten = alldistrict::whereIn('kode_kab', explode(', ', str_replace(
+            array('["',  '"]'),
+            '',
+            DB::table('work_zones')
+                ->where('id', function ($query) {
+                    $query->select('work_zone_id')
+                        ->from('job_descs')
+                        ->where('user_id', Auth::user()->id)
+                        ->get()
+                        ->pluck('work_zone_id');
+                })->get()
+                ->pluck('zone')
+        )))->get();
+
         return view('kpp.find', compact('kabupaten'));
     }
 
     public function create(Request $request)
     {
-        switch (Auth::user()->hasAnyRoles(['admin', 'fasilitator'])){ 
-        case true  :
+        switch (Auth::user()->hasAnyRoles(['admin', 'fasilitator'])) {
+            case true:
 
-        $kelurahan=allvillage::get();
-        $kabupaten=alldistrict::whereIn('kode_kab', explode(', ', str_replace(array('["',  '"]'),'', DB::table('work_zones')
-            ->where('id', function($query){
-                $query->select('work_zone_id')
-                      ->from('job_descs')
-                      ->where('user_id', Auth::user()->id)
-                      ->get()
-                      ->pluck('work_zone_id');
-            })->get()
-              ->pluck('zone')            
-        )))->get();
-        $kppdatas=kppdata::get();
-        $bkmdatas=bkmdata::get();
-        $user=User::get();
-        
-        if (kppdata::where('kode_desa', $request->kelurahan)->doesntExist()) {
-            return view('kpp.create', compact(['request', 'bkmdatas', 'kelurahan', 'kabupaten']));
-        } else {
-            $id=kppdata::where('kode_desa', $request->kelurahan)->get()[0]['id'];
-            return redirect('/kpp/'.$id);
-        }
+                $kelurahan = allvillage::get();
+                $kabupaten = alldistrict::whereIn('kode_kab', explode(', ', str_replace(
+                    array('["',  '"]'),
+                    '',
+                    DB::table('work_zones')
+                        ->where('id', function ($query) {
+                            $query->select('work_zone_id')
+                                ->from('job_descs')
+                                ->where('user_id', Auth::user()->id)
+                                ->get()
+                                ->pluck('work_zone_id');
+                        })->get()
+                        ->pluck('zone')
+                )))->get();
+                $kppdatas = kppdata::get();
+                $bkmdatas = bkmdata::get();
+                $user = User::get();
 
-        break;
-        default:    
-            return redirect(route('kpp.index'));
-        break;
+                if (kppdata::where('kode_desa', $request->kelurahan)->doesntExist()) {
+                    return view('kpp.create', compact(['request', 'bkmdatas', 'kelurahan', 'kabupaten']));
+                } else {
+                    $id = kppdata::where('kode_desa', $request->kelurahan)->get()[0]['id'];
+                    return redirect('/kpp/' . $id);
+                }
+
+                break;
+            default:
+                return redirect(route('kpp.index'));
+                break;
         }
     }
 
@@ -100,93 +106,98 @@ class kppController extends Controller
     public function store(Request $request)
     {
         kppdata::create([
-            'kode_desa'=>$request->kelurahan,
-            'lokasi_bdi_bpm'=>$request->lokasi_bdi,
-            'nama_kpp'=>$request->nama_kpp,
-            'anggota_pria'=>$request->anggota_pria,
-            'anggota_wanita'=>$request->anggota_wanita,
-            'anggota_miskin'=>$request->anggota_miskin,
+            'kode_desa' => $request->kelurahan,
+            'lokasi_bdi_bpm' => $request->lokasi_bdi,
+            'nama_kpp' => $request->nama_kpp,
+            'anggota_pria' => $request->anggota_pria,
+            'anggota_wanita' => $request->anggota_wanita,
+            'anggota_miskin' => $request->anggota_miskin,
             'user_id' => Auth::user()->id
         ]);
 
         pengurus_kpp::create([
-            'kelurahan_id'=>$request->kelurahan,
+            'kelurahan_id' => $request->kelurahan,
         ]);
 
-        $id=kppdata::where('kode_desa', $request->kelurahan)->get()[0]['id'];
-        return redirect('/kpp/'.$id);
+        $id = kppdata::where('kode_desa', $request->kelurahan)->get()[0]['id'];
+        return redirect('/kpp/' . $id);
     }
 
 
     public function show($id)
     {
-        If (Auth::user()->hasAnyRoles(['admin', 'fasilitator'])) {
-        
-		$kabupaten=alldistrict::whereIn('kode_kab', explode(', ', str_replace(array('["',  '"]'),'', DB::table('work_zones')
-            ->where('id', function($query){
-                $query->select('work_zone_id')
-                      ->from('job_descs')
-                      ->where('user_id', Auth::user()->id)
-                      ->get()
-                      ->pluck('work_zone_id');
-            })->get()
-              ->pluck('zone')            
-        )))->get();
-        
-        $kppdata=kppdata::where('id', $id)->get()[0];
-        $kelurahan=allvillage::where('KD_KEL', $kppdata->kode_desa)->get()[0];
-        $bkmdata=bkmdata::where('kelurahan_id', $kppdata->kode_desa)->get()[0];
-        $kpp_pertemuans=kpp_pertemuan::where('kelurahan_id', $kppdata->kode_desa)->get();
-        $pengurus_kpp=pengurus_kpp::where('kelurahan_id', $kppdata->kode_desa)->get()->first();        
-        $kpp_operating_funds=kpp_operating_fund::where('kelurahan_id', $kppdata->kode_desa)->get();
-        $data_pengecekan_fisiks=data_pengecekan_fisik::where('kelurahan_id', $kppdata->kode_desa)->get();
-        $infrastruktures_maintenances = infrastruktures_maintenance::where('kelurahan_id', $kppdata->kode_desa)->get();
-        $user=User::get();
-        
-        $jumlah = DB::table('kpp_operating_funds')->select(DB::raw('SUM(jumlah) as jumlah'))->get();
+        if (Auth::user()->hasAnyRoles(['admin', 'fasilitator'])) {
 
-        return view('kpp.show', compact(['kppdata', 'kelurahan', 'bkmdata', 'kabupaten', 'pengurus_kpp', 'kpp_pertemuans', 'kpp_operating_funds', 'user', 'data_pengecekan_fisiks', 'infrastruktures_maintenances', 'jumlah']));
-    } else {
+            $kabupaten = alldistrict::whereIn('kode_kab', explode(', ', str_replace(
+                array('["',  '"]'),
+                '',
+                DB::table('work_zones')
+                    ->where('id', function ($query) {
+                        $query->select('work_zone_id')
+                            ->from('job_descs')
+                            ->where('user_id', Auth::user()->id)
+                            ->get()
+                            ->pluck('work_zone_id');
+                    })->get()
+                    ->pluck('zone')
+            )))->get();
 
-        return redirect('/kpp');
+            $kppdata = kppdata::where('id', $id)->get()[0];
+            $kelurahan = allvillage::where('KD_KEL', $kppdata->kode_desa)->get()[0];
+            $bkmdata = bkmdata::where('kelurahan_id', $kppdata->kode_desa)->get()[0];
+            $kpp_pertemuans = kpp_pertemuan::where('kelurahan_id', $kppdata->kode_desa)->get();
+            $pengurus_kpp = pengurus_kpp::where('kelurahan_id', $kppdata->kode_desa)->get()->first();
+            $kpp_operating_funds = kpp_operating_fund::where('kelurahan_id', $kppdata->kode_desa)->get();
+            $data_pengecekan_fisiks = data_pengecekan_fisik::where('kelurahan_id', $kppdata->kode_desa)->get();
+            $infrastruktures_maintenances = infrastruktures_maintenance::where('kelurahan_id', $kppdata->kode_desa)->get();
+            $user = User::get();
+
+            $jumlah = DB::table('kpp_operating_funds')->select(DB::raw('SUM(jumlah) as jumlah'))->get();
+
+            return view('kpp.show', compact(['kppdata', 'kelurahan', 'bkmdata', 'kabupaten', 'pengurus_kpp', 'kpp_pertemuans', 'kpp_operating_funds', 'user', 'data_pengecekan_fisiks', 'infrastruktures_maintenances', 'jumlah']));
+        } else {
+
+            return redirect('/kpp');
+        }
     }
-}
 
     public function edit($id)
     {
-	   If (Auth::user()->hasAnyRoles(['admin', 'fasilitator'])) {
-        $kppdata=kppdata::find($id);
-        $kelurahan=allvillage::where('KD_KEL', $kppdata->kode_desa)->get();
-        $bkmdata=bkmdata::where('kelurahan_id', $kppdata->kode_desa)->get();
-        $kabupaten=alldistrict::whereIn('kode_kab', explode(', ', str_replace(array('["',  '"]'),'', DB::table('work_zones')
-            ->where('id', function($query){
-                $query->select('work_zone_id')
-                      ->from('job_descs')
-                      ->where('user_id', Auth::user()->id)
-                      ->get()
-                      ->pluck('work_zone_id');
-            })->get()
-              ->pluck('zone')            
-        )))->get();
-        return view('kpp.edit', compact(['kppdata', 'bkmdata', 'kelurahan', 'kabupaten']));
-        
-       } else {
-           return redirect('/kpp');
-       }
+        if (Auth::user()->hasAnyRoles(['admin', 'fasilitator'])) {
+            $kppdata = kppdata::find($id);
+            $kelurahan = allvillage::where('KD_KEL', $kppdata->kode_desa)->get();
+            $bkmdata = bkmdata::where('kelurahan_id', $kppdata->kode_desa)->get();
+            $kabupaten = alldistrict::whereIn('kode_kab', explode(', ', str_replace(
+                array('["',  '"]'),
+                '',
+                DB::table('work_zones')
+                    ->where('id', function ($query) {
+                        $query->select('work_zone_id')
+                            ->from('job_descs')
+                            ->where('user_id', Auth::user()->id)
+                            ->get()
+                            ->pluck('work_zone_id');
+                    })->get()
+                    ->pluck('zone')
+            )))->get();
+            return view('kpp.edit', compact(['kppdata', 'bkmdata', 'kelurahan', 'kabupaten']));
+        } else {
+            return redirect('/kpp');
+        }
     }
 
-    
+
     public function update(Request $request, $id)
     {
         kppdata::where('id', $id)->update([
-            'lokasi_bdi_bpm'=>$request->lokasi_bdi,
-            'nama_kpp'=>$request->nama_kpp,
-            'anggota_pria'=>$request->anggota_pria,
-            'anggota_wanita'=>$request->anggota_wanita,
-            'anggota_miskin'=>$request->anggota_miskin,
+            'lokasi_bdi_bpm' => $request->lokasi_bdi,
+            'nama_kpp' => $request->nama_kpp,
+            'anggota_pria' => $request->anggota_pria,
+            'anggota_wanita' => $request->anggota_wanita,
+            'anggota_miskin' => $request->anggota_miskin,
         ]);
 
-        return redirect ('/kpp/' . $id);
+        return redirect('/kpp/' . $id);
     }
 
     /**
@@ -199,148 +210,157 @@ class kppController extends Controller
     {
         //
     }
-    
-    
-    
+
+
+
     public function monitoring()
     {
-		$kppExist = DB::table('kpp_data_view')->groupBy('KD_KEL');
-		$bdiVillages = DB::table('bdi_villages');
-		$BDIs = $bdiVillages->get();
-		$bdiKPP = DB::table('kpp_data_view')->join('bdi_villages', 'kpp_data_view.KD_KEL', '=', 'bdi_villages.KD_KEL')->groupBy('kpp_data_view.KD_KEL')->pluck('kpp_data_view.KD_KEL');
-		$noBDI = $kppExist->whereNotIn('KD_KEL', $bdiKPP)->get();
-		$noKPPs = $bdiVillages->groupBy('bdi_villages.KD_KEL')->whereNotIn('bdi_villages.KD_KEL', $bdiKPP)->join('allvillages', 'bdi_villages.KD_KEL', '=', 'allvillages.KD_KEL')->get();
-		$PICs = DB::table('job_descs')->join('users', 'users.id', '=', 'job_descs.user_id')->join('job_titles', 'job_titles.id', '=', 'job_descs.job_title_id')->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')->join('personalInformations', 'personalInformations.nik', '=', 'users.nik')->get();
+        $kppExist = DB::table('kpp_data_view')->groupBy('KD_KEL');
+        $bdiVillages = DB::table('bdi_villages');
+        $BDIs = $bdiVillages->get();
+        $bdiKPP = DB::table('kpp_data_view')->join('bdi_villages', 'kpp_data_view.KD_KEL', '=', 'bdi_villages.KD_KEL')->groupBy('kpp_data_view.KD_KEL')->pluck('kpp_data_view.KD_KEL');
+        $noBDI = $kppExist->whereNotIn('KD_KEL', $bdiKPP)->get();
+        $noKPPs = $bdiVillages->groupBy('bdi_villages.KD_KEL')->whereNotIn('bdi_villages.KD_KEL', $bdiKPP)->join('allvillages', 'bdi_villages.KD_KEL', '=', 'allvillages.KD_KEL')->get();
+        $PICs = DB::table('job_descs')->join('users', 'users.id', '=', 'job_descs.user_id')->join('job_titles', 'job_titles.id', '=', 'job_descs.job_title_id')->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')->join('personalInformations', 'personalInformations.nik', '=', 'users.nik')->get();
         return view('kpp.monitoring', compact(['noKPPs', 'BDIs', 'PICs']));
     }
-    
-    
-    
+
+
+
     public function spotCheck()
     {
-		$spotChecks = DB::table('data_pengecekan_fisiks')->join('allvillages', 'allvillages.KD_KEL', '=', 'data_pengecekan_fisiks.kelurahan_id')->get();
-		$kppdatas = kppdata::get();
-		return view('kpp.SpotCheckKPP', compact(['spotChecks', 'kppdatas']));
-	}
-	
-	
-	public function maintenance()
-	{
-		$kppdatas = kppdata::get();
-		$maintenances = infrastruktures_maintenance::join('allvillages', 'allvillages.KD_KEL', '=', 'infrastruktures_maintenances.kelurahan_id')->get();		
-		return view('kpp.KPPmaintenance', compact(['maintenances', 'kppdatas']));
-	}
-	
-	
-	public function bop()
-	{
-		$kppdatas = kppdata::get();
-		$BOPs = kpp_operating_fund::join('allvillages', 'allvillages.KD_KEL', '=', 'kpp_operating_funds.kelurahan_id')->get();
-		
-		return view('kpp.KPPoperatingFund', compact(['BOPs', 'kppdatas']));
-	}
-	
-	public function meeting()
-	{
-		$kppdatas = kppdata::get();
-		$meetings = kpp_pertemuan::join('allvillages', 'allvillages.KD_KEL', '=', 'kpp_pertemuans.kelurahan_id')->get();
-		return view('kpp.KPPmeeting', compact(['kppdatas', 'meetings']));
-	}
+        $spotChecks = DB::table('data_pengecekan_fisiks')->join('allvillages', 'allvillages.KD_KEL', '=', 'data_pengecekan_fisiks.kelurahan_id')->get();
+        $kppdatas = kppdata::get();
+        return view('kpp.SpotCheckKPP', compact(['spotChecks', 'kppdatas']));
+    }
 
 
-// =========================================================== EXPORT TO EXCEL ========================================================
+    public function maintenance()
+    {
+        $kppdatas = kppdata::get();
+        $maintenances = infrastruktures_maintenance::join('allvillages', 'allvillages.KD_KEL', '=', 'infrastruktures_maintenances.kelurahan_id')->get();
+        return view('kpp.KPPmaintenance', compact(['maintenances', 'kppdatas']));
+    }
+
+
+    public function bop()
+    {
+        $kppdatas = kppdata::get();
+        $BOPs = kpp_operating_fund::join('allvillages', 'allvillages.KD_KEL', '=', 'kpp_operating_funds.kelurahan_id')->get();
+
+        return view('kpp.KPPoperatingFund', compact(['BOPs', 'kppdatas']));
+    }
+
+    public function meeting()
+    {
+        $kppdatas = kppdata::get();
+        $meetings = kpp_pertemuan::join('allvillages', 'allvillages.KD_KEL', '=', 'kpp_pertemuans.kelurahan_id')->get();
+        return view('kpp.KPPmeeting', compact(['kppdatas', 'meetings']));
+    }
+
+
+    // =========================================================== EXPORT TO EXCEL ========================================================
 
 
     public function export()
     {
-		return Excel::download(new UsersExport, 'Data_KPP_' . date('Y-m-d_H:i:s') . '.xlsx');
-	}
+        return Excel::download(new UsersExport, 'Data_KPP_' . date('Y-m-d_H:i:s') . '.xlsx');
+    }
 
 
 
-	public function exportRekapKabupaten()
+    public function exportRekapKabupaten()
     {
-		return Excel::download(new Rekap_kpp_per_kabupaten, 'Rekap_KPP_Per_Kabupaten_' . date('Y-m-d_H:i:s') . '.xlsx');
-	}
+        return Excel::download(new Rekap_kpp_per_kabupaten, 'Rekap_KPP_Per_Kabupaten_' . date('Y-m-d_H:i:s') . '.xlsx');
+    }
 
 
 
-	public function exportRekapKecamatan($KAB)
+    public function exportRekapKecamatan($KAB)
     {
 
         $kppdatas = $this->rekap1()->groupBy('KD_KEC')->where('KD_KAB', $KAB)->get();
-		return Excel::download(new Rekap_kpp_per_kecamatan($kppdatas), 'Rekap_KPP_Per_Kecamatan_' . date('Y-m-d_H:i:s') . '.xlsx');
-	}
+        return Excel::download(new Rekap_kpp_per_kecamatan($kppdatas), 'Rekap_KPP_Per_Kecamatan_' . date('Y-m-d_H:i:s') . '.xlsx');
+    }
 
 
 
     public function exportRekapKelurahan($KEC)
     {
-		$kppdatas = $this->rekap2()->groupBy('KD_KEL')->where('KD_KEC', $KEC)->get();
-		return Excel::download(new Rekap_kpp_per_kelurahan($kppdatas), 'Rekap_KPP_Per_Kelurahan_' . date('Y-m-d_H:i:s') . '.xlsx');
-	}
+        $kppdatas = $this->rekap2()->groupBy('KD_KEL')->where('KD_KEC', $KEC)->get();
+        return Excel::download(new Rekap_kpp_per_kelurahan($kppdatas), 'Rekap_KPP_Per_Kelurahan_' . date('Y-m-d_H:i:s') . '.xlsx');
+    }
 
 
     // ================================================= REKAP FUNCTION ===========================================================
 
 
 
-	public function rekap_all()
-	{
-		$rekapkpp =  $this->rekap1()->get();
-		$kppdatas = $this->rekap()->groupBy('KD_KAB')->get();
-		
-		$kabupaten=alldistrict::whereIn('kode_kab', explode(', ', str_replace(array('["',  '"]'),'', DB::table('work_zones')
-            ->where('id', function($query){
-                $query->select('work_zone_id')
-                      ->from('job_descs')
-                      ->where('user_id', Auth::user()->id)
-                      ->get()
-                      ->pluck('work_zone_id');
-            })->get()
-              ->pluck('zone')            
-            )))->get();
-              
+    public function rekap_all()
+    {
+        $rekapkpp =  $this->rekap1()->get();
+        $kppdatas = $this->rekap()->groupBy('KD_KAB')->get();
+
+        $kabupaten = alldistrict::whereIn('kode_kab', explode(', ', str_replace(
+            array('["',  '"]'),
+            '',
+            DB::table('work_zones')
+                ->where('id', function ($query) {
+                    $query->select('work_zone_id')
+                        ->from('job_descs')
+                        ->where('user_id', Auth::user()->id)
+                        ->get()
+                        ->pluck('work_zone_id');
+                })->get()
+                ->pluck('zone')
+        )))->get();
+
 
         return view('kpp.rekap.kabupaten', compact(['kabupaten', 'kppdatas', 'rekapkpp']));
-	}
-	
-	public function rekap_kecamatan($KD_KAB)
-	{
-		$rekapkpp =  $this->rekap1()->groupBy('KD_KAB')->where('KD_KAB', $KD_KAB)->get();		
-		$kppdatas = $this->rekap()->groupBy('KD_KEC')->where('KD_KAB', $KD_KAB)->get();
-		
-		$kabupaten=alldistrict::whereIn('kode_kab', explode(', ', str_replace(array('["',  '"]'),'', DB::table('work_zones')
-            ->where('id', function($query){
-                $query->select('work_zone_id')
-                      ->from('job_descs')
-                      ->where('user_id', Auth::user()->id)
-                      ->get()
-                      ->pluck('work_zone_id');
-            })->get()
-              ->pluck('zone')            
-            )))->get();
-              
+    }
+
+    public function rekap_kecamatan($KD_KAB)
+    {
+        $rekapkpp =  $this->rekap1()->groupBy('KD_KAB')->where('KD_KAB', $KD_KAB)->get();
+        $kppdatas = $this->rekap()->groupBy('KD_KEC')->where('KD_KAB', $KD_KAB)->get();
+
+        $kabupaten = alldistrict::whereIn('kode_kab', explode(', ', str_replace(
+            array('["',  '"]'),
+            '',
+            DB::table('work_zones')
+                ->where('id', function ($query) {
+                    $query->select('work_zone_id')
+                        ->from('job_descs')
+                        ->where('user_id', Auth::user()->id)
+                        ->get()
+                        ->pluck('work_zone_id');
+                })->get()
+                ->pluck('zone')
+        )))->get();
+
 
         return view('kpp.rekap.kecamatan', compact(['kabupaten', 'kppdatas', 'rekapkpp']));
-	}
-	
-	public function rekap_kelurahan($KD_KEC)
+    }
+
+    public function rekap_kelurahan($KD_KEC)
     {
-		$rekapkpp = $this->rekap1()->groupBy('KD_KEC')->where('KD_KEC', $KD_KEC)->get();	
-		$kppdatas = $this->rekap()->groupBy('KD_KEL')->where('KD_KEC', $KD_KEC)->get();
-		
-		$kabupaten=alldistrict::whereIn('kode_kab', explode(', ', str_replace(array('["',  '"]'),'', DB::table('work_zones')
-            ->where('id', function($query){
-                $query->select('work_zone_id')
-                      ->from('job_descs')
-                      ->where('user_id', Auth::user()->id)
-                      ->get()
-                      ->pluck('work_zone_id');
-            })->get()
-              ->pluck('zone')            
-            )))->get();
-              
+        $rekapkpp = $this->rekap1()->groupBy('KD_KEC')->where('KD_KEC', $KD_KEC)->get();
+        $kppdatas = $this->rekap()->groupBy('KD_KEL')->where('KD_KEC', $KD_KEC)->get();
+
+        $kabupaten = alldistrict::whereIn('kode_kab', explode(', ', str_replace(
+            array('["',  '"]'),
+            '',
+            DB::table('work_zones')
+                ->where('id', function ($query) {
+                    $query->select('work_zone_id')
+                        ->from('job_descs')
+                        ->where('user_id', Auth::user()->id)
+                        ->get()
+                        ->pluck('work_zone_id');
+                })->get()
+                ->pluck('zone')
+        )))->get();
+
 
         return view('kpp.rekap.kelurahan', compact(['kabupaten', 'kppdatas', 'rekapkpp']));
     }
@@ -353,11 +373,11 @@ class kppController extends Controller
     public function rekap_item_zone($column, $param, $zone, $zone_id)
     {
         $nothing = DB::table('kpp_data_view')->where($zone, $zone_id)
-                                          ->where($column, '!=', 'Ada')->get();
+            ->where($column, '!=', 'Ada')->get();
         $noPertemuanRutin = DB::table('kpp_data_view')->WhereNull($column)->where($zone, $zone_id)
-                                                             ->orWhereNotIn($column, ['Setiap Bulan', 'Setiap Tiga Bulan', 'Setiap Enam Bulan', 'Insidentil'])
-                                                             ->where($zone, $zone_id)->get();
-        
+            ->orWhereNotIn($column, ['Setiap Bulan', 'Setiap Tiga Bulan', 'Setiap Enam Bulan', 'Insidentil'])
+            ->where($zone, $zone_id)->get();
+
         $noAdministrasiRutin = DB::table('kpp_data_view')
             ->WhereNull($column)->where($zone, $zone_id)
             ->orWhereNotIn($column, ['Administrasi Bulanan Lengkap', 'Administrasi Bulanan Minimalis', 'Administrasi Triwulan/Selebihnya'])
@@ -386,10 +406,10 @@ class kppController extends Controller
     }
 
     public function rekap()
-	{
-		//return DB::table('kpp_data_view')->selectRaw('*, SUM(CASE WHEN kegiatan_pengecekan = "Sudah Dilakukan" THEN 1 ELSE 0 END) as jml_pengecekan_sudah_dilakukan');
-		
-			return DB::table('kpp_data_view')->selectRaw('*, count(*) as jml_kpp,
+    {
+        //return DB::table('kpp_data_view')->selectRaw('*, SUM(CASE WHEN kegiatan_pengecekan = "Sudah Dilakukan" THEN 1 ELSE 0 END) as jml_pengecekan_sudah_dilakukan');
+
+        return DB::table('kpp_data_view')->selectRaw('*, count(*) as jml_kpp,
 				SUM(CASE WHEN Status  = "Perlu Perhatian" Then 1 ELSE 0 END) as perlu_perhatian, 
 				SUM(CASE WHEN Status  = "Awal" Then 1 ELSE 0 END) as awal, 
 				SUM(CASE WHEN Status  = "Terbangun" Then 1 ELSE 0 END) as terbangun, 
@@ -427,14 +447,12 @@ class kppController extends Controller
                 SUM(jumlah_kegiatan_perbaikan) as jml_kegiatan_perbaikan,
                 SUM(jumlah_dana_perbaikan) as jml_dana_perbaikan
 		');
-		
-    
     }
 
-		
-	public function rekap1()
-	{
-			return DB::table('kpp_data_view')->selectRaw('NAMA_KAB, NAMA_KEC, count(*) as jml_kpp,
+
+    public function rekap1()
+    {
+        return DB::table('kpp_data_view')->selectRaw('NAMA_KAB, NAMA_KEC, count(*) as jml_kpp,
 				SUM(CASE WHEN Status  = "Perlu Perhatian" Then 1 ELSE 0 END) as perlu_perhatian, 
 				SUM(CASE WHEN Status  = "Awal" Then 1 ELSE 0 END) as awal, 
 				SUM(CASE WHEN Status  = "Terbangun" Then 1 ELSE 0 END) as terbangun, 
@@ -472,13 +490,12 @@ class kppController extends Controller
                 SUM(jumlah_kegiatan_perbaikan) as jml_kegiatan_perbaikan,
                 SUM(jumlah_dana_perbaikan) as jml_dana_perbaikan
 		');
-
     }
-	
-	
+
+
     public function rekap2()
-	{
-			return DB::table('kpp_data_view')->selectRaw('NAMA_KAB, NAMA_KEC, NAMA_DESA,  count(*) as jml_kpp, Status,
+    {
+        return DB::table('kpp_data_view')->selectRaw('NAMA_KAB, NAMA_KEC, NAMA_DESA,  count(*) as jml_kpp, Status,
 				SUM(anggota_pria) as jml_pria,
 				SUM(anggota_wanita) as jml_wanita,
 				SUM(anggota_miskin) as jml_miskin,
@@ -511,53 +528,79 @@ class kppController extends Controller
                 SUM(jumlah_kegiatan_perbaikan) as jml_kegiatan_perbaikan,
                 SUM(jumlah_dana_perbaikan) as jml_dana_perbaikan
 		');
-
     }
 
-	
-// =========================================== AJAX =====================================================================
 
-public function searchIndex(Request $request)
-{
-	$BOPs = kpp_operating_fund::get();
-	$kppdatas = $this->coba2()->leftjoin('infrastruktures_maintenances', 'infrastruktures_maintenances.kelurahan_id', '=', 'kppdatas.kode_desa')->groupBy('kppdatas.kode_desa')->where('NAMA_DESA', 'like', '%' . $request->kelurahan . '%')->orderBy('kppdatas.updated_at', 'desc')->get();
+    // =========================================== AJAX =====================================================================
 
-	return response()->json([$kppdatas, $BOPs]);
-}
+    public function searchIndex(Request $request)
+    {
+        $BOPs = kpp_operating_fund::get();
+        $kppdatas = $this->coba2()->leftjoin('infrastruktures_maintenances', 'infrastruktures_maintenances.kelurahan_id', '=', 'kppdatas.kode_desa')->groupBy('kppdatas.kode_desa')->where('NAMA_DESA', 'like', '%' . $request->kelurahan . '%')->orderBy('kppdatas.updated_at', 'desc')->get();
 
-	
-    
-// ====================================== custom function ===============================================================
+        return response()->json([$kppdatas, $BOPs]);
+    }
+
+
+
+    // ====================================== custom function ===============================================================
 
     public function kppdata()
     {
-    return  kppdata::join('allvillages', 'kppdatas.kode_desa', '=', 'allvillages.KD_KEL')
+        return  kppdata::join('allvillages', 'kppdatas.kode_desa', '=', 'allvillages.KD_KEL')
             ->join('bkmdatas', 'kppdatas.kode_desa', '=', 'bkmdatas.kelurahan_id')
             ->join('pengurus_kpps', 'kppdatas.kode_desa', '=', 'pengurus_kpps.kelurahan_id')
             ->join('users', 'kppdatas.user_id', '=', 'users.id')
-            ->select('kppdatas.id', 'allvillages.KD_KAB', 'allvillages.NAMA_KAB', 'allvillages.NAMA_KEC', 'allvillages.KD_KEL', 'allvillages.NAMA_DESA',
-                'kppdatas.lokasi_bdi_bpm', 'kppdatas.nama_kpp', 'kppdatas.anggota_pria', 'kppdatas.anggota_wanita', 'kppdatas.anggota_miskin', 
-                'kppdatas.struktur_organisasi', 'kppdatas.scan_struktur_organisasi', 'kppdatas.anggaran_dasar', 'kppdatas.scan_anggaran_dasar', 
-                'kppdatas.anggaran_rumah_tangga', 'kppdatas.scan_anggaran_rumah_tangga', 'kppdatas.surat_keputusan', 'kppdatas.scan_surat_keputusan', 
-                'kppdatas.rencana_kerja', 'kppdatas.scan_rencana_kerja', 'kppdatas.pertemuan_rutin', 'kppdatas.administrasi_rutin', 
-                'kppdatas.scan_administrasi_rutin', 'kppdatas.buku_inventaris_kegiatan', 'kppdatas.scan_buku_inventaris_kegiatan', 'kppdatas.kegiatan_pengecekan',
-                'kppdatas.keterangan_lain_lain', 'users.name',
-                'bkmdatas.bkm', 'pengurus_kpps.ketua_kpp', 'pengurus_kpps.ketua_kpp_hp'
-                )
-            ->whereIn('KD_KAB', explode(', ', str_replace(array('["',  '"]'),'', DB::table('work_zones')
-            ->where('id', function($query){
-                $query->select('work_zone_id')
-                      ->from('job_descs')
-                      ->where('user_id', Auth::user()->id)
-                      ->get()
-                      ->pluck('work_zone_id');
-            })->get()
-              ->pluck('zone')
-      ))); 
-     
+            ->select(
+                'kppdatas.id',
+                'allvillages.KD_KAB',
+                'allvillages.NAMA_KAB',
+                'allvillages.NAMA_KEC',
+                'allvillages.KD_KEL',
+                'allvillages.NAMA_DESA',
+                'kppdatas.lokasi_bdi_bpm',
+                'kppdatas.nama_kpp',
+                'kppdatas.anggota_pria',
+                'kppdatas.anggota_wanita',
+                'kppdatas.anggota_miskin',
+                'kppdatas.struktur_organisasi',
+                'kppdatas.scan_struktur_organisasi',
+                'kppdatas.anggaran_dasar',
+                'kppdatas.scan_anggaran_dasar',
+                'kppdatas.anggaran_rumah_tangga',
+                'kppdatas.scan_anggaran_rumah_tangga',
+                'kppdatas.surat_keputusan',
+                'kppdatas.scan_surat_keputusan',
+                'kppdatas.rencana_kerja',
+                'kppdatas.scan_rencana_kerja',
+                'kppdatas.pertemuan_rutin',
+                'kppdatas.administrasi_rutin',
+                'kppdatas.scan_administrasi_rutin',
+                'kppdatas.buku_inventaris_kegiatan',
+                'kppdatas.scan_buku_inventaris_kegiatan',
+                'kppdatas.kegiatan_pengecekan',
+                'kppdatas.keterangan_lain_lain',
+                'users.name',
+                'bkmdatas.bkm',
+                'pengurus_kpps.ketua_kpp',
+                'pengurus_kpps.ketua_kpp_hp'
+            )
+            ->whereIn('KD_KAB', explode(', ', str_replace(
+                array('["',  '"]'),
+                '',
+                DB::table('work_zones')
+                    ->where('id', function ($query) {
+                        $query->select('work_zone_id')
+                            ->from('job_descs')
+                            ->where('user_id', Auth::user()->id)
+                            ->get()
+                            ->pluck('work_zone_id');
+                    })->get()
+                    ->pluck('zone')
+            )));
     }
 
-    
+
     public function coba2()
     {
         return kppdata::select("*", 'kppdatas.id', \DB::raw('
@@ -699,26 +742,30 @@ public function searchIndex(Request $request)
             ELSE "Perlu Perhatian" 
 			END As Status
 			'))
-			->join('allvillages', 'kppdatas.kode_desa', '=', 'allvillages.KD_KEL')
+            ->join('allvillages', 'kppdatas.kode_desa', '=', 'allvillages.KD_KEL')
             ->join('bkmdatas', 'kppdatas.kode_desa', '=', 'bkmdatas.kelurahan_id')
             ->join('pengurus_kpps', 'kppdatas.kode_desa', '=', 'pengurus_kpps.kelurahan_id')
             ->join('users', 'kppdatas.user_id', '=', 'users.id')
-            ->whereIn('KD_KAB', explode(', ', str_replace(array('["',  '"]'),'', DB::table('work_zones')
-            ->where('id', function($query){
-                $query->select('work_zone_id')
-                      ->from('job_descs')
-                      ->where('user_id', Auth::user()->id)
-                      ->get()
-                      ->pluck('work_zone_id');
-				})->get()
-				->pluck('zone')
-				)));
-			
+            ->whereIn('KD_KAB', explode(', ', str_replace(
+                array('["',  '"]'),
+                '',
+                DB::table('work_zones')
+                    ->where('id', function ($query) {
+                        $query->select('work_zone_id')
+                            ->from('job_descs')
+                            ->where('user_id', Auth::user()->id)
+                            ->get()
+                            ->pluck('work_zone_id');
+                    })->get()
+                    ->pluck('zone')
+            )));
     }
 
     public function coba3()
     {
-        return kppdata::select("*", 'kppdatas.id', 
+        return kppdata::select(
+            "*",
+            'kppdatas.id',
             \DB::raw('
                     (select skor_kpp.scor from skor_kpp where skor_kpp.items = "anggaran_dasar" AND skor_kpp.criteria = kppdatas.anggaran_dasar) as ad
                 '),
@@ -727,7 +774,7 @@ public function searchIndex(Request $request)
                 '),
             \DB::raw('
                     (select skor_kpp.scor from skor_kpp where skor_kpp.items = "struktur_organisasi" AND skor_kpp.criteria = kppdatas.struktur_organisasi) as struktur
-                '), 
+                '),
             \DB::raw('
                     (select skor_kpp.scor from skor_kpp where skor_kpp.items = "surat_keputusan" AND skor_kpp.criteria = kppdatas.surat_keputusan) as sk
                     '),
@@ -902,22 +949,24 @@ public function searchIndex(Request $request)
             ELSE "Perlu Perhatian" 
 			END As Status 
 			')
-            )
-			->join('allvillages', 'kppdatas.kode_desa', '=', 'allvillages.KD_KEL')
+        )
+            ->join('allvillages', 'kppdatas.kode_desa', '=', 'allvillages.KD_KEL')
             ->join('bkmdatas', 'kppdatas.kode_desa', '=', 'bkmdatas.kelurahan_id')
             ->join('pengurus_kpps', 'kppdatas.kode_desa', '=', 'pengurus_kpps.kelurahan_id')
             ->join('users', 'kppdatas.user_id', '=', 'users.id')
-            ->whereIn('KD_KAB', explode(', ', str_replace(array('["',  '"]'),'', DB::table('work_zones')
-            ->where('id', function($query){
-                $query->select('work_zone_id')
-                      ->from('job_descs')
-                      ->where('user_id', Auth::user()->id)
-                      ->get()
-                      ->pluck('work_zone_id');
-				})->get()
-				->pluck('zone')
-				)));
-			
+            ->whereIn('KD_KAB', explode(', ', str_replace(
+                array('["',  '"]'),
+                '',
+                DB::table('work_zones')
+                    ->where('id', function ($query) {
+                        $query->select('work_zone_id')
+                            ->from('job_descs')
+                            ->where('user_id', Auth::user()->id)
+                            ->get()
+                            ->pluck('work_zone_id');
+                    })->get()
+                    ->pluck('zone')
+            )));
     }
 
     public function test()
@@ -927,7 +976,7 @@ public function searchIndex(Request $request)
 
     public function backup()
     {
-	return $kppdatas = DB::table('kpp_data_view')->groupBy('KD_KAB')->selectRaw('*, count(*) as jml_kpp,
+        return $kppdatas = DB::table('kpp_data_view')->groupBy('KD_KAB')->selectRaw('*, count(*) as jml_kpp,
 				SUM(CASE WHEN Status  = "Perlu Perhatian" Then 1 ELSE 0 END) as perlu_perhatian, 
 				SUM(CASE WHEN Status  = "Awal" Then 1 ELSE 0 END) as awal, 
 				SUM(CASE WHEN Status  = "Terbangun" Then 1 ELSE 0 END) as terbangun, 
@@ -949,16 +998,19 @@ public function searchIndex(Request $request)
 				SUM(CASE WHEN kegiatan_pengecekan = "sudah_dilakukan" THEN 1 ELSE 0 END) as jml_pengecekan_sudah_dilakukan
 		')->get();
 
-        $kabupaten=alldistrict::whereIn('kode_kab', explode(', ', str_replace(array('["',  '"]'),'', DB::table('work_zones')
-            ->where('id', function($query){
-                $query->select('work_zone_id')
-                      ->from('job_descs')
-                      ->where('user_id', Auth::user()->id)
-                      ->get()
-                      ->pluck('work_zone_id');
-            })->get()
-              ->pluck('zone')            
-            )))->get();
+        $kabupaten = alldistrict::whereIn('kode_kab', explode(', ', str_replace(
+            array('["',  '"]'),
+            '',
+            DB::table('work_zones')
+                ->where('id', function ($query) {
+                    $query->select('work_zone_id')
+                        ->from('job_descs')
+                        ->where('user_id', Auth::user()->id)
+                        ->get()
+                        ->pluck('work_zone_id');
+                })->get()
+                ->pluck('zone')
+        )))->get();
 
         return view('kpp.rekap', compact(['kabupaten', 'kppdatas']));
     }
@@ -967,8 +1019,41 @@ public function searchIndex(Request $request)
 
     public function downloadFotoPengecekanFisik($id)
     {
-	return Storage::disk('local')->directories('/storage/kpp');
+        return Storage::disk('local')->directories('/storage/kpp');
         $file = data_pengecekan_fisik::find($id)->pluck('foto_pengecekan_fisik')->first();
         Storage::disk('public')->download('kpp/' . $file);
+    }
+
+
+    public function master()
+    {
+        return kppdata::join('allvillages', 'allvillages.KD_KEL', '=', 'kppdatas.kode_desa')->select(
+            'kppdatas.id',
+            'kppdatas.nama_kpp',
+            'kppdatas.kode_desa',
+            'allvillages.NAMA_DESA',
+            'kppdatas.anggaran_dasar',
+            'kppdatas.anggaran_rumah_tangga',
+            'kppdatas.surat_Keputusan',
+            \DB::raw('
+                    (select skor_kpp.scor from skor_kpp where skor_kpp.items = "anggaran_dasar" AND skor_kpp.criteria = kppdatas.anggaran_dasar) as ad
+                '),
+            \DB::raw(' 
+                    (select skor_kpp.scor from skor_kpp where skor_kpp.items = "anggaran_rumah_tangga" AND skor_kpp.criteria = kppdatas.anggaran_rumah_tangga) as art
+                    
+                '),
+            \DB::raw('
+                        (select skor_kpp.scor from skor_kpp where skor_kpp.items = "surat_keputusan" AND skor_kpp.criteria = kppdatas.surat_keputusan) as sk
+                        '),
+            \DB::raw('(select skor_kpp.scor from skor_kpp where skor_kpp.items = "anggaran_dasar" AND skor_kpp.criteria = kppdatas.anggaran_dasar) +   (select skor_kpp.scor from skor_kpp where skor_kpp.items = "anggaran_rumah_tangga" AND skor_kpp.criteria = kppdatas.anggaran_rumah_tangga) + (select skor_kpp.scor from skor_kpp where skor_kpp.items = "surat_keputusan" AND skor_kpp.criteria = kppdatas.surat_keputusan) as skor_awal'),
+            \DB::raw('
+                    (select skor_kpp.scor from skor_kpp where skor_kpp.items = "struktur_organisasi" AND skor_kpp.criteria = kppdatas.struktur_organisasi) as struktur
+                '),
+        )->get();
+    }
+
+    public function coba4()
+    {
+        return $this->master();
     }
 }

@@ -66,6 +66,10 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\job_desc');
     }
+    public function job_desc()
+    {
+        return $this->hasOne('App\job_desc');
+    }
 
 
     public function posisi()

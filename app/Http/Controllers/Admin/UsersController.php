@@ -30,14 +30,14 @@ class UsersController extends Controller
      */
     public function index()
     {
-		$users = user::leftjoin('job_descs', 'users.id', '=', 'job_descs.user_id')
-			->leftjoin('job_titles', 'job_descs.job_title_id', '=', 'job_titles.id')
-			->leftjoin('work_zones', 'job_descs.work_zone_id', '=', 'work_zones.id')
-			->leftjoin('alldistricts', 'work_zones.district', '=', 'alldistricts.kode_kab')			
-			->select('*', 'users.id')->orderBy('users.id')->get();	
-			
-		$kabupaten=alldistrict::get();
-		
+        $users = user::leftjoin('job_descs', 'users.id', '=', 'job_descs.user_id')
+            ->leftjoin('job_titles', 'job_descs.job_title_id', '=', 'job_titles.id')
+            ->leftjoin('work_zones', 'job_descs.work_zone_id', '=', 'work_zones.id')
+            ->leftjoin('alldistricts', 'work_zones.district', '=', 'alldistricts.kode_kab')
+            ->select('*', 'users.id')->orderBy('users.id')->get();
+
+        $kabupaten = alldistrict::get();
+
         return view('admin.users.index',  compact(['users', 'kabupaten']));
     }
 
@@ -50,19 +50,19 @@ class UsersController extends Controller
      */
     public function edit(User $user)
     {
-		$user = user::where('users.id', $user->id)
-			->leftjoin('job_descs', 'users.id', '=', 'job_descs.user_id')
-			->leftjoin('job_titles', 'job_descs.job_title_id', '=', 'job_titles.id')
-			->leftjoin('work_zones', 'job_descs.work_zone_id', '=', 'work_zones.id')
-			->leftjoin('alldistricts', 'work_zones.district', '=', 'alldistricts.kode_kab')			
-			->select('*', 'users.id')->get()[0];
-			
-		$job_titles = job_title::get();
+        $user = user::where('users.id', $user->id)
+            ->leftjoin('job_descs', 'users.id', '=', 'job_descs.user_id')
+            ->leftjoin('job_titles', 'job_descs.job_title_id', '=', 'job_titles.id')
+            ->leftjoin('work_zones', 'job_descs.work_zone_id', '=', 'work_zones.id')
+            ->leftjoin('alldistricts', 'work_zones.district', '=', 'alldistricts.kode_kab')
+            ->select('*', 'users.id')->get()[0];
 
-		$kabupaten = work_zone::select('work_zones.district', 'NAMA_KAB')
+        $job_titles = job_title::get();
+
+        $kabupaten = work_zone::select('work_zones.district', 'NAMA_KAB')
             ->leftJoin('allvillages', 'allvillages.KD_KAB', '=', 'work_zones.district')
             ->distinct()->get();
-            
+
         if (Gate::denies('edit-users')) {
             return redirect(route('admin.users.index'));
         }
@@ -72,8 +72,6 @@ class UsersController extends Controller
 
             'roles' => $roles
         ]);
-        
-        
     }
 
     /**
@@ -89,25 +87,29 @@ class UsersController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->save();
-		
-        
-        $level = DB::table('job_titles')->where('id', '=', $request->job_title)->get()->pluck('level');
-		$work_zone_id = work_zone::where('level', $level)->where('district', $request->district)->get()->pluck('id')[0];
-		
 
-		if(job_desc::where('user_id', $user->id)->exists()){		
-			job_desc::where('user_id', $user->id)->update([
-				'user_id' 		=> $user->id,
-				'work_zone_id' 	=> $work_zone_id,
-				'job_title_id' 	=> $request->job_title
-			]);
-		} else {
-			job_desc::create([
-				'user_id' 		=> $user->id,
-				'work_zone_id' 	=> $work_zone_id,
-				'job_title_id' 	=> $request->job_title
-			]);
-		};
+
+        $level = DB::table('job_titles')->where('id', '=', $request->job_title)->get()->pluck('level');
+        $work_zone_id = work_zone::where('level', $level)->where('district', $request->district)->get()->pluck('id')[0];
+
+
+        if (job_desc::where('user_id', $user->id)->exists()) {
+            job_desc::where('user_id', $user->id)->update([
+                'user_id'           => $user->id,
+                'work_zone_id'      => $work_zone_id,
+                'job_title_id'      => $request->job_title,
+                'starting_date'     => $request->starting_date,
+                'finishing_date'    => $request->finishing_date
+            ]);
+        } else {
+            job_desc::create([
+                'user_id'           => $user->id,
+                'work_zone_id'      => $work_zone_id,
+                'job_title_id'      => $request->job_title,
+                'starting_date'     => $request->starting_date,
+                'finishing_date'    => $request->finishing_date
+            ]);
+        };
 
         return redirect()->route('admin.users.index');
     }
@@ -120,19 +122,19 @@ class UsersController extends Controller
      */
     public function show(User $user)
     {
-		$user = user::where('users.id', $user->id)
-			->leftjoin('job_descs', 'users.id', '=', 'job_descs.user_id')
-			->leftjoin('job_titles', 'job_descs.job_title_id', '=', 'job_titles.id')
-			->leftjoin('work_zones', 'job_descs.work_zone_id', '=', 'work_zones.id')
-			->leftjoin('alldistricts', 'work_zones.district', '=', 'alldistricts.kode_kab')			
-			->select('*', 'users.id')->get()[0];
-			
-		$job_titles = job_title::get();
+        $user = user::where('users.id', $user->id)
+            ->leftjoin('job_descs', 'users.id', '=', 'job_descs.user_id')
+            ->leftjoin('job_titles', 'job_descs.job_title_id', '=', 'job_titles.id')
+            ->leftjoin('work_zones', 'job_descs.work_zone_id', '=', 'work_zones.id')
+            ->leftjoin('alldistricts', 'work_zones.district', '=', 'alldistricts.kode_kab')
+            ->select('*', 'users.id')->get()[0];
 
-		$kabupaten = work_zone::select('work_zones.district', 'NAMA_KAB')
+        $job_titles = job_title::get();
+
+        $kabupaten = work_zone::select('work_zones.district', 'NAMA_KAB')
             ->leftJoin('allvillages', 'allvillages.KD_KAB', '=', 'work_zones.district')
             ->distinct()->get();
-            
+
         if (Gate::denies('edit-users')) {
             return redirect(route('admin.users.index'));
         }
@@ -142,8 +144,6 @@ class UsersController extends Controller
 
             'roles' => $roles
         ]);
-        
-        
     }
 
     public function destroy(User $user)
@@ -156,20 +156,20 @@ class UsersController extends Controller
         $user->delete();
         return redirect()->route('admin.users.index');
     }
-    
-    
+
+
     public function ajaxIndex(Request $request)
     {
-		$users = user::leftjoin('job_descs', 'users.id', '=', 'job_descs.user_id')
-			->leftjoin('job_titles', 'job_descs.job_title_id', '=', 'job_titles.id')
-			->leftjoin('work_zones', 'job_descs.work_zone_id', '=', 'work_zones.id')
-			->leftjoin('alldistricts', 'work_zones.district', '=', 'alldistricts.kode_kab')			
-			->where('name', 'LIKE', "%{$request->search }%")
-			->orWhere('job_title', 'LIKE', "%{$request->search }%")
-			->orWhere('NAMA_KAB', 'LIKE', "%{$request->search }%")
-			->orWhere('district', 'LIKE', "%{$request->search }%")
-			->select('*', 'users.id')->orderBy('users.id')->get();	
+        $users = user::leftjoin('job_descs', 'users.id', '=', 'job_descs.user_id')
+            ->leftjoin('job_titles', 'job_descs.job_title_id', '=', 'job_titles.id')
+            ->leftjoin('work_zones', 'job_descs.work_zone_id', '=', 'work_zones.id')
+            ->leftjoin('alldistricts', 'work_zones.district', '=', 'alldistricts.kode_kab')
+            ->where('name', 'LIKE', "%{$request->search}%")
+            ->orWhere('job_title', 'LIKE', "%{$request->search}%")
+            ->orWhere('NAMA_KAB', 'LIKE', "%{$request->search}%")
+            ->orWhere('district', 'LIKE', "%{$request->search}%")
+            ->select('*', 'users.id')->orderBy('users.id')->get();
 
-		return response()->json($users);
-	}
+        return response()->json($users);
+    }
 }

@@ -61,6 +61,11 @@ class User extends Authenticatable
         return false;
     }
 
+    public function biodata()
+    {
+        return $this->hasOne('App\biodata', 'nik', 'nik');
+    }
+
     // ========================================================= Job Description =================
     public function jobDesc()
     {

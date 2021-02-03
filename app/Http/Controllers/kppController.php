@@ -1039,7 +1039,7 @@ class kppController extends Controller
                     (select skor_kpp.scor from skor_kpp where skor_kpp.items = "anggaran_dasar" AND skor_kpp.criteria = kppdatas.anggaran_dasar) as ad
                 '),
             \DB::raw(' 
-                    (select skor_kpp.scor from skor_kpp where skor_kpp.items = "anggaran_rumah_tangga" AND skor_kpp.criteria = kppdatas.anggaran_rumah_tangga) as art
+                    (select skor_kpp.scor from skor_kpp where skor_kpp.items = "c" AND skor_kpp.criteria = kppdatas.anggaran_rumah_tangga) as art
                     
                 '),
             \DB::raw('
@@ -1055,5 +1055,85 @@ class kppController extends Controller
     public function coba4()
     {
         return $this->master();
+    }
+
+    public function create_view()
+    {
+        /*
+        CREATE VIEW tipe_nomor_data_kpp AS SELECT id, surat_keputusan, IF(surat_keputusan = "Ada", 2, 0) as skor_surat_keputusan  FROM kppdatas;
+
+        =======================================================================================================================================
+
+        CREATE OR REPLACE VIEW data_kpp_perbaikan AS SELECT kppdatas.id, kode_desa,
+        COUNT(CASE WHEN infrastruktures_maintenances.kelurahan_id = kppdatas.kode_desa THEN infrastruktures_maintenances.jumlah END) AS jumlah_kegiatan,
+        SUM(CASE WHEN infrastruktures_maintenances.kelurahan_id = kppdatas.kode_desa THEN infrastruktures_maintenances.jumlah END) AS jumlah_dana
+        FROM kppdatas, infrastruktures_maintenances
+        GROUP BY kppdatas.kode_desa
+
+        =======================================================================================================================================
+
+        CREATE OR REPLACE VIEW data_kpp_pengecekan AS SELECT kppdatas.id, kode_desa,
+        COUNT(CASE WHEN data_pengecekan_fisiks.kelurahan_id = kppdatas.kode_desa THEN data_pengecekan_fisiks.tanggal END) AS jumlah_pengecekan
+        FROM kppdatas, data_pengecekan_fisiks
+        GROUP BY kppdatas.kode_desa
+
+        =======================================================================================================================================
+
+        CREATE OR REPLACE VIEW data_kpp_bop AS SELECT kppdatas.id, kode_desa, 
+        SUM(CASE WHEN kpp_operating_funds.kelurahan_id = kppdatas.kode_desa THEN kpp_operating_funds.jumlah END) AS jumlah_bop
+        FROM kppdatas, kpp_operating_funds
+        GROUP BY kppdatas.kode_desa
+
+        =======================================================================================================================================
+
+        CREATE OR REPLACE VIEW kpp_data_view AS (
+            SELECT KD_KAB, NAMA_KAB, KD_KEC, NAMA_KEC, NAMA_DESA, "1" as jumlah_kpp, kppdatas.kode_desa as KD_KEL, pengurus_kpps.ketua_kpp, pengurus_kpps.ketua_kpp_hp,  kppdatas.*, 
+            IF(struktur_organisasi = "Ada", 4, 0) as skor_struktur_organisasi,
+            IF(anggaran_dasar = "Ada", 2, 0) as skor_anggaran_dasar,
+            IF(anggaran_rumah_tangga = "Ada", 2, 0) as skor_anggaran_rumah_tangga, 
+            IF(surat_keputusan = "Ada", 4, 0) as skor_surat_keputusan,
+            IF(rencana_kerja = "Ada", 4, 0) as skor_rencana_kerja,
+            CASE WHEN pertemuan_rutin  = "Setiap Bulan" Then 1 WHEN pertemuan_rutin  = "Setiap Tiga Bulan" Then 1  WHEN pertemuan_rutin  = "Setiap Enam Bulan" Then 1 WHEN pertemuan_rutin  = "Insidentil (sesuai kebutuhan)" Then 0 WHEN pertemuan_rutin  = "Tidak Pernah (dalam satu tahun)" THEN 0 ELSE 0 END as skor_pertemuan_rutin,
+            CASE WHEN administrasi_rutin = "Administrasi Bulanan Minimalis" THEN 1 WHEN administrasi_rutin = "Administrasi Bulanan Lengkap" THEN 1 WHEN administrasi_rutin = "Administrasi Triwulan/Selebihnya" THEN 1 ELSE 0 END as skor_administrasi_rutin,
+            CASE WHEN buku_inventaris_kegiatan = "Ada" THEN 1 ELSE 0 END as skor_buku_inventaris_kegiatan, data_kpp_bop.jumlah_bop, data_kpp_pengecekan.jumlah_pengecekan, data_kpp_perbaikan.jumlah_kegiatan as jumlah_kegiatan_perbaikan, data_kpp_perbaikan.jumlah_dana as jumlah_dana_perbaikan,
+
+            IF(struktur_organisasi = "Ada", 4, 0) as perlu_perhatian,
+            CASE WHEN IF(anggaran_dasar = "Ada", 2, 0) + IF(anggaran_rumah_tangga = "Ada", 2, 0) + IF(surat_keputusan = "Ada", 4, 0) > 3 THEN 4 ELSE 0 END as Awal,
+            IF(rencana_kerja = "Ada", 4, 0) as Terbangun,
+            IF(CASE WHEN pertemuan_rutin  = "Setiap Bulan" Then 1 WHEN pertemuan_rutin  = "Setiap Tiga Bulan" Then 1  WHEN pertemuan_rutin  = "Setiap Enam Bulan" Then 1 WHEN pertemuan_rutin  = "Insidentil (sesuai kebutuhan)" Then 0 WHEN pertemuan_rutin  = "Tidak Pernah (dalam satu tahun)" THEN 0 ELSE 0 END + CASE WHEN administrasi_rutin = "Administrasi Bulanan Minimalis" THEN 1 WHEN administrasi_rutin = "Administrasi Bulanan Lengkap" THEN 1 WHEN administrasi_rutin = "Administrasi Triwulan/Selebihnya" THEN 1 ELSE 0 END + CASE WHEN buku_inventaris_kegiatan = "Ada" THEN 1 ELSE 0 END + IF( data_kpp_bop.jumlah_bop > 0, 1, 0) > 3, 4, 0) AS Berdaya,
+            CASE WHEN IF(data_kpp_pengecekan.jumlah_pengecekan > 0, 2, 0) + IF(data_kpp_perbaikan.jumlah_kegiatan > 0, 2, 0)  > 3 THEN 4 ELSE 0 END AS Mandiri, 
+
+            CASE 
+            WHEN 
+                IF(struktur_organisasi = "Ada", 4, 0) + 
+                CASE WHEN IF(anggaran_dasar = "Ada", 2, 0) + IF(anggaran_rumah_tangga = "Ada", 2, 0) + IF(surat_keputusan = "Ada", 4, 0) > 3 THEN 4 ELSE 0 END + IF(rencana_kerja = "Ada", 4, 0) +  CASE WHEN pertemuan_rutin  = "Setiap Bulan" Then 1 WHEN pertemuan_rutin  = "Setiap Tiga Bulan" Then 1  WHEN pertemuan_rutin  = "Setiap Enam Bulan" Then 1 WHEN pertemuan_rutin  = "Insidentil (sesuai kebutuhan)" Then 0 WHEN pertemuan_rutin  = "Tidak Pernah (dalam satu tahun)" THEN 0 ELSE 0 END + CASE WHEN administrasi_rutin = "Administrasi Bulanan Minimalis" THEN 1 WHEN administrasi_rutin = "Administrasi Bulanan Lengkap" THEN 1 WHEN administrasi_rutin = "Administrasi Triwulan/Selebihnya" THEN 1 ELSE 0 END + CASE WHEN buku_inventaris_kegiatan = "Ada" THEN 1 ELSE 0 END + IF(data_kpp_bop.jumlah_bop > 0, 1, 0) + CASE WHEN IF(data_kpp_pengecekan.jumlah_pengecekan > 0, 2, 0) + IF(data_kpp_perbaikan.jumlah_kegiatan > 0, 2, 0)  > 3 THEN 4 ELSE 0 END = 20 THEN "Mandiri"
+            WHEN 
+                IF(struktur_organisasi = "Ada", 4, 0) + 
+                CASE WHEN IF(anggaran_dasar = "Ada", 2, 0) + IF(anggaran_rumah_tangga = "Ada", 2, 0) + IF(surat_keputusan = "Ada", 4, 0) > 3 THEN 4 ELSE 0 END + IF(rencana_kerja = "Ada", 4, 0) +  CASE WHEN pertemuan_rutin  = "Setiap Bulan" Then 1 WHEN pertemuan_rutin  = "Setiap Tiga Bulan" Then 1  WHEN pertemuan_rutin  = "Setiap Enam Bulan" Then 1 WHEN pertemuan_rutin  = "Insidentil (sesuai kebutuhan)" Then 0 WHEN pertemuan_rutin  = "Tidak Pernah (dalam satu tahun)" THEN 0 ELSE 0 END + CASE WHEN administrasi_rutin = "Administrasi Bulanan Minimalis" THEN 1 WHEN administrasi_rutin = "Administrasi Bulanan Lengkap" THEN 1 WHEN administrasi_rutin = "Administrasi Triwulan/Selebihnya" THEN 1 ELSE 0 END + CASE WHEN buku_inventaris_kegiatan = "Ada" THEN 1 ELSE 0 END + IF(data_kpp_bop.jumlah_bop > 0, 1, 0) = 16 THEN "Berdaya" 
+            WHEN 
+                IF(struktur_organisasi = "Ada", 4, 0) + 
+                CASE WHEN IF(anggaran_dasar = "Ada", 2, 0) + IF(anggaran_rumah_tangga = "Ada", 2, 0) + IF(surat_keputusan = "Ada", 4, 0) > 3 THEN 4 ELSE 0 END + IF(rencana_kerja = "Ada", 4, 0) = 12 THEN "Terbangun" 
+            WHEN  
+                IF(struktur_organisasi = "Ada", 4, 0) + 
+                CASE WHEN IF(anggaran_dasar = "Ada", 2, 0) + IF(anggaran_rumah_tangga = "Ada", 2, 0) + IF(surat_keputusan = "Ada", 4, 0) > 3 THEN 4 ELSE 0 END = 8 THEN "Awal"
+            ELSE "Perlu Perhatian" 
+            END as Status
+            
+            FROM kppdatas 
+            LEFT JOIN  data_kpp_pengecekan
+            ON kppdatas.kode_desa=data_kpp_pengecekan.kode_desa
+            LEFT JOIN data_kpp_perbaikan 
+            ON kppdatas.kode_desa=data_kpp_perbaikan.kode_desa
+            LEFT JOIN data_kpp_bop
+            ON kppdatas.kode_desa=data_kpp_bop.kode_desa
+            LEFT JOIN allvillages
+            ON kppdatas.kode_desa=allvillages.KD_KEL
+            LEFT JOIN pengurus_kpps
+            ON kppdatas.kode_desa=pengurus_kpps.kelurahan_id
+            GROUP BY kppdatas.kode_desa
+        )
+
+
+        */
     }
 }

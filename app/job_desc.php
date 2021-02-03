@@ -4,17 +4,24 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphPivot;
+use App\Scopes\jobDescScope;
 
 
 class job_desc extends Model
 //class job_desc extends MorphPivot
 {
     protected $fillable = ['user_id', 'work_zone_id', 'job_title_id'];
+    protected static function boot()
 
-	 	public function user()
-		{
-    		return $this->belongsTo('App\User');
-		} 
+    {
+        parent::boot();
+        static::addGlobalScope(new jobDescScope);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
 
     public function areaKerja()
     {
@@ -28,17 +35,18 @@ class job_desc extends Model
 
     public function yangDievaluasi()
     {
-       return $this->belongsTo('App\personnel_evaluation_value', 'user_id', 'userId');
+        return $this->belongsTo('App\personnel_evaluation_value', 'user_id', 'userId');
     }
 
-		public function kabupaten()
+    public function kabupaten()
     {
         return $this->hasManyThrough(
-            'App\allvillage', 'App\work_zone',
+            'App\allvillage',
+            'App\work_zone',
             'id',
             'KD_KAB',
             'work_zone_id',
             'district'
         );
-		} 
+    }
 }

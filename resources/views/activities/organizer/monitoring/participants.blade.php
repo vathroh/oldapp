@@ -55,6 +55,7 @@
                     $day = $tanggal->addDays($i);
                     $day1 = $day->format('Y-m-d');
                     @endphp
+
                     <h6 class="mt-5">{{ $day->format('l, d F Y') }}</h6>
                     <div>
                         <table class="table table-sm table-striped">
@@ -68,7 +69,6 @@
                                 </tr>
                             </thead>
                             <tbody>
-
                                 <tr>
                                     <td>{{ $i+1 }}</td>
                                     <td>{{ $day->format('l, d F Y') }}</td>

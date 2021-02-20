@@ -40,7 +40,9 @@ class kppController extends Controller
      */
     public function index()
     {
-        $kppdatas = $this->coba2()->leftjoin('infrastruktures_maintenances', 'infrastruktures_maintenances.kelurahan_id', '=', 'kppdatas.kode_desa')->groupBy('kppdatas.kode_desa')->orderBy('kppdatas.updated_at', 'desc')->paginate(10);
+        $kppdatas = DB::table('kpp_data_view')->leftjoin('infrastruktures_maintenances', 'infrastruktures_maintenances.kelurahan_id', '=', 'kpp_data_view.kode_desa')->groupBy('kpp_data_view.kode_desa')->leftjoin('bkmdatas', 'bkmdatas.kelurahan_id', '=', 'kpp_data_view.kode_desa')->leftjoin('users', 'users.id', '=', 'kpp_data_view.user_id')->orderBy('kpp_data_view.updated_at', 'desc')->paginate(10);
+
+        // $kppdatas = $this->coba2()->leftjoin('infrastruktures_maintenances', 'infrastruktures_maintenances.kelurahan_id', '=', 'kppdatas.kode_desa')->groupBy('kppdatas.kode_desa')->orderBy('kppdatas.updated_at', 'desc')->paginate(10);
         $BOPs = kpp_operating_fund::get();
 
         return view('kpp.index', compact(['kppdatas', 'BOPs']));
@@ -1089,8 +1091,8 @@ class kppController extends Controller
         CREATE OR REPLACE VIEW kpp_data_view AS (
             SELECT KD_KAB, NAMA_KAB, KD_KEC, NAMA_KEC, NAMA_DESA, "1" as jumlah_kpp, kppdatas.kode_desa as KD_KEL, pengurus_kpps.ketua_kpp, pengurus_kpps.ketua_kpp_hp,  kppdatas.*, 
             IF(struktur_organisasi = "Ada", 4, 0) as skor_struktur_organisasi,
-            IF(anggaran_dasar = "Ada", 2, 0) as skor_anggaran_dasar,
-            IF(anggaran_rumah_tangga = "Ada", 2, 0) as skor_anggaran_rumah_tangga, 
+            IF(anggaran_dasar = "Ada", 4, 0) as skor_anggaran_dasar,
+            IF(anggaran_rumah_tangga = "Ada", 4, 0) as skor_anggaran_rumah_tangga, 
             IF(surat_keputusan = "Ada", 4, 0) as skor_surat_keputusan,
             IF(rencana_kerja = "Ada", 4, 0) as skor_rencana_kerja,
             CASE WHEN pertemuan_rutin  = "Setiap Bulan" Then 1 WHEN pertemuan_rutin  = "Setiap Tiga Bulan" Then 1  WHEN pertemuan_rutin  = "Setiap Enam Bulan" Then 1 WHEN pertemuan_rutin  = "Insidentil (sesuai kebutuhan)" Then 0 WHEN pertemuan_rutin  = "Tidak Pernah (dalam satu tahun)" THEN 0 ELSE 0 END as skor_pertemuan_rutin,
@@ -1098,7 +1100,7 @@ class kppController extends Controller
             CASE WHEN buku_inventaris_kegiatan = "Ada" THEN 1 ELSE 0 END as skor_buku_inventaris_kegiatan, data_kpp_bop.jumlah_bop, data_kpp_pengecekan.jumlah_pengecekan, data_kpp_perbaikan.jumlah_kegiatan as jumlah_kegiatan_perbaikan, data_kpp_perbaikan.jumlah_dana as jumlah_dana_perbaikan,
 
             IF(struktur_organisasi = "Ada", 4, 0) as perlu_perhatian,
-            CASE WHEN IF(anggaran_dasar = "Ada", 2, 0) + IF(anggaran_rumah_tangga = "Ada", 2, 0) + IF(surat_keputusan = "Ada", 4, 0) > 3 THEN 4 ELSE 0 END as Awal,
+            CASE WHEN IF(anggaran_dasar = "Ada", 4, 0) + IF(anggaran_rumah_tangga = "Ada", 4, 0) + IF(surat_keputusan = "Ada", 4, 0) > 3 THEN 4 ELSE 0 END as Awal,
             IF(rencana_kerja = "Ada", 4, 0) as Terbangun,
             IF(CASE WHEN pertemuan_rutin  = "Setiap Bulan" Then 1 WHEN pertemuan_rutin  = "Setiap Tiga Bulan" Then 1  WHEN pertemuan_rutin  = "Setiap Enam Bulan" Then 1 WHEN pertemuan_rutin  = "Insidentil (sesuai kebutuhan)" Then 0 WHEN pertemuan_rutin  = "Tidak Pernah (dalam satu tahun)" THEN 0 ELSE 0 END + CASE WHEN administrasi_rutin = "Administrasi Bulanan Minimalis" THEN 1 WHEN administrasi_rutin = "Administrasi Bulanan Lengkap" THEN 1 WHEN administrasi_rutin = "Administrasi Triwulan/Selebihnya" THEN 1 ELSE 0 END + CASE WHEN buku_inventaris_kegiatan = "Ada" THEN 1 ELSE 0 END + IF( data_kpp_bop.jumlah_bop > 0, 1, 0) > 3, 4, 0) AS Berdaya,
             CASE WHEN IF(data_kpp_pengecekan.jumlah_pengecekan > 0, 2, 0) + IF(data_kpp_perbaikan.jumlah_kegiatan > 0, 2, 0)  > 3 THEN 4 ELSE 0 END AS Mandiri, 
@@ -1106,19 +1108,18 @@ class kppController extends Controller
             CASE 
             WHEN 
                 IF(struktur_organisasi = "Ada", 4, 0) + 
-                CASE WHEN IF(anggaran_dasar = "Ada", 2, 0) + IF(anggaran_rumah_tangga = "Ada", 2, 0) + IF(surat_keputusan = "Ada", 4, 0) > 3 THEN 4 ELSE 0 END + IF(rencana_kerja = "Ada", 4, 0) +  CASE WHEN pertemuan_rutin  = "Setiap Bulan" Then 1 WHEN pertemuan_rutin  = "Setiap Tiga Bulan" Then 1  WHEN pertemuan_rutin  = "Setiap Enam Bulan" Then 1 WHEN pertemuan_rutin  = "Insidentil (sesuai kebutuhan)" Then 0 WHEN pertemuan_rutin  = "Tidak Pernah (dalam satu tahun)" THEN 0 ELSE 0 END + CASE WHEN administrasi_rutin = "Administrasi Bulanan Minimalis" THEN 1 WHEN administrasi_rutin = "Administrasi Bulanan Lengkap" THEN 1 WHEN administrasi_rutin = "Administrasi Triwulan/Selebihnya" THEN 1 ELSE 0 END + CASE WHEN buku_inventaris_kegiatan = "Ada" THEN 1 ELSE 0 END + IF(data_kpp_bop.jumlah_bop > 0, 1, 0) + CASE WHEN IF(data_kpp_pengecekan.jumlah_pengecekan > 0, 2, 0) + IF(data_kpp_perbaikan.jumlah_kegiatan > 0, 2, 0)  > 3 THEN 4 ELSE 0 END = 20 THEN "Mandiri"
+                CASE WHEN IF(anggaran_dasar = "Ada", 4, 0) + IF(anggaran_rumah_tangga = "Ada", 4, 0) + IF(surat_keputusan = "Ada", 4, 0) > 3 THEN 4 ELSE 0 END + IF(rencana_kerja = "Ada", 4, 0) +  CASE WHEN pertemuan_rutin  = "Setiap Bulan" Then 1 WHEN pertemuan_rutin  = "Setiap Tiga Bulan" Then 1  WHEN pertemuan_rutin  = "Setiap Enam Bulan" Then 1 WHEN pertemuan_rutin  = "Insidentil (sesuai kebutuhan)" Then 0 WHEN pertemuan_rutin  = "Tidak Pernah (dalam satu tahun)" THEN 0 ELSE 0 END + CASE WHEN administrasi_rutin = "Administrasi Bulanan Minimalis" THEN 1 WHEN administrasi_rutin = "Administrasi Bulanan Lengkap" THEN 1 WHEN administrasi_rutin = "Administrasi Triwulan/Selebihnya" THEN 1 ELSE 0 END + CASE WHEN buku_inventaris_kegiatan = "Ada" THEN 1 ELSE 0 END + IF(data_kpp_bop.jumlah_bop > 0, 1, 0) + CASE WHEN IF(data_kpp_pengecekan.jumlah_pengecekan > 0, 2, 0) + IF(data_kpp_perbaikan.jumlah_kegiatan > 0, 2, 0)  > 3 THEN 4 ELSE 0 END = 20 THEN "Mandiri"
             WHEN 
                 IF(struktur_organisasi = "Ada", 4, 0) + 
-                CASE WHEN IF(anggaran_dasar = "Ada", 2, 0) + IF(anggaran_rumah_tangga = "Ada", 2, 0) + IF(surat_keputusan = "Ada", 4, 0) > 3 THEN 4 ELSE 0 END + IF(rencana_kerja = "Ada", 4, 0) +  CASE WHEN pertemuan_rutin  = "Setiap Bulan" Then 1 WHEN pertemuan_rutin  = "Setiap Tiga Bulan" Then 1  WHEN pertemuan_rutin  = "Setiap Enam Bulan" Then 1 WHEN pertemuan_rutin  = "Insidentil (sesuai kebutuhan)" Then 0 WHEN pertemuan_rutin  = "Tidak Pernah (dalam satu tahun)" THEN 0 ELSE 0 END + CASE WHEN administrasi_rutin = "Administrasi Bulanan Minimalis" THEN 1 WHEN administrasi_rutin = "Administrasi Bulanan Lengkap" THEN 1 WHEN administrasi_rutin = "Administrasi Triwulan/Selebihnya" THEN 1 ELSE 0 END + CASE WHEN buku_inventaris_kegiatan = "Ada" THEN 1 ELSE 0 END + IF(data_kpp_bop.jumlah_bop > 0, 1, 0) = 16 THEN "Berdaya" 
+                CASE WHEN IF(anggaran_dasar = "Ada", 4, 0) + IF(anggaran_rumah_tangga = "Ada", 4, 0) + IF(surat_keputusan = "Ada", 4, 0) > 3 THEN 4 ELSE 0 END + IF(rencana_kerja = "Ada", 4, 0) +  CASE WHEN pertemuan_rutin  = "Setiap Bulan" Then 1 WHEN pertemuan_rutin  = "Setiap Tiga Bulan" Then 1  WHEN pertemuan_rutin  = "Setiap Enam Bulan" Then 1 WHEN pertemuan_rutin  = "Insidentil (sesuai kebutuhan)" Then 0 WHEN pertemuan_rutin  = "Tidak Pernah (dalam satu tahun)" THEN 0 ELSE 0 END + CASE WHEN administrasi_rutin = "Administrasi Bulanan Minimalis" THEN 1 WHEN administrasi_rutin = "Administrasi Bulanan Lengkap" THEN 1 WHEN administrasi_rutin = "Administrasi Triwulan/Selebihnya" THEN 1 ELSE 0 END + CASE WHEN buku_inventaris_kegiatan = "Ada" THEN 1 ELSE 0 END + IF(data_kpp_bop.jumlah_bop > 0, 1, 0) = 16 THEN "Berdaya" 
             WHEN 
                 IF(struktur_organisasi = "Ada", 4, 0) + 
-                CASE WHEN IF(anggaran_dasar = "Ada", 2, 0) + IF(anggaran_rumah_tangga = "Ada", 2, 0) + IF(surat_keputusan = "Ada", 4, 0) > 3 THEN 4 ELSE 0 END + IF(rencana_kerja = "Ada", 4, 0) = 12 THEN "Terbangun" 
+                CASE WHEN IF(anggaran_dasar = "Ada", 4, 0) + IF(anggaran_rumah_tangga = "Ada", 4, 0) + IF(surat_keputusan = "Ada", 4, 0) > 3 THEN 4 ELSE 0 END + IF(rencana_kerja = "Ada", 4, 0) = 12 THEN "Terbangun" 
             WHEN  
                 IF(struktur_organisasi = "Ada", 4, 0) + 
-                CASE WHEN IF(anggaran_dasar = "Ada", 2, 0) + IF(anggaran_rumah_tangga = "Ada", 2, 0) + IF(surat_keputusan = "Ada", 4, 0) > 3 THEN 4 ELSE 0 END = 8 THEN "Awal"
+                CASE WHEN IF(anggaran_dasar = "Ada", 4, 0) + IF(anggaran_rumah_tangga = "Ada", 4, 0) + IF(surat_keputusan = "Ada", 4, 0) > 3 THEN 4 ELSE 0 END = 8 THEN "Awal"
             ELSE "Perlu Perhatian" 
-            END as Status
-            
+            END as Status            
             FROM kppdatas 
             LEFT JOIN  data_kpp_pengecekan
             ON kppdatas.kode_desa=data_kpp_pengecekan.kode_desa

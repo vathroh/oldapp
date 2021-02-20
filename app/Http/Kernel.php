@@ -64,6 +64,7 @@ class Kernel extends HttpKernel
         'projectActivityOrganizerMiddleware' => \App\Http\Middleware\projectActivityOrganizerMiddleware::class,
         'projectActivityInstructorMiddleware' => \App\Http\Middleware\projectActivityInstructorMiddleware::class,
         'projectActivityParticipantMiddleware' => \App\Http\Middleware\projectActivityParticipantMiddleware::class,
+        'evaluationBeingAssessedMiddleware' => \App\Http\Middleware\personnelEvaluation\beingAssessedMiddleware::class,
         'hrm' => \App\Http\Middleware\hrm::class,
     ];
 

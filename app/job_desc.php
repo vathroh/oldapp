@@ -17,7 +17,7 @@ class job_desc extends Model
         parent::boot();
         static::addGlobalScope(new jobDescScope);
     }
-
+    
     public function user()
     {
         return $this->belongsTo('App\User');
@@ -47,6 +47,15 @@ class job_desc extends Model
             'KD_KAB',
             'work_zone_id',
             'district'
+        );
+    }
+    
+    public function evaluator()
+    {
+        return $this->hasMany(
+            'App\personnel_evaluator',
+            'evaluator',
+            'job_title_id'
         );
     }
 }

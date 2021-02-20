@@ -262,6 +262,30 @@ Route::get('/ajax-listing-moveReg', 'activityController@moveReg');
 Route::get('/ajax-listing-ready', 'activityController@ready');
 
 //EVALUASI KINERJA 
+
+Route::namespace('personnelEvaluation\beingAssessed')->prefix('personnel-evaluation/being-assessed')->name('beingAssessed')->group(function () {
+    Route::get('/achievement/{valuId}/check', 'ajaxInputAchievementController@check');
+    Route::get('/achievement/{valuId}/save', 'ajaxInputAchievementController@store');
+    Route::post('/achievement/{valuId}/ok', 'inputAchievementController@ok');
+    Route::get('/achievement/{valuId}', 'inputAchievementController@index');
+});
+
+Route::namespace('personnelEvaluation\assessor')->prefix('personnel-evaluation/assessor')->name('beingAssessed')->group(function () {
+    Route::get('/personnels/selesaievaluasi/{jobId}', 'showPersonnelsController@selesaiEvaluasi');
+    Route::get('/personnels/selesaimengisi/{jobId}', 'showPersonnelsController@selesaiMengisi');
+    Route::get('/personnels/prosesevaluasi/{jobId}', 'showPersonnelsController@prosesEvaluasi');
+    Route::get('/personnels/prosesmengisi/{jobId}', 'showPersonnelsController@prosesMengisi');
+    Route::get('/personnels/allpersonnels/{jobId}', 'showPersonnelsController@allpersonnels');
+    Route::get('/personnels/siapevaluasi/{jobId}', 'showPersonnelsController@siapEvaluasi');
+    Route::get('/personnels/belummengisi/{jobId}', 'showPersonnelsController@belumMengisi');
+
+    Route::get('/assessment/input/{valueId}/check', 'ajaxInputAssessmentController@check');
+    Route::get('/assessment/input/{valueId}/save', 'ajaxInputAssessmentController@store');
+    Route::get('/assessment/input/{valueId}/edit', 'inputAssessmentController@edit');
+    Route::get('/assessment/input/{valueId}/ok', 'inputAssessmentController@ok');
+    Route::get('/assessment/input/{valueId}', 'inputAssessmentController@index');
+});
+
 Route::resource('personnel-evaluator', 'personnelEvaluation\evaluator');
 Route::resource('personnel-evaluation', 'personnelEvaluation\evaluation');
 Route::resource('personnel-evaluation-setup', 'personnelEvaluation\setup');

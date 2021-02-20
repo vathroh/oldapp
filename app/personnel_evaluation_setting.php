@@ -17,10 +17,12 @@ class personnel_evaluation_setting extends Model
     public function jobDesc()
     {
         return $this->hasManyThrough(
-            'App\job_desc', 'App\job_title',
-            'id', 'job_title_id',
-            'jobTitleId', 'id'
-        
+            'App\job_desc',
+            'App\job_title',
+            'id',
+            'job_title_id',
+            'jobTitleId',
+            'id'
         );
     }
 

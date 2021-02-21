@@ -8,8 +8,9 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\personnel_evaluation_setting;
+use App\personnel_evaluation_value;
 
-class showPersonnelsController extends Controller
+class showFaskelPersonnelsController extends Controller
 {
     public function setting($jobId)
     {
@@ -19,65 +20,66 @@ class showPersonnelsController extends Controller
         return $lastSetting;
     }
 
-    public function users()
+    public function users($district)
     {
         $myZones        = explode(", ", Auth::user()->areaKerja->pluck('zone')->first());
-        $users          = User::find(job_desc::join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')->whereIn('district', $myZones)->pluck('user_id'));
+        $users          = User::find(job_desc::join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')->where('district', $district)->pluck('user_id'));
         return $users;
     }
 
-    public function allpersonnels($jobId)
+    public function allpersonnels($jobId, $district)
     {
-        return $users          = $this->users();
+        $users   = $this->users($district);
         $lastSetting    = $this->setting($jobId);
         return view('personnelEvaluation.assessor.personnels.allpersonnels', compact(['users', 'lastSetting']));
     }
 
-    public function belumMengisi($jobId)
+    public function belumMengisi($jobId, $district)
     {
-        $users          = $this->users();
+        $users          = $this->users($district);
         $lastSetting    = $this->setting($jobId);
         $personnels     = $this->setting($jobId)->jobDesc->whereIn('user_id', $users->pluck('id'))->whereNotIn('user_id', $this->setting($jobId)->evaluationValue->pluck('userId'));
         return view('personnelEvaluation.assessor.personnels.belumMengisi', compact(['users', 'personnels', 'lastSetting']));
     }
 
-    public function selesaiMengisi($jobId)
+    public function selesaiMengisi($jobId, $district)
     {
-        $users          = $this->users();
+        $users          = $this->users($district);
         $lastSetting    = $this->setting($jobId);
-        $values         = $this->setting($jobId)->evaluationValue->where('ok_by_user', 1);
+        $values         = personnel_evaluation_value::where('settingId', $lastSetting->id)->whereIn('userId', $users->pluck('id'))->where('ok_by_user', 1)->get();
         return view('personnelEvaluation.assessor.personnels.selesaiMengisi', compact(['users', 'values', 'lastSetting']));
     }
 
-    public function prosesMengisi($jobId)
+    public function prosesMengisi($jobId, $district)
     {
-        $users          = $this->users();
+        $users          = $this->users($district);
         $lastSetting    = $this->setting($jobId);
-        $values         = $this->setting($jobId)->evaluationValue->where('ok_by_user', 0);
+        $values         = personnel_evaluation_value::where('settingId', $lastSetting->id)->whereIn('userId', $users->pluck('id'))->where('ok_by_user', 0)->get();
         return view('personnelEvaluation.assessor.personnels.prosesMengisi', compact(['users', 'values', 'lastSetting']));
     }
 
-    public function siapEvaluasi($jobId)
+    public function siapEvaluasi($jobId, $district)
     {
-        $users          = $this->users();
+        $users          = $this->users($district);
         $lastSetting    = $this->setting($jobId);
-        $values         = $this->setting($jobId)->evaluationValue->where('ok_by_user', 1)->where('totalScore', '0.00');
+        $values         = personnel_evaluation_value::where('settingId', $lastSetting->id)->whereIn('userId', $users->pluck('id'))->where('ok_by_user', 1)->where('totalScore', '0.00')->get();
         return view('personnelEvaluation.assessor.personnels.siapEvaluasi', compact(['users', 'values', 'lastSetting']));
     }
 
-    public function prosesEvaluasi($jobId)
+    public function prosesEvaluasi($jobId, $district)
     {
-        $users          = $this->users();
+        $users          = $this->users($district);
         $lastSetting    = $this->setting($jobId);
-        $values         = $this->setting($jobId)->evaluationValue->where('ok_by_user', 1)->where('totalScore', '!=', '0.00')->where('ready', 0);
+        $values         = personnel_evaluation_value::where('settingId', $lastSetting->id)->whereIn('userId', $users->pluck('id'))->where('ok_by_user', 1)->where('totalScore', '!=', '0.00')->where('ready', 0)->get();
         return view('personnelEvaluation.assessor.personnels.prosesEvaluasi', compact(['users', 'values', 'lastSetting']));
     }
 
-    public function selesaiEvaluasi($jobId)
+    public function selesaiEvaluasi($jobId, $district)
     {
-        $users          = $this->users();
+        $users          = $this->users($district);
         $lastSetting    = $this->setting($jobId);
-        $values         = $this->setting($jobId)->evaluationValue->where('ok_by_user', 1)->where('totalScore', '!=', '0.00')->where('ready', 1);
+        $values         = personnel_evaluation_value::where('settingId', $lastSetting->id)->whereIn('userId', $users->pluck('id'))->where('ok_by_user', 1)->where('totalScore', '!=', '0.00')->where('ready', 1)->get();
+
         return view('personnelEvaluation.assessor.personnels.selesaiEvaluasi', compact(['users', 'values', 'lastSetting']));
     }
 }

@@ -57,55 +57,62 @@
 					</tr>
 				</thead>
 				<tbody>
-					@foreach($evaluators as $evaluator)
+					@foreach($zones->whereIn('level', 'Tim Faskel') as $zone)
 					<tr>
-						@if($evaluator->setting->where('year', $lastYear)->where('quarter', $lastQuarter)->count() )
-						@foreach($evaluator->setting->where('year', $lastYear)->where('quarter', $lastQuarter) as $setting)
-						<td>{{ $setting->jobTitle->job_title }} </td>
+						<td colspan="8" style="background-color:lightgreen;">
+							{{ $zone->kabupaten->NAMA_KAB }}
+						</td>
+					</tr>
+					@foreach($evaluators as $evaluator)
+					@if($evaluator->setting->where('year', $lastYear)->where('quarter', $lastQuarter)->count() )
+					@foreach($evaluator->setting->where('year', $lastYear)->where('quarter', $lastQuarter) as $setting)
+					<tr>
+						<td> {{ $setting->jobTitle->job_title }} </td>
 						<td class="text-center">
-							<a href="/personnel-evaluation/assessor/personnels/allpersonnels/{{ $evaluator->jobId }}">
-								{{ $setting->jobDesc->whereIn('user_id', $users->pluck('id'))->count() }}
+							<a href="/personnel-evaluation/assessor/timfaskel/allpersonnels/{{ $evaluator->jobId }}/{{$zone->district}}">
+								{{ $setting->jobDesc->where('work_zone_id', $zone->id)->whereIn('user_id', $users->pluck('id'))->count() }}
 							</a>
 						</td>
 						<td class="text-center">
-							<a href="/personnel-evaluation/assessor/personnels/belummengisi/{{ $evaluator->jobId }}">
-								{{ $setting->jobDesc->whereIn('user_id', $users->pluck('id'))->whereNotIn('user_id', $setting->evaluationValue->pluck('userId') )->count() }}
-							</a>
-						</td>
-						<td class="text-center">
-							<a href="/personnel-evaluation/assessor/personnels/prosesmengisi/{{ $evaluator->jobId }}">
-								{{ $setting->evaluationValue->where('ok_by_user', 0)->count() }}
-							</a>
-						</td>
-						<td class="text-center">
-							<a href="/personnel-evaluation/assessor/personnels/selesaimengisi/{{ $evaluator->jobId }}">
-								{{ $setting->evaluationValue->where('ok_by_user', 1)->count() }}
-							</a>
-						</td>
-						<td class="text-center">
-							<a href="/personnel-evaluation/assessor/personnels/siapevaluasi/{{ $evaluator->jobId }}">
-								{{ $setting->evaluationValue->where('ok_by_user', 1)->where('totalScore', '0.00')->count() }}
+							<a href="/personnel-evaluation/assessor/timfaskel/belummengisi/{{ $evaluator->jobId }}/{{$zone->district}}">
+								{{ $setting->jobDesc->where('work_zone_id', $zone->id)->whereIn('user_id', $users->pluck('id'))->whereNotIn('user_id', $setting->evaluationValue->pluck('userId') )->count() }}
 							</a>
 						</td>
 						<td class=" text-center">
-							<a href="/personnel-evaluation/assessor/personnels/prosesevaluasi/{{ $evaluator->jobId }}">
-								{{ $setting->evaluationValue->where('ok_by_user', 1)->where('totalScore', '!=', '0.00')->where('ready', 0)->count() }}
+							<a href="/personnel-evaluation/assessor/timfaskel/prosesmengisi/{{ $evaluator->jobId }}/{{$zone->district}}">
+								{{ $setting->evaluationValue->whereIn('userId', $zone->jobDesc->pluck('user_id'))->where('ok_by_user', 0)->count() }}
 							</a>
 						</td>
 						<td class="text-center">
-							<a href="/personnel-evaluation/assessor/personnels/selesaievaluasi/{{ $evaluator->jobId }}">
-								{{ $setting->evaluationValue->where('ok_by_user', 1)->where('totalScore', '!=', '0.00')->where('ready', 1)->count() }}
+							<a href="/personnel-evaluation/assessor/timfaskel/selesaimengisi/{{ $evaluator->jobId }}/{{$zone->district}}">
+								{{ $setting->evaluationValue->whereIn('userId', $zone->jobDesc->pluck('user_id'))->where('ok_by_user', 1)->count() }}
 							</a>
 						</td>
-						@endforeach
-						@endif
+						<td class="text-center">
+							<a href="/personnel-evaluation/assessor/timfaskel/siapevaluasi/{{ $evaluator->jobId }}/{{$zone->district}}">
+								{{ $setting->evaluationValue->whereIn('userId', $zone->jobDesc->pluck('user_id'))->where('ok_by_user', 1)->where('totalScore', '0.00')->count() }}
+							</a>
+						</td>
+						<td class=" text-center">
+							<a href="/personnel-evaluation/assessor/timfaskel/prosesevaluasi/{{ $evaluator->jobId }}/{{$zone->district}}">
+								{{ $setting->evaluationValue->whereIn('userId', $zone->jobDesc->pluck('user_id'))->where('ok_by_user', 1)->where('totalScore', '!=', '0.00')->where('ready', 0)->count() }}
+							</a>
+						</td>
+						<td class="text-center">
+							<a href="/personnel-evaluation/assessor/timfaskel/selesaievaluasi/{{ $evaluator->jobId }}/{{$zone->district}}">
+								{{ $setting->evaluationValue->whereIn('userId', $zone->jobDesc->pluck('user_id'))->where('ok_by_user', 1)->where('totalScore', '!=', '0.00')->where('ready', 1)->count() }}
+							</a>
+						</td>
 					</tr>
+
+					@endforeach
+					@endif
+					@endforeach
 					@endforeach
 				</tbody>
 			</table>
 		</div>
 		@endif
 	</div>
-</div>
 
-@endsection
+	@endsection

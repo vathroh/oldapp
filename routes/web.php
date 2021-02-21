@@ -271,6 +271,15 @@ Route::namespace('personnelEvaluation\beingAssessed')->prefix('personnel-evaluat
 });
 
 Route::namespace('personnelEvaluation\assessor')->prefix('personnel-evaluation/assessor')->name('beingAssessed')->group(function () {
+    //Tim Faskel
+    Route::get('/timfaskel/selesaimengisi/{jobId}/{district}', 'showFaskelPersonnelsController@selesaiMengisi');
+    Route::get('/timfaskel/allpersonnels/{jobId}/{district}', 'showFaskelPersonnelsController@allpersonnels');
+    Route::get('/timfaskel/prosesmengisi/{jobId}/{district}', 'showFaskelPersonnelsController@prosesMengisi');
+    Route::get('/timfaskel/belummengisi/{jobId}/{district}', 'showFaskelPersonnelsController@belumMengisi');
+    Route::get('/timfaskel/siapevaluasi/{jobId}/{district}', 'showFaskelPersonnelsController@siapEvaluasi');
+    Route::get('/timfaskel/selesaievaluasi/{jobId}/{district}', 'showFaskelPersonnelsController@selesaiEvaluasi');
+    Route::get('/timfaskel/prosesevaluasi/{jobId}/{district}', 'showFaskelPersonnelsController@prosesEvaluasi');
+    //Tim Korkot
     Route::get('/personnels/selesaievaluasi/{jobId}', 'showPersonnelsController@selesaiEvaluasi');
     Route::get('/personnels/selesaimengisi/{jobId}', 'showPersonnelsController@selesaiMengisi');
     Route::get('/personnels/prosesevaluasi/{jobId}', 'showPersonnelsController@prosesEvaluasi');

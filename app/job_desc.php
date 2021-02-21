@@ -2,9 +2,9 @@
 
 namespace App;
 
+use App\Scopes\jobDescScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphPivot;
-use App\Scopes\jobDescScope;
 
 
 class job_desc extends Model
@@ -17,7 +17,7 @@ class job_desc extends Model
         parent::boot();
         static::addGlobalScope(new jobDescScope);
     }
-    
+
     public function user()
     {
         return $this->belongsTo('App\User');
@@ -49,7 +49,7 @@ class job_desc extends Model
             'district'
         );
     }
-    
+
     public function evaluator()
     {
         return $this->hasMany(

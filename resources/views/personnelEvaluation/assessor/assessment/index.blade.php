@@ -664,9 +664,5 @@
         var issue = $("#issue").val();
         console.log($('.check-input').val())
     });
-
     </script>
-
-
-
 @endsection

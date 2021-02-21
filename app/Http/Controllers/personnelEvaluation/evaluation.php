@@ -40,14 +40,15 @@ class evaluation extends Controller
 		$evaluators 				= personnel_evaluator::where('evaluator', User::find($id)->posisi()->latest()->first()->id)->get();
 		// $evaluators 				= personnel_evaluator::where('evaluator', User::find($id)->posisi()->latest()->first()->id)->join('job_titles', 'job_titles.id', '=', 'personnel_evaluators.jobId')->orderBy('sort')->get();
 		$myZones					= explode(", ", User::find($id)->areaKerja()->pluck('zone')->first());
+		$zones 						= work_zone::whereIn('district', $myZones)->get();
 		$allvillages 				= allvillage::all();
 		$evaluationValues			= $this->evaluationValue();
 		$users = User::find(job_desc::join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')->whereIn('district', $myZones)->pluck('user_id'));
-
-		return view('personnelEvaluation.index', compact([
-			'myEvaluationSetting', 'myEvaluationValues', 'evaluators', 'evaluationValues', 'myZones', 'allvillages',
-			'lastYear', 'lastQuarter', 'lastSetting', 'users'
-		]));
+		if (Auth::user()->posisi->level == "OSP") {
+			return view('personnelEvaluation.indexosp', compact(['myEvaluationSetting', 'myEvaluationValues', 'evaluators', 'evaluationValues', 'myZones', 'allvillages', 'lastYear', 'lastQuarter', 'lastSetting', 'users', 'zones']));
+		} else {
+			return view('personnelEvaluation.indexkorkot', compact(['myEvaluationSetting', 'myEvaluationValues', 'evaluators', 'evaluationValues', 'myZones', 'allvillages', 'lastYear', 'lastQuarter', 'lastSetting', 'users', 'zones']));
+		}
 	}
 
 	public function evaluationValue()

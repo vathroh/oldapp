@@ -11,7 +11,7 @@
     </div>
 
     <div class="card-body">
-        @include('personnelEvaluation.beingAssessed.navbar')
+        @include('personnelEvaluation.navbar')
 
         <div id="ready" class="form-group text-center my-3" data-readyByUser="{{ $value->ok_by_user }}" data-ready="{{ $value->ready }}">
             <h4>Evaluasi Kinerja {{ $value->evaluationSetting->jobTitle->job_title }}</h4>

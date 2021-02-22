@@ -214,10 +214,10 @@
                 console.log(data[0]);
                 if (data[0] == 'ok') {
                     $("#check").empty();
-                    $("#check").append('<p>Data sudah disimpan, klik lanjut</p>');
+                    $("#check").append('<p>Data sudah disimpan, lanjut kirim nilai.</p>');
                     $("#check").append(
                         '<form method = "post" action = "/personnel-evaluation/being-assessed/achievement/{{ $value->id }}/ok" enctype = "multipart/form-data">@csrf' +
-                        '<button type = "submit" class = "btn btn-primary" > Lanjut </button></form>'
+                        '<button type = "submit" class = "btn btn-primary" > Kirim Nilai </button></form>'
                     );
                 } else {
                     $("#check").append('<p>Data gagal disimpan, klik Simpan pada setiap aspek penilaian</p>');

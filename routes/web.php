@@ -294,6 +294,20 @@ Route::namespace('personnelEvaluation\assessor')->prefix('personnel-evaluation/a
     Route::get('/assessment/input/{valueId}/ok', 'inputAssessmentController@ok');
     Route::get('/assessment/input/{valueId}', 'inputAssessmentController@index');
 });
+//HRM
+Route::namespace('personnelEvaluation\hrm')->prefix('personnel-evaluation/hrm')->name('personnelEvaluationHRM')->group(function () {
+    Route::get('monitoring',  'showPersonnelController@index');
+    Route::get('/personnels/selesaievaluasi/{jobId}', 'showPersonnelController@selesaiEvaluasi');
+    Route::get('/personnels/selesaimengisi/{jobId}', 'showPersonnelController@selesaiMengisi');
+    Route::get('/personnels/prosesevaluasi/{jobId}', 'showPersonnelController@prosesEvaluasi');
+    Route::get('/personnels/prosesmengisi/{jobId}', 'showPersonnelController@prosesMengisi');
+    Route::get('/personnels/allpersonnels/{jobId}', 'showPersonnelController@allpersonnels');
+    Route::get('/personnels/siapevaluasi/{jobId}', 'showPersonnelController@siapEvaluasi');
+    Route::get('/personnels/belummengisi/{jobId}', 'showPersonnelController@belumMengisi');
+});
+
+
+Route::get('personnel-evaluation-monitoring',  'personnelEvaluation\evaluation@monitoring');
 
 Route::resource('personnel-evaluator', 'personnelEvaluation\evaluator');
 Route::resource('personnel-evaluation', 'personnelEvaluation\evaluation');
@@ -319,7 +333,6 @@ Route::get('personnel-evaluation-download-rekap-all', 'personnelEvaluation\downl
 Route::get('personnel-evaluation-rekap', 'personnelEvaluation\evaluation@rekap');
 Route::put('personnel-evaluation-setup-ready/{id}', 'personnelEvaluation\setup@ready');
 Route::get('personnel-evaluation-edit',  'personnelEvaluation\evaluation@editPermission');
-Route::get('personnel-evaluation-monitoring',  'personnelEvaluation\evaluation@monitoring');
 Route::put('personnel-evaluation-setup-aspect/{id}', 'personnelEvaluation\setup@saveAspect');
 Route::put('personnel-evaluation-setup-not-ready/{id}', 'personnelEvaluation\setup@notReady');
 Route::put('personnel-evaluation-edit-grant/{valueId}',  'personnelEvaluation\evaluation@editGrant');

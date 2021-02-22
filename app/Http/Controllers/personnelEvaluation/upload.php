@@ -31,23 +31,23 @@ class upload extends Controller
 {
     public function evidencePage($valueId)
     {
-        $id 			      = Auth::user()->id;
-		    $lastYear 		  = personnel_evaluation_setting::max('year');
-    	  $lastQuarter 	  = personnel_evaluation_setting::where('year', $lastYear)->max('quarter');
-		    $evaluators 	  = personnel_evaluator::where('evaluator', job_desc::where('user_id', Auth::user()->id)->pluck('job_title_id')->first())->get();   
-    	  $lastSetting 	  = personnel_evaluation_setting::where('year', $lastYear)->where('quarter', $lastQuarter)->where('jobTitleId', Auth::user()->posisi()->first()->id)->get();
-		    $aspects 		    = personnel_evaluation_aspect::get();
-    	  $value 			    = personnel_evaluation_value::find($valueId);
-		    $criterias 		  = personnel_evaluation_criteria::orderBy('created_at', 'desc')->get();
-        $criteriIds		  = unserialize(personnel_evaluation_setting::where('id',$value->settingId)->pluck('aspectId')->first());
+        $id = Auth::user()->id;
+        $lastYear = personnel_evaluation_setting::max('year');
+        $lastQuarter = personnel_evaluation_setting::where('year', $lastYear)->max('quarter');
+        $evaluators = personnel_evaluator::where('evaluator', job_desc::where('user_id', Auth::user()->id)->pluck('job_title_id')->first())->get();
+        $lastSetting = personnel_evaluation_setting::where('year', $lastYear)->where('quarter', $lastQuarter)->where('jobTitleId', Auth::user()->posisi()->first()->id)->get();
+        $aspects = personnel_evaluation_aspect::get();
+        $value = personnel_evaluation_value::find($valueId);
+        $criterias = personnel_evaluation_criteria::orderBy('created_at', 'desc')->get();
+        $criteriIds = unserialize(personnel_evaluation_setting::where('id', $value->settingId)->pluck('aspectId')->first());
         $uploads        = personnel_evaluation_upload::where('personnel_evaluation_value_id', $valueId)->get();
 
-//return $folder             = 'WEBAPP/Evkinja/' . 'Triwulan_' . $evaluationSetting->quarter .'_Tahun_' . $evaluationSetting->year . '/' . $kota . '/' . str_slug(Auth::user()->name);
+        //return $folder             = 'WEBAPP/Evkinja/' . 'Triwulan_' . $evaluationSetting->quarter .'_Tahun_' . $evaluationSetting->year . '/' . $kota . '/' . str_slug(Auth::user()->name);
 
 
-		return view('personnelEvaluation.evaluation.upload1', compact(['uploads', 'evaluators', 'value', 'lastSetting', 'criteriIds', 'criterias', 'aspects']));
+        return view('personnelEvaluation.evaluation.upload1', compact(['uploads', 'evaluators', 'value', 'lastSetting', 'criteriIds', 'criterias', 'aspects']));
     }
-    
+
 
     public function destroy($id)
     {
@@ -56,15 +56,15 @@ class upload extends Controller
 
         // use disk "public"
         // Storage::disk('public')->delete($file->path . '/' . $file->file_name); 
-        
+
         //use Google Drive
-        if($file->google == ""){
-        }else{
+        if ($file->google == "") {
+        } else {
             Storage::disk('google')->delete($file->google->file_id);
             $file->google->delete();
         }
 
-        
+
         $file->delete();
         return redirect('/personnel-evaluation-upload/' . $value->id);
     }
@@ -80,10 +80,10 @@ class upload extends Controller
     public function download($fileId)
     {
         $file = personnel_evaluation_upload::find($fileId);
-        return Storage::disk('public')->download($file->path . '/' . $file->file_name); 
+        return Storage::disk('public')->download($file->path . '/' . $file->file_name);
     }
 
-//============================================================= download ==================================================================
+    //============================================================= download ==================================================================
 
 
     public function evidence(Request $request, $valueId)
@@ -96,21 +96,21 @@ class upload extends Controller
         $kota               = str_slug(Auth::user()->jobDesc()->first()->kabupaten()->first()->NAMA_KAB);
         $evaluationSetting  = personnel_evaluation_value::find($valueId)->evaluationSetting()->first();
         $userName           = str_slug(Auth::user()->name);
-        $folder             = 'WEBAPP/Evkinja/' . 'Triwulan_' . $evaluationSetting->quarter .'_Tahun_' . $evaluationSetting->year . '/' . $kota . '/' . $userName;
-        
-        // use "Public" Disk
-        /*$uploadedFileName   = Storage::disk('public')->putFileAs($folder, $image, $fileName);
-        personnel_evaluation_upload::create([
-            'path'                              => $folder,
-            'file_name'                         => $fileName,
-            'personnel_evaluation_value_id'     => $request->valueId,
-            'personnel_evaluation_criteria_id'  => $request->criteriaId,
-            'personnel_evaluation_aspect_id'    => $request->aspectId
+        $folder             = 'WEBAPP/Evkinja/' . 'Triwulan_' . $evaluationSetting->quarter . '_Tahun_' . $evaluationSetting->year . '/' . $kota . '/' . $userName;
 
-        ]);
-         */
+        // use "Public" Disk
+        // $uploadedFileName   = Storage::disk('public')->putFileAs($folder, $image, $fileName);
+        // personnel_evaluation_upload::create([
+        //     'path'                              => $folder,
+        //     'file_name'                         => $fileName,
+        //     'personnel_evaluation_value_id'     => $request->valueId,
+        //     'personnel_evaluation_criteria_id'  => $request->criteriaId,
+        //     'personnel_evaluation_aspect_id'    => $request->aspectId
+
+        // ]);
+
         //end "Public Disk"
-        
+
         // use Googgle Drive Disk ================================================================
         $this->createGoogleDriveFolder($valueId);
         $folder_id   = google_folder::where('path_folder', $folder)->pluck('id_folder')->first();
@@ -122,15 +122,15 @@ class upload extends Controller
             'personnel_evaluation_value_id'     => $request->valueId,
             'personnel_evaluation_criteria_id'  => $request->criteriaId,
             'personnel_evaluation_aspect_id'    => $request->aspectId
-            
+
         ]);
 
         $this->googleFileId($folder_id);
         //end "Google Drive" =======================================================================
-        
-        $output     	= array('success' => 'File sudah selesai diupload');
-        $uploads        = personnel_evaluation_upload::where('personnel_evaluation_value_id', $request->valueId )->get();
-        $criterias 		= personnel_evaluation_criteria::orderBy('created_at', 'desc')->get();
+
+        $output         = array('success' => 'File sudah selesai diupload');
+        $uploads        = personnel_evaluation_upload::where('personnel_evaluation_value_id', $request->valueId)->get();
+        $criterias         = personnel_evaluation_criteria::orderBy('created_at', 'desc')->get();
         return response()->json([$output, $uploads, $criterias]);
     }
 
@@ -142,8 +142,8 @@ class upload extends Controller
         for ($x = 0; $x < $FilesCount; $x++) {
             $file_id = substr($AllFiles[$x], 34, 33);
             $fileMetaData = Storage::disk('google')->getAdapter()->getMetadata($file_id);
-            
-            while(google_file::where('file_id', $file_id)->doesntExist()) {
+
+            while (google_file::where('file_id', $file_id)->doesntExist()) {
                 google_file::create([
                     'file_name'         => $fileMetaData["name"],
                     'file_id'           => $file_id,
@@ -151,7 +151,7 @@ class upload extends Controller
                 ]);
             }
 
-           /* 
+            /* 
             if (personnel_evaluation_upload::where('file_id', $file_id)->doesntExist()) {
                 personnel_evaluation_upload::where('id', personnel_evaluation_upload::max('id'))->update([
                     'file_id'           => $file_id,
@@ -165,29 +165,27 @@ class upload extends Controller
     public function createGoogleDriveFolder($valueId)
     {
         $googleFolder       = new googleFolderParent;
-        $lastYear 	        = personnel_evaluation_setting::max('year');
+        $lastYear             = personnel_evaluation_setting::max('year');
         $lastQuarter        = personnel_evaluation_setting::where('year', $lastYear)->max('quarter');
         $evaluationSetting  = personnel_evaluation_value::find($valueId)->evaluationSetting()->first();
-        
+
         // Create Quarter Folder
         $parent_folder_id   = $googleFolder->evkinja();
-        $new_folder         = $parent_folder_id . '/Triwulan_' . $evaluationSetting->quarter .'_Tahun_' . $evaluationSetting->year;
-        $new_folder_path    = 'WEBAPP/Evkinja/Triwulan-' . $evaluationSetting->quarter .'-Tahun-' . $evaluationSetting->year;
+        $new_folder         = $parent_folder_id . '/Triwulan_' . $evaluationSetting->quarter . '_Tahun_' . $evaluationSetting->year;
+        $new_folder_path    = 'WEBAPP/Evkinja/Triwulan-' . $evaluationSetting->quarter . '-Tahun-' . $evaluationSetting->year;
         $this->googleDriveFolder($parent_folder_id, $new_folder_path, $new_folder);
 
         //Create Kabupaten/Kota
         $parent_folder_id   = google_folder::where('path_folder', $new_folder_path)->pluck('id_folder')->first();
         $new_folder         = $parent_folder_id . '/' . str_slug(Auth::user()->jobDesc()->first()->kabupaten()->first()->NAMA_KAB);
-        $new_folder_path    = 'WEBAPP/Evkinja/Triwulan_' . $evaluationSetting->quarter .'_Tahun_' . $evaluationSetting->year . '/' . str_slug(Auth::user()->jobDesc()->first()->kabupaten()->first()->NAMA_KAB);
+        $new_folder_path    = 'WEBAPP/Evkinja/Triwulan_' . $evaluationSetting->quarter . '_Tahun_' . $evaluationSetting->year . '/' . str_slug(Auth::user()->jobDesc()->first()->kabupaten()->first()->NAMA_KAB);
         $this->googleDriveFolder($parent_folder_id, $new_folder_path, $new_folder);
 
         //nama Personil
         $parent_folder_id   = google_folder::where('path_folder', $new_folder_path)->pluck('id_folder')->first();
         $new_folder         = $parent_folder_id . '/' . str_slug(Auth::user()->name);
-        $new_folder_path    = 'WEBAPP/Evkinja/Triwulan_' . $evaluationSetting->quarter .'_Tahun_' . $evaluationSetting->year . '/' . str_slug(Auth::user()->jobDesc()->first()->kabupaten()->first()->NAMA_KAB) . '/' . str_slug(Auth::user()->name);
-;
+        $new_folder_path    = 'WEBAPP/Evkinja/Triwulan_' . $evaluationSetting->quarter . '_Tahun_' . $evaluationSetting->year . '/' . str_slug(Auth::user()->jobDesc()->first()->kabupaten()->first()->NAMA_KAB) . '/' . str_slug(Auth::user()->name);;
         $this->googleDriveFolder($parent_folder_id, $new_folder_path, $new_folder);
-
     }
 
     public function googleDriveFolder($parent_folder_id, $new_folder_path, $new_folder)
@@ -212,7 +210,6 @@ class upload extends Controller
                 }
             }
         }
-
     }
 
 
@@ -257,9 +254,9 @@ class upload extends Controller
 
 
 
-// ==============================================================================================================================================================
-     
-    public function upload(Request $request) 
+    // ==============================================================================================================================================================
+
+    public function upload(Request $request)
     {
         // create the file receiver
         $receiver = new FileReceiver("file", $request, HandlerFactory::classFromRequest($request));
@@ -314,7 +311,7 @@ class upload extends Controller
         return response()->json([
             'path' => $disk->url($fileName),
             'name' => $fileName,
-            'mime_type' =>$mime
+            'mime_type' => $mime
         ]);
     }
 
@@ -335,7 +332,7 @@ class upload extends Controller
 
         // Build the file path
         $filePath = "upload/{$mime}/{$dateFolder}/";
-        $finalPath = storage_path("app/".$filePath);
+        $finalPath = storage_path("app/" . $filePath);
 
         // move the file name
         $file->move($finalPath, $fileName);
@@ -355,7 +352,7 @@ class upload extends Controller
     protected function createFilename(UploadedFile $file)
     {
         $extension = $file->getClientOriginalExtension();
-        $filename = str_replace(".".$extension, "", $file->getClientOriginalName()); // Filename without extension
+        $filename = str_replace("." . $extension, "", $file->getClientOriginalName()); // Filename without extension
 
         // Add timestamp hash to name of the file
         $filename .= "_" . md5(time()) . "." . $extension;

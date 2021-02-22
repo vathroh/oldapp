@@ -9,7 +9,8 @@ class job_title extends Model
     public function user()
     {
         return $this->hasManyThrough(
-            'App\User', 'App\job_desc',
+            'App\User',
+            'App\job_desc',
             'job_title_id',
             'id',
             'id',
@@ -23,5 +24,8 @@ class job_title extends Model
         return $this->hasMany('App\personnel_evaluation_setting', 'jobTitleId');
     }
 
-
+    public function jobDesc()
+    {
+        return $this->hasMany('App\job_desc');
+    }
 }

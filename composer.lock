@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2876bfc1ad0f21bd7be7d80280936f56",
+    "content-hash": "505b08651d17e0291bbc3fbc8150b8ef",
     "packages": [
         {
             "name": "barryvdh/laravel-dompdf",
@@ -931,62 +931,6 @@
                 "url"
             ],
             "time": "2019-07-01T23:21:34+00:00"
-        },
-        {
-            "name": "kladislav/laravel-chunk-upload",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Kladislav/laravel-chunk-upload.git",
-                "reference": "9ef397bea3a65ea6353015af76f80065dcf90103"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Kladislav/laravel-chunk-upload/zipball/9ef397bea3a65ea6353015af76f80065dcf90103",
-                "reference": "9ef397bea3a65ea6353015af76f80065dcf90103",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/console": "^6.0 || ^7.0",
-                "illuminate/filesystem": "^6.0 || ^7.0",
-                "illuminate/http": "^6.0 || ^7.0",
-                "illuminate/support": "^6.0 || ^7.0",
-                "php": ">=7.2"
-            },
-            "require-dev": {
-                "orchestra/testbench": "^4.0",
-                "phpunit/phpunit": "^8.0"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Kladislav\\LaravelChunkUpload\\ServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Kladislav\\LaravelChunkUpload\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Vladislav Kim",
-                    "email": "kim@mediacube.network"
-                }
-            ],
-            "description": "Service for chunked upload with several js providers",
-            "keywords": [
-                "chunk",
-                "laravel",
-                "upload"
-            ],
-            "time": "2020-03-05T14:40:34+00:00"
         },
         {
             "name": "laravel/framework",
@@ -6897,13 +6841,12 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "kladislav/laravel-chunk-upload": 20
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
         "php": "^7.2"
     },
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "2.0.0"
 }

@@ -7,6 +7,7 @@
     </div>
     @include('activities.participants.navbar')
     <div class="card-body">
+{{ Carbon\carbon::now() }}
         <div class="mt-3 d-flex">
             <div class="Table-area" style="width:50%;">
                 Catatan Kehadiran anda:

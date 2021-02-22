@@ -40,7 +40,7 @@ class kppController extends Controller
      */
     public function index()
     {
-        $kppdatas = $this->coba2()->leftjoin('infrastruktures_maintenances', 'infrastruktures_maintenances.kelurahan_id', '=', 'kppdatas.kode_desa')->groupBy('kppdatas.kode_desa')->orderBy('kppdatas.updated_at', 'desc')->paginate(10);
+        $kppdatas = $this->coba2()->leftjoin('infrastruktures_maintenances', 'infrastruktures_maintenances.kelurahan_id', '=', 'kppdatas.kode_desa')->orderBy('kppdatas.updated_at', 'desc')->paginate(10);
         $BOPs = kpp_operating_fund::get();
 
         return view('kpp.index', compact(['kppdatas', 'BOPs']));
@@ -215,12 +215,12 @@ class kppController extends Controller
 
     public function monitoring()
     {
-        $kppExist = DB::table('kpp_data_view')->groupBy('KD_KEL');
+        $kppExist = DB::table('kpp_data_view');
         $bdiVillages = DB::table('bdi_villages');
         $BDIs = $bdiVillages->get();
-        $bdiKPP = DB::table('kpp_data_view')->join('bdi_villages', 'kpp_data_view.KD_KEL', '=', 'bdi_villages.KD_KEL')->groupBy('kpp_data_view.KD_KEL')->pluck('kpp_data_view.KD_KEL');
+        $bdiKPP = DB::table('kpp_data_view')->join('bdi_villages', 'kpp_data_view.KD_KEL', '=', 'bdi_villages.KD_KEL')->pluck('kpp_data_view.KD_KEL');
         $noBDI = $kppExist->whereNotIn('KD_KEL', $bdiKPP)->get();
-        $noKPPs = $bdiVillages->groupBy('bdi_villages.KD_KEL')->whereNotIn('bdi_villages.KD_KEL', $bdiKPP)->join('allvillages', 'bdi_villages.KD_KEL', '=', 'allvillages.KD_KEL')->get();
+        $noKPPs = $bdiVillages->whereNotIn('bdi_villages.KD_KEL', $bdiKPP)->join('allvillages', 'bdi_villages.KD_KEL', '=', 'allvillages.KD_KEL')->get();
         $PICs = DB::table('job_descs')->join('users', 'users.id', '=', 'job_descs.user_id')->join('job_titles', 'job_titles.id', '=', 'job_descs.job_title_id')->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')->join('personalInformations', 'personalInformations.nik', '=', 'users.nik')->get();
         return view('kpp.monitoring', compact(['noKPPs', 'BDIs', 'PICs']));
     }

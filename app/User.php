@@ -66,6 +66,11 @@ class User extends Authenticatable
         return $this->hasOne('App\biodata', 'nik', 'nik');
     }
 
+    public function blacklists()
+    {
+        return $this->belongsToMany('App\blacklist');
+    }
+
     // ========================================================= Job Description =================
     public function jobDesc()
     {

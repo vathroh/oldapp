@@ -30,9 +30,13 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->middleware('can:mana
     Route::resource('/users', 'UsersController', ['except' => ['create', 'store']]);
     Route::get('users-index', 'UsersController@ajaxIndex');
 });
+
+//HRM
 Route::get('hrm', 'hrmController@index');
 Route::get('hrm-rekap', 'hrmController@rekap');
 Route::get('hrm-users/{district}/{jobId}', 'hrmController@userList');
+//BLACKLIST
+Route::get('/evkinja/blacklist', 'Admin\blacklistController@evkinja');
 
 // BLOG
 Route::get('/blog-osp1', 'Blog\blogController@index');
@@ -287,12 +291,14 @@ Route::namespace('personnelEvaluation\assessor')->prefix('personnel-evaluation/a
     Route::get('/personnels/allpersonnels/{jobId}', 'showPersonnelsController@allpersonnels');
     Route::get('/personnels/siapevaluasi/{jobId}', 'showPersonnelsController@siapEvaluasi');
     Route::get('/personnels/belummengisi/{jobId}', 'showPersonnelsController@belumMengisi');
-
+    //Input Assessment
     Route::get('/assessment/input/{valueId}/check', 'ajaxInputAssessmentController@check');
     Route::get('/assessment/input/{valueId}/save', 'ajaxInputAssessmentController@store');
     Route::get('/assessment/input/{valueId}/edit', 'inputAssessmentController@edit');
     Route::get('/assessment/input/{valueId}/ok', 'inputAssessmentController@ok');
     Route::get('/assessment/input/{valueId}', 'inputAssessmentController@index');
+    //Rekap
+    Route::resource('/rekap', 'rekapController');
 });
 //HRM
 Route::namespace('personnelEvaluation\hrm')->prefix('personnel-evaluation/hrm')->name('personnelEvaluationHRM')->group(function () {

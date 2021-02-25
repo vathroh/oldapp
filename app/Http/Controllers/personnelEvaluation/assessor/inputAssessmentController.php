@@ -9,6 +9,7 @@ use App\personnel_evaluation_criteria;
 use App\personnel_evaluation_value;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\blacklist;
 
 class inputAssessmentController extends Controller
 {
@@ -19,12 +20,13 @@ class inputAssessmentController extends Controller
         $value          = personnel_evaluation_value::find($valueId);
         $time           = Carbon::parse($value->evaluationSetting->year . '-' . $value->evaluationSetting->quarter * 3);
         $content        = unserialize($value->content);
+        $blacklists     = blacklist::all();
 
         $job_desc     = job_desc::withoutGlobalScopes()
             ->where('user_id', $value->user->id)->where('starting_date', '<', $time)
             ->where('finishing_date', '>', $time)->get();
 
-        return view('personnelEvaluation.assessor.assessment.index', compact(['value', 'aspects', 'criterias', 'job_desc', 'content']));
+        return view('personnelEvaluation.assessor.assessment.index', compact(['blacklists', 'value', 'aspects', 'criterias', 'job_desc', 'content']));
     }
 
     public function ok($valueId)

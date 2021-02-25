@@ -175,18 +175,13 @@
                     Status Blacklist
                 </div>
                 <div>
-                    <div class="check">
-                        <input class="check-input" type="checkbox" value="Penyalahgunaan Dana Program/LKM/Masyarakat" id="blacklist1">
-                        <label class="check-label" for="blackllist1">
-                            Penyalahgunaan Dana Program/LKM/Masyarakat
-                        </label>
+                    <input type="hidden" id="user_id" value="{{$value->user->id}}">
+                    @foreach($blacklists as $blacklist)
+                    <div class="form-check">
+                        <input type="checkbox" id="blacklist" name="blacklists[]" data-id={{$blacklist->id}} value="{{ $blacklist->id}}" @if($value->user->blacklists->pluck('id')->contains($blacklist->id)) checked @endif >
+                        <label>{{ $blacklist->id}} {{ $blacklist->categories }}</label>
                     </div>
-                    <div class="check">
-                        <input class="check-input" type="checkbox" value="Penyalahgunaan Dana Program/LKM/Masyarakat" id="blacklist2">
-                        <label class="check-label" for="blackllist2">
-                            Manipulasi Data dan atau Data SIM
-                        </label>
-                    </div>
+                    @endforeach
                 </div>
 
                 <div style="width: 600px; margin:auto;">
@@ -225,7 +220,6 @@
 </div>
 
 <script>
-
     $(document).ready(function() {
         var ready = $("div#ready").data('ready');
         if (ready == 1) {
@@ -236,6 +230,35 @@
             $(".eachAspectsButton").empty()
             $("textarea").attr('disabled', true)
         }
+    });
+
+    $("input#blacklist").click(function() {
+        var blacklists = [];
+        var user_id = $('#user_id').val();
+        $("input#blacklist").each(function() {
+            if ($(this).prop('checked')) {
+                var blacklist_item = $(this).data('id');
+                blacklists.push(blacklist_item);
+            }
+        });
+
+        $.ajax({
+            type: 'get',
+            url: '/evkinja/blacklist',
+            data: {
+                'blacklist': blacklists,
+                'user_id': user_id
+            },
+            success: function(data) {
+                console.log(data);
+            },
+            error: function() {
+                console.log('error');
+            }
+        });
+
+
+        // console.log(blacklists);
     });
 
     $("#check-button").click(function() {
@@ -664,5 +687,5 @@
         var issue = $("#issue").val();
         console.log($('.check-input').val())
     });
-    </script>
+</script>
 @endsection

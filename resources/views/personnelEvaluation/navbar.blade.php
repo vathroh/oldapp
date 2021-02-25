@@ -5,7 +5,7 @@
 	<a class="nav-link" href="/personnel-evaluation-myevaluation">Evaluasi Saya</a>
 	@endif
 	@if(Auth::User()->job_desc->evaluator->count() > 0 )
-	<a class="nav-link" href="/personnel-evaluation-rekap">Rekap</a>
+	<a class="nav-link" href="/personnel-evaluation/assessor/rekap">Rekap</a>
 	<a class="nav-link" href="/personnel-evaluation-edit">Permintaan Edit</a>
 	@endif
 	@if (Auth::user()->hasAnyRoles(['hrm']))
@@ -13,7 +13,7 @@
 	<a class="nav-link" href="/personnel-evaluation-edit">Permintaan Edit</a>
 	@endif
 	<a class="nav-link" href="/personnel-evaluation/hrm/monitoring">Monitoring</a>
-	<a class="nav-link" href="/personnel-evaluation-rekap">Rekap</a>
+	<a class="nav-link" href="/personnel-evaluation/assessor/rekap">Rekap</a>
 	<a class="nav-link" href="/personnel-evaluation-edit">Permintaan Edit</a>
 	<a class="nav-link" href="/personnel-evaluator/">Tim Penilai</a>
 	<a class="nav-link" href="/personnel-evaluation-setup/">Setup</a>

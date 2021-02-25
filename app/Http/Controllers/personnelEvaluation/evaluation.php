@@ -38,8 +38,8 @@ class evaluation extends Controller
 		$myEvaluationValues			= User::find($id)->evaluationValue()->where('settingId', $myEvaluationSetting->pluck('id')->first());
 		$lastSetting 				= personnel_evaluation_setting::where('year', $lastYear)->where('quarter', $lastQuarter)->get();
 		$evaluators 				= personnel_evaluator::where('evaluator', User::find($id)->posisi()->latest()->first()->id)->get();
-		// $evaluators 				= personnel_evaluator::where('evaluator', User::find($id)->posisi()->latest()->first()->id)->join('job_titles', 'job_titles.id', '=', 'personnel_evaluators.jobId')->orderBy('sort')->get();
-		$myZones					= explode(", ", User::find($id)->areaKerja()->pluck('zone')->first());
+		// $evaluators 				= personnel_evaluator::where('evaluator', User::find($id)->posisi()->latest()->first()->id)->join('job_titles', 'job_titles.id', '=', 'personnel_evaluators.jobId')->orderBy('sort')->get(); 
+		$myZones					= explode(', ', job_desc::where('user_id', $id)->first()->areaKerja->zone);
 		$zones 						= work_zone::whereIn('district', $myZones)->get();
 		$allvillages 				= allvillage::all();
 		$evaluationValues			= $this->evaluationValue();

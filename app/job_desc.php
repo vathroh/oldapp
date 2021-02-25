@@ -58,4 +58,16 @@ class job_desc extends Model
             'job_title_id'
         );
     }
+
+    public function evaluationSettings()
+    {
+        return $this->hasManyThrough(
+            'App\personnel_evaluation_setting',
+            'App\personnel_evaluator',
+            'evaluator',
+            'jobTitleId',
+            'job_title_id',
+            'jobId'
+        );
+    }
 }

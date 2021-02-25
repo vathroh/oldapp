@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\allvillage;
+use App\job_desc;
 use App\job_title;
 use App\User;
 
@@ -18,12 +19,11 @@ class hrmController extends Controller
 
     public function users()
     {
-        $myZones    = explode(", ", User::find( Auth::user()->id )->areaKerja()->pluck('zone')->first());
-        $kabupaten  = allvillage::distinct()->whereIn('KD_KAB', $myZones )->select('KD_KAB', 'NAMA_KAB')->get();
+        $myZones    = explode(", ", job_desc::where('user_id', Auth::user()->id)->first()->areaKerja->zone);
+        $kabupaten  = allvillage::distinct()->whereIn('KD_KAB', $myZones)->select('KD_KAB', 'NAMA_KAB')->get();
 
         $users      = [];
-        foreach($kabupaten as $kab)
-        {
+        foreach ($kabupaten as $kab) {
             $users[$kab->KD_KAB] = $kab->jobDesc()->orderBy('job_title_id')->get();
         }
 
@@ -49,5 +49,4 @@ class hrmController extends Controller
         $users  = $this->users()[0][$district]->where('job_title_id', $jobTitleId);
         return view('admin.users.userDetails', compact(['users']));
     }
-
 }

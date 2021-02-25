@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Scopes\jobDescScope;
 
 class work_zone extends Model
 {
@@ -27,6 +28,6 @@ class work_zone extends Model
 
     public function kabupaten()
     {
-        return $this->hasOne('App\allvillage', 'KD_KAB');
+        return $this->hasOne('App\allvillage', 'KD_KAB', 'district');
     }
 }

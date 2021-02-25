@@ -19,6 +19,7 @@ use App\job_title;
 use App\work_zone;
 use App\job_desc;
 use App\User;
+use Carbon\Carbon;
 use PDF;
 
 class evaluation extends Controller
@@ -28,7 +29,6 @@ class evaluation extends Controller
 		$this->middleware('auth');
 	}
 
-
 	public function index()
 	{
 		$id 						= Auth::user()->id;
@@ -37,14 +37,28 @@ class evaluation extends Controller
 		$myEvaluationSetting 		= User::find($id)->evaluationSetting->where('year', $lastYear)->where('quarter', $lastQuarter);
 		$myEvaluationValues			= User::find($id)->evaluationValue()->where('settingId', $myEvaluationSetting->pluck('id')->first());
 		$lastSetting 				= personnel_evaluation_setting::where('year', $lastYear)->where('quarter', $lastQuarter)->get();
-		$evaluators 				= personnel_evaluator::where('evaluator', User::find($id)->posisi()->latest()->first()->id)
-			->join('job_titles', 'job_titles.id', '=', 'personnel_evaluators.jobId')->orderBy('sort')->get();
+		$evaluators 				= personnel_evaluator::where('evaluator', User::find($id)->posisi()->latest()->first()->id)->get();
+		// $evaluators 				= personnel_evaluator::where('evaluator', User::find($id)->posisi()->latest()->first()->id)->join('job_titles', 'job_titles.id', '=', 'personnel_evaluators.jobId')->orderBy('sort')->get();
 		$myZones					= explode(", ", User::find($id)->areaKerja()->pluck('zone')->first());
+		$zones 						= work_zone::whereIn('district', $myZones)->get();
 		$allvillages 				= allvillage::all();
+		$evaluationValues			= $this->evaluationValue();
+		$users = User::find(job_desc::join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')->whereIn('district', $myZones)->pluck('user_id'));
+		if (Auth::user()->posisi->level == "OSP") {
+			return view('personnelEvaluation.indexosp', compact(['myEvaluationSetting', 'myEvaluationValues', 'evaluators', 'evaluationValues', 'myZones', 'allvillages', 'lastYear', 'lastQuarter', 'lastSetting', 'users', 'zones']));
+		} else {
+			return view('personnelEvaluation.indexkorkot', compact(['myEvaluationSetting', 'myEvaluationValues', 'evaluators', 'evaluationValues', 'myZones', 'allvillages', 'lastYear', 'lastQuarter', 'lastSetting', 'users', 'zones']));
+		}
+	}
 
-
-
-
+	public function evaluationValue()
+	{
+		$lastYear 					= personnel_evaluation_setting::max('year');
+		$lastQuarter 				= personnel_evaluation_setting::where('year', $lastYear)->max('quarter');
+		$lastSetting 				= personnel_evaluation_setting::where('year', $lastYear)->where('quarter', $lastQuarter)->get();
+		$evaluators 				= personnel_evaluator::where('evaluator', Auth::user()->posisi()->latest()->first()->id)
+			->join('job_titles', 'job_titles.id', '=', 'personnel_evaluators.jobId')->orderBy('sort')->get();
+		$myZones					= explode(", ", Auth::user()->areaKerja()->pluck('zone')->first());
 		$evaluationValue = [];
 
 		for ($i = 0; $i < count($myZones); $i++) {
@@ -118,11 +132,7 @@ class evaluation extends Controller
 			$evaluationValues = collect($evaluationValue);
 		}
 
-
-		return view('personnelEvaluation.index', compact([
-			'myEvaluationSetting', 'myEvaluationValues', 'evaluators', 'evaluationValues', 'myZones', 'allvillages',
-			'lastYear', 'lastQuarter', 'lastSetting'
-		]));
+		return $evaluationValues;
 	}
 
 	//====================================================== index ==============================================================================================	
@@ -378,30 +388,26 @@ class evaluation extends Controller
 
 	public function inputValue($settingId, $userId)
 	{
-		$evaluators = personnel_evaluator::where('evaluator', job_desc::where('user_id', Auth::user()->id)->pluck('job_title_id')->first())->get();
+		$value 		= personnel_evaluation_value::where('settingId', $settingId)->where('userId', $userId)->get();
+		$setting	= personnel_evaluation_setting::find($settingId);
+		$time		= Carbon::parse($setting->year . '-' . $setting->quarter * 3);
 
-		$user		= job_title::distinct('users.id')->join('job_descs', 'job_descs.job_title_id', '=', 'job_titles.id')
-			->join('users', 'users.id', '=', 'job_descs.user_id')->where('users.id', $userId)
-			->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')
-			->join('allvillages', 'allvillages.KD_KAB', '=', 'work_zones.district')
-			->select('users.id', 'name', 'job_title_id', 'job_title', 'NAMA_KAB')
-			->get();
-
-		if (personnel_evaluation_value::where('settingId', $settingId)->where('userId', $userId)->doesntExist()) {
+		if ($value->count() == 0) {
 			personnel_evaluation_value::create([
 				'settingId'	=> $settingId,
 				'userId'	=> $userId
 			]);
-		}
+		};
 
+		$value 		= personnel_evaluation_value::where('settingId', $settingId)->where('userId', $userId)->get();
+		$job_desc 	= job_desc::withoutGlobalScopes()->where('user_id', $value[0]->user->id)->where('starting_date', '<', $time)->where('finishing_date', '>', $time)->get();
 
-		return view('personnelEvaluation.evaluation.input', compact(['settingId', 'userId', 'user', 'evaluators']));
+		return view('personnelEvaluation.evaluation.input', compact(['value', 'job_desc']));
 	}
 
 
 	public function input($settingId, $userId)
 	{
-
 		$aspects 	= personnel_evaluation_aspect::get();
 		$criterias 	= personnel_evaluation_criteria::orderBy('created_at', 'desc')->get();
 		$criteriIds	= unserialize(personnel_evaluation_setting::where('id', $settingId)->pluck('aspectId')->first());

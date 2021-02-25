@@ -2,9 +2,9 @@
 
 namespace App;
 
+use App\Scopes\jobDescScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphPivot;
-use App\Scopes\jobDescScope;
 
 
 class job_desc extends Model
@@ -47,6 +47,15 @@ class job_desc extends Model
             'KD_KAB',
             'work_zone_id',
             'district'
+        );
+    }
+
+    public function evaluator()
+    {
+        return $this->hasMany(
+            'App\personnel_evaluator',
+            'evaluator',
+            'job_title_id'
         );
     }
 }

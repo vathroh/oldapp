@@ -262,6 +262,53 @@ Route::get('/ajax-listing-moveReg', 'activityController@moveReg');
 Route::get('/ajax-listing-ready', 'activityController@ready');
 
 //EVALUASI KINERJA 
+
+Route::namespace('personnelEvaluation\beingAssessed')->prefix('personnel-evaluation/being-assessed')->name('beingAssessed')->group(function () {
+    Route::get('/achievement/{valuId}/check', 'ajaxInputAchievementController@check');
+    Route::get('/achievement/{valuId}/save', 'ajaxInputAchievementController@store');
+    Route::post('/achievement/{valuId}/ok', 'inputAchievementController@ok');
+    Route::get('/achievement/{valuId}', 'inputAchievementController@index');
+});
+
+Route::namespace('personnelEvaluation\assessor')->prefix('personnel-evaluation/assessor')->name('beingAssessed')->group(function () {
+    //Tim Faskel
+    Route::get('/timfaskel/selesaimengisi/{jobId}/{district}', 'showFaskelPersonnelsController@selesaiMengisi');
+    Route::get('/timfaskel/allpersonnels/{jobId}/{district}', 'showFaskelPersonnelsController@allpersonnels');
+    Route::get('/timfaskel/prosesmengisi/{jobId}/{district}', 'showFaskelPersonnelsController@prosesMengisi');
+    Route::get('/timfaskel/belummengisi/{jobId}/{district}', 'showFaskelPersonnelsController@belumMengisi');
+    Route::get('/timfaskel/siapevaluasi/{jobId}/{district}', 'showFaskelPersonnelsController@siapEvaluasi');
+    Route::get('/timfaskel/selesaievaluasi/{jobId}/{district}', 'showFaskelPersonnelsController@selesaiEvaluasi');
+    Route::get('/timfaskel/prosesevaluasi/{jobId}/{district}', 'showFaskelPersonnelsController@prosesEvaluasi');
+    //Tim Korkot
+    Route::get('/personnels/selesaievaluasi/{jobId}', 'showPersonnelsController@selesaiEvaluasi');
+    Route::get('/personnels/selesaimengisi/{jobId}', 'showPersonnelsController@selesaiMengisi');
+    Route::get('/personnels/prosesevaluasi/{jobId}', 'showPersonnelsController@prosesEvaluasi');
+    Route::get('/personnels/prosesmengisi/{jobId}', 'showPersonnelsController@prosesMengisi');
+    Route::get('/personnels/allpersonnels/{jobId}', 'showPersonnelsController@allpersonnels');
+    Route::get('/personnels/siapevaluasi/{jobId}', 'showPersonnelsController@siapEvaluasi');
+    Route::get('/personnels/belummengisi/{jobId}', 'showPersonnelsController@belumMengisi');
+
+    Route::get('/assessment/input/{valueId}/check', 'ajaxInputAssessmentController@check');
+    Route::get('/assessment/input/{valueId}/save', 'ajaxInputAssessmentController@store');
+    Route::get('/assessment/input/{valueId}/edit', 'inputAssessmentController@edit');
+    Route::get('/assessment/input/{valueId}/ok', 'inputAssessmentController@ok');
+    Route::get('/assessment/input/{valueId}', 'inputAssessmentController@index');
+});
+//HRM
+Route::namespace('personnelEvaluation\hrm')->prefix('personnel-evaluation/hrm')->name('personnelEvaluationHRM')->group(function () {
+    Route::get('monitoring',  'showPersonnelController@index');
+    Route::get('/personnels/selesaievaluasi/{jobId}', 'showPersonnelController@selesaiEvaluasi');
+    Route::get('/personnels/selesaimengisi/{jobId}', 'showPersonnelController@selesaiMengisi');
+    Route::get('/personnels/prosesevaluasi/{jobId}', 'showPersonnelController@prosesEvaluasi');
+    Route::get('/personnels/prosesmengisi/{jobId}', 'showPersonnelController@prosesMengisi');
+    Route::get('/personnels/allpersonnels/{jobId}', 'showPersonnelController@allpersonnels');
+    Route::get('/personnels/siapevaluasi/{jobId}', 'showPersonnelController@siapEvaluasi');
+    Route::get('/personnels/belummengisi/{jobId}', 'showPersonnelController@belumMengisi');
+});
+
+
+Route::get('personnel-evaluation-monitoring',  'personnelEvaluation\evaluation@monitoring');
+
 Route::resource('personnel-evaluator', 'personnelEvaluation\evaluator');
 Route::resource('personnel-evaluation', 'personnelEvaluation\evaluation');
 Route::resource('personnel-evaluation-setup', 'personnelEvaluation\setup');
@@ -286,7 +333,6 @@ Route::get('personnel-evaluation-download-rekap-all', 'personnelEvaluation\downl
 Route::get('personnel-evaluation-rekap', 'personnelEvaluation\evaluation@rekap');
 Route::put('personnel-evaluation-setup-ready/{id}', 'personnelEvaluation\setup@ready');
 Route::get('personnel-evaluation-edit',  'personnelEvaluation\evaluation@editPermission');
-Route::get('personnel-evaluation-monitoring',  'personnelEvaluation\evaluation@monitoring');
 Route::put('personnel-evaluation-setup-aspect/{id}', 'personnelEvaluation\setup@saveAspect');
 Route::put('personnel-evaluation-setup-not-ready/{id}', 'personnelEvaluation\setup@notReady');
 Route::put('personnel-evaluation-edit-grant/{valueId}',  'personnelEvaluation\evaluation@editGrant');

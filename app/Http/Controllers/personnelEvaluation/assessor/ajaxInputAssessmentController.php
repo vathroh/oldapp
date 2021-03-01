@@ -92,4 +92,19 @@ class ajaxInputAssessmentController extends Controller
 
         return response([$status, $request->value]);
     }
+
+    public function textarea(Request $request)
+    {
+        personnel_evaluation_value::where('id', $request->value)->update([
+            'issue'           => $request->issue,
+            'recommendation'  => $request->recommendation
+        ]);
+    }
+
+    public function team(Request $request)
+    {
+        personnel_evaluation_value::where('id', $request->value)->update([
+            'team'           => $request->team
+        ]);
+    }
 }

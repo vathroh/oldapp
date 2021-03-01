@@ -46,7 +46,6 @@
                 </div>
             </div>
         </div>
-
         <table class=" table table-bordered" style="width:100%;">
             <thead>
                 <tr>
@@ -104,7 +103,16 @@
                     <td>
                         <input class="score" type="Text" size="2" id="{{ $criteria[0] }}-{{ $aspect }}" data-aspect="{{ $aspect }}" data-criteria="{{ $criteria[0] }}" data-value="{{ $value->id }}" @isset($content[$criteria[0]][$aspect]['variabel']) data-variabel="{{ $content[$criteria[0]][$aspect]['variabel'] }}" @endif @isset($content[$criteria[0]][$aspect]['score']) value="{{ $content[$criteria[0]][$aspect]['score'] }}" @endif disabled>
                     </td>
-                    <td></td>
+                    <td>
+                        @foreach($files->where('personnel_evaluation_criteria_id', $criteria[0])->where('personnel_evaluation_aspect_id', $aspect) as $file)
+                        @if(is_null($file->google))
+                        @else
+                        <a href="https://drive.google.com/file/d/{{$file->google->file_id}}/view" target="_blank">
+                            @endif
+                            bukti-{{ $loop->iteration }}
+                        </a>
+                        @endforeach
+                    </td>
                     <td class="eachAspectsButton"><button type="button" class="eachAspects btn btn-primary" data-id="{{ $criteria[0] }}-{{ $aspect }}" data-value="{{ $value->id }}" data-aspect="{{ $aspect }}" data-criteria="{{ $criteria[0] }}">Simpan</button></td>
                     <td>
                         <div type="text" size="6" class="save text-center" id="{{ $criteria[0] }}-{{ $aspect }}" style="font-size: 20px;"></div>
@@ -179,7 +187,7 @@
                     @foreach($blacklists as $blacklist)
                     <div class="form-check">
                         <input type="checkbox" id="blacklist" name="blacklists[]" data-id={{$blacklist->id}} value="{{ $blacklist->id}}" @if($value->user->blacklists->pluck('id')->contains($blacklist->id)) checked @endif >
-                        <label>{{ $blacklist->id}} {{ $blacklist->categories }}</label>
+                        <label>{{ $blacklist->categories }}</label>
                     </div>
                     @endforeach
                 </div>
@@ -311,16 +319,22 @@
 
     $("input#team").keyup(function() {
         var team = $(this).val();
+        var value = $(this).data('value');
+
+        console.log(team);
 
         $.ajax({
             type: 'get',
-            url: '/personnel-evaluation/create',
+            url: '/personnel-evaluation/assessor/assessment/input/{{ $value->id }}/team',
             data: {
+                'value': value,
                 'team': team
             },
-
-            success: function(data) {
-                console.log(data);
+            success: function() {
+                console.log('success');
+            },
+            error: function() {
+                console.log('error');
             }
         });
     });
@@ -685,7 +699,23 @@
     $("textarea").change(function() {
         var recommendation = $("#recommendation").val();
         var issue = $("#issue").val();
-        console.log($('.check-input').val())
+        var value = $(this).data('value');
+
+        $.ajax({
+            type: 'get',
+            url: '/personnel-evaluation/assessor/assessment/input/{{ $value->id }}/textarea',
+            data: {
+                'recommendation': recommendation,
+                'issue': issue,
+                'value': value
+            },
+            success: function() {
+                console.log('success');
+            },
+            error: function() {
+                console.log('error');
+            }
+        });
     });
 </script>
 @endsection

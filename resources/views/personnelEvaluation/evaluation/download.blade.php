@@ -258,20 +258,14 @@
 		</div>
 	</div>
 
-
-
 	@if( $value->first()->user->posisi->level == "Korkot" || $value->first()->user->posisi->level == "Askot Mandiri" )
-
 
 	<div class="evaluatorTitle">
 		TIM PENILAI
 	</div>
 
-
 	<div id="evaluatorSign">
 		@foreach($thisPersonnelEvaluatorsKorkot->whereNotIn('evaluator', [14]) as $thisPersonnelEvaluator)
-
-
 		<div id="personnelEvaluator">
 			<div>
 				{{ $thisPersonnelEvaluator->evaluatorsUser->posisi->job_title }}

@@ -92,4 +92,11 @@ class ajaxInputAchievementController extends Controller
 
         return response([$status, $request->value]);
     }
+
+    public function team(Request $request)
+    {
+        personnel_evaluation_value::where('id', $request->value)->update([
+            'team'   => $request->team
+        ]);
+    }
 }

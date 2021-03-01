@@ -26,6 +26,10 @@ class personnel_evaluation_setting extends Model
         );
     }
 
+    public function assessor()
+    {
+        return $this->hasMany('App\personnel_evaluator', 'jobId', 'jobTitleId');
+    }
 
     public function evaluationValue()
     {

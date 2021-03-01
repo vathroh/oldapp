@@ -12,6 +12,11 @@ use App\personnel_evaluation_setting;
 
 class showPersonnelController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function setting($jobId)
     {
         $lastYear       = personnel_evaluation_setting::max('year');

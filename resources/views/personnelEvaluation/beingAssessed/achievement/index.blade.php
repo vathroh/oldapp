@@ -233,16 +233,20 @@
 
     $("input#team").keyup(function() {
         var team = $(this).val();
+        var value = $(this).data('value');
 
         $.ajax({
             type: 'get',
-            url: '/personnel-evaluation/create',
+            url: '/personnel-evaluation/being-assessed/achievement/' + value + '/team',
             data: {
+                'value': value,
                 'team': team
             },
-
-            success: function(data) {
-                console.log(data);
+            success: function() {
+                console.log('success');
+            },
+            error: function() {
+                console.log('error');
             }
         });
     });

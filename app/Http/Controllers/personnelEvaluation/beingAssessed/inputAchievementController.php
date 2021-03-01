@@ -15,6 +15,7 @@ class inputAchievementController extends Controller
     public function __construct()
     {
         // $this->middlewarevaluationBeingAssessedMiddleware']);
+        $this->middleware('auth');
     }
 
     public function index($valueId)

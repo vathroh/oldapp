@@ -270,6 +270,7 @@ Route::get('/ajax-listing-ready', 'activityController@ready');
 Route::namespace('personnelEvaluation\beingAssessed')->prefix('personnel-evaluation/being-assessed')->name('beingAssessed')->group(function () {
     Route::get('/achievement/{valuId}/check', 'ajaxInputAchievementController@check');
     Route::get('/achievement/{valuId}/save', 'ajaxInputAchievementController@store');
+    Route::get('/achievement/{valuId}/team', 'ajaxInputAchievementController@team');
     Route::post('/achievement/{valuId}/ok', 'inputAchievementController@ok');
     Route::get('/achievement/{valuId}', 'inputAchievementController@index');
 });
@@ -292,13 +293,18 @@ Route::namespace('personnelEvaluation\assessor')->prefix('personnel-evaluation/a
     Route::get('/personnels/siapevaluasi/{jobId}', 'showPersonnelsController@siapEvaluasi');
     Route::get('/personnels/belummengisi/{jobId}', 'showPersonnelsController@belumMengisi');
     //Input Assessment
+    Route::get('/assessment/input/{valueId}/textarea', 'ajaxInputAssessmentController@textarea');
     Route::get('/assessment/input/{valueId}/check', 'ajaxInputAssessmentController@check');
     Route::get('/assessment/input/{valueId}/save', 'ajaxInputAssessmentController@store');
+    Route::get('/assessment/input/{valueId}/team', 'ajaxInputAssessmentController@team');
     Route::get('/assessment/input/{valueId}/edit', 'inputAssessmentController@edit');
     Route::get('/assessment/input/{valueId}/ok', 'inputAssessmentController@ok');
     Route::get('/assessment/input/{valueId}', 'inputAssessmentController@index');
     //Rekap
     Route::resource('/rekap', 'rekapController');
+    //Print
+    Route::resource('/cetak', 'printController');
+    Route::get('/cetak-perjabatan/{jobTitleId}', 'printController@print');
 });
 //HRM
 Route::namespace('personnelEvaluation\hrm')->prefix('personnel-evaluation/hrm')->name('personnelEvaluationHRM')->group(function () {
@@ -310,6 +316,7 @@ Route::namespace('personnelEvaluation\hrm')->prefix('personnel-evaluation/hrm')-
     Route::get('/personnels/allpersonnels/{jobId}', 'showPersonnelController@allpersonnels');
     Route::get('/personnels/siapevaluasi/{jobId}', 'showPersonnelController@siapEvaluasi');
     Route::get('/personnels/belummengisi/{jobId}', 'showPersonnelController@belumMengisi');
+    Route::resource('/rekap', 'rekapController');
 });
 
 

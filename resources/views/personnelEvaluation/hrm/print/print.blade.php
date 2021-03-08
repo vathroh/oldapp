@@ -81,7 +81,7 @@
                 </tr>
                 <tr>
                     <td style="width:20%">Kabupaten/Kota</td>
-                    <td>:{{$currentjobDesc->where('user_id', $value->user->id)->first()->kabupaten->first()->NAMA_KAB }} </td>
+                    <td>:{{$jobDesc->where('user_id', $value->user->id)->first()->kabupaten->first()->NAMA_KAB }} </td>
                 </tr>
             </tbody>
         </table>
@@ -193,28 +193,25 @@
 
             <div id="evaluatorSign">
 
-                @foreach($currentjobDesc->whereIn('job_title_id', $evaluationSetting->assessor->pluck('evaluator'))->whereNotIn('job_title_id', [14, 1, 2])->whereIn('district', explode(', ', $currentjobDesc->where('user_id', $value->user->id)->first()->areaKerja->zone)) as $currentjobDesc1)
+                @foreach($jobDesc->whereIn('job_title_id', $evaluationSetting->assessor->pluck('evaluator'))->whereNotIn('job_title_id', [14]) as $jobDesc1)
                 <div id="personnelEvaluator">
                     <div>
-                        {{$currentjobDesc1->user->name }}
+                        {{$jobDesc1->user->name }}
                     </div>
                     <br><br><br>
                     <div>
-                        {{$currentjobDesc1->user->posisi->job_title }}
+                        {{$jobDesc1->user->posisi->job_title }}
                     </div>
                 </div>
                 @endforeach
             </div>
-            {{ $currentjobDesc->where('user_id', $value->user->id)->first()->areaKerja->district }}
-
-            {{ $currentjobDesc->whereIn('job_title_id', [14, 1, 2])->where('zone', 'LIKE', '%3307%' ) }}
 
             <div class="evaluatorTitle">
                 MENGETAHUI DAN MENYETUJUI
             </div>
 
             <div id="evaluatorSign">
-                @foreach($currentjobDesc->whereIn('job_title_id', [14, 1, 2])->whereIn('district', explode(', ', $currentjobDesc->where('user_id', $value->user->id)->first()->areaKerja->zone)) as $job_desc2)
+                @foreach($jobDesc->whereIn('job_title_id', [14]) as $job_desc2)
                 <div id="personnelEvaluator">
                     <div>
                         {{ $job_desc2->user->name }}

@@ -21,5 +21,6 @@
 	<a class="nav-link" href="/personnel-evaluation-setup/">Setup</a>
 	<a class="nav-link" href="/personnel-evaluation-criteria/">Kriteria</a>
 	<a class="nav-link" href="/personnel-evaluation-aspect/">Aspek</a>
+	<a class="nav-link" href="/personnel-evaluation/hrm/cetak">Print</a>
 	@endif
 </nav>

@@ -10,8 +10,8 @@
         <ol>
             @foreach($evaluationSettings as $evaluationSetting)
             <li>
-                <a href="/personnel-evaluation/hrm/cetak-perjabatan/{{$evaluationSetting->id}}">
-                    {{ $evaluationSetting->jobTitle->job_title }}
+                <a href="/personnel-evaluation/assessor/cetak/{{$evaluationSetting->id}}">
+                    Kuartal {{ $evaluationSetting->quarter }} Tahun {{ $evaluationSetting->year }}
                 </a>
             </li>
             @endforeach

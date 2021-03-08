@@ -31,6 +31,7 @@ class evaluation extends Controller
 
 	public function index()
 	{
+
 		$id 						= Auth::user()->id;
 		$lastYear 					= personnel_evaluation_setting::max('year');
 		$lastQuarter 				= personnel_evaluation_setting::where('year', $lastYear)->max('quarter');

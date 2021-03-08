@@ -10,7 +10,7 @@
         <ol>
             @foreach($evaluationSettings as $evaluationSetting)
             <li>
-                <a href="/personnel-evaluation/hrm/cetak-perjabatan/{{$evaluationSetting->id}}">
+                <a href="/personnel-evaluation/assessor/cetak-perjabatan/{{$evaluationSetting->id}}">
                     {{ $evaluationSetting->jobTitle->job_title }}
                 </a>
             </li>

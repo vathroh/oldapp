@@ -34,6 +34,10 @@
             font-weight: bold;
         }
 
+        #kop {
+            width: 100%;
+        }
+
         @media print {
             .btn-print {
                 display: none;
@@ -64,7 +68,10 @@
     <button class="btn-print" onClick="window.print()">Print</button>
     @foreach($evaluationSetting->evaluationValue as $value)
     <div id="break">
+        <img src="{{ asset('images/kop_atas.png') }}" id="kop">
         <div class="form-group text-center">
+            <h3>PROGRAM KOTA TANPA KUMUH</h3>
+            <h3>OSP 1 PROVINSI JAWA TENGAH</h3>
             <h4>Evaluasi Kinerja {{ $evaluationSetting->jobTitle->job_title}}</h4>
             <h4>Kuartal {{ $evaluationSetting->quarter }} Tahun {{ $evaluationSetting->year }}</h4>
         </div>

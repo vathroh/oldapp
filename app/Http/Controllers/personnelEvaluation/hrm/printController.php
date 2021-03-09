@@ -25,7 +25,7 @@ class printController extends Controller
     public function index()
     {
         $evaluationSettings = personnel_evaluation_setting::select('quarter', 'year', 'id')->groupBy('quarter')->groupBy('year')->orderByDesc('year')->limit(4)->get();
-        return view('personnelEvaluation.assessor.print.index', compact('evaluationSettings'));
+        return view('personnelEvaluation.hrm.print.index', compact('evaluationSettings'));
     }
 
     public function show($id)
@@ -33,7 +33,7 @@ class printController extends Controller
         $timestamp = Carbon::parse(personnel_evaluation_setting::find($id)->year . '-' . personnel_evaluation_setting::find($id)->quarter * 3)->timestamp;
         $evaluationSettings = personnel_evaluation_setting::where('quarter', personnel_evaluation_setting::find($id)->quarter)->where('year', personnel_evaluation_setting::find($id)->year)->get();
 
-        return view('personnelEvaluation.assessor.print.show', compact('evaluationSettings'));
+        return view('personnelEvaluation.hrm.print.show', compact('evaluationSettings'));
     }
 
     public function print($id)

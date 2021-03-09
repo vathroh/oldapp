@@ -34,6 +34,10 @@
             font-weight: bold;
         }
 
+        #kop {
+            width: 100%;
+        }
+
         @media print {
             .btn-print {
                 display: none;
@@ -43,14 +47,13 @@
                 page-break-after: always;
             }
 
-        }
+            #break {
+                page-break-after: left;
+            }
 
-        #break {
-            page-break-after: left;
-        }
-
-        #avoidbreak {
-            page-break-inside: avoid;
+            #avoidbreak {
+                page-break-inside: avoid;
+            }
         }
     </style>
 
@@ -63,9 +66,12 @@
 
 <body class="">
     <button class="btn-print" onClick="window.print()">Print</button>
-    @foreach($evaluationSetting->evaluationValue as $value)
+    @foreach($evaluationSetting->evaluationValue->whereIn('userId', $currentjobDesc->pluck('user_id')) as $value)
     <div id="break">
+        <img src="{{ asset('images/kop_atas.png') }}" id="kop">
         <div class="form-group text-center">
+            <h3>PROGRAM KOTA TANPA KUMUH</h3>
+            <h3>OSP 1 PROVINSI JAWA TENGAH</h3>
             <h4>Evaluasi Kinerja {{ $evaluationSetting->jobTitle->job_title}}</h4>
             <h4>Kuartal {{ $evaluationSetting->quarter }} Tahun {{ $evaluationSetting->year }}</h4>
         </div>
@@ -81,7 +87,7 @@
                 </tr>
                 <tr>
                     <td style="width:20%">Kabupaten/Kota</td>
-                    <td>:{{$currentjobDesc->where('user_id', $value->user->id)->first()->kabupaten->first()->NAMA_KAB }} </td>
+                    <td>:{{ $currentjobDesc->where('user_id', $value->user->id)->first()->kabupaten[0] ->NAMA_KAB ?? '' }} </td>
                 </tr>
             </tbody>
         </table>
@@ -98,7 +104,6 @@
                 </tr>
             </thead>
             <tbody>
-
                 @for($i = 0; $i < count(unserialize($evaluationSetting->aspectId)); $i++ )
                     <tr>
                         <td>
@@ -113,7 +118,7 @@
                             <td>{{ $x }}</td>
                             <td>{{ $aspects->find(unserialize($evaluationSetting->aspectId)[$i][$x])->aspect }}</td>
                             <td>
-                                <input type="checkbox" @if(isset(unserialize($value->content)[$criterias->find(unserialize($evaluationSetting->aspectId)[$i][0])->id][$aspects->find(unserialize($evaluationSetting->aspectId)[$i][$x])->id]) AND unserialize($value->content)[$criterias->find(unserialize($evaluationSetting->aspectId)[$i][0])->id][$aspects->find(unserialize($evaluationSetting->aspectId)[$i][$x])->id]['variabel'] == 1)) checked @endif disabled>
+                                <input type="checkbox" @if(isset(unserialize($value->content)[$criterias->find(unserialize($evaluationSetting->aspectId)[$i][0])->id][$aspects->find(unserialize($evaluationSetting->aspectId)[$i][$x])->id])) @if(isset(unserialize($value->content)[$criterias->find(unserialize($evaluationSetting->aspectId)[$i][0])->id][$aspects->find(unserialize($evaluationSetting->aspectId)[$i][$x])->id]['variabel'])) @if(unserialize($value->content)[$criterias->find(unserialize($evaluationSetting->aspectId)[$i][0])->id][$aspects->find(unserialize($evaluationSetting->aspectId)[$i][$x])->id]['variabel'] == 1) checked @endif @endif @endif disabled>
                             </td>
                             <td>{{ unserialize($value->content)[$criterias->find(unserialize($evaluationSetting->aspectId)[$i][0])->id][$aspects->find(unserialize($evaluationSetting->aspectId)[$i][$x])->id]['capaian'] ?? '' }} </td>
                             <td>{{ unserialize($value->content)[$criterias->find(unserialize($evaluationSetting->aspectId)[$i][0])->id][$aspects->find(unserialize($evaluationSetting->aspectId)[$i][$x])->id]['assessment'] ?? '' }} </td>
@@ -135,8 +140,7 @@
                         </tr>
             </tbody>
         </table>
-        <div class="row">
-
+        <div class="row mt-5" id="avoidbreak">
             <div class="col-md-6">
                 <div>
                     REKOMENDASI PERBAIKAN
@@ -190,31 +194,33 @@
                 TIM PENILAI
             </div>
 
-
             <div id="evaluatorSign">
 
-                @foreach($currentjobDesc->whereIn('job_title_id', $evaluationSetting->assessor->pluck('evaluator'))->whereNotIn('job_title_id', [14, 1, 2])->whereIn('district', explode(', ', $currentjobDesc->where('user_id', $value->user->id)->first()->areaKerja->zone)) as $currentjobDesc1)
+                @foreach($currentjobDesc->whereIn('job_title_id', $evaluationSetting->assessor->pluck('evaluator'))->whereIn('work_zone_id', $districts->where('kode_kab', $value->areaKerja[0]->district)->first()->work_zone->pluck('id') )->whereNotIn('job_title_id', [1,2,14]) as $jobDesc1)
+
                 <div id="personnelEvaluator">
                     <div>
-                        {{$currentjobDesc1->user->name }}
+                        {{$jobDesc1->user->name }}
                     </div>
                     <br><br><br>
                     <div>
-                        {{$currentjobDesc1->user->posisi->job_title }}
+                        {{$jobDesc1->user->posisi->job_title }}
                     </div>
                 </div>
+
                 @endforeach
             </div>
-            {{ $currentjobDesc->where('user_id', $value->user->id)->first()->areaKerja->district }}
-
-            {{ $currentjobDesc->whereIn('job_title_id', [14, 1, 2])->where('zone', 'LIKE', '%3307%' ) }}
 
             <div class="evaluatorTitle">
                 MENGETAHUI DAN MENYETUJUI
             </div>
 
+
             <div id="evaluatorSign">
-                @foreach($currentjobDesc->whereIn('job_title_id', [14, 1, 2])->whereIn('district', explode(', ', $currentjobDesc->where('user_id', $value->user->id)->first()->areaKerja->zone)) as $job_desc2)
+                @if($value->evaluationSetting->jobTitle->level == "Korkot" || $value->evaluationSetting->jobTitle->level == "Askot Mandiri")
+
+                @foreach($currentjobDesc->whereIn('work_zone_id', $districts->where('kode_kab', $value->areaKerja[0]->district)->first()->work_zone->pluck('id'))->whereIn('job_title_id', [14]) as $job_desc2)
+
                 <div id="personnelEvaluator">
                     <div>
                         {{ $job_desc2->user->name }}
@@ -225,6 +231,20 @@
                     </div>
                 </div>
                 @endforeach
+                @else
+                @foreach($currentjobDesc->whereIn('work_zone_id', $workZones->where('district_id', $value->areaKerja[0]->district_id)->pluck('id'))->whereIn('job_title_id', [1,2]) as $job_desc2)
+
+                <div id="personnelEvaluator">
+                    <div>
+                        {{ $job_desc2->user->name }}
+                    </div>
+                    <br><br><br>
+                    <div>
+                        {{ $job_desc2->user->posisi->job_title }}
+                    </div>
+                </div>
+                @endforeach
+                @endif
             </div>
         </div>
     </div>

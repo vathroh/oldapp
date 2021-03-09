@@ -43,14 +43,13 @@
                 page-break-after: always;
             }
 
-        }
+            #break {
+                page-break-after: left;
+            }
 
-        #break {
-            page-break-after: left;
-        }
-
-        #avoidbreak {
-            page-break-inside: avoid;
+            #avoidbreak {
+                page-break-inside: avoid;
+            }
         }
     </style>
 
@@ -81,7 +80,7 @@
                 </tr>
                 <tr>
                     <td style="width:20%">Kabupaten/Kota</td>
-                    <td>:{{$jobDesc->where('user_id', $value->user->id)->first()->kabupaten->first()->NAMA_KAB }} </td>
+                    <td>:{{ $currentjobDesc->where('user_id', $value->user->id)->first()->kabupaten[0] ->NAMA_KAB ?? '' }} </td>
                 </tr>
             </tbody>
         </table>
@@ -98,7 +97,6 @@
                 </tr>
             </thead>
             <tbody>
-
                 @for($i = 0; $i < count(unserialize($evaluationSetting->aspectId)); $i++ )
                     <tr>
                         <td>
@@ -113,7 +111,7 @@
                             <td>{{ $x }}</td>
                             <td>{{ $aspects->find(unserialize($evaluationSetting->aspectId)[$i][$x])->aspect }}</td>
                             <td>
-                                <input type="checkbox" @if(isset(unserialize($value->content)[$criterias->find(unserialize($evaluationSetting->aspectId)[$i][0])->id][$aspects->find(unserialize($evaluationSetting->aspectId)[$i][$x])->id]) AND unserialize($value->content)[$criterias->find(unserialize($evaluationSetting->aspectId)[$i][0])->id][$aspects->find(unserialize($evaluationSetting->aspectId)[$i][$x])->id]['variabel'] == 1)) checked @endif disabled>
+                                <input type="checkbox" @if(isset(unserialize($value->content)[$criterias->find(unserialize($evaluationSetting->aspectId)[$i][0])->id][$aspects->find(unserialize($evaluationSetting->aspectId)[$i][$x])->id])) @if(isset(unserialize($value->content)[$criterias->find(unserialize($evaluationSetting->aspectId)[$i][0])->id][$aspects->find(unserialize($evaluationSetting->aspectId)[$i][$x])->id]['variabel'])) @if(unserialize($value->content)[$criterias->find(unserialize($evaluationSetting->aspectId)[$i][0])->id][$aspects->find(unserialize($evaluationSetting->aspectId)[$i][$x])->id]['variabel'] == 1) checked @endif @endif @endif disabled>
                             </td>
                             <td>{{ unserialize($value->content)[$criterias->find(unserialize($evaluationSetting->aspectId)[$i][0])->id][$aspects->find(unserialize($evaluationSetting->aspectId)[$i][$x])->id]['capaian'] ?? '' }} </td>
                             <td>{{ unserialize($value->content)[$criterias->find(unserialize($evaluationSetting->aspectId)[$i][0])->id][$aspects->find(unserialize($evaluationSetting->aspectId)[$i][$x])->id]['assessment'] ?? '' }} </td>
@@ -135,8 +133,7 @@
                         </tr>
             </tbody>
         </table>
-        <div class="row">
-
+        <div class="row mt-5" id="avoidbreak">
             <div class="col-md-6">
                 <div>
                     REKOMENDASI PERBAIKAN
@@ -190,10 +187,10 @@
                 TIM PENILAI
             </div>
 
-
             <div id="evaluatorSign">
 
-                @foreach($jobDesc->whereIn('job_title_id', $evaluationSetting->assessor->pluck('evaluator'))->whereNotIn('job_title_id', [14]) as $jobDesc1)
+                @foreach($currentjobDesc->whereIn('job_title_id', $evaluationSetting->assessor->pluck('evaluator'))->whereIn('work_zone_id', $districts->where('kode_kab', $value->areaKerja[0]->district)->first()->work_zone->pluck('id') )->whereNotIn('job_title_id', [1,2,14]) as $jobDesc1)
+
                 <div id="personnelEvaluator">
                     <div>
                         {{$jobDesc1->user->name }}
@@ -203,6 +200,7 @@
                         {{$jobDesc1->user->posisi->job_title }}
                     </div>
                 </div>
+
                 @endforeach
             </div>
 
@@ -210,8 +208,12 @@
                 MENGETAHUI DAN MENYETUJUI
             </div>
 
+
             <div id="evaluatorSign">
-                @foreach($jobDesc->whereIn('job_title_id', [14]) as $job_desc2)
+                @if($value->evaluationSetting->jobTitle->level == "Korkot" || $value->evaluationSetting->jobTitle->level == "Askot Mandiri")
+
+                @foreach($currentjobDesc->whereIn('work_zone_id', $districts->where('kode_kab', $value->areaKerja[0]->district)->first()->work_zone->pluck('id'))->whereIn('job_title_id', [14]) as $job_desc2)
+
                 <div id="personnelEvaluator">
                     <div>
                         {{ $job_desc2->user->name }}
@@ -222,6 +224,20 @@
                     </div>
                 </div>
                 @endforeach
+                @else
+                @foreach($currentjobDesc->whereIn('work_zone_id', $workZones->where('district_id', $value->areaKerja[0]->district_id)->pluck('id'))->whereIn('job_title_id', [1,2]) as $job_desc2)
+
+                <div id="personnelEvaluator">
+                    <div>
+                        {{ $job_desc2->user->name }}
+                    </div>
+                    <br><br><br>
+                    <div>
+                        {{ $job_desc2->user->posisi->job_title }}
+                    </div>
+                </div>
+                @endforeach
+                @endif
             </div>
         </div>
     </div>

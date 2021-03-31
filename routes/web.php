@@ -213,8 +213,8 @@ Route::namespace('projectActivity\peserta')->prefix('kegiatan/peserta')->name('p
 
 Route::namespace('projectActivity\panitia')->prefix('kegiatan/panitia')->name('panitiaKegiatan.')->group(function () {
     Route::post('download-sertifikat/{activity_id}', 'certificateController@download');
-    Route::post('absensi/{activity}', 'attendanceRecordsController@store');
     Route::get('monitoring/peserta/{activity}', 'monitoringController@participants');
+    Route::post('absensi/{activity}', 'attendanceRecordsController@store');
     Route::get('monitoring/assesment', 'monitoringController@assesment');
     Route::get('monitoring/evaluasi', 'monitoringController@evaluation');
     Route::get('monitoring/pemandu', 'monitoringController@instructor');
@@ -223,6 +223,22 @@ Route::namespace('projectActivity\panitia')->prefix('kegiatan/panitia')->name('p
     Route::resource('sertifikat', 'certificateController');
     Route::resource('materi', 'materialsController');
     Route::resource('jadwal', 'scheduleController');
+
+    //SETUP SERTIFIKAT
+    Route::get('setup/sertifikat', 'certificate\setupCertificateController@index');
+    Route::post('setup/sertifikat', 'certificate\setupCertificateController@store');
+    Route::get('setup/sertifikat/create', 'certificate\setupCertificateController@create');
+    Route::get('setup/sertifikat/{id}/edit', 'certificate\setupCertificateController@edit');
+    Route::put('setup/sertifikat/name/{id}', 'certificate\setupCertificateController@name');
+    Route::delete('setup/sertifikat/{id}', 'certificate\setupCertificateController@destroy');
+    Route::put('setup/sertifikat/as/{id}', 'certificate\setupCertificateController@as');
+    Route::put('setup/sertifikat/date/{id}', 'certificate\setupCertificateController@date');
+    Route::put('setup/sertifikat/activity/{id}', 'certificate\setupCertificateController@activity');
+    Route::put('setup/sertifikat/kotaku/{id}', 'certificate\setupCertificateController@kotaku');
+    Route::put('setup/sertifikat/tanggal/{id}', 'certificate\setupCertificateController@tanggal');
+    Route::put('setup/sertifikat/kota/{id}', 'certificate\setupCertificateController@city');
+    Route::put('setup/sertifikat/osp/{id}', 'certificate\setupCertificateController@osp');
+    Route::put('setup/sertifikat/signedby/{id}', 'certificate\setupCertificateController@signedBy');
 });
 
 Route::namespace('projectActivity\pemandu')->prefix('kegiatan/pemandu')->name('pemanduKegiatan.')->group(function () {

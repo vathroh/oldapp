@@ -17,7 +17,6 @@ class certificateController extends Controller
         $this->middleware(['auth', 'projectActivityOrganizerMiddleware: $id']);
     }
 
-
     public function show($id)
     {
         $activity       = activity::findOrFail($id);
@@ -66,10 +65,17 @@ class certificateController extends Controller
         $role           = "PANITIA";
         $username       = Auth::User()->sertificate;
         $name           = [$username];
+        $certificates   = $activity->certificate;
 
-        //return view('activities.organizer.certificate.certificate', compact(['username', 'role']));
+        if (is_null($certificates)) {
+            return "Sertifikat belum diset";
+        } elseif ($certificates->release_date > 0) {
+            return "Sertifikat belum di rilis, silahkan kembalil pada tanggal " . $certificates->release_date;
+        }
 
-        $pdf = PDF::loadView('activities.participants.certificate.certificate', compact(['username', 'role']));
+        return view('activities.organizer.certificate.certificate', compact(['username', 'role', 'certificates']));
+
+        $pdf = PDF::loadView('activities.participants.certificate.certificate', compact(['username', 'role', 'certificates']));
         return $pdf->setPaper('a4', 'landscape')->download('certificate.pdf');
     }
 }

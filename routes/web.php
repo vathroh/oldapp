@@ -29,6 +29,18 @@ Route::get('/home', 'DashboardController@index')->name('home');
 Route::namespace('Admin')->prefix('admin')->name('admin.')->middleware('can:manage-users')->group(function () {
     Route::resource('/users', 'UsersController', ['except' => ['create', 'store']]);
     Route::get('users-index', 'UsersController@ajaxIndex');
+    //KABUPATEN
+    Route::resource('/district', 'districtController');
+    //AREA KERJA
+    Route::resource('/areakerja/askotmandiri', 'askotMandiri\workZoneController');
+    Route::resource('/areakerja/timfaskel', 'timFaskel\workZoneController');
+    Route::resource('/areakerja/korkot', 'korkot\workZoneController');
+    Route::resource('/areakerja/osp', 'osp\workZoneController');
+    Route::resource('/areakerja', 'workZoneController');
+    //AREA KERJA - AJAX
+    Route::get('/kabupaten/areakerja', 'workZoneController@ajaxKabupaten');
+    Route::get('/kecamatan/areakerja', 'workZoneController@ajaxKecamatan');
+    Route::get('/kelurahan/areakerja', 'workZoneController@ajaxKelurahan');
 });
 
 //HRM
@@ -137,7 +149,7 @@ Route::resource('/kpp/anggaran-dasar', 'kpp\anggaranDasarController');
 Route::resource('/kpp/anggaran-rumah-tangga', 'kpp\anggaranRumahTanggaController');
 Route::resource('/kpp/surat-keputusan', 'kpp\suratKeputusanController');
 Route::resource('/kpp/rencana-kerja', 'kpp\rencanaKerjaController');
-Route::resource('/kpp/pertemuan-rutin', 'kpp\pertemuanRutinCzontroller');
+Route::resource('/kpp/pertemuan-rutin', 'kpp\pertemuanRutinController');
 Route::resource('/kpp/administrasi-rutin', 'kpp\administrasiRutinController');
 Route::resource('/kpp/buku-inventaris-kegiatan', 'kpp\bukuInventarisKegiatanController');
 Route::resource('/kpp/biaya-operasional', 'kpp\biayaOperasionalController');
@@ -201,8 +213,8 @@ Route::namespace('projectActivity\peserta')->prefix('kegiatan/peserta')->name('p
 
 Route::namespace('projectActivity\panitia')->prefix('kegiatan/panitia')->name('panitiaKegiatan.')->group(function () {
     Route::post('download-sertifikat/{activity_id}', 'certificateController@download');
-    Route::post('absensi/{activity}', 'attendanceRecordsController@store');
     Route::get('monitoring/peserta/{activity}', 'monitoringController@participants');
+    Route::post('absensi/{activity}', 'attendanceRecordsController@store');
     Route::get('monitoring/assesment', 'monitoringController@assesment');
     Route::get('monitoring/evaluasi', 'monitoringController@evaluation');
     Route::get('monitoring/pemandu', 'monitoringController@instructor');
@@ -211,6 +223,22 @@ Route::namespace('projectActivity\panitia')->prefix('kegiatan/panitia')->name('p
     Route::resource('sertifikat', 'certificateController');
     Route::resource('materi', 'materialsController');
     Route::resource('jadwal', 'scheduleController');
+
+    //SETUP SERTIFIKAT
+    Route::get('setup/sertifikat', 'certificate\setupCertificateController@index');
+    Route::post('setup/sertifikat', 'certificate\setupCertificateController@store');
+    Route::get('setup/sertifikat/create', 'certificate\setupCertificateController@create');
+    Route::get('setup/sertifikat/{id}/edit', 'certificate\setupCertificateController@edit');
+    Route::put('setup/sertifikat/name/{id}', 'certificate\setupCertificateController@name');
+    Route::delete('setup/sertifikat/{id}', 'certificate\setupCertificateController@destroy');
+    Route::put('setup/sertifikat/as/{id}', 'certificate\setupCertificateController@as');
+    Route::put('setup/sertifikat/date/{id}', 'certificate\setupCertificateController@date');
+    Route::put('setup/sertifikat/activity/{id}', 'certificate\setupCertificateController@activity');
+    Route::put('setup/sertifikat/kotaku/{id}', 'certificate\setupCertificateController@kotaku');
+    Route::put('setup/sertifikat/tanggal/{id}', 'certificate\setupCertificateController@tanggal');
+    Route::put('setup/sertifikat/kota/{id}', 'certificate\setupCertificateController@city');
+    Route::put('setup/sertifikat/osp/{id}', 'certificate\setupCertificateController@osp');
+    Route::put('setup/sertifikat/signedby/{id}', 'certificate\setupCertificateController@signedBy');
 });
 
 Route::namespace('projectActivity\pemandu')->prefix('kegiatan/pemandu')->name('pemanduKegiatan.')->group(function () {
@@ -223,8 +251,8 @@ Route::namespace('projectActivity\pemandu')->prefix('kegiatan/pemandu')->name('p
 });
 
 Route::namespace('projectActivity\admin')->prefix('kegiatan/admin')->name('adminKegiatan.')->group(function () {
-    Route::resource('materi', 'materialsController');
-    Route::resource('jadwal', 'scheduleController');
+    // Route::resource('materi', 'materialsController');
+    // Route::resource('jadwal', 'scheduleController');
 });
 
 Route::get('/training-evaluation/{activity_id}/{subject_id}', 'evaluationController@index');
@@ -308,7 +336,6 @@ Route::namespace('personnelEvaluation\assessor')->prefix('personnel-evaluation/a
 });
 //HRM
 Route::namespace('personnelEvaluation\hrm')->prefix('personnel-evaluation/hrm')->name('personnelEvaluationHRM')->group(function () {
-    Route::get('monitoring',  'showPersonnelController@index');
     Route::get('/personnels/selesaievaluasi/{jobId}', 'showPersonnelController@selesaiEvaluasi');
     Route::get('/personnels/selesaimengisi/{jobId}', 'showPersonnelController@selesaiMengisi');
     Route::get('/personnels/prosesevaluasi/{jobId}', 'showPersonnelController@prosesEvaluasi');
@@ -316,7 +343,10 @@ Route::namespace('personnelEvaluation\hrm')->prefix('personnel-evaluation/hrm')-
     Route::get('/personnels/allpersonnels/{jobId}', 'showPersonnelController@allpersonnels');
     Route::get('/personnels/siapevaluasi/{jobId}', 'showPersonnelController@siapEvaluasi');
     Route::get('/personnels/belummengisi/{jobId}', 'showPersonnelController@belumMengisi');
+    Route::get('/cetak-perjabatan/{jobTitleId}', 'printController@print');
+    Route::get('monitoring',  'showPersonnelController@index');
     Route::resource('/rekap', 'rekapController');
+    Route::resource('/cetak', 'printController');
 });
 
 

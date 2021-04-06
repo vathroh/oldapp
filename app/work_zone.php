@@ -7,7 +7,7 @@ use App\Scopes\jobDescScope;
 
 class work_zone extends Model
 {
-    protected $fillable = ['level', 'district', 'team', 'zone', 'allvillage_index_column'];
+    protected $fillable = ['zone_level_id', 'level', 'district', 'district_id', 'team', 'zone', 'year', 'allvillage_index_column'];
 
     public function jobDesc()
     {
@@ -29,5 +29,20 @@ class work_zone extends Model
     public function kabupaten()
     {
         return $this->hasOne('App\allvillage', 'KD_KAB', 'district');
+    }
+
+    public function district()
+    {
+        return $this->hasOne('App\kabupaten', 'district_id');
+    }
+
+    public function districts()
+    {
+        return $this->morphedByMany('App\kabupaten', 'work_zonable');
+    }
+
+    public function villages()
+    {
+        return $this->morphedByMany('App\allvillage', 'work_zonable');
     }
 }

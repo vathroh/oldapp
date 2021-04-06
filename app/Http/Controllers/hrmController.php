@@ -19,6 +19,7 @@ class hrmController extends Controller
 
     public function users()
     {
+
         $myZones    = explode(", ", job_desc::where('user_id', Auth::user()->id)->first()->areaKerja->zone);
         $kabupaten  = allvillage::distinct()->whereIn('KD_KAB', $myZones)->select('KD_KAB', 'NAMA_KAB')->get();
 

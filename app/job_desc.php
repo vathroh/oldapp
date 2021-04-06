@@ -70,4 +70,9 @@ class job_desc extends Model
             'jobId'
         );
     }
+
+    public function assessorJobTitle()
+    {
+        return $this->hasMany('App\personnel_evaluator', 'jobId', 'job_title_id');
+    }
 }

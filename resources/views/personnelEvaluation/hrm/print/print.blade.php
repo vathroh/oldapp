@@ -66,7 +66,7 @@
 
 <body class="">
     <button class="btn-print" onClick="window.print()">Print</button>
-    @foreach($evaluationSetting->evaluationValue->whereIn('userId', $currentjobDesc->pluck('user_id')) as $value)
+    @foreach($evaluationSetting->evaluationValue as $value)
     <div id="break">
         <img src="{{ asset('images/kop_atas.png') }}" id="kop">
         <div class="form-group text-center">

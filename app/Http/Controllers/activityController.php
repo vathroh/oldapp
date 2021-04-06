@@ -16,6 +16,7 @@ use App\evaluation;
 use Carbon\Carbon;
 use App\allvillage;
 use App\activity;
+use App\certificate;
 use App\subject;
 use App\library;
 use App\User;
@@ -45,12 +46,16 @@ class activityController extends Controller
 
 	public function store(Request $request)
 	{
-		activity::create([
+		$activity = activity::create([
 			'category_id' => $request->category,
 			'name' => $request->name,
 			'start_date' => $request->start_date,
 			'finish_date' => $request->finish_date
 		]);
+
+		if ($request->category == 1) {
+			certificate::create(['activity_id' => $activity->id]);
+		}
 		return redirect('/activity');
 	}
 

@@ -115,12 +115,14 @@
     </style>
 </head>
 
+
+
 <body>
     <div class="certificate-body">
         <img src="{{ asset($certificates->background) }}">
         <div class="name">
             <h4 style="font-size: {{unserialize($certificates->name)['font-size'] ?? 12}}px; margin-top: {{unserialize($certificates->name)['margin-top'] ?? 55}}mm;">
-                {{ $username }}
+                ini adalah nama saya yang panjang
             </h4>
         </div>
         <div class="as">
@@ -197,102 +199,108 @@
             </div>
         </div>
     </div>
+
+
+    <div class="panel">
+        <div class="panel-item toname">
+            <form action="/kegiatan/panitia/setup/sertifikat/name/{{$certificates->id}}" method="post" enctype="multipart/form-data">@csrf @method('put')
+                <div>Nama</div>
+                <div>
+                    Ukuran <input size="2" type="text" name="name[font-size]" value="{{unserialize($certificates->name)['font-size'] ?? 0 }}">
+                    Jarak <input size="2" type="text" name="name[margin-top]" value="{{unserialize($certificates->name)['margin-top'] ?? 0 }}">
+                    <button type="submit">OK</button>
+                </div>
+            </form>
+            <form action="/kegiatan/panitia/setup/sertifikat/as/{{$certificates->id}}" method="post" enctype="multipart/form-data">@csrf @method('put')
+                <div>Sebagai</div>
+                <div>
+                    Ukuran <input size="2" type="text" name="as[font-size]" value="{{unserialize($certificates->as)['font-size'] ?? 0 }}">
+                    Jarak <input size="2" type="text" name="as[margin-top]" value="{{unserialize($certificates->as)['margin-top'] ?? 0 }}">
+                    <button>OK</button>
+                </div>
+            </form>
+            <form action="/kegiatan/panitia/setup/sertifikat/signedby/{{$certificates->id}}" method="post" enctype="multipart/form-data">@csrf @method('put')
+                <div>Nama dan Jabatan</div>
+                <div>
+                    Ukuran <input size="2" type="text" name="signedBy[font-size]" value="{{unserialize($certificates->signedBy)['font-size'] ?? 0 }}">
+                    Jarak <input size="2" type="text" name="signedBy[margin-top]" value="{{unserialize($certificates->signedBy)['margin-top'] ?? 0 }}">
+                    <button>OK</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="panel-item toname">
+            <form action="/kegiatan/panitia/setup/sertifikat/activity/{{$certificates->id}}" method="post" enctype="multipart/form-data">@csrf @method('put')
+                <div>Nama Kegiatan</div>
+                <div>
+                    Text 1 <input size="25" type="text" name="activity[text][1]" value="{{unserialize($certificates->activity)['text'][1] ?? '' }}">
+                    Text 2 <input size=" 25" type="text" name="activity[text][2]" value="{{unserialize($certificates->activity)['text'][2] ?? '' }}">
+                    Text 3 <input size="25" type="text" name="activity[text][3]" value="{{unserialize($certificates->activity)['text'][3] ?? '' }}">
+                </div>
+                <div>
+                    Ukuran <input size="2" type="text" name="activity[font-size]" value="{{unserialize($certificates->activity)['font-size'] ?? 0 }}">
+                    Jarak <input size="2" type="text" name="activity[margin-top]" value="{{unserialize($certificates->activity)['margin-top'] ?? 0 }}">
+                    <button>OK</button>
+                </div>
+            </form>
+        </div>
+        <div class="panel-item toname">
+            <form action="/kegiatan/panitia/setup/sertifikat/kotaku/{{$certificates->id}}" method="post" enctype="multipart/form-data">@csrf @method('put')
+                <div>NSUP</div>
+                <div>
+                    Text 1 <input size="25" type="text" name="kotaku[text][]" value="{{unserialize($certificates->kotaku)['text'][0] ?? '' }}">
+                    Text 2 <input size="25" type="text" name="kotaku[text][]" value="{{unserialize($certificates->kotaku)['text'][1] ?? '' }}">
+                </div>
+                <div>
+                    Ukuran <input size="2" type="text" name="kotaku[font-size]" value="{{unserialize($certificates->kotaku)['font-size'] ?? 0 }}">
+                    Jarak <input size="2" type="text" name="kotaku[margin-top]" value="{{unserialize($certificates->kotaku)['margin-top'] ?? 0 }}">
+                    <button>OK</button>
+                </div>
+            </form>
+        </div>
+        <div class="panel-item toname">
+            <form action="/kegiatan/panitia/setup/sertifikat/tanggal/{{$certificates->id}}" method="post" enctype="multipart/form-data">@csrf @method('put')
+                <div>Tanggal</div>
+                <div>
+                    Text 1 <input size="25" type="text" name="tanggal[text][]" value="{{unserialize($certificates->tanggal)['text'][0] ?? '' }}">
+                    Text 2 <input size="25" type="text" name="tanggal[text][]" value="{{unserialize($certificates->tanggal)['text'][1] ?? '' }}">
+                </div>
+                <div>
+                    Ukuran <input size=" 2" type="text" name="tanggal[font-size]" value="{{unserialize($certificates->tanggal)['font-size'] ?? 0 }}">
+                    Jarak <input size="2" type="text" name="tanggal[margin-top]" value="{{unserialize($certificates->tanggal)['margin-top'] ?? 0 }}">
+                    <button>OK</button>
+                </div>
+            </form>
+        </div>
+        <div class="panel-item toname">
+            <form action="/kegiatan/panitia/setup/sertifikat/kota/{{$certificates->id}}" method="post" enctype="multipart/form-data">@csrf @method('put')
+                <div>Kota dan Tanggal Terbit</div>
+                <div>
+                    Text <input size="25" type="text" name="city[text][]" value="{{unserialize($certificates->city)['text'][0] ?? 0 }}">
+                </div>
+                <div>
+                    Ukuran <input size="2" type="text" name="city[font-size]" value="{{unserialize($certificates->city)['font-size'] ?? 0 }}">
+                    Jarak <input size="2" type="text" name="city[margin-top]" value="{{unserialize($certificates->city)['margin-top'] ?? 0 }}">
+                    <button>OK</button>
+                </div>
+            </form>
+        </div>
+        <div class="panel-item toname">
+            <form action="/kegiatan/panitia/setup/sertifikat/osp/{{$certificates->id}}" method="post" enctype="multipart/form-data">@csrf @method('put')
+                <div>OSP</div>
+                <div>
+                    text 1 <input size="25" type="text" name="osp[text][]" value="{{unserialize($certificates->osp)['text'][0] ?? '' }}">
+                    text 2 <input size="25" type="text" name="osp[text][]" value="{{unserialize($certificates->osp)['text'][1] ?? '' }}">
+                </div>
+                <div>
+                    Ukuran <input size="2" type="text" name="osp[font-size]" value="{{unserialize($certificates->osp)['font-size'] ?? 0 }}">
+                    Jarak <input size="2" type="text" name="osp[margin-top]" value="{{unserialize($certificates->osp)['margin-top'] ?? 0 }}">
+                    <button>OK</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
 </body>
 
 </html>
-
-
-<!-- <!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <title>
-        SERTIFIKAT PELATIHAN
-    </title>
-    <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
-    <style>
-        body {
-            @import url('https://fonts.googleapis.com/css2?family=Anton&family=EB+Garamond:wght@600&display=swap');
-            background-color: grey;
-
-        }
-
-        img {
-            position: absolute;
-            height: 187mm;
-            width: 275mm;
-        }
-
-        .name {
-            position: absolute;
-            font-family: 'Anton', sans-serif;
-            text-transform: uppercase;
-            font-size: 44px;
-            height: 100mm;
-            width: 275mm;
-            text-align: center;
-            margin-top: 41mm;
-        }
-
-        .as {
-            position: absolute;
-            font-family: 'EB Garamond', serif;
-            text-transform: capitalize;
-            font-size: 30px;
-            width: 275mm;
-            text-align: center;
-            margin-top: 61mm;
-        }
-
-        .activity_name {
-            text-transform: uppercase;
-            font-size: 24px;
-            position: absolute;
-            height: 187mm;
-            width: 275mm;
-            text-align: center;
-            margin-top: 92mm;
-            margin-left: 5mm;
-            font-weight: bold;
-        }
-
-        .nsup {
-            text-transform: capitalize;
-            font-size: 20px;
-            position: absolute;
-            height: 187mm;
-            width: 265mm;
-            text-align: center;
-            margin-top: 110mm;
-            margin-left: 5mm;
-            font-weight: bold;
-        }
-
-        .date {
-            text-transform: capitalize;
-            font-size: 18px;
-            position: absolute;
-            height: 187mm;
-            width: 265mm;
-            text-align: center;
-            margin-top: 120mm;
-            margin-left: 5mm;
-
-        }
-    </style>
-</head>
-
-<body>
-    <img src="{{ public_path('SERTIFIKAT_01.png') }}"> -->
-<!-- <img src="{{ asset('SERTIFIKAT_01.png') }}">
-<div class="name" style="">
-    <h4>{{ $username }}</h4>
-</div>
-<div class="as" style="">
-    <h4>Sebagai {{$role}}</h4>
-</div>
-</body>
-
-</html> -->

@@ -43,4 +43,9 @@ class activity extends Model
     {
         return $this->hasMany('App\evaluation_question');
     }
+
+    public function certificate()
+    {
+        return $this->hasOne('App\certificate');
+    }
 }

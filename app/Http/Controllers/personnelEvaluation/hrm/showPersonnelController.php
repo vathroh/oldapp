@@ -37,7 +37,7 @@ class showPersonnelController extends Controller
         $lastYear       = personnel_evaluation_setting::max('year');
         $lastQuarter    = personnel_evaluation_setting::where('year', $lastYear)->max('quarter');
         $lastSetting    = personnel_evaluation_setting::where('year', $lastYear)->where('quarter', $lastQuarter)->get();
-        $jobTitles = job_title::whereIn('level', ['Korkot', 'Tim Faskel'])->whereNotIn('job_title', ['Operator', 'Sekretaris'])->orderBy('sort')->get();
+        $jobTitles = job_title::whereIn('level', ['Korkot', 'Askot Mandiri', 'Tim Faskel'])->whereNotIn('job_title', ['Operator', 'Sekretaris'])->orderBy('sort')->get();
         return view('personnelEvaluation.hrm.monitoring.index', compact(['jobTitles', 'lastSetting']));
     }
 

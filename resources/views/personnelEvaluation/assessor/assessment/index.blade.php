@@ -15,7 +15,7 @@
 
         <div id="ready" class="form-group text-center my-3" data-ready="{{ $value->ready }}" data-ready="{{ $value->ready }}">
             <h4>Evaluasi Kinerja {{ $value->evaluationSetting->jobTitle->job_title }}</h4>
-            <h4>Kuartal {{ $value->evaluationSetting->pluck('quarter')->first() }} Tahun {{ $value->evaluationSetting->pluck('year')->first() }}</h4>
+            <h4>Triwulan {{ $value->evaluationSetting->quarter }} Tahun {{ $value->evaluationSetting->year }} </h4>
         </div>
 
         <div>
@@ -73,6 +73,7 @@
                     <td>{{ $aspects->find(collect($aspect)[0])->aspect }}</td>
                     <td class="text-center">
                         <input type="checkbox" value="1" id="checkbox" name="checkbox" data-id="{{ $criteria[0] }}-{{ $aspect }}" data-aspect="{{ $aspect }}" data-criteria="{{ $criteria[0] }}" data-value="{{ $value->id }}" @isset($content[$criteria[0]][$aspect]["variabel"]) data-variabel="{{ $content[$criteria[0]][$aspect]["variabel"] }}" @if($content[$criteria[0]][$aspect]['variabel']==1) checked @endif @endif>
+                        
                     </td>
                     <td class=" text-center">
                         @if($criterias->find($criteria[0])->id == 1)

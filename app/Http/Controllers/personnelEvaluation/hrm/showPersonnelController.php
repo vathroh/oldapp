@@ -76,12 +76,12 @@ class showPersonnelController extends Controller
     {
         $users          = $this->users();
         $lastSetting    = $this->setting($jobId);
-        $values         = $$lastSetting->evaluationValue->where('ok_by_user', 1)->where('totalScore', '0.00');
+        $values         = $lastSetting->evaluationValue->where('ok_by_user', 1)->where('totalScore', '0.00');
         return view('personnelEvaluation.assessor.personnels.siapEvaluasi', compact(['users', 'values', 'lastSetting']));
     }
 
     public function prosesEvaluasi($jobId)
-    {
+    {#320000#320000#320000
         $users          = $this->users();
         $lastSetting    = $this->setting($jobId);
         $values         = $lastSetting->evaluationValue->where('ok_by_user', 1)->where('totalScore', '!=', '0.00')->where('ready', 0);

@@ -73,7 +73,7 @@
             <h3>PROGRAM KOTA TANPA KUMUH</h3>
             <h3>OSP 1 PROVINSI JAWA TENGAH</h3>
             <h4>Evaluasi Kinerja {{ $evaluationSetting->jobTitle->job_title}}</h4>
-            <h4>Kuartal {{ $evaluationSetting->quarter }} Tahun {{ $evaluationSetting->year }}</h4>
+            <h4>Triwulan  {{ $evaluationSetting->quarter }} Tahun {{ $evaluationSetting->year }}</h4>
         </div>
         <table style="width:100%;">
             <tbody>

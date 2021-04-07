@@ -11,7 +11,7 @@
             @foreach($evaluationSettings as $evaluationSetting)
             <li>
                 <a href="/personnel-evaluation/assessor/cetak/{{$evaluationSetting->id}}">
-                    Kuartal {{ $evaluationSetting->quarter }} Tahun {{ $evaluationSetting->year }}
+                    Triwulan {{ $evaluationSetting->quarter }} Tahun {{ $evaluationSetting->year }}
                 </a>
             </li>
             @endforeach

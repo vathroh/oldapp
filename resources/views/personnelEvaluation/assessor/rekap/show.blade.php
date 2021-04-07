@@ -11,7 +11,7 @@
         <div class="row">
             <div class="col">
                 <h5 class="mt-5 text-center">REKAP EVALUASI KINERJA PERSONIL</h5>
-                <h5 class="mb-5 text-center">KUARTAL {{$evaluationSettings->first()->quarter}} TAHUN {{$evaluationSettings->first()->year}}</h5>
+                <h5 class="mb-5 text-center">TRIWULAN {{$evaluationSettings->first()->quarter}} TAHUN {{$evaluationSettings->first()->year}}</h5>
 
                 <table class=" table-striped" style="width:100%;">
                     <thead>

@@ -12,7 +12,7 @@
             <div class="col">
                 <h5 class="mt-3 text-center text-uppercase">DAFTAR PERSONIL {{ $lastSetting->jobTitle->job_title }} </h5>
                 <h5 class="text-center text-uppercase">BELUM MENGISI EVALUASI KINERJA</h5>
-                <h5 class="mb-3 text-center">KUARTAL {{ $lastSetting->quarter }} TAHUN {{ $lastSetting->year }}</h5>
+                <h5 class="mb-3 text-center">TRIWULAN {{ $lastSetting->quarter }} TAHUN {{ $lastSetting->year }}</h5>
 
                 <table class=" table-striped" style="width:100%;">
                     <thead>

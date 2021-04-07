@@ -11,7 +11,7 @@
         <div class="row">
             <div class="col">
                 <h5 class="mt-3 text-center text-uppercase">DAFTAR PERSONIL {{ $lastSetting->jobTitle->job_title }} </h5>
-                <h6 class="mb-3 text-center">Kuartal {{ $lastSetting->quarter }} Tahun {{ $lastSetting->year }}</h6>
+                <h6 class="mb-3 text-center">TRIWULAN {{ $lastSetting->quarter }} Tahun {{ $lastSetting->year }}</h6>
 
                 <table class=" table-striped" style="width:100%;">
                     <thead>

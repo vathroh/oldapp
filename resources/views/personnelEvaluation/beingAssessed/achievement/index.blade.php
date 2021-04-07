@@ -15,7 +15,7 @@
 
         <div id="ready" class="form-group text-center my-3" data-readyByUser="{{ $value->ok_by_user }}" data-ready="{{ $value->ready }}">
             <h4>Evaluasi Kinerja {{ $value->evaluationSetting->jobTitle->job_title }}</h4>
-            <h4>Kuartal {{ $value->evaluationSetting->pluck('quarter')->first() }} Tahun {{ $value->evaluationSetting->pluck('year')->first() }}</h4>
+            <h4>Triwulan {{ $value->evaluationSetting->pluck('quarter')->first() }} Tahun {{ $value->evaluationSetting->pluck('year')->first() }}</h4>
         </div>
 
         <div>

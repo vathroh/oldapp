@@ -12,7 +12,7 @@
                 @foreach($evaluationSettings as $evaluationSetting)
                 <li>
                     <a href="/personnel-evaluation/hrm/rekap/{{$evaluationSetting->id}}">
-                        Kuartal {{ $evaluationSetting->quarter }} Tahun {{ $evaluationSetting->year }}
+                        Triwulan {{ $evaluationSetting->quarter }} Tahun {{ $evaluationSetting->year }}
                     </a>
                 </li>
                 @endforeach

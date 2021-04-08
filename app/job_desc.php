@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\MorphPivot;
 class job_desc extends Model
 //class job_desc extends MorphPivot
 {
-    protected $fillable = ['user_id', 'work_zone_id', 'job_title_id'];
+    protected $fillable = ['user_id', 'work_zone_id', 'job_title_id', 'starting_date', 'finishing_date'];
     protected static function boot()
 
     {

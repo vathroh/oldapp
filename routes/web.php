@@ -29,6 +29,9 @@ Route::resource('/profil', 'profilController');
 Route::namespace('Admin')->prefix('admin')->name('admin.')->middleware('can:manage-users')->group(function () {
     Route::resource('/users', 'UsersController', ['except' => ['create', 'store']]);
     Route::get('users-index', 'UsersController@ajaxIndex');
+    //Masa Kerja
+    Route::resource('user-work-zones', 'UserWorkZoneController');
+    
     //KABUPATEN
     Route::resource('/district', 'districtController');
     //AREA KERJA
@@ -334,6 +337,7 @@ Route::namespace('personnelEvaluation\assessor')->prefix('personnel-evaluation/a
     Route::resource('/cetak', 'printController');
     Route::get('/cetak-perjabatan/{jobTitleId}', 'printController@print');
 });
+
 //HRM
 Route::namespace('personnelEvaluation\hrm')->prefix('personnel-evaluation/hrm')->name('personnelEvaluationHRM')->group(function () {
     Route::get('/personnels/selesaievaluasi/{jobId}', 'showPersonnelController@selesaiEvaluasi');

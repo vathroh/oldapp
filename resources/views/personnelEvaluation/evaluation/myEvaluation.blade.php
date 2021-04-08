@@ -23,12 +23,20 @@
 				@php
 					$myevaluation = $myEvaluations->where('settingId', $setting->id)->first();
 				@endphp
-					
+				@if($current_job_descs->where('user_id', 
+						auth()->user()->id 
+						)->where('starting_timestamp', '<', 
+						Carbon\Carbon::parse($setting->year . '-' . 
+						$setting->quarter*3 .'-' . 
+						1)->timestamp)->where('finishing_timestamp', 
+						'>', Carbon\Carbon::parse($setting->year . '-' 
+						. $setting->quarter*3 .'-' . 
+						1)->timestamp)->count() > 0)
 				<tr class="text-center">
 					<td>{{ $setting->quarter }}</td>
 					<td>{{ $setting->year }}</td>
 					
-					<td>
+					<td> 
 						@if(isset($myevaluation)) 
 						
 							@if($myEvaluations->where('settingId', $setting->id)->first()['ok_by_user'] == 1 )			
@@ -44,7 +52,7 @@
 						@endif
 					</td>
 										
-					<td>
+					<td> 
 						<a href="personnel-evaluation-input/{{ $setting->id }}/{{Auth::user()->id }}">
 						@if(isset($myevaluation)) 
 						
@@ -61,6 +69,7 @@
 						</a> 						
 					</td>
 				</tr>
+				@endif
 				@endforeach
 			</tbody>
 		</table>	

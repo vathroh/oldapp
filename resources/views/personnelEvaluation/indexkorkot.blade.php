@@ -8,6 +8,9 @@
 	</div>
 	<div class="card-body">
 		@include('personnelEvaluation.navbar')
+		
+		@if($current_job_descs->where('user_id', auth()->user()->id )->count() > 0)
+		
 		@if($myEvaluationValues->count() == 0 && $lastSetting->where('jobTitleId', Auth::user()->jobDesc()->get()->first()->job_title_id)->count() > 0 )
 		<div class="my-3 text-center" style="border: 2px solid red; border-radius: 5px; padding: 20px;">
 			<h5 style="color:red;">Anda Belum Mengisi Evaluasi Kinerja. </h5>
@@ -112,6 +115,7 @@
 				</tbody>
 			</table>
 		</div>
+		@endif
 		@endif
 	</div>
 

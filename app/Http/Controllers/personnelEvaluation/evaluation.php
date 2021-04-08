@@ -28,13 +28,27 @@ class evaluation extends Controller
 	{
 		$this->middleware('auth');
 	}
+	
+	public function job_desc()
+	{
+		$lastYear 					= personnel_evaluation_setting::max('year');
+		$lastQuarter 				= personnel_evaluation_setting::where('year', $lastYear)->max('quarter');
+		
+		return job_desc::withoutGlobalScopes()->selectRaw('*, UNIX_TIMESTAMP(starting_date) as starting_timestamp, UNIX_TIMESTAMP(finishing_date) as finishing_timestamp')->get();
+		
+	}
 
 	public function index()
 	{
-
+			
 		$id 						= Auth::user()->id;
 		$lastYear 					= personnel_evaluation_setting::max('year');
 		$lastQuarter 				= personnel_evaluation_setting::where('year', $lastYear)->max('quarter');
+		
+		$dt = $lastYear . '-' . $lastQuarter*4 .'-' . 1;
+		$time = Carbon::parse($dt)->timestamp;
+		$current_job_descs = $this->job_desc()->where('starting_timestamp', '<', $time)->where('finishing_timestamp', '>', $time);
+		
 		$myEvaluationSetting 		= User::find($id)->evaluationSetting->where('year', $lastYear)->where('quarter', $lastQuarter);
 		$myEvaluationValues			= User::find($id)->evaluationValue()->where('settingId', $myEvaluationSetting->pluck('id')->first());
 		$lastSetting 				= personnel_evaluation_setting::where('year', $lastYear)->where('quarter', $lastQuarter)->get();
@@ -48,7 +62,7 @@ class evaluation extends Controller
 		if (Auth::user()->posisi->level == "OSP") {
 			return view('personnelEvaluation.indexosp', compact(['myEvaluationSetting', 'myEvaluationValues', 'evaluators', 'evaluationValues', 'myZones', 'allvillages', 'lastYear', 'lastQuarter', 'lastSetting', 'users', 'zones']));
 		} else {
-			return view('personnelEvaluation.indexkorkot', compact(['myEvaluationSetting', 'myEvaluationValues', 'evaluators', 'evaluationValues', 'myZones', 'allvillages', 'lastYear', 'lastQuarter', 'lastSetting', 'users', 'zones']));
+			return view('personnelEvaluation.indexkorkot', compact(['myEvaluationSetting', 'myEvaluationValues', 'evaluators', 'evaluationValues', 'myZones', 'allvillages', 'lastYear', 'lastQuarter', 'lastSetting', 'users', 'zones', 'current_job_descs']));
 		}
 	}
 
@@ -650,12 +664,15 @@ class evaluation extends Controller
 
 	public function myEvaluation()
 	{
+		$current_job_descs = $this->job_desc();
 		$myTitleId		= job_desc::where('user_id', Auth::user()->id)->pluck('job_title_id')->first();
 		$myEvaluations 	= personnel_evaluation_value::where('userId', Auth::user()->id)->get();
 		$settings		= personnel_evaluation_setting::where('jobTitleId', $myTitleId)->get();
 		$evaluators		= personnel_evaluator::where('evaluator', $myTitleId)->get();
 
-		return view('personnelEvaluation.evaluation.myEvaluation', compact(['settings', 'evaluators', 'myEvaluations']));
+		return view('personnelEvaluation.evaluation.myEvaluation', 
+		compact(['settings', 'evaluators', 'myEvaluations', 
+		'current_job_descs']));
 	}
 
 	// =============================================================

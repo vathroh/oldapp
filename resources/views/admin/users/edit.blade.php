@@ -90,7 +90,7 @@
                     </label>
                 </div>
                 <div class="col-md-8">
-                    <input class="form-control input-lg dynamic" type="date" id="starting_date" name="starting_date" value="{{ $user->job_desc->starting_date }}" required>
+                    <input class="form-control input-lg dynamic" type="date" id="starting_date" name="starting_date" value="{{ $user->job_desc? $user->job_desc->starting_date: '' }}" required>
                 </div>
             </div>
             <div class="form-group row">
@@ -100,7 +100,7 @@
                     </label>
                 </div>
                 <div class="col-md-8">
-                    <input class="form-control input-lg dynamic" type="date" id="finishing_date" name="finishing_date" value="{{ $user->job_desc->finishing_date }}" required>
+                    <input class="form-control input-lg dynamic" type="date" id="finishing_date" name="finishing_date" value="{{ $user->job_desc? $user->job_desc->finishing_date: '' }}" required>
                 </div>
             </div>
 

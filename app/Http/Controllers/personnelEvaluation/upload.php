@@ -25,6 +25,7 @@ use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
 use App\CustomFunctions\googleFolderParent;
 use App\google_folder;
 use App\google_file;
+use Illuminate\Support\Arr;
 
 
 class upload extends Controller
@@ -72,8 +73,11 @@ class upload extends Controller
 
     public function ajaxUploadFile(Request $request)
     {
-        $aspects    = personnel_evaluation_aspect::where('criteria_id', $request->criteria)->where('evaluate_to', $request->jobTitleId)->get();
+		$aspectIds = Arr::except(unserialize(personnel_evaluation_setting::find($request->settingId)->aspectId)[$request->criteria-1], [0]);
+		$aspects = personnel_evaluation_aspect::whereIn('id', $aspectIds)->get();
+        //$aspects    = personnel_evaluation_aspect::where('criteria_id', $request->criteria)->where('evaluate_to', $request->jobTitleId)->get();
         return response()->json($aspects);
+        //return response()->json('hello');
     }
 
 

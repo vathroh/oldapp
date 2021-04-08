@@ -47,6 +47,8 @@
 						</select>
 					</div>
 				</div>
+				
+				<input type="hidden" id="settingId" value="{{$value->evaluationSetting->id}}">
 
 				<div class="form-group row">
 					<div class="col-md-2 text-md-right">
@@ -158,11 +160,13 @@
 			$('#formButton').show();
 			var criteria = $('#criteriaSelect').val();
 			var jobTitlleId = $('#jobTitleId').val();
+			var settingId = $('#settingId').val();
 			$.ajax({
 				type: 'get',
 				url: '/ajax-personnel-evaluation-upload',
 				data: {
 					'criteria': criteria,
+					'settingId': settingId,
 					'jobTitleId': jobTitlleId
 				},
 				success: function(data) {

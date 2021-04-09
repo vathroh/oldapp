@@ -4,12 +4,15 @@
 	<a class="nav-link" href="/personnel-evaluation">Beranda</a>
 	<a class="nav-link" href="/personnel-evaluation-myevaluation">Evaluasi Saya</a>
 	@endif
+	
+
+	
 	@if(Auth::User()->job_desc->evaluator->count() > 0 )
 	<a class="nav-link" href="/personnel-evaluation/assessor/rekap">Rekap</a>
 	<a class="nav-link" href="/personnel-evaluation-edit">Permintaan Edit</a>
 	<a class="nav-link" href="/personnel-evaluation/assessor/cetak">Print</a>
-
 	@endif
+	
 	@if (Auth::user()->hasAnyRoles(['hrm']))
 	@if(!isset(Auth::User()->job_desc->evaluator))
 	<a class="nav-link" href="/personnel-evaluation-edit">Permintaan Edit</a>

@@ -72,6 +72,7 @@
 					@foreach($evaluators as $evaluator)
 					@if($evaluator->setting->where('year', $lastYear)->where('quarter', $lastQuarter)->count() )
 					@foreach($evaluator->setting->where('year', $lastYear)->where('quarter', $lastQuarter) as $setting)
+					
 					<tr>
 						<td> {{ $setting->jobTitle->job_title }} </td>
 						<td class="text-center">
@@ -83,8 +84,8 @@
 							
 							
 							
-							=== {{ $setting->jobTitle->id }} ===
-							{{ $current_job_descs->where('job_title_id', $setting->jobTitle->job_title )->where('work_zone_id', $zone->id) }}
+							 {{-- $setting->jobTitle->id --}}
+							{{-- $current_job_descs->where('job_title_id', $setting->jobTitle->job_title )->where('work_zone_id', $zone->id) --}}
 							
 							
 							

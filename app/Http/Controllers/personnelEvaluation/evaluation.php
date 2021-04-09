@@ -62,7 +62,10 @@ class evaluation extends Controller
 		
 		$myEvaluationValues			= User::find($id)->evaluationValue()->where('settingId', $myEvaluationSetting->pluck('id')->first());
 		
-		$evaluators 				= personnel_evaluator::where('evaluator', User::find($id)->posisi()->latest()->first()->id)->get();
+		//$evaluators 				= personnel_evaluator::where('evaluator', User::find($id)->posisi()->latest()->first()->id)->get();
+			
+		$evaluators 				= personnel_evaluator::where('evaluator', $my_job_desc->first()->job_title_id)->get();
+		
 		// $evaluators 				= personnel_evaluator::where('evaluator', User::find($id)->posisi()->latest()->first()->id)->join('job_titles', 'job_titles.id', '=', 'personnel_evaluators.jobId')->orderBy('sort')->get(); 
 		//$myZones					= explode(', ', job_desc::where('user_id', $id)->first()->areaKerja->zone);
 		

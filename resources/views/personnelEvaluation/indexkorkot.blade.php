@@ -7,14 +7,17 @@
 		<p class="card-category"></p>
 	</div>
 	<div class="card-body">
-		@include('personnelEvaluation.navbar')
+		@include('personnelEvaluation.navbar')		
 		
-		@if($current_job_descs->where('user_id', auth()->user()->id )->count() > 0)
+		@if($my_job_desc->count() > 0)
 		
 		@if($myEvaluationValues->count() == 0 && $lastSetting->where('jobTitleId', Auth::user()->jobDesc()->get()->first()->job_title_id)->count() > 0 )
+		
+		{{ $lastSetting->where('jobTitleId', $my_job_desc->first()->job_title_id )->first()->id }}
+		
 		<div class="my-3 text-center" style="border: 2px solid red; border-radius: 5px; padding: 20px;">
 			<h5 style="color:red;">Anda Belum Mengisi Evaluasi Kinerja. </h5>
-			<a href="/personnel-evaluation-input/{{ $myEvaluationSetting->pluck('id')->first() }}/{{ Auth::user()->id }}"><button class="btn btn-danger">Isi sekarang</button></a>
+			<a href="/personnel-evaluation-input/{{ $lastSetting->where('jobTitleId', $my_job_desc->first()->job_title_id )->first()->id }}/{{ Auth::user()->id }}"><button class="btn btn-danger">Isi sekarang</button></a>
 		</div>
 
 		@elseif($myEvaluationValues->count() > 0 )
@@ -69,12 +72,23 @@
 					@foreach($evaluators as $evaluator)
 					@if($evaluator->setting->where('year', $lastYear)->where('quarter', $lastQuarter)->count() )
 					@foreach($evaluator->setting->where('year', $lastYear)->where('quarter', $lastQuarter) as $setting)
+					
 					<tr>
 						<td> {{ $setting->jobTitle->job_title }} </td>
 						<td class="text-center">
 							<a href="/personnel-evaluation/assessor/timfaskel/allpersonnels/{{ $evaluator->jobId }}/{{$zone->district}}">
 								{{ $setting->jobDesc->where('work_zone_id', $zone->id)->whereIn('user_id', $users->pluck('id'))->count() }}
 							</a>
+							
+							
+							
+							
+							
+							 {{-- $setting->jobTitle->id --}}
+							{{-- $current_job_descs->where('job_title_id', $setting->jobTitle->job_title )->where('work_zone_id', $zone->id) --}}
+							
+							
+							
 						</td>
 						<td class="text-center">
 							<a href="/personnel-evaluation/assessor/timfaskel/belummengisi/{{ $evaluator->jobId }}/{{$zone->district}}">

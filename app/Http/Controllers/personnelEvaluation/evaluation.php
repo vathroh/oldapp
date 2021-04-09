@@ -45,24 +45,42 @@ class evaluation extends Controller
 		$lastYear 					= personnel_evaluation_setting::max('year');
 		$lastQuarter 				= personnel_evaluation_setting::where('year', $lastYear)->max('quarter');
 		
-		$dt = $lastYear . '-' . $lastQuarter*4 .'-' . 1;
-		$time = Carbon::parse($dt)->timestamp;
-		$current_job_descs = $this->job_desc()->where('starting_timestamp', '<', $time)->where('finishing_timestamp', '>', $time);
 		
-		$myEvaluationSetting 		= User::find($id)->evaluationSetting->where('year', $lastYear)->where('quarter', $lastQuarter);
-		$myEvaluationValues			= User::find($id)->evaluationValue()->where('settingId', $myEvaluationSetting->pluck('id')->first());
+		
+		$dt = $lastYear . '-' . $lastQuarter*3 .'-' . 1;
+		$time = Carbon::parse($dt)->timestamp;
+		$current_job_descs = 
+		$this->job_desc()->where('starting_timestamp', '<=', $time)->where('finishing_timestamp', '>', $time);
 		$lastSetting 				= personnel_evaluation_setting::where('year', $lastYear)->where('quarter', $lastQuarter)->get();
+		
+		$my_job_desc = $current_job_descs->where('user_id', auth()->user()->id );
+		
+
+		//$myEvaluationSetting 		= User::find($id)->evaluationSetting->where('year', $lastYear)->where('quarter', $lastQuarter);
+		$myEvaluationSetting = $lastSetting->where('jobTitleId', $my_job_desc->first()->job_title_id);
+		
+		
+		$myEvaluationValues			= User::find($id)->evaluationValue()->where('settingId', $myEvaluationSetting->pluck('id')->first());
+		
 		$evaluators 				= personnel_evaluator::where('evaluator', User::find($id)->posisi()->latest()->first()->id)->get();
 		// $evaluators 				= personnel_evaluator::where('evaluator', User::find($id)->posisi()->latest()->first()->id)->join('job_titles', 'job_titles.id', '=', 'personnel_evaluators.jobId')->orderBy('sort')->get(); 
-		$myZones					= explode(', ', job_desc::where('user_id', $id)->first()->areaKerja->zone);
+		//$myZones					= explode(', ', job_desc::where('user_id', $id)->first()->areaKerja->zone);
+		
+		$myZones					= explode(', ', $my_job_desc->first()->areaKerja->zone);
+		
+		
 		$zones 						= work_zone::whereIn('district', $myZones)->get();
 		$allvillages 				= allvillage::all();
 		$evaluationValues			= $this->evaluationValue();
-		$users = User::find(job_desc::join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')->whereIn('district', $myZones)->pluck('user_id'));
+		
+		//$users = User::find(job_desc::join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')->whereIn('district', $myZones)->pluck('user_id'));
+		
+		$users = $current_job_descs;
+		
 		if (Auth::user()->posisi->level == "OSP") {
 			return view('personnelEvaluation.indexosp', compact(['myEvaluationSetting', 'myEvaluationValues', 'evaluators', 'evaluationValues', 'myZones', 'allvillages', 'lastYear', 'lastQuarter', 'lastSetting', 'users', 'zones']));
 		} else {
-			return view('personnelEvaluation.indexkorkot', compact(['myEvaluationSetting', 'myEvaluationValues', 'evaluators', 'evaluationValues', 'myZones', 'allvillages', 'lastYear', 'lastQuarter', 'lastSetting', 'users', 'zones', 'current_job_descs']));
+			return view('personnelEvaluation.indexkorkot', compact(['myEvaluationSetting', 'myEvaluationValues', 'evaluators', 'evaluationValues', 'myZones', 'allvillages', 'lastYear', 'lastQuarter', 'lastSetting', 'users', 'zones', 'current_job_descs', 'my_job_desc']));
 		}
 	}
 
@@ -664,15 +682,24 @@ class evaluation extends Controller
 
 	public function myEvaluation()
 	{
+		$lastYear 					= personnel_evaluation_setting::max('year');
+		$lastQuarter 				= personnel_evaluation_setting::where('year', $lastYear)->max('quarter');
+		$lastSetting 				= personnel_evaluation_setting::where('year', $lastYear)->where('quarter', $lastQuarter)->get();
+		
+		
+		
+		
 		$current_job_descs = $this->job_desc();
 		$myTitleId		= job_desc::where('user_id', Auth::user()->id)->pluck('job_title_id')->first();
 		$myEvaluations 	= personnel_evaluation_value::where('userId', Auth::user()->id)->get();
 		$settings		= personnel_evaluation_setting::where('jobTitleId', $myTitleId)->get();
 		$evaluators		= personnel_evaluator::where('evaluator', $myTitleId)->get();
+		
+		$my_job_desc = $current_job_descs->where('user_id', auth()->user()->id );
 
 		return view('personnelEvaluation.evaluation.myEvaluation', 
 		compact(['settings', 'evaluators', 'myEvaluations', 
-		'current_job_descs']));
+		'current_job_descs', 'my_job_desc', 'lastSetting']));
 	}
 
 	// =============================================================

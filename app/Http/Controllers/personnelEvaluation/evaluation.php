@@ -72,13 +72,16 @@ class evaluation extends Controller
 		$myZones					= explode(', ', $my_job_desc->first()->areaKerja->zone);
 		
 		
-		$zones 						= work_zone::whereIn('district', $myZones)->get();
+		$zones 				= work_zone::whereIn('district', $myZones)->where('year', 2020)->get();
 		$allvillages 				= allvillage::all();
 		$evaluationValues			= $this->evaluationValue();
 		
 		//$users = User::find(job_desc::join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')->whereIn('district', $myZones)->pluck('user_id'));
 		
-		$users = $current_job_descs;
+		
+		$users = $current_job_descs->whereIn('work_zone_id', $zones->pluck('id'));
+		
+		
 		
 		if (Auth::user()->posisi->level == "OSP") {
 			return view('personnelEvaluation.indexosp', compact(['myEvaluationSetting', 'myEvaluationValues', 'evaluators', 'evaluationValues', 'myZones', 'allvillages', 'lastYear', 'lastQuarter', 'lastSetting', 'users', 'zones']));

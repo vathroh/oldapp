@@ -69,9 +69,7 @@
 							{{ $zone->kabupaten->NAMA_KAB }}
 						</td>
 					</tr>
-					
-
-					
+										
 					
 					@foreach($evaluators as $evaluator)
 					@if($evaluator->setting->where('year', $lastYear)->where('quarter', $lastQuarter)->count() )

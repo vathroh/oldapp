@@ -72,7 +72,7 @@ class evaluation extends Controller
 		$myZones					= explode(', ', $my_job_desc->first()->areaKerja->zone);
 		
 		
-		$zones 				= work_zone::whereIn('district', $myZones)->where('year', 2020)->get();
+		$zones 						= work_zone::whereIn('district', $myZones)->where('year', 2020)->get();
 		$allvillages 				= allvillage::all();
 		$evaluationValues			= $this->evaluationValue();
 		
@@ -81,8 +81,7 @@ class evaluation extends Controller
 		
 		$users = $current_job_descs->whereIn('work_zone_id', $zones->pluck('id'));
 		
-		
-		
+
 		if (Auth::user()->posisi->level == "OSP") {
 			return view('personnelEvaluation.indexosp', compact(['myEvaluationSetting', 'myEvaluationValues', 'evaluators', 'evaluationValues', 'myZones', 'allvillages', 'lastYear', 'lastQuarter', 'lastSetting', 'users', 'zones']));
 		} else {

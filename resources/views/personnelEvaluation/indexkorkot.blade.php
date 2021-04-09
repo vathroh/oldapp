@@ -69,6 +69,10 @@
 							{{ $zone->kabupaten->NAMA_KAB }}
 						</td>
 					</tr>
+					
+
+					
+					
 					@foreach($evaluators as $evaluator)
 					@if($evaluator->setting->where('year', $lastYear)->where('quarter', $lastQuarter)->count() )
 					@foreach($evaluator->setting->where('year', $lastYear)->where('quarter', $lastQuarter) as $setting)
@@ -77,18 +81,8 @@
 						<td> {{ $setting->jobTitle->job_title }} </td>
 						<td class="text-center">
 							<a href="/personnel-evaluation/assessor/timfaskel/allpersonnels/{{ $evaluator->jobId }}/{{$zone->district}}">
-								{{ $setting->jobDesc->where('work_zone_id', $zone->id)->whereIn('user_id', $users->pluck('id'))->count() }}
-							</a>
-							
-							
-							
-							
-							
-							 {{-- $setting->jobTitle->id --}}
-							{{-- $current_job_descs->where('job_title_id', $setting->jobTitle->job_title )->where('work_zone_id', $zone->id) --}}
-							
-							
-							
+								{{ $users->where('job_title_id', $setting->jobTitleId)->where('work_zone_id', $zone->id)->count() }}
+							</a>		
 						</td>
 						<td class="text-center">
 							<a href="/personnel-evaluation/assessor/timfaskel/belummengisi/{{ $evaluator->jobId }}/{{$zone->district}}">

@@ -86,8 +86,8 @@ class showPersonnelController extends Controller
     {
         $users          = $this->users();
         $lastSetting    = $this->setting($jobId);
-        
-        $personnels     = $users->where('job_title_id', $jobTitle->id )->whereNotIn('user_id', $lastSetting->where('jobTitleId', $jobTitle->id)->first()->evaluationValue->pluck('userId'));
+//return $lastSetting->evaluationValue->pluck('userId');
+        $personnels     = $users->where('job_title_id', $jobId )->whereNotIn('user_id', $lastSetting->evaluationValue->pluck('userId'));
         return view('personnelEvaluation.assessor.personnels.belumMengisi', compact(['users', 'personnels', 'lastSetting']));
     }
 

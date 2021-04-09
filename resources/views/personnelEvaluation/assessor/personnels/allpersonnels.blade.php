@@ -23,7 +23,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($lastSetting->jobDesc->whereIn('user_id', $users->pluck('id')) as $jobDesc )
+												
+                        @foreach ($users->where('job_title_id', $lastSetting->jobTitleId) as $jobDesc )
                         <tr>
                             <th scope="row">{{ $loop->iteration }}</th>
                             <td>{{ $jobDesc->user->name }}</td>

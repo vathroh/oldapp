@@ -37,16 +37,16 @@
                         <td class="text-center">
                             @if($lastSetting->where('jobTitleId', $jobTitle->id)->count() != null )
                             <a href="/personnel-evaluation/hrm/personnels/allpersonnels/{{ $jobTitle->id }}">
-                                {{ $jobTitle->jobDesc->count() }}
+                                {{ $users->where('job_title_id', $jobTitle->id )->count() }}
                             </a>
                             @else
-                            {{ $jobTitle->jobDesc->count() }}
+                            {{ $users->where('job_title_id', $jobTitle->id )->count() }}
                             @endif
                         </td>
                         <td class="text-center">
                             @if($lastSetting->where('jobTitleId', $jobTitle->id)->count() != null )
                             <a href="/personnel-evaluation/hrm/personnels/belummengisi/{{ $jobTitle->id }}">
-                                {{ $lastSetting->where('jobTitleId', $jobTitle->id)->first()->jobDesc->whereNotIn('user_id', $lastSetting->where('jobTitleId', $jobTitle->id)->first()->evaluationValue->pluck('userId'))->count() }}
+                                {{ $users->where('job_title_id', $jobTitle->id )->whereNotIn('user_id', $lastSetting->where('jobTitleId', $jobTitle->id)->first()->evaluationValue->pluck('userId'))->count() }}
                             </a>
                             @else
                             Belum Diset

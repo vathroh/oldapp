@@ -9,6 +9,8 @@ use App\Http\Controllers\Controller;
 use App\job_title;
 use Illuminate\Support\Facades\Auth;
 use App\personnel_evaluation_setting;
+use App\work_zone;
+use Carbon\Carbon;
 
 class showPersonnelController extends Controller
 {
@@ -16,6 +18,16 @@ class showPersonnelController extends Controller
     {
         $this->middleware('auth');
     }
+    
+    public function job_desc()
+	{
+		
+		$lastYear 					= personnel_evaluation_setting::max('year');
+		$lastQuarter 				= personnel_evaluation_setting::where('year', $lastYear)->max('quarter');
+		
+		return job_desc::withoutGlobalScopes()->selectRaw('*, UNIX_TIMESTAMP(starting_date) as starting_timestamp, UNIX_TIMESTAMP(finishing_date) as finishing_timestamp')->get();
+		
+	}
 
     public function setting($jobId)
     {
@@ -27,18 +39,40 @@ class showPersonnelController extends Controller
 
     public function users()
     {
+		$lastYear 					= personnel_evaluation_setting::max('year');
+		$lastQuarter 				= personnel_evaluation_setting::where('year', $lastYear)->max('quarter');		
+		$dt = $lastYear . '-' . $lastQuarter*3 .'-' . 1;
+		$time = Carbon::parse($dt)->timestamp;
+		$current_job_descs = 
+		$this->job_desc()->where('starting_timestamp', '<=', $time)->where('finishing_timestamp', '>', $time);
+		
         $myZones        = explode(", ", Auth::user()->areaKerja->pluck('zone')->first());
-        $users          = User::find(job_desc::join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')->whereIn('district', $myZones)->pluck('user_id'));
+        $zones 			= work_zone::whereIn('district', $myZones)->where('year', 2020)->get();
+        //$users          = User::find(job_desc::join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')->whereIn('district', $myZones)->pluck('user_id'));
+        
+        $users = $current_job_descs->whereIn('work_zone_id', $zones->pluck('id'));
         return $users;
     }
 
     public function index()
     {
-        $lastYear       = personnel_evaluation_setting::max('year');
-        $lastQuarter    = personnel_evaluation_setting::where('year', $lastYear)->max('quarter');
+		$id 						= Auth::user()->id;
+		$lastYear 					= personnel_evaluation_setting::max('year');
+		$lastQuarter 				= personnel_evaluation_setting::where('year', $lastYear)->max('quarter');
+		
+		
+		
+		$dt = $lastYear . '-' . $lastQuarter*3 .'-' . 1;
+		$time = Carbon::parse($dt)->timestamp;
+		$current_job_descs = 
+		$this->job_desc()->where('starting_timestamp', '<=', $time)->where('finishing_timestamp', '>', $time);
+		
         $lastSetting    = personnel_evaluation_setting::where('year', $lastYear)->where('quarter', $lastQuarter)->get();
         $jobTitles = job_title::whereIn('level', ['Korkot', 'Askot Mandiri', 'Tim Faskel'])->whereNotIn('job_title', ['Operator', 'Sekretaris'])->orderBy('sort')->get();
-        return view('personnelEvaluation.hrm.monitoring.index', compact(['jobTitles', 'lastSetting']));
+        
+        $users = $this->users();
+        
+        return view('personnelEvaluation.hrm.monitoring.index', compact(['jobTitles', 'lastSetting', 'users']));
     }
 
     public function allpersonnels($jobId)
@@ -52,7 +86,8 @@ class showPersonnelController extends Controller
     {
         $users          = $this->users();
         $lastSetting    = $this->setting($jobId);
-        $personnels     = $lastSetting->jobDesc->whereNotIn('user_id', $this->setting($jobId)->evaluationValue->pluck('userId'));
+        
+        $personnels     = $users->where('job_title_id', $jobTitle->id )->whereNotIn('user_id', $lastSetting->where('jobTitleId', $jobTitle->id)->first()->evaluationValue->pluck('userId'));
         return view('personnelEvaluation.assessor.personnels.belumMengisi', compact(['users', 'personnels', 'lastSetting']));
     }
 

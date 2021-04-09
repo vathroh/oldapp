@@ -33,11 +33,13 @@
                     @foreach($evaluators as $evaluator)
                     <tr>
                         @if($evaluator->setting->where('year', $lastYear)->where('quarter', $lastQuarter)->count() )
+                        
                         @foreach($evaluator->setting->where('year', $lastYear)->where('quarter', $lastQuarter) as $setting)
                         <td>{{ $setting->jobTitle->job_title }} </td>
                         <td class="text-center">
                             <a href="/personnel-evaluation/assessor/personnels/allpersonnels/{{ $evaluator->jobId }}">
                                 {{ $setting->jobDesc->whereIn('user_id', $users->pluck('id'))->count() }}
+                                {{ $users->where('job_title_id', $setting->jobTitleId)->where('work_zone_id', $zone->id)->count() }}
                             </a>
                         </td>
                         <td class="text-center">

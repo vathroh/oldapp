@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\kabupaten;
 use App\work_zone;
+use App\job_title;
 
 class workZoneController extends Controller
 {
@@ -106,12 +107,15 @@ class workZoneController extends Controller
     }
 
 
+
+
+
+
     public function ajaxKabupaten()
     {
         $districts = kabupaten::all();
         return response()->json($districts);
     }
-
 
     public function ajaxKecamatan(Request $request)
     {
@@ -120,10 +124,42 @@ class workZoneController extends Controller
         return response()->json($subdistricts);
     }
 
-
     public function ajaxKelurahan(Request $request)
     {
         $villages = allvillage::distinct('KD_KEC')->where('KD_KEC', $request->kode_kec)->get();
         return response()->json($villages);
     }
+    
+    public function ajaxJobTitle(Request $request)
+    {
+		if($request->month <= 3)
+		{
+			$year = $request->year - 1 ;
+		}else{
+			$year = $request->year;
+		}
+		
+		$work_zones = work_zone::where('year', $year)->where('zone_level_id', $request->level_id)->get();
+		$district_id = $work_zones->pluck('district_id');
+		$districts = kabupaten::whereIn('id', $district_id)->get();
+		$jobTitle = job_title::where('zone_level_id', $request->level_id)->orderby('sort')->get();
+		
+		return response()->json([$jobTitle, $districts]);
+	}
+	
+	public function ajaxWorkZone(Request $request)
+	{
+		if($request->month <= 3)
+		{
+			$year = $request->year - 1 ;
+		}else{
+			$year = $request->year;
+		}
+		$work_zones = work_zone::where('year', $year)->where('zone_level_id', $request->level_id)->where('district_id', $request->district_id )->get();
+		
+		return response()->json($work_zones);
+	}
+	
+
+
 }

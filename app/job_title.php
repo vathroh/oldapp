@@ -28,4 +28,9 @@ class job_title extends Model
     {
         return $this->hasMany('App\job_desc');
     }
+    
+    public function zone_level()
+    {
+		return $this->belongsTo('App\zone_level');
+	}
 }

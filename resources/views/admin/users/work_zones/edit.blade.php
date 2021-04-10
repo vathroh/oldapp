@@ -4,113 +4,166 @@
 
 
 <div class="card">
-    <div class="card-header">Edit User {{ $user->name }}</div>
-    <div class="card-body">
-        <form action="{{ route('admin.users.update', $user)}}" method="post">
-            @csrf
-            {{ method_field('put') }}
-            <div class="form-group row">
-                <div class="col-md-2 text-md-right">
-                    <label for="email">Email</label>
-                </div>
-                <div class="col-md-8">
-                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ $user->email }}" required autocomplete="email" autofocus>
-                    @error('email')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                    @enderror
-                </div>
-            </div>
+	<div class="card-header">Data Penugasan Pendamping  </div>
+		
+		<div class="card-body">
+			
+			
+			
+			<form action="/admin/user-work-zones/{{ $job_desc->id }}" method="post" enctype="multipart/form-data">
+			@csrf
+			@method('put')
+				
+				<input type="text" name="user_id" value="{{ $job_desc->user_id }} ">
 
-            <div class="form-group row">
-                <div class="col-md-2 text-md-right">
-                    <label for="name">Name</label>
-                </div>
-                <div class="col-md-8">
-                    <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ $user->name }}" required autofocus>
-                    @error('name')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                    @enderror
-                </div>
-            </div>
-            <div class="form-group row">
-                <div class="col-md-2 text-md-right">
-                    <label for="roles">Roles</label>
-                </div>
+				<div class="form-group row">
+					<div class="col-md-2 text-md-right">
+						<label for="starting_date">Awal Menjabat</label>
+					</div>
+					<div class="col-md-8">
+						<input id="starting_date" type="date" class="form-control" name="starting_date" value="{{ $job_desc->starting_date }}" required autofocus>
+					</div>
+				</div>
+				
+				<div class="form-group row">
+					<div class="col-md-2 text-md-right">
+						<label for="finishing_date">Akhir Menjabat</label>
+					</div>
+					<div class="col-md-8">
+						<input id="finishing_date" type="date" class="form-control" name="finishing_date" value="{{ $job_desc->finishing_date }}" required>
+					</div>
+				</div>
+				
+				<div class="form-group row">
+					<div class="col-md-2 text-md-right">
+						<label for="email">Tingkat</label>
+					</div>
+					<div class="col-md-8">
+						<select class="form-control" id="select-level" name="level">
+						<option value="{{ $job_desc->posisi->zone_level_id }}" >{{ $job_desc->posisi->zone_level->name }}</option>
+						@foreach($zone_levels as $level)
+						<option value="{{ $level->id }}">{{ $level->name }}</option>
+						@endforeach
+						</select>
+					</div>
+				</div>
+				
+				<div class="form-group row">
+					<div class="col-md-2 text-md-right">
+						<label for="select-job-title">Posisi</label>
+					</div>
+					<div class="col-md-8">
+						<select class="form-control" id="select-job-title" name="job_title">
+						<option value="{{$job_desc->job_title_id}}">{{ $job_desc->posisi->job_title }}</option>
+						</select>
+					</div>
+				</div>
 
-                <div class="col-md-8">
-                    @foreach($roles as $role)
-                    <div class="form-check">
-                        <input type="checkbox" name="roles[]" value="{{ $role->id}}" @if($user->roles->pluck('id')->contains($role->id)) checked @endif >
-                        <label>{{ $role->name }}</label>
-                    </div>
-                    @endforeach
-                </div>
-            </div>
+				<div class="form-group row">
+					<div class="col-md-2 text-md-right">
+						<label for="select-district">Kabupaten</label>
+					</div>
+					<div class="col-md-8">
+						<select class="form-control" id="select-district" name="district">
+						<option value="{{ $job_desc->areaKerja->district_id }}">{{ $job_desc->areaKerja->kabupaten->NAMA_KAB }}</option>
+						</select>
+					</div>
+				</div>		
 
-            <div class="form-group row">
-                <div class="col-md-2 text-md-right">
-                    <label for="job_title">
-                        Posisi / Jabatan
-                    </label>
-                </div>
-                <div class="col-md-8">
-                    <select name="job_title" id="job_title" class="form-control input-lg dynamic" required>
-                        <option value="{{ $user->job_title_id}}">{{ $user->job_title }} </option>
-                        @foreach($job_titles as $job_title)
-                        <option value="{{ $job_title->id}}">{{ $job_title->job_title}} </option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
+				<div class="form-group row">
+					<div class="col-md-2 text-md-right">
+						<label for="select-team">Tim</label>
+					</div>
+					<div class="col-md-8">
+						<select class="form-control" id="select-team" name="work_zone">
+						<option value="{{ $job_desc->work_zone_id }}">{{ $job_desc->areaKerja->team }}</option>
+						</select>
+					</div>
+				</div>
+				
+				<div class="text-center">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<button type="submit" class="btn btn-primary">Save</button>
+				</div>
 
-            <div class="form-group row">
-                <div class="col-md-2 text-md-right">
-                    <label for="district">
-                        Kabupaten / Kota
-                    </label>
-                </div>
-                <div class="col-md-8">
-                    <select name="district" id="district" class="form-control input-lg dynamic" required>
-                        <option value="{{ $user->district }}">{{ $user->district }} {{ $user->nama_kab }}</option>
-                        @foreach($kabupaten as $kab)
-                        <option value="{{ $kab->district }}">{{ $kab->district }} {{ $kab->NAMA_KAB }}</option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
+			</form>
+			
+			
+		</div>   
 
-            <div class="form-group row">
-                <div class="col-md-2 text-md-right">
-                    <label for="starting_date">
-                        Tanggal Mulai Menjabat
-                    </label>
-                </div>
-                <div class="col-md-8">
-                    <input class="form-control input-lg dynamic" type="date" id="starting_date" name="starting_date" value="{{ $user->job_desc? $user->job_desc->starting_date: '' }}" required>
-                </div>
-            </div>
-            <div class="form-group row">
-                <div class="col-md-2 text-md-right">
-                    <label for="finishing_date">
-                        Tanggal Selesai Menjabat
-                    </label>
-                </div>
-                <div class="col-md-8">
-                    <input class="form-control input-lg dynamic" type="date" id="finishing_date" name="finishing_date" value="{{ $user->job_desc? $user->job_desc->finishing_date: '' }}" required>
-                </div>
-            </div>
-
-            <div class="text-center">
-                <button type="submit" class="btn btn-primary">
-                    Update
-                </button>
-            </div>
-        </form>
-    </div>
+	</div>
+</div>
 
 
-    @endsection
+<script>
+
+$("#select-level").click(function() {	
+	var level_id = $(this).val();
+	var starting_date = $("#starting_date").val();
+	var date = new Date(starting_date);
+	var month = date.getMonth();
+	var year = date.getFullYear();
+	$.ajax({
+		data: {
+			'level_id' : level_id,
+			'date' : date,
+			'month' : month+1,
+			'year' : year
+		},
+		type: 'get',
+		url: '/admin/job-title/areakerja',
+		success: function(data) {
+			console.log(data)
+			$("#select-job-title").empty();
+			'<option></option>'
+			$.each(data[0], function(index, jobTitleObj) {
+				$("#select-job-title").append(
+					'<option value="' + jobTitleObj.id + '">' + jobTitleObj.job_title + '</option>'
+				);
+			});
+			
+			$("#select-district").empty();
+			'<option></option>'
+			$.each(data[1], function(index, jobTitleObj) {
+				$("#select-district").append(
+					'<option value="' + jobTitleObj.id + '">' + jobTitleObj.nama_kab + '</option>'
+				);
+			});
+		}
+	});
+});
+
+$("#select-district").click(function(){
+	var district_id = $(this).val();
+	var level_id = $("#select-level").val();
+	var starting_date = $("#starting_date").val();
+	var date = new Date(starting_date);
+	var month = date.getMonth();
+	var year = date.getFullYear();
+
+	$.ajax({
+		data: {
+			'level_id' : level_id,
+			'district_id' : district_id,
+			'date' : date,
+			'month' : month+1,
+			'year' : year
+		},
+		type: 'get',
+		url: '/admin/work-zone/areakerja',
+		success: function(data) {
+			console.log(data);
+			$("#select-team").empty();
+			'<option></option>'
+			$.each(data, function(index, jobTitleObj) {
+				$("#select-team").append(
+					'<option value="' + jobTitleObj.id + '">' + jobTitleObj.team + '</option>'
+				);
+			});
+		}
+	});
+});
+
+</script>
+
+@endsection

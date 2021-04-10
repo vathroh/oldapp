@@ -41,10 +41,13 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->middleware('can:mana
     Route::resource('/areakerja/osp', 'osp\workZoneController');
     Route::resource('/areakerja', 'workZoneController');
     //AREA KERJA - AJAX
+    Route::get('/job-title/areakerja', 'workZoneController@ajaxJobTitle');
     Route::get('/kabupaten/areakerja', 'workZoneController@ajaxKabupaten');
     Route::get('/kecamatan/areakerja', 'workZoneController@ajaxKecamatan');
     Route::get('/kelurahan/areakerja', 'workZoneController@ajaxKelurahan');
+    Route::get('/work-zone/areakerja', 'workZoneController@ajaxWorkZone'); 
 });
+
 
 //HRM
 Route::get('hrm', 'hrmController@index');

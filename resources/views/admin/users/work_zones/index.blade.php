@@ -20,7 +20,7 @@
 @section('content')
 
 <div class="card">
-    <div class="card-header-primary">Users  =======</div>
+    <div class="card-header-primary">Users</div>
 
     <div id="users" class="card-body">
         @foreach($users as $user)
@@ -51,9 +51,12 @@
             <div class="column" style="width: 300px">
                 @can('delete-users')
                 <a href="{{'/pass-by-admin/' . $user->id . '/edit'}}"><button type="button" class="btn btn-primary">Ganti Password</button></a>
+                @endcan
+                @can('delete-users')
                 <a href="{{ route('admin.users.edit', $user->id) }}"><button type="button" class="btn btn-warning">Edit</button></a>
+                @endcan
+                @can('delete-users')
                 <a href="{{ route('admin.users.show', $user->id) }}"><button type="button" class="btn btn-danger">Delete</button></a>
-                <a href="/admin/user-work-zones/{{ $user->id }}"><button type="button" class="btn btn-success">Jobs</button></a>
                 @endcan
 
             </div>
@@ -117,7 +120,6 @@
                         '<div class = "column" style = "width: 300px">' +
                         '<a href="/pass-by-admin/' + userObj.id + '/edit"><button type="button" class="btn btn-primary">Ganti Password</button></a>' +
                         '<a href="users/' + userObj.id + '/edit"><button type="button" class="btn btn-warning">Edit</button></a>' +
-                        '<a href="/admin/user-work-zones/' + userObj.user_id +'"><button type="button" class="btn btn-success">Jobs</button></a>' +
                         '</div>' +
                         '</div>'
 

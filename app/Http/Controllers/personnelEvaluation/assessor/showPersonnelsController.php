@@ -33,7 +33,7 @@ class showPersonnelsController extends Controller
 
     public function allpersonnels($jobId)
     {
-        return $users          = $this->users();
+        $users          = $this->users();
         $lastSetting    = $this->setting($jobId);
         return view('personnelEvaluation.assessor.personnels.allpersonnels', compact(['users', 'lastSetting']));
     }
@@ -64,6 +64,7 @@ class showPersonnelsController extends Controller
 
     public function siapEvaluasi($jobId)
     {
+		
         $users          = $this->users();
         $lastSetting    = $this->setting($jobId);
         $values         = $this->setting($jobId)->evaluationValue->where('ok_by_user', 1)->where('totalScore', '0.00');

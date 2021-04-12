@@ -65,6 +65,7 @@ class showFaskelPersonnelsController extends Controller
 
     public function siapEvaluasi($jobId, $district)
     {
+		
         $users          = $this->users($district);
         $lastSetting    = $this->setting($jobId);
         $values         = personnel_evaluation_value::where('settingId', $lastSetting->id)->whereIn('userId', $users->pluck('id'))->where('ok_by_user', 1)->where('totalScore', '0.00')->get();

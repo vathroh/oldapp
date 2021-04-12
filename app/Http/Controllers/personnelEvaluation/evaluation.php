@@ -72,6 +72,8 @@ class evaluation extends Controller
 		$myZones					= explode(', ', $my_job_desc->first()->areaKerja->zone);
 		
 		
+		
+		
 		$zones 						= work_zone::whereIn('district', $myZones)->where('year', 2020)->get();
 		$allvillages 				= allvillage::all();
 		$evaluationValues			= $this->evaluationValue();

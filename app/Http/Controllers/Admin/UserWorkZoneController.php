@@ -26,7 +26,9 @@ class UserWorkZoneController extends Controller
 			$wilayah_tugas = [];
 			$data[$key]['job_desc_id'] = $job_desc->id;
 			$data[$key]['posisi'] = $job_desc->posisi->job_title;
+			if($job_desc->kabupaten->count()){
 			$data[$key]['kabupaten']= $job_desc->kabupaten->first()->NAMA_KAB;
+			} else {$data[$key]['kabupaten']="OSP1";}
 			$data[$key]['awal_kontrak']= Carbon::parse($job_desc->starting_date)->format('d M Y');
 			$data[$key]['akhir_kontrak']= Carbon::parse($job_desc-> finishing_date)->format('d M Y');
 			$data[$key]['tim']= $job_desc->areaKerja->team;	

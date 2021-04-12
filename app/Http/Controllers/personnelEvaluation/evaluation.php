@@ -82,7 +82,6 @@ class evaluation extends Controller
 		
 		$users = $current_job_descs->whereIn('work_zone_id', $zones->pluck('id'));
 		
-
 		if (Auth::user()->posisi->level == "OSP") {
 			return view('personnelEvaluation.indexosp', compact(['myEvaluationSetting', 'myEvaluationValues', 'evaluators', 'evaluationValues', 'myZones', 'allvillages', 'lastYear', 'lastQuarter', 'lastSetting', 'users', 'zones']));
 		} else {

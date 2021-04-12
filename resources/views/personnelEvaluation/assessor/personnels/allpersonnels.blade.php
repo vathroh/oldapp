@@ -24,7 +24,7 @@
                     </thead>
                     <tbody>
 												
-                        @foreach ($job_descs->where('job_title_id', $lastSetting->jobTitleId) as $jobDesc )
+                        @foreach ($users->where('job_title_id', $lastSetting->jobTitleId) as $jobDesc )
                         <tr>
                             <th scope="row">{{ $loop->iteration }}</th>
                             <td>{{ $jobDesc->user->name }}</td>

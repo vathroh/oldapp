@@ -51,9 +51,9 @@ class showFaskelPersonnelsController extends Controller
 
     public function allpersonnels($jobId, $district)
     {
-        $job_descs   = $this->users($district);
+        $users   = $this->users($district);
         $lastSetting    = $this->setting($jobId);
-        return view('personnelEvaluation.assessor.personnels.allpersonnels', compact(['job_descs', 'lastSetting']));
+        return view('personnelEvaluation.assessor.personnels.allpersonnels', compact(['users', 'lastSetting']));
     }
 
     public function belumMengisi($jobId, $district)
@@ -74,7 +74,7 @@ class showFaskelPersonnelsController extends Controller
 
     public function prosesMengisi($jobId, $district)
     {
-		return $users          = $this->users($district);
+		$users          = $this->users($district);
         $lastSetting    = $this->setting($jobId);
         $values         = personnel_evaluation_value::where('settingId', $lastSetting->id)->whereIn('userId', $users->pluck('user_id'))->where('ok_by_user', 0)->get();
         return view('personnelEvaluation.assessor.personnels.prosesMengisi', compact(['users', 'values', 'lastSetting']));

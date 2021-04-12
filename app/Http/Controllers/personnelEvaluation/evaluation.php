@@ -76,6 +76,7 @@ class evaluation extends Controller
 		$allvillages 				= allvillage::all();
 		$evaluationValues			= $this->evaluationValue();
 		
+		
 		//$users = User::find(job_desc::join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')->whereIn('district', $myZones)->pluck('user_id'));
 		
 		

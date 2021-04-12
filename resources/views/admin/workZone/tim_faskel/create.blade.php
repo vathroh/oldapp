@@ -113,6 +113,7 @@
                 'kode_kec': kode_kec
             },
             success: function(data) {
+				
                 $("#selectvillages").empty();
                 $("#selectvillages").append(
                     '<option>Pilih Kelurahan</option>'

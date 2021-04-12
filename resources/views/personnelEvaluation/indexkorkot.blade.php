@@ -89,27 +89,27 @@
 						</td>
 						<td class=" text-center">
 							<a href="/personnel-evaluation/assessor/timfaskel/prosesmengisi/{{ $evaluator->jobId }}/{{$zone->district}}">
-								{{ $setting->evaluationValue->whereIn('userId', $users->pluck('user_id'))->where('ok_by_user', 0)->count() }}
+								{{ $setting->evaluationValue->whereIn('userId', $setting->jobDesc->where('work_zone_id', $zone->id)->pluck('user_id'))->where('ok_by_user', 0)->count() }}
 							</a>
 						</td>
 						<td class="text-center">
 							<a href="/personnel-evaluation/assessor/timfaskel/selesaimengisi/{{ $evaluator->jobId }}/{{$zone->district}}">
-								{{ $setting->evaluationValue->whereIn('userId', $users->pluck('user_id'))->where('ok_by_user', 1)->count() }}
+								{{ $setting->evaluationValue->whereIn('userId', $setting->jobDesc->where('work_zone_id', $zone->id)->pluck('user_id'))->where('ok_by_user', 1)->count() }}
 							</a>
 						</td>
 						<td class="text-center">				
 							<a href="/personnel-evaluation/assessor/timfaskel/siapevaluasi/{{ $evaluator->jobId }}/{{$zone->district}}">
-								{{ $setting->evaluationValue->whereIn('userId', $users->pluck('user_id'))->where('ok_by_user', 1)->where('totalScore', '0.00')->count() }}
+								{{ $setting->evaluationValue->whereIn('userId', $setting->jobDesc->where('work_zone_id', $zone->id)->pluck('user_id'))->where('ok_by_user', 1)->where('totalScore', '0.00')->count() }}
 							</a>
 						</td>
 						<td class=" text-center">
 							<a href="/personnel-evaluation/assessor/timfaskel/prosesevaluasi/{{ $evaluator->jobId }}/{{$zone->district}}">
-								{{ $setting->evaluationValue->whereIn('userId', $users->pluck('user_id'))->where('ok_by_user', 1)->where('totalScore', '!=', '0.00')->where('ready', 0)->count() }}
+								{{ $setting->evaluationValue->whereIn('userId', $setting->jobDesc->where('work_zone_id', $zone->id)->pluck('user_id'))->where('ok_by_user', 1)->where('totalScore', '!=', '0.00')->where('ready', 0)->count() }}
 							</a>
 						</td>
 						<td class="text-center">
 							<a href="/personnel-evaluation/assessor/timfaskel/selesaievaluasi/{{ $evaluator->jobId }}/{{$zone->district}}">
-								{{ $setting->evaluationValue->whereIn('userId', $users->pluck('user_id'))->where('ok_by_user', 1)->where('totalScore', '!=', '0.00')->where('ready', 1)->count() }}
+								{{ $setting->evaluationValue->whereIn('userId', $setting->jobDesc->where('work_zone_id', $zone->id)->pluck('user_id'))->where('ok_by_user', 1)->where('totalScore', '!=', '0.00')->where('ready', 1)->count() }}
 							</a>
 						</td>
 					</tr>

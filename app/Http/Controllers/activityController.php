@@ -46,11 +46,20 @@ class activityController extends Controller
 
 	public function store(Request $request)
 	{
+		$break1 = $request->break[0];
+		
+		if($break1 != "" ){
+			$break = implode(',', $request->break);
+		}else{
+			$break = "";
+		}
+		
 		$activity = activity::create([
 			'category_id' => $request->category,
 			'name' => $request->name,
 			'start_date' => $request->start_date,
-			'finish_date' => $request->finish_date
+			'finish_date' => $request->finish_date,
+			'break' => $break
 		]);
 
 		if ($request->category == 1) {
@@ -74,11 +83,20 @@ class activityController extends Controller
 
 	public function update(Request $request, $id)
 	{
+		$break1 = $request->break[0];
+		
+		if($break1 != "" ){
+			$break = implode(',', $request->break);
+		}else{
+			$break = "";
+		}
+		
 		activity::where('id', $id)->update([
 			'category_id' 	=> $request->category,
 			'name' 			=> $request->name,
 			'start_date' 	=> $request->start_date,
-			'finish_date' 	=> $request->finish_date
+			'finish_date' 	=> $request->finish_date,
+			'break' => implode(',', $request->break)
 		]);
 
 		return redirect('/activity');
@@ -167,16 +185,24 @@ class activityController extends Controller
 
 	public function attendance($activity, $activity_item)
 	{
+		
 		$start = activity::where('id', $activity_item)->pluck('start_date')->first();
 		$finish = activity::where('id', $activity_item)->pluck('finish_date')->first();
 		$period =  Carbon::parse($start)->diffInDays($finish) + 1;
-
+		
+		$breaks = collect(explode(',', activity::find($activity_item)->break));
+		$now = Carbon::now()->format('Y-m-d');
+						
+		if (!$breaks->contains($now)){
 		if (Carbon::now()->lessThan(Carbon::parse($start)) == false and Carbon::now()->lessThan(Carbon::parse($finish)->addDays(1))) {
 			$activity_day = true;
 		} else {
 			$activity_day = false;
 		}
-
+		} else { 
+			$activity_day = false; 
+		}
+		
 		$role = activity_participant::where('user_id', Auth::user()->id)->pluck('role')->first();
 		$activities = activity::get();
 

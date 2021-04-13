@@ -22,4 +22,9 @@ class activity_participant extends Model
     {
         return $this->belongsTo('App\activity');
     }
+    
+    public function job_desc()
+    {
+		return $this->hasOne('App\job_desc', 'user_id', 'user_id');
+	}
 }

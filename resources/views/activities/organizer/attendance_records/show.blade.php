@@ -28,6 +28,8 @@
                 </table>
             </div>
             <div class="button-area text-center" style="width:50%;">
+				
+                @if( !collect(explode(',', $activity->break))->contains(Carbon\carbon::now()->format('Y-m-d')))
                 @if( Carbon\carbon::parse($activity->finish_date)->addDays(1)->timestamp - Carbon\carbon::now()->timestamp > 0 AND Carbon\carbon::parse($activity->start_date)->timestamp - Carbon\carbon::now()->timestamp < 0) @if($activity_id->where('tanggal', Carbon\carbon::now()->format('Y-m-d'))->count() == 0 )
 
                     <form method="post" action="/kegiatan/panitia/absensi/{{$id}}">
@@ -35,8 +37,10 @@
                         <input type="hidden" name="activity_id" value="{{ $id }}">
                         <button type="submit" class="btn btn-large btn-primary">HADIR</button>
                     </form>
-                    @endif
-                    @endif
+                
+                @endif
+                @endif
+                @endif
             </div>
         </div>
     </div>

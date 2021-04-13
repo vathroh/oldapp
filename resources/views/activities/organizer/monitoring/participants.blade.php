@@ -36,7 +36,7 @@
                                     <td>{{ $day->format('d F Y') }}</td>
                                     <td>{{ $participant->user->name }}</td>
                                     <td>{{ $participant->user->biodata->gender ?? "" }}</td>
-                                    <td>{{ $participant->user->posisi->job_title ?? '-' }}</td>
+                                    <td>{{ $participant->job_desc ? $participant->job_desc->posisi->job_title : '' }}</td>
                                     <td>{{ $participant->user->jobDesc->first()->kabupaten[0]->NAMA_KAB ?? '-' }}</td>
                                 </tr>
                                 @endforeach
@@ -110,7 +110,7 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $day->format('d F Y') }}</td>
                                 <td> {{ $participant->user->name ??  $participant->user_id }} </td>
-                                <td>{{ $participant->user->posisi->job_title ?? '-' }}</td>
+                                <td>{{ $participant->job_desc ? $participant->job_desc->posisi->job_title : '' }}</td>
                                 <td>{{ $participant->user->jobDesc->first()->kabupaten[0]->NAMA_KAB ?? '-' }}</td>
                             </tr>
                             @endforeach

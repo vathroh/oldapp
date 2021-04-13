@@ -5,6 +5,7 @@ namespace App\Http\Controllers\personnelEvaluation\assessor;
 use App\User;
 use App\job_desc;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\personnel_evaluation_setting;
@@ -14,7 +15,16 @@ class showPersonnelsController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-    }
+    }    
+    
+    public function job_desc()
+	{
+		$lastYear 					= personnel_evaluation_setting::max('year');
+		$lastQuarter 				= personnel_evaluation_setting::where('year', $lastYear)->max('quarter');
+		
+		return job_desc::withoutGlobalScopes()->selectRaw('*, UNIX_TIMESTAMP(starting_date) as starting_timestamp, UNIX_TIMESTAMP(finishing_date) as finishing_timestamp')->get();
+		
+	}
 
     public function setting($jobId)
     {
@@ -23,6 +33,8 @@ class showPersonnelsController extends Controller
         $lastSetting    = personnel_evaluation_setting::where('year', $lastYear)->where('quarter', $lastQuarter)->where('jobTitleId', $jobId)->first();
         return $lastSetting;
     }
+    
+    /*
 
     public function users()
     {
@@ -30,7 +42,23 @@ class showPersonnelsController extends Controller
         $users          = User::find(job_desc::join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')->whereIn('district', $myZones)->pluck('user_id'));
         return $users;
     }
+    */
+    
+    public function users()
+    {        
+		$lastYear = personnel_evaluation_setting::max('year');
+		$myZones = explode(", ", Auth::user()->areaKerja->pluck('zone')->first());
+		$lastQuarter = personnel_evaluation_setting::where('year', $lastYear)->max('quarter');		
+		$dt = $lastYear . '-' . $lastQuarter*3 .'-' . 1;
+		$time = Carbon::parse($dt)->timestamp;	
+	
+		$job_desc          = job_desc::withoutGlobalScopes()->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')->selectRaw('*, UNIX_TIMESTAMP(starting_date) as starting_timestamp, UNIX_TIMESTAMP(finishing_date) as finishing_timestamp')->get();
+        
+        return $job_desc->where('starting_timestamp', '<=', $time)->where('finishing_timestamp', '>', $time);
+        
+    }
 
+    
     public function allpersonnels($jobId)
     {
         $users          = $this->users();

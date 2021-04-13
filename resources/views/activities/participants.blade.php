@@ -23,8 +23,8 @@
 				<tr>
 					<td>{{ $loop->iteration }}</td>
 					<td>{{ $participant->user()->first()->name }}</td>
-					<td>{{ $participant->user()->first()->posisi()->first()->job_title ?? '' }}</td>
-					<td>{{ $participant->user()->first()->jobDesc()->first()->kabupaten()->first()->NAMA_KAB ?? 'OSP' }}</td>
+					<td>{{ $participant->job_desc ? $participant->job_desc->posisi->job_title : ''}}</td>
+					<td>{{ $participant->job_desc ? $participant->job_desc->areaKerja->kabupaten->NAMA_KAB : ''}}</td>
 				</tr>
 				@endforeach
 			</tbody>

@@ -38,7 +38,7 @@
                         <td>{{ $setting->jobTitle->job_title }} </td>
                         <td class="text-center">
                             <a href="/personnel-evaluation/assessor/personnels/allpersonnels/{{ $evaluator->jobId }}">
-                                {{ $setting->jobDesc->whereIn('user_id', $users->pluck('id'))->count() }}
+                                {{ $users->where('job_title_id', $setting->jobTitle->id )->count() }}
                             </a>
                         </td>
                         <td class="text-center">

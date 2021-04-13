@@ -17,4 +17,9 @@ class attendance_record extends Model
     {
         return $this->belongsToMany('App\activity_participant', 'user_id', 'user_id');
     }
+    
+    public function job_desc()
+    {
+		return $this->hasOne('App\job_desc', 'user_id', 'user_id');
+	}
 }

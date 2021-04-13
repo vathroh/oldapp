@@ -29,7 +29,8 @@
 							<li>
 								<tr>
 									<td>{{ $attendance->user()->first()->name }}</td>
-									<td>{{ $attendance->user()->first()->posisi()->pluck('job_title')->first() }}</td>
+									<td>{{ $attendance }}
+										{{-- $attendance->user()->first()->posisi()->pluck('job_title')->first() --}}</td>
 									<td>{{$attendance->user()->first()->jobDesc()->first()->kabupaten()->first()->NAMA_KAB ?? 'OSP' }}</td>
 								</tr>
 							</li>

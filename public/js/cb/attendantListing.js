@@ -6,12 +6,12 @@ $(document).ready(function () {
 		console.log(data);
         $("#registered_users").empty();
         $.each(data[0], function (index, usersObj) {
-			$("#registered_users").append('<option value="' + usersObj.user_id + '">' + (index+1) + '. ' + usersObj.name + ' | ' + usersObj.job_title + ' | ' + usersObj.NAMA_KAB + '</option>');
+			$("#registered_users").append('<option value="' + usersObj.user_id + '">' + (index+1) + '. ' + usersObj.name + ' | ' + usersObj.job_title + ' | ' + usersObj.nama_kab + '</option>');
 		});
 
 		$("#users").empty();
         $.each(data[1], function (index, usersObj) {
-			$("#users").append('<option value="' + usersObj.user_id + '">' + (index+1) + '. ' + usersObj.name + ' | ' + usersObj.job_title + ' | ' + usersObj.NAMA_KAB + '</option>');
+			$("#users").append('<option value="' + usersObj.user_id + '">' + (index+1) + '. ' + usersObj.name + ' | ' + usersObj.job_title + ' | ' + usersObj.nama_kab + '</option>');
 		});
 	});
 
@@ -53,11 +53,11 @@ $(document).ready(function () {
             $("#registered_users").empty();
 
             $.each(data[0], function (index, usersObj) {
-                $("#registered_users").append('<option value="' + usersObj.user_id + '">' + (index+1) + '. ' + usersObj.name + ' | ' + usersObj.job_title + ' | ' + usersObj.NAMA_KAB + '</option>');
+                $("#registered_users").append('<option value="' + usersObj.user_id + '">' + (index+1) + '. ' + usersObj.name + ' | ' + usersObj.job_title + ' | ' + usersObj.nama_kab + '</option>');
             });
 
             $.each(data[1], function (index, usersObj) {
-                $("#users").append('<option value="' + usersObj.user_id + '">' + (index+1) + '. ' + usersObj.name + ' | ' + usersObj.job_title + ' | ' + usersObj.NAMA_KAB + '</option>');
+                $("#users").append('<option value="' + usersObj.user_id + '">' + (index+1) + '. ' + usersObj.name + ' | ' + usersObj.job_title + ' | ' + usersObj.nama_kab + '</option>');
             });
         });
     });
@@ -75,11 +75,11 @@ $(document).ready(function () {
             $("#registered_users").empty();
 
             $.each(data[1], function (index, usersObj) {
-                $("#users").append('<option value="' + usersObj.user_id + '">' + (index+1) + '. ' + usersObj.name + ' | ' + usersObj.job_title + ' | ' + usersObj.NAMA_KAB + '</option>');
+                $("#users").append('<option value="' + usersObj.user_id + '">' + (index+1) + '. ' + usersObj.name + ' | ' + usersObj.job_title + ' | ' + usersObj.nama_kab + '</option>');
             });
 
             $.each(data[0], function (index, usersObj) {
-                $("#registered_users").append('<option value="' + usersObj.user_id + '">' + (index+1) + '. ' + usersObj.name + ' | ' + usersObj.job_title + ' | ' + usersObj.NAMA_KAB + '</option>');
+                $("#registered_users").append('<option value="' + usersObj.user_id + '">' + (index+1) + '. ' + usersObj.name + ' | ' + usersObj.job_title + ' | ' + usersObj.nama_kab + '</option>');
             });
         });
     });
@@ -90,7 +90,7 @@ $(document).ready(function () {
 		var activity_id = $("#activity_id").val();
 		var nama = $("#find_name").val();
         var userId = $("#users").val();
-		var role = $("#role").val();
+		var role = $("#role").val();		
 
 		$.ajax({
 			url: '/ajax-listing-register',
@@ -102,19 +102,20 @@ $(document).ready(function () {
 				activity_id		: activity_id,
 				kode_kabupaten	: kode_kabupaten,
 				nama			: nama,
-				count:userId.length,
-
+				count			: userId.length
 			},
+			
 			success: function(data) {
+				console.log(data);
 				$("#registered_users").empty();
 				$("#users").empty();
 
 				$.each(data[0], function (index, regUsersObj) {
-					$("#registered_users").append('<option value="' + regUsersObj.user_id + '">' + (index+1) + '. ' + regUsersObj.name + ' | ' + regUsersObj.job_title + ' | ' + regUsersObj.NAMA_KAB + '</option>');
+					$("#registered_users").append('<option value="' + regUsersObj.user_id + '">' + (index+1) + '. ' + regUsersObj.name + ' | ' + regUsersObj.job_title + ' | ' + regUsersObj.nama_kab + '</option>');
 				});
 
 				$.each(data[1], function (index, regUsersObj) {
-					$("#users").append('<option value="' + regUsersObj.user_id + '">' + (index+1) + '. ' + regUsersObj.name + ' | ' + regUsersObj.job_title + ' | ' + regUsersObj.NAMA_KAB + '</option>');
+					$("#users").append('<option value="' + regUsersObj.user_id + '">' + (index+1) + '. ' + regUsersObj.name + ' | ' + regUsersObj.job_title + ' | ' + regUsersObj.nama_kab + '</option>');
 				});
 
 			}
@@ -142,15 +143,16 @@ $(document).ready(function () {
 				count			: regUserId.length
 			},
 			success: function(data) {
+				console.log(data);
 				$("#registered_users").empty();
 				$("#users").empty();
 
 				$.each(data[0], function (index, regUsersObj) {
-					$("#registered_users").append('<option value="' + regUsersObj.user_id + '">' + (index+1) + '. ' + regUsersObj.name + ' | ' + regUsersObj.job_title + ' | ' + regUsersObj.NAMA_KAB + '</option>');
+					$("#registered_users").append('<option value="' + regUsersObj.user_id + '">' + (index+1) + '. ' + regUsersObj.name + ' | ' + regUsersObj.job_title + ' | ' + regUsersObj.nama_kab + '</option>');
 				});
 
 				$.each(data[1], function (index, regUsersObj) {
-					$("#users").append('<option value="' + regUsersObj.user_id + '">' + (index+1) + '. ' + regUsersObj.name + ' | ' + regUsersObj.job_title + ' | ' + regUsersObj.NAMA_KAB + '</option>');
+					$("#users").append('<option value="' + regUsersObj.user_id + '">' + (index+1) + '. ' + regUsersObj.name + ' | ' + regUsersObj.job_title + ' | ' + regUsersObj.nama_kab + '</option>');
 				});
 			}
 		});

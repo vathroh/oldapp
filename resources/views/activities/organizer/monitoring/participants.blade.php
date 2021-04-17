@@ -99,6 +99,7 @@
                                 <td>No</td>
                                 <td>Tanggal</td>
                                 <td>Nama</td>
+                                <td>Jenis Kelamin</td>
                                 <td>Jabatan</td>
                                 <td>Kabupaten/Kota</td>
                             </tr>
@@ -109,7 +110,8 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $day->format('d F Y') }}</td>
-                                <td> {{ $participant->user->name ??  $participant->user_id }} </td>
+                                <td>{{ $participant->user->name ??  $participant->user_id }} </td>
+                                <td>{{ $participant->user->biodata->gender ?? "" }}</td>
                                 <td>{{ $participant->job_desc ? $participant->job_desc->posisi->job_title : '' }}</td>
                                 <td>{{ $participant->user->jobDesc->first()->kabupaten[0]->NAMA_KAB ?? '-' }}</td>
                             </tr>

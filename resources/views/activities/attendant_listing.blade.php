@@ -5,7 +5,7 @@
 	<div class="card-header card-header-primary">
 		<h4 class="card-title ">{{ $activities->where('id', $activity_item)->pluck('name')->first() }}</h4>
 	</div>
-	@include('activities.navbar')	
+	@include('activities.navbar')
 	<div class="card-body">	
 		
 		<div class="mt-3">	
@@ -22,7 +22,7 @@
 				<div class="form-group row">
 					<div class="col-md-6 mt-3">
 						<select class="custom-select" id="find_district" name="find_district">
-							<option>Cari berdasarkan kabupaten penugasan</option>
+							<option value="">Cari berdasarkan kabupaten penugasan</option>
 							@foreach($districts as $district)
 							<option value="{{ $district->KD_KAB }}">{{ $district->NAMA_KAB }}</option>
 							@endforeach
@@ -47,6 +47,7 @@
 			</div>				
 			
 		</div>
+		
 	</div>
 </div>
 @endsection

@@ -19,6 +19,7 @@ use App\activity;
 use App\certificate;
 use App\subject;
 use App\library;
+use App\job_desc;
 use App\User;
 use PDF;
 
@@ -449,78 +450,70 @@ class activityController extends Controller
 
 	public function listing_attendant($activity, $activity_item)
 	{
+		$participants = activity_participant::all();
+		$job_descs = job_desc::join('activity_participants', 'activity_participants.user_id', '=', 'job_descs.user_id')
+					->join('users', 'users.id', '=', 'job_descs.user_id')
+					->join('job_titles', 'job_titles.id', '=', 'job_descs.job_title_id')
+					->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')
+					->leftjoin('kabupaten', 'kabupaten.id', '=', 'work_zones.district_id')
+					->where('activity_id', $activity_item)
+					->get();
+		
+		
+		
 		$role = activity_participant::where('user_id', Auth::user()->id)->get();
 		$activities = activity::get();
 		$districts = allvillage::distinct('KD_KAB')->get(['KD_KAB', 'NAMA_KAB']);
-		return view('activities.attendant_listing', compact(['role', 'districts', 'activity_item', 'activity', 'activities']));
+		return view('activities.attendant_listing', compact(['role', 'districts', 'activity_item', 'activity', 'activities', 'participants', 'job_descs']));
 	}
 
 	public function ajaxAttendance(Request $request)
 	{
-		$participatans 	= activity_participant::distinct()->where('activity_id', $request->activity_id)
-			->where('role', $request->role)
-			->join('users', 'users.id', '=', 'activity_participants.user_id')
-			->join('job_descs', 'job_descs.user_id', '=', 'users.id')
-			->join('job_titles', 'job_titles.id', '=', 'job_descs.job_title_id')
-			->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')
-			->leftjoin('allvillages', 'work_zones.district', '=', 'allvillages.KD_KAB')
-			->get(['activity_participants.user_id', 'name', 'NAMA_KAB', 'KD_KAB', 'job_title']);
+		$participatans = job_desc::join('activity_participants', 'activity_participants.user_id', '=', 'job_descs.user_id')
+					->join('users', 'users.id', '=', 'job_descs.user_id')
+					->join('job_titles', 'job_titles.id', '=', 'job_descs.job_title_id')
+					->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')
+					->leftjoin('kabupaten', 'kabupaten.id', '=', 'work_zones.district_id')
+					->where('activity_id', $request->activity_id)->where('role', $request->role)
+					->where('kode_kab', $request->kode_kabupaten)
+					->get(['activity_participants.user_id', 'name', 'nama_kab', 'job_title', 'job_descs.id']);
+					
+		$users = job_desc::join('users', 'users.id', '=', 'job_descs.user_id')
+					->whereNotIn('job_descs.id', $participatans->pluck('id'))
+					->join('job_titles', 'job_titles.id', '=', 'job_descs.job_title_id')
+					->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')
+					->leftjoin('kabupaten', 'kabupaten.id', '=', 'work_zones.district_id')
+					->where('kode_kab', $request->kode_kabupaten)
+					->get();
 
-		$users 			= User::distinct('users.id')->join('job_descs', 'job_descs.user_id', '=', 'users.id')
-			->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')
-			->leftjoin('allvillages', 'work_zones.district', '=', 'allvillages.KD_KAB')
-			->join('job_titles', 'job_titles.id', '=', 'job_descs.job_title_id')
-			->where('KD_KAB', $request->kode_kabupaten)
-			->whereNotIn('users.id', $participatans->pluck('user_id'))
-			->select('users.id as user_id', 'name', 'NAMA_KAB', 'KD_KAB', 'job_title')
-			->get();
-
-		$registered_user 	= activity_participant::distinct()
-			->where('role', $request->role)
-			->where('activity_id', $request->activity_id)
-			->where('district', $request->kode_kabupaten)
-			->join('job_descs', 'job_descs.user_id', '=', 'activity_participants.user_id')
-			->join('users', 'users.id', '=', 'activity_participants.user_id')
-			->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')
-			->join('allvillages', 'work_zones.district', '=', 'allvillages.KD_KAB')
-			->join('job_titles', 'job_titles.id', '=', 'job_descs.job_title_id')
-			->select('users.id as user_id', 'name', 'NAMA_KAB', 'KD_KAB', 'job_title')
-			->get();
-
-		return response()->json([$registered_user, $users]);
+		return response()->json([$participatans, $users]);
 	}
 
 	public function ajaxAttendanceFindName(Request $request)
 	{
-		/*
-		$registered_user 	= activity_participant::where('activity_id', $request->kegiatanid)->where('role', $request->role)
-							  ->pluck('activity_participants.user_id');
-*/
-
-		$registered_user 	= activity_participant::distinct()
-			->join('users', 'users.id', '=', 'activity_participants.user_id')
-			->join('job_descs', 'job_descs.user_id', '=', 'users.id')
-			->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')
+		
+		$registered_user = job_desc::join('activity_participants', 'activity_participants.user_id', '=', 'job_descs.user_id')
+			->join('users', 'users.id', '=', 'job_descs.user_id')
 			->join('job_titles', 'job_titles.id', '=', 'job_descs.job_title_id')
-			->leftjoin('allvillages', 'work_zones.district', '=', 'allvillages.KD_KAB')
-			->where('activity_id', $request->kegiatanid)
-			->where('role', $request->role)
+			->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')
+			->leftjoin('kabupaten', 'kabupaten.id', '=', 'work_zones.district_id')
+			->where('activity_id', $request->kegiatanid)->where('role', $request->role)
 			->where('users.name', 'like', '%' . $request->nama . '%')
 			->orWhere('activity_id', $request->kegiatanid)
 			->where('role', $request->role)
 			->where('job_titles.job_title', 'like', '%' . $request->nama . '%')
-			->select('users.id as user_id', 'name', 'NAMA_KAB', 'job_title')
-			->get();
+			->get(['activity_participants.user_id', 'name', 'nama_kab', 'job_title', 'job_descs.id']);
+			
 
-		$users = User::distinct()->join('job_descs', 'job_descs.user_id', '=', 'users.id')
-			->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')
-			->leftjoin('allvillages', 'work_zones.district', '=', 'allvillages.KD_KAB')
+		$users = job_desc::join('users', 'users.id', '=', 'job_descs.user_id')
 			->join('job_titles', 'job_titles.id', '=', 'job_descs.job_title_id')
+			->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')
+			->leftjoin('kabupaten', 'kabupaten.id', '=', 'work_zones.district_id')
 			->where('users.name', 'like', '%' . $request->nama . '%')
 			->whereNotIn('user_id', $registered_user->pluck('user_id'))
 			->orWhere('job_titles.job_title', 'like', '%' . $request->nama . '%')
 			->whereNotIn('user_id', $registered_user->pluck('user_id'))
-			->select('users.id as user_id', 'name', 'NAMA_KAB', 'job_title')
+			->select('users.id as user_id', 'name', 'nama_kab', 'job_title')
 			->get();
 
 		return response()->json([$registered_user, $users]);
@@ -529,6 +522,7 @@ class activityController extends Controller
 
 	public function ajaxRegister(Request $request)
 	{
+		
 		for ($i = 0; $i < $request->count; $i++) {
 			activity_participant::create([
 				'activity_id'	=> $request->activity_id,
@@ -536,77 +530,69 @@ class activityController extends Controller
 				'role' 	=> $request->role
 			]);
 		}
-
-		$participans 	= activity_participant::distinct()
+						
+		$participans = job_desc::join('activity_participants', 'activity_participants.user_id', '=', 'job_descs.user_id')
+			->join('users', 'users.id', '=', 'job_descs.user_id')
+			->join('job_titles', 'job_titles.id', '=', 'job_descs.job_title_id')
+			->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')
+			->leftjoin('kabupaten', 'kabupaten.id', '=', 'work_zones.district_id')
 			->where('activity_id', $request->activity_id)
 			->where('role', $request->role)
-			->join('users', 'users.id', '=', 'activity_participants.user_id')
-			->join('job_descs', 'job_descs.user_id', '=', 'users.id')
+			->get();
+
+		$nonParticipans	= job_desc::join('users', 'users.id', '=', 'job_descs.user_id')
 			->join('job_titles', 'job_titles.id', '=', 'job_descs.job_title_id')
 			->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')
-			->leftjoin('allvillages', 'work_zones.district', '=', 'allvillages.KD_KAB')
-			->get(['activity_participants.user_id', 'name', 'NAMA_KAB', 'job_title']);
-
-
-
-		$nonParticipans	= User::distinct('users.id')
+			->leftjoin('kabupaten', 'kabupaten.id', '=', 'work_zones.district_id')
 			->whereNotIn('users.id', $participans->pluck('user_id'))
-			->join('job_descs', 'job_descs.user_id', '=', 'users.id')
-			->join('job_titles', 'job_titles.id', '=', 'job_descs.job_title_id')
-			->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')
-			->leftjoin('allvillages', 'work_zones.district', '=', 'allvillages.KD_KAB')
-			->get(['users.id as user_id', 'name', 'NAMA_KAB', 'KD_KAB', 'job_title']);
-
+			->get();
 
 		if ($request->kode_kabupaten != "") {
-			$nonParticipans	= User::distinct('users.id')
-				->where('KD_KAB', $request->kode_kabupaten)
-				->whereNotIn('users.id', $participans->pluck('user_id'))
-				->join('job_descs', 'job_descs.user_id', '=', 'users.id')
+		
+			$participans = job_desc::join('activity_participants', 'activity_participants.user_id', '=', 'job_descs.user_id')
+				->join('users', 'users.id', '=', 'job_descs.user_id')
 				->join('job_titles', 'job_titles.id', '=', 'job_descs.job_title_id')
 				->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')
-				->leftjoin('allvillages', 'work_zones.district', '=', 'allvillages.KD_KAB')
-				->get(['users.id as user_id', 'name', 'NAMA_KAB', 'KD_KAB', 'job_title']);
-
-			$participans 	= activity_participant::distinct()
-				->where('KD_KAB', $request->kode_kabupaten)
+				->leftjoin('kabupaten', 'kabupaten.id', '=', 'work_zones.district_id')
+				->where('kode_kab', $request->kode_kabupaten)
 				->where('activity_id', $request->activity_id)
 				->where('role', $request->role)
-				->join('users', 'users.id', '=', 'activity_participants.user_id')
-				->join('job_descs', 'job_descs.user_id', '=', 'users.id')
+				->get();
+			
+			$nonParticipans	= job_desc::join('users', 'users.id', '=', 'job_descs.user_id')				
 				->join('job_titles', 'job_titles.id', '=', 'job_descs.job_title_id')
 				->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')
-				->leftjoin('allvillages', 'work_zones.district', '=', 'allvillages.KD_KAB')
-				->get(['activity_participants.user_id', 'name', 'NAMA_KAB', 'job_title']);
+				->leftjoin('kabupaten', 'kabupaten.id', '=', 'work_zones.district_id')
+				->whereNotIn('job_descs.user_id', $participans->pluck('user_id'))
+				->where('kode_kab', $request->kode_kabupaten)
+				->get();		
 		}
 
 		if ($request->nama != "") {
-
-
-			$participans 	= activity_participant::distinct()
-				->where('users.name', 'like', '%' . $request->nama . '%')
+			
+			$participans = job_desc::join('activity_participants', 'activity_participants.user_id', '=', 'job_descs.user_id')
+				->join('users', 'users.id', '=', 'job_descs.user_id')
+				->join('job_titles', 'job_titles.id', '=', 'job_descs.job_title_id')
+				->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')
+				->leftjoin('kabupaten', 'kabupaten.id', '=', 'work_zones.district_id')
 				->where('activity_id', $request->activity_id)
 				->where('role', $request->role)
+				->where('users.name', 'like', '%' . $request->nama . '%')
 				->orWhere('job_titles.job_title', 'like', '%' . $request->nama . '%')
 				->where('activity_id', $request->activity_id)
 				->where('role', $request->role)
-				->join('users', 'users.id', '=', 'activity_participants.user_id')
-				->join('job_descs', 'job_descs.user_id', '=', 'users.id')
-				->join('job_titles', 'job_titles.id', '=', 'job_descs.job_title_id')
-				->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')
-				->leftjoin('allvillages', 'work_zones.district', '=', 'allvillages.KD_KAB')
-				->get(['activity_participants.user_id', 'name', 'NAMA_KAB', 'job_title']);
+				->get();
 
-			$nonParticipans	= User::distinct('users.id')
-				->where('job_titles.job_title', 'like', '%' . $request->nama . '%')
-				->whereNotIn('users.id', $participans->pluck('user_id'))
-				->orWhere('users.name', 'like', '%' . $request->nama . '%')
-				->whereNotIn('users.id', $participans->pluck('user_id'))
-				->join('job_descs', 'job_descs.user_id', '=', 'users.id')
+				
+			$nonParticipans	= job_desc::join('users', 'users.id', '=', 'job_descs.user_id')				
 				->join('job_titles', 'job_titles.id', '=', 'job_descs.job_title_id')
 				->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')
-				->leftjoin('allvillages', 'work_zones.district', '=', 'allvillages.KD_KAB')
-				->get(['users.id as user_id', 'name', 'NAMA_KAB', 'KD_KAB', 'job_title']);
+				->leftjoin('kabupaten', 'kabupaten.id', '=', 'work_zones.district_id')
+				->whereNotIn('user_id', $participans->pluck('user_id'))
+				->where('users.name', 'like', '%' . $request->nama . '%')
+				->orWhere('job_titles.job_title', 'like', '%' . $request->nama . '%')
+				->whereNotIn('user_id', $participans->pluck('user_id'))
+				->get();
 		}
 
 		return response()->json([$participans, $nonParticipans]);
@@ -614,157 +600,93 @@ class activityController extends Controller
 
 
 	public function ready(Request $request)
-	{
-		$participatans 	= activity_participant::distinct()->where('activity_id', $request->activity_id)
-			->where('role', $request->role)
-			->join('users', 'users.id', '=', 'activity_participants.user_id')
-			->join('job_descs', 'job_descs.user_id', '=', 'users.id')
-			->join('job_titles', 'job_titles.id', '=', 'job_descs.job_title_id')
-			->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')
-			->leftjoin('allvillages', 'work_zones.district', '=', 'allvillages.KD_KAB')
-			->get(['activity_participants.user_id', 'name', 'NAMA_KAB', 'job_title']);
-
-		$users 			= User::distinct('users.id')->join('job_descs', 'job_descs.user_id', '=', 'users.id')
-			->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')
-			->leftjoin('allvillages', 'work_zones.district', '=', 'allvillages.KD_KAB')
-			->join('job_titles', 'job_titles.id', '=', 'job_descs.job_title_id')
-			->whereNotIn('users.id', $participatans->pluck('user_id'))
-			->get(['user_id', 'name', 'NAMA_KAB', 'job_title']);
+	{	
+		$participatans = job_desc::join('activity_participants', 'activity_participants.user_id', '=', 'job_descs.user_id')
+					->join('users', 'users.id', '=', 'job_descs.user_id')
+					->join('job_titles', 'job_titles.id', '=', 'job_descs.job_title_id')
+					->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')
+					->leftjoin('kabupaten', 'kabupaten.id', '=', 'work_zones.district_id')
+					->where('activity_id', $request->activity_id)->where('role', $request->role)
+					->get(['activity_participants.user_id', 'name', 'nama_kab', 'job_title', 'job_descs.id']);
+					
+		$users = job_desc::join('users', 'users.id', '=', 'job_descs.user_id')
+					->whereNotIn('job_descs.id', $participatans->pluck('id'))
+					->join('job_titles', 'job_titles.id', '=', 'job_descs.job_title_id')
+					->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')
+					->leftjoin('kabupaten', 'kabupaten.id', '=', 'work_zones.district_id')
+					->get();
 
 		return response()->json([$participatans, $users]);
-	}
-
-	/*
-	public function moveReg(Request $request)
-	{
 		
-	
-		$registered_user 	= activity_participant::where('activity_id', $request->kegiatanid)->where('role', $request->role)
-							  ->pluck('activity_participants.user_id');
-					
-		if($request->nama != null)
-		{
-			$users = User::distinct()->join('job_descs', 'job_descs.user_id', '=', 'users.id')
-			->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')
-			->leftjoin('allvillages', 'work_zones.district', '=', 'allvillages.KD_KAB')
-			->join('job_titles', 'job_titles.id', '=', 'job_descs.job_title_id')							
-			->where('users.name', 'like', '%' . $request->nama . '%')			
-			->orWhere('job_titles.job_title', 'like', '%' . $request->nama . '%')
-			->get(['user_id', 'name', 'NAMA_KAB', 'job_title']);
-			
-			$unregistered_users = $users->whereNotIn('user_id', $registered_user);
-		}
-		
-		if($request->kode_kabupaten != "Cari berdasarkan kabupaten penugasan")
-		{
-			
-			$unregistered_users = User::distinct()->join('job_descs', 'job_descs.user_id', '=', 'users.id')
-				->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')
-				->leftjoin('allvillages', 'work_zones.district', '=', 'allvillages.KD_KAB')
-				->join('job_titles', 'job_titles.id', '=', 'job_descs.job_title_id')
-				->whereNotIn('users.id', $registered_user)
-				->Where('district', $request->kode_kabupaten )
-				->get(['user_id', 'name', 'NAMA_KAB', 'job_title']);				
-		}
-			
-		return response()->json($registered_user);
+		//return response()->json([$participants, $users]);
 	}
-	*/
 
 	public function deleteAjax(Request $request)
 	{
 		for ($i = 0; $i < $request->count; $i++) {
 			activity_participant::where('user_id', $request->regUserId[$i])->where('activity_id', $request->activity_id)->where('role', $request->role)->delete();
 		}
-		/*	
-		$participans = activity_participant::distinct()
-			->where('role', $request->role)
-			->where('activity_id', $request->activity_id)
-			->join('users', 'users.id', '=', 'activity_participants.user_id')
-			->join('job_descs', 'job_descs.user_id', '=', 'users.id')
+
+		$participans = job_desc::join('activity_participants', 'activity_participants.user_id', '=', 'job_descs.user_id')
+			->join('users', 'users.id', '=', 'job_descs.user_id')
 			->join('job_titles', 'job_titles.id', '=', 'job_descs.job_title_id')
 			->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')
-			->leftjoin('allvillages', 'work_zones.district', '=', 'allvillages.KD_KAB')
-			->get(['activity_participants.user_id', 'name', 'NAMA_KAB', 'job_title']);
-			
-		$nonParticipans	= User::distinct('users.id')
-						  ->whereNotIn('users.id', $participans->pluck('user_id'))
-						  ->join('job_descs', 'job_descs.user_id', '=', 'users.id')
-						  ->join('job_titles', 'job_titles.id', '=', 'job_descs.job_title_id')
-						  ->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')
-						  ->leftjoin('allvillages', 'work_zones.district', '=', 'allvillages.KD_KAB')
-                          ->get(['users.id as user_id', 'name', 'NAMA_KAB', 'job_title']);
-     */
-		$participans 	= activity_participant::distinct()
+			->leftjoin('kabupaten', 'kabupaten.id', '=', 'work_zones.district_id')
 			->where('activity_id', $request->activity_id)
 			->where('role', $request->role)
-			->join('users', 'users.id', '=', 'activity_participants.user_id')
-			->join('job_descs', 'job_descs.user_id', '=', 'users.id')
+			->get(['activity_participants.user_id', 'name', 'nama_kab', 'job_title', 'job_descs.id']);
+
+		$nonParticipans	= job_desc::join('users', 'users.id', '=', 'job_descs.user_id')
+			->whereNotIn('job_descs.id', $participans->pluck('id'))
 			->join('job_titles', 'job_titles.id', '=', 'job_descs.job_title_id')
 			->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')
-			->leftjoin('allvillages', 'work_zones.district', '=', 'allvillages.KD_KAB')
-			->get(['activity_participants.user_id', 'name', 'NAMA_KAB', 'job_title']);
-
-
-
-		$nonParticipans	= User::distinct('users.id')
-			->whereNotIn('users.id', $participans->pluck('user_id'))
-			->join('job_descs', 'job_descs.user_id', '=', 'users.id')
-			->join('job_titles', 'job_titles.id', '=', 'job_descs.job_title_id')
-			->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')
-			->leftjoin('allvillages', 'work_zones.district', '=', 'allvillages.KD_KAB')
-			->get(['users.id as user_id', 'name', 'NAMA_KAB', 'KD_KAB', 'job_title']);
-
+			->leftjoin('kabupaten', 'kabupaten.id', '=', 'work_zones.district_id')
+			->get();
 
 		if ($request->kode_kabupaten != "") {
-			$nonParticipans	= User::distinct('users.id')
-				->where('KD_KAB', $request->kode_kabupaten)
-				->whereNotIn('users.id', $participans->pluck('user_id'))
-				->join('job_descs', 'job_descs.user_id', '=', 'users.id')
+			$participans = job_desc::join('activity_participants', 'activity_participants.user_id', '=', 'job_descs.user_id')
+				->join('users', 'users.id', '=', 'job_descs.user_id')
 				->join('job_titles', 'job_titles.id', '=', 'job_descs.job_title_id')
 				->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')
-				->leftjoin('allvillages', 'work_zones.district', '=', 'allvillages.KD_KAB')
-				->get(['users.id as user_id', 'name', 'NAMA_KAB', 'KD_KAB', 'job_title']);
-
-			$participans 	= activity_participant::distinct()
-				->where('KD_KAB', $request->kode_kabupaten)
+				->leftjoin('kabupaten', 'kabupaten.id', '=', 'work_zones.district_id')
+				->where('kode_kab', $request->kode_kabupaten)
 				->where('activity_id', $request->activity_id)
 				->where('role', $request->role)
-				->join('users', 'users.id', '=', 'activity_participants.user_id')
-				->join('job_descs', 'job_descs.user_id', '=', 'users.id')
+				->get(['activity_participants.user_id', 'name', 'nama_kab', 'job_title', 'job_descs.id']);
+			
+			$nonParticipans	= job_desc::join('users', 'users.id', '=', 'job_descs.user_id')				
 				->join('job_titles', 'job_titles.id', '=', 'job_descs.job_title_id')
 				->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')
-				->leftjoin('allvillages', 'work_zones.district', '=', 'allvillages.KD_KAB')
-				->get(['activity_participants.user_id', 'name', 'NAMA_KAB', 'job_title']);
+				->leftjoin('kabupaten', 'kabupaten.id', '=', 'work_zones.district_id')
+				->whereNotIn('job_descs.user_id', $participans->pluck('user_id'))
+				->where('kode_kab', $request->kode_kabupaten)
+				->get();
 		}
 
 		if ($request->nama != "") {
 
-
-			$participans 	= activity_participant::distinct()
-				->where('users.name', 'like', '%' . $request->nama . '%')
+			$participans = job_desc::join('activity_participants', 'activity_participants.user_id', '=', 'job_descs.user_id')
+				->join('users', 'users.id', '=', 'job_descs.user_id')
+				->join('job_titles', 'job_titles.id', '=', 'job_descs.job_title_id')
+				->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')
+				->leftjoin('kabupaten', 'kabupaten.id', '=', 'work_zones.district_id')
 				->where('activity_id', $request->activity_id)
 				->where('role', $request->role)
+				->where('users.name', 'like', '%' . $request->nama . '%')
 				->orWhere('job_titles.job_title', 'like', '%' . $request->nama . '%')
 				->where('activity_id', $request->activity_id)
 				->where('role', $request->role)
-				->join('users', 'users.id', '=', 'activity_participants.user_id')
-				->join('job_descs', 'job_descs.user_id', '=', 'users.id')
+				->get();
+				
+			$nonParticipans	= job_desc::join('users', 'users.id', '=', 'job_descs.user_id')				
 				->join('job_titles', 'job_titles.id', '=', 'job_descs.job_title_id')
 				->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')
-				->leftjoin('allvillages', 'work_zones.district', '=', 'allvillages.KD_KAB')
-				->get(['activity_participants.user_id', 'name', 'NAMA_KAB', 'job_title']);
-
-			$nonParticipans	= User::distinct('users.id')
-				->where('job_titles.job_title', 'like', '%' . $request->nama . '%')
-				->whereNotIn('users.id', $participans->pluck('user_id'))
-				->orWhere('users.name', 'like', '%' . $request->nama . '%')
-				->whereNotIn('users.id', $participans->pluck('user_id'))
-				->join('job_descs', 'job_descs.user_id', '=', 'users.id')
-				->join('job_titles', 'job_titles.id', '=', 'job_descs.job_title_id')
-				->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')
-				->leftjoin('allvillages', 'work_zones.district', '=', 'allvillages.KD_KAB')
-				->get(['users.id as user_id', 'name', 'NAMA_KAB', 'KD_KAB', 'job_title']);
+				->leftjoin('kabupaten', 'kabupaten.id', '=', 'work_zones.district_id')
+				->whereNotIn('user_id', $participans->pluck('user_id'))
+				->where('users.name', 'like', '%' . $request->nama . '%')
+				->orWhere('job_titles.job_title', 'like', '%' . $request->nama . '%')
+				->whereNotIn('user_id', $participans->pluck('user_id'))
+				->get();
 		}
 
 

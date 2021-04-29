@@ -12,15 +12,16 @@
 		<div class="monitoring-container d-flex">
 			<div style="border: 1px solid black; border-radius: 5px; padding: 20px; margin: 10px; width:50%;">
 				<h5>Sudah Mengisi Daftar Hadir</h5>
-				@for($i=0; $i<$period; $i++) <div>
-					<div class="mt-3">
-						@php
-						$tanggal = Carbon\Carbon::parse($start);
-						$day = $tanggal->addDays($i);
-						$day1 = $day->format('Y-m-d');
-						@endphp
-						{{ $day->format('l, d F Y') }}
-					</div>
+				@for($i=0; $i<$period; $i++) 
+				<div>
+						<div class="mt-3">
+							@php
+							$tanggal = Carbon\Carbon::parse($start);
+							$day = $tanggal->addDays($i);
+							$day1 = $day->format('Y-m-d');
+							@endphp
+							{{ $day->format('l, d F Y') }}
+						</div>
 
 
 					<div>

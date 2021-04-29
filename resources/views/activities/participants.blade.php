@@ -24,7 +24,7 @@
 					<td>{{ $loop->iteration }}</td>
 					<td>{{ $participant->user()->first()->name }}</td>
 					<td>{{ $participant->job_desc ? $participant->job_desc->posisi->job_title : ''}}</td>
-					<td>{{ $participant->job_desc ? $participant->job_desc->areaKerja->kabupaten->NAMA_KAB : ''}}</td>
+					<td>{{ $participant->job_desc->areaKerja->kabupaten ? $participant->job_desc->areaKerja->kabupaten->NAMA_KAB : 'OSP 1 Jateng 1'}}</td>
 				</tr>
 				@endforeach
 			</tbody>

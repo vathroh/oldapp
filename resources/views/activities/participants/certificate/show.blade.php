@@ -7,7 +7,8 @@
     </div>
     @include('activities.participants.navbar')
     <div class="card-body">
-        <div class="mt-5">
+	<div class="mt-5">
+		@if($status == "OK")
             @if($certificate == "berhak" AND Auth::User()->ActivityBlackList->where('activity_id', $id)->count() == 0)
             <form method="post" action="/kegiatan/peserta/download-sertifikat/{{ $activity->id }}">
                 @csrf
@@ -18,7 +19,6 @@
             @endif
 
             <p class="mt-5 text-center">Silahkan isi Daftar Hadir dan Evaluasi Belajar untuk memunculkan tombol download sertifikat.</p>
-
             <table class="table table-striped table-bordered mt-5">
                 <thead class="thead-dark">
                     <tr>
@@ -26,9 +26,9 @@
                         <td class="text-center">Daftar Hadir</td>
                     </tr>
                 </thead>
-
                 <tbody>
-                    @for( $i = 0; $i <= Carbon\carbon::parse($activity->start_date)->diffInDays($activity->finish_date); $i++ )
+		    @for( $i = 0; $i <= Carbon\carbon::parse($activity->start_date)->diffInDays($activity->finish_date); $i++ )
+			@if(array_search(Carbon\carbon::parse($activity->start_date)->addDays($i)->format('Y-m-d'), $breakDays ) === false)
                         <tr>
                             <td>
                                 {{ Carbon\carbon::parse($activity->start_date)->addDays($i)->format('l, d F Y') }}
@@ -40,7 +40,8 @@
                                 Tidak/Belum Mengisi Daftar Hadir
                                 @endif
                             </td>
-                        </tr>
+			</tr>
+			@endif
                         @endfor
 
                 </tbody>
@@ -84,7 +85,13 @@
                         @endforeach
                     </ul>
                 </div>
-            </div>
+	    </div>
+
+		@else
+			<div class="text-center">
+				{{ $status }}
+			</div>
+		@endif
         </div>
     </div>
     @endsection

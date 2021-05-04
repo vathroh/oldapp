@@ -8,13 +8,19 @@
     @include('activities.instructor.navbar')
     <div class="card-body">
         <div class="my-5">
-
+		@if($status == "OK")
             <form method="post" action="/kegiatan/pemandu/download-sertifikat/{{ $activity->id }}">
                 @csrf
                 <div style="width:100%;" class="text-center">
                     <button type="submit" class="btn btn-primary">Download Sertifikat</button>
                 </div>
-            </form>
+	    </form>
+		@else
+			<div class="text-center">
+				{{ $status }}
+			</div>
+
+		@endif
 
         </div>
     </div>

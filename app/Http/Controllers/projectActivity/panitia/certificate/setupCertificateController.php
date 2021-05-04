@@ -119,4 +119,20 @@ class setupCertificateController extends Controller
         ]);
         return redirect('/kegiatan/panitia/setup/sertifikat/' . $id . '/edit');
     }
+
+    public function release_date(Request $request, $id)
+    {
+	certificate::find($id)->update([
+		'release_date' => $request->release_date	
+	]);
+        return redirect('/kegiatan/panitia/setup/sertifikat/' . $id . '/edit');
+    }
+
+    public function blanko(Request $request, $id)
+    {
+	certificate::find($id)->update([
+		'background' => $request->blanko	
+	]);
+        return redirect('/kegiatan/panitia/setup/sertifikat/' . $id . '/edit');
+    }
 }

@@ -245,6 +245,8 @@ Route::namespace('projectActivity\panitia')->prefix('kegiatan/panitia')->name('p
     Route::put('setup/sertifikat/kota/{id}', 'certificate\setupCertificateController@city');
     Route::put('setup/sertifikat/osp/{id}', 'certificate\setupCertificateController@osp');
     Route::put('setup/sertifikat/signedby/{id}', 'certificate\setupCertificateController@signedBy');
+    Route::put('setup/sertifikat/release-date/{id}', 'certificate\setupCertificateController@release_date');
+    Route::put('setup/sertifikat/blanko/{id}', 'certificate\setupCertificateController@blanko');
 });
 
 Route::namespace('projectActivity\pemandu')->prefix('kegiatan/pemandu')->name('pemanduKegiatan.')->group(function () {

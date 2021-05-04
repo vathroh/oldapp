@@ -19,10 +19,23 @@ class certificateController extends Controller
 
     public function show($id)
     {
-        $activity       = activity::findOrFail($id);
-        $attendances    = attendance_record::where('activity_id', $id)->selectRaw('*, Date(created_at) as tanggal')->get();
+	
 
-        return view('activities.organizer.certificate.show', compact(['activity', 'attendances', 'id']));
+	$activity       = activity::findOrFail($id);
+        $attendances    = attendance_record::where('activity_id', $id)->selectRaw('*, Date(created_at) as tanggal')->get();
+	$certificates   = $activity->certificate;
+
+
+
+	if (is_null($certificates)) {
+           $status =  "Sertifikat belum diset";
+        } elseif ( Carbon::parse($certificates->release_date)->timestamp >  Carbon::now()->timestamp){
+            $status = "Sertifikat belum di rilis, silahkan kembalil pada tanggal " . Carbon::parse($certificates->release_date)->format('d M Y');
+	} else {
+		$status = "OK";
+	}
+ 	
+	return view('activities.organizer.certificate.show', compact(['status', 'activity', 'attendances', 'id']));
     }
 
     /**
@@ -69,13 +82,13 @@ class certificateController extends Controller
 
         if (is_null($certificates)) {
             return "Sertifikat belum diset";
-        } elseif ($certificates->release_date > 0) {
-            return "Sertifikat belum di rilis, silahkan kembalil pada tanggal " . $certificates->release_date;
+        } elseif (Carbon::parse($certificates->release_date)->timestamp >  Carbon::now()->timestamp) {
+            return "Sertifikat belum di rilis, silahkan kembali pada tanggal " . $certificates->release_date;
         }
 
-        return view('activities.organizer.certificate.certificate', compact(['username', 'role', 'certificates']));
+//        return view('activities.organizer.certificate.certificate', compact(['username', 'role', 'certificates']));
 
-        $pdf = PDF::loadView('activities.participants.certificate.certificate', compact(['username', 'role', 'certificates']));
-        return $pdf->setPaper('a4', 'landscape')->download('certificate.pdf');
+        $pdf = PDF::loadView('activities.organizer.certificate.certificate', compact(['username', 'role', 'certificates']));
+        return $pdf->setPaper('a4', 'landscape')->download('SERTIFIKAT '.$activity->name. ' atas nama ' . $username .'.pdf');
     }
 }

@@ -298,7 +298,26 @@
                     <button>OK</button>
                 </div>
             </form>
-        </div>
+	</div>
+
+	<div class="panel-item">
+		<form action="/kegiatan/panitia/setup/sertifikat/release-date/{{$certificates->id}}" method="post" enctype="multipart/form-data">
+		@csrf
+		@method('put')
+			<label>Tanggal Rilis</label>
+			<input type="date" name="release_date" value="{{$certificates->release_date ?? '' }}">
+			<button type="submit">OK</button>
+		</form>
+	</div>
+	<div class="panel-item">
+		<form action="/kegiatan/panitia/setup/sertifikat/blanko/{{$certificates->id}}" method="post" enctype="multipart/form-data">
+		@csrf
+		@method('put')
+			<label>Blanko</label>
+			<input type="text" name="blanko" value="{{ $certificates->background ?? '' }}">
+			<button type="submit">OK</button>
+		</form>
+	</div>
     </div>
 
 </body>

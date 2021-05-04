@@ -13,7 +13,7 @@
     <a class="nav-link" href="/kegiatan/peserta/evaluasi/{{ $activity->id }}">Evaluasi</a>
     <a class="nav-link" href="/kegiatan/peserta/jadwal/{{ $activity->id }}">Jadwal</a>
     <a class="nav-link" href="/kegiatan/peserta/materi/{{ $activity->id }}">Materi</a>
-    @if($activity->id == 5)
+    @if($activity-> certificate)
     <a class="nav-link" href="/kegiatan/peserta/sertifikat/{{ $activity->id }}">Sertifikat</a>
     @endif
 </nav>

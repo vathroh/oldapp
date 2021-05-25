@@ -6,6 +6,7 @@ use App\allvillage;
 use App\Http\Controllers\Controller;
 use App\kabupaten;
 use App\work_zone;
+use App\zone_location;
 use Illuminate\Http\Request;
 
 class workZoneController extends Controller
@@ -41,8 +42,9 @@ class workZoneController extends Controller
     {
         $districts = kabupaten::all();
         $workZone = work_zone::find($id);
+    	$locations = zone_location::where('year', $workZone->year )->get();
         $subdistricts = allvillage::where('KD_KAB', $workZone->district)->get();
-        return view('admin.workZone.tim_faskel.edit', compact(['districts', 'workZone', 'subdistricts']));
+        return view('admin.workZone.tim_faskel.edit', compact(['districts', 'workZone', 'subdistricts', 'locations']));
     }
 
 
@@ -61,7 +63,8 @@ class workZoneController extends Controller
             'zone_level_id' => $request->zone_level_id,
             'level' => $request->level,
             'district' => $district,
-            'district_id' => $request->district,
+	    'district_id' => $request->district,
+	    'zone_location_id' => $request->zone_location,
             'year' => $request->year,
             'zone' => $zonesimplode,
             'allvillage_index_column' => $request->index
@@ -74,6 +77,7 @@ class workZoneController extends Controller
 
     public function update(Request $request, $id)
     {
+	    //dd($request);
         $workzone = work_zone::find($id);
         $district = kabupaten::find($request->district)->kode_kab;
         $zones = [];
@@ -87,6 +91,7 @@ class workZoneController extends Controller
             'level' => $request->level,
             'district' => $district,
             'district_id' => $request->district,
+    	    'zone_location_id' => $request->zone_location,
             'year' => $request->year,
             'zone' => $zonesimplode,
             'allvillage_index_column' => $request->index

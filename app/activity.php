@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class activity extends Model
 {
-    protected $fillable = ['name', 'category_id', 'start_date', 'finish_date', 'break', 'updated_at', 'created_at'];
+    protected $fillable = ['name', 'category_id', 'start_date', 'finish_date', 'break', 'updated_at', 'created_at', 'zoom_link', 'methods', 'record_link'];
 
     public function attendanceRecords()
     {

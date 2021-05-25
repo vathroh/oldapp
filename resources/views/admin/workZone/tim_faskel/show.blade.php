@@ -26,6 +26,10 @@
                 <div class="col-10">{{ $workZone->kabupaten->NAMA_KAB }}</div>
             </div>
             <div class="row">
+                <div class="col-2">Lokasi</div>
+                <div class="col-10">{{ $workZone->zone_location ? $workZone->zone_location->location_type : '' }}</div>
+           </div>
+           <div class="row">
                 <div class="col-2">Wilayah Kerja</div>
             </div>
             <div class="row">

@@ -263,6 +263,9 @@ Route::namespace('projectActivity\admin')->prefix('kegiatan/admin')->name('admin
     // Route::resource('jadwal', 'scheduleController');
 });
 
+
+Route::get('/osp/agenda', 'projectActivity\AgendaController');
+
 Route::get('/training-evaluation/{activity_id}/{subject_id}', 'evaluationController@index');
 Route::resource('/activity', 'activityController');
 Route::resource('/subjects', 'subjectsController');

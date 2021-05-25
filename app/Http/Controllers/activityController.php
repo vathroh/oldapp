@@ -33,7 +33,7 @@ class activityController extends Controller
 	public function index()
 	{
 		$activities = activity::join('activities_categories', 'activities.category_id', '=', 'activities_categories.id')
-			->select("*", "activities.id", "activities.name as activity_name")->get();
+			->select("*", "activities.id", "activities.name as activity_name")->orderBy('activities.id', 'desc')->paginate(10);
 		return view('activities.index', compact('activities'));
 	}
 
@@ -60,6 +60,8 @@ class activityController extends Controller
 			'name' => $request->name,
 			'start_date' => $request->start_date,
 			'finish_date' => $request->finish_date,
+			'methods' => $request->method,
+			'zoom_link' => $request->zoom_link,
 			'break' => $break
 		]);
 
@@ -94,9 +96,12 @@ class activityController extends Controller
 		
 		activity::where('id', $id)->update([
 			'category_id' 	=> $request->category,
-			'name' 			=> $request->name,
+			'name' 		=> $request->name,
 			'start_date' 	=> $request->start_date,
 			'finish_date' 	=> $request->finish_date,
+			'methods' => $request->method,
+			'zoom_link' => $request->zoom_link,
+			'record_link' => $request->record_link,
 			'break' => implode(',', $request->break)
 		]);
 

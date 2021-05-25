@@ -80,6 +80,39 @@
 			@endforeach
 			@endif
 		</div>
+
+	<div class="form-group row">
+		<div class="col-md-2 text-md-right">
+		<label for="method">Metode Pelaksanaan</label>
+            </div>
+	    <div class="col-md-10">
+		<select id="mothod" class="form-control"  name="method">
+			<option value="{{ $activity->methods  }}" selected>{{ $activity->methods === true ? 'Offline' : 'Online'  }}</option>
+			<option value="false">Offline</option>
+			<option value="true">Online</option>
+		</select>
+            </div>
+	</div>        
+	
+	<div class="form-group row">
+		<div class="col-md-2 text-md-right">
+		<label for="finish_date">Link Zoom</label>
+            </div>
+            <div class="col-md-10">
+                <input id="zoom_link" type="text" class="form-control" name="zoom_link" value="{{ $activity->zoom_link }}"/>
+            </div>
+	</div>        
+	
+	<div class="form-group row">
+		<div class="col-md-2 text-md-right">
+		<label for="record_link">Link Rekaman</label>
+            </div>
+            <div class="col-md-10">
+                <input id="record_link" type="text" class="form-control" name="record_link" value="{{ $activity->record_link }}" />
+            </div>
+        </div>        
+
+
         <div class="text-center mt-5">
             <button type="submit" class="btn btn-primary">Simpan</button>
         </div>

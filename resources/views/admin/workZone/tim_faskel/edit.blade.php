@@ -50,7 +50,18 @@
                         </select>
                     </div>
                 </div>
-                <div class="row mt">
+                <div class="row">
+                    <div class="col-2">Lokasi</div>
+                    <div class="col-10">
+			<select name="zone_location" class="form-select">
+				<option value="{{ $workZone->zone_location ? $workZone->zone_location->id : ''}}">{{ $workZone->zone_location ? $workZone->zone_location->location_type : ''}}</option>
+				@foreach($locations as $location)
+				<option value="{{ $location->id }}">{{ $location->location_type }}</option>
+				@endforeach
+                        </select>
+                    </div>
+               </div>
+               <div class="row mt">
                     <div class="col-2">Wilayah Kerja</div>
                     <div class="col-10">
                         <div id="workzone">

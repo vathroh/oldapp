@@ -15,6 +15,7 @@
                     <th>Tahun</th>
                     <th>Kabupaten</th>
                     <th>Tim</th>
+                    <th>Lokasi</th>
                     <th>Zona</th>
                     <th>Aksi</th>
                 </tr>
@@ -26,6 +27,7 @@
                     <td>{{$workZone->year}} </td>
                     <td>{{$workZone->level}} {{$workZone->kabupaten->NAMA_KAB ?? $workZone->district}} </td>
                     <td>{{$workZone->team}} </td>
+                    <td>{{$workZone->zone_location_id ? $workZone->zone_location->location_type : ''}} </td>
                     <td>
                         Kelurahan/Desa: <br>
                         @foreach($workZone->villages as $village)

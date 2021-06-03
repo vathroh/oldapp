@@ -140,6 +140,5 @@
             </table>
         </div>
         @endif
-
 	
 @endsection

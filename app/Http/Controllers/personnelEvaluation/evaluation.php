@@ -35,22 +35,33 @@ class evaluation extends Controller
     }
 
     public function data(){
+        $location = Auth::user()->jobDesc->first()->areaKerja->zone_location_id;
+
+        if( $location == 0 ){
+            $location_id = 0;
+        }else{
+            $location_id = zone_location::find($location)->id;
+        }
+
         $user = $this->evkinja()->user_now(Auth::user()->id);
         $being_assessed_by_me = $this->evkinja()->being_assessed_by_me($user['user_id']);
         $value_assessed_by_me = $this->evkinja()->all_values_now()->whereIn('userId', $being_assessed_by_me->pluck('user_id')); 
 
         $data = [
             'user' => $user,
-            'mySetting' => $this->evkinja()->my_setting_now($user['job_title_id'], $user['location_id']),
+            'mySetting' => $this->evkinja()->my_setting_now($user['job_title_id'],$location_id ),
             'myValue' => $this->evkinja()->my_value_now($user['user_id']),
             'thisQuarter' => $this->evkinja()->this_quarter(),
             'thisYear' => $this->evkinja()->this_year(),
             'being_assessed_by_me' => $being_assessed_by_me,
             'value_assessed_by_me' => $value_assessed_by_me
         ];
+
         return $data;
+
     }
-	
+
+
 	public function job_desc()
 	{
 		$lastYear 					= personnel_evaluation_setting::max('year');
@@ -61,16 +72,19 @@ class evaluation extends Controller
     }
 
     public function status(){
+        $user = $this->evkinja()->user_now(Auth::user()->id);
         $data = $this->data();
         $status = [];
             
-        if($data['myValue'] != ''){
+        if($this->evkinja()->my_value_now($user['user_id']) != ''){
+            
             $status['isValue'] = true;
         }else{
             $status['isValue'] = false;
         }
 
-        if($data['mySetting'] != ''){
+        if($this->evkinja()->my_setting_now($user['job_title_id'], $user['location_id']) != ''){
+           
             $status['isSetting'] = true;
         }else{
             $status['isSetting'] = false;
@@ -94,52 +108,6 @@ class evaluation extends Controller
         }
     }
 
-	public function old_index()
-	{
-			
-		$id 						= Auth::user()->id;
-		$lastYear 					= personnel_evaluation_setting::max('year');
-		$lastQuarter 				= personnel_evaluation_setting::where('year', $lastYear)->max('quarter');
-		
-		
-		
-		$dt = $lastYear . '-' . $lastQuarter*3 .'-' . 1;
-		$time = Carbon::parse($dt)->timestamp;
-		$current_job_descs = 
-		$this->job_desc()->where('starting_timestamp', '<=', $time)->where('finishing_timestamp', '>', $time);
-		$lastSetting 				= personnel_evaluation_setting::where('year', $lastYear)->where('quarter', $lastQuarter)->get();
-		
-		$my_job_desc = $current_job_descs->where('user_id', auth()->user()->id );
-		
-
-		$myEvaluationSetting = $lastSetting->where('jobTitleId', $my_job_desc->first()->job_title_id);
-		
-		$myEvaluationValues			= User::find($id)->evaluationValue()->where('settingId', $myEvaluationSetting->pluck('id')->first());
-			
-		$evaluators 				= personnel_evaluator::where('evaluator', $my_job_desc->first()->job_title_id)->get();
-		
-		
-		$myZones					= explode(', ', $my_job_desc->first()->areaKerja->zone);
-		
-		
-		
-		
-		$zones 						= work_zone::whereIn('district', $myZones)->where('year', 2020)->get();
-		$allvillages 				= allvillage::all();
-		$evaluationValues			= $this->evaluationValue();
-		
-		
-		//$users = User::find(job_desc::join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')->whereIn('district', $myZones)->pluck('user_id'));
-		
-		
-		$users = $current_job_descs->whereIn('work_zone_id', $zones->pluck('id'));
-		
-		if (Auth::user()->posisi->level == "OSP") {
-			return view('personnelEvaluation.indexosp', compact(['myEvaluationSetting', 'myEvaluationValues', 'evaluators', 'evaluationValues', 'myZones', 'allvillages', 'lastYear', 'lastQuarter', 'lastSetting', 'users', 'zones']));
-		} else {
-			return view('personnelEvaluation.indexkorkot', compact(['myEvaluationSetting', 'myEvaluationValues', 'evaluators', 'evaluationValues', 'myZones', 'allvillages', 'lastYear', 'lastQuarter', 'lastSetting', 'users', 'zones', 'current_job_descs', 'my_job_desc']));
-		}
-	}
 
 	public function evaluationValue()
 	{

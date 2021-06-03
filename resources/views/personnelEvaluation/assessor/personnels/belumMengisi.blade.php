@@ -10,9 +10,9 @@
 
         <div class="row">
             <div class="col">
-                <h5 class="mt-3 text-center text-uppercase">DAFTAR PERSONIL {{ $lastSetting->jobTitle->job_title }} </h5>
-                <h5 class="text-center text-uppercase">BELUM MENGISI EVALUASI KINERJA</h5>
-                <h5 class="mb-3 text-center">TRIWULAN {{ $lastSetting->quarter }} TAHUN {{ $lastSetting->year }}</h5>
+                <h5 class="mt-3 text-center text-uppercase">DAFTAR PERSONIL {{ $data['job_title']['job_title'] }} </h5>
+                <h5 class="mt-3 text-center text-uppercase">BELUM MENGISI EVALUASI KINERJA</h5>
+                <h5 class="mb-3 text-center">TRIWULAN {{ $data['thisQuarter'] }} TAHUN {{ $data['thisYear'] }}</h5>
 
                 <table class=" table-striped" style="width:100%;">
                     <thead>
@@ -24,17 +24,18 @@
                         </tr>
                     </thead>
                     <tbody>
-                  
-                        @foreach ($personnels as $personnel )
+
+                        @foreach($data['fasilitators'] as $fasilitator)
                         <tr>
-                            <th scope="row">{{ $loop->iteration }}</th>
-                            <td>{{ $personnel->user->name }}</td>
-                            <td>{{ $personnel->posisi->job_title }}</td>
-                            <td>{{ $personnel->kabupaten->first()->NAMA_KAB }}</td>
+                            <td> {{ $loop->iteration }} </td>
+                            <td> {{ $fasilitator['name'] }} </td>
+                            <td> {{ $fasilitator['job_title'] }} </td>
+                            <td> {{ $fasilitator['kab'] }} </td>
                         </tr>
                         @endforeach
+
                     </tbody>
-                </table>
+                 </table>
             </div>
         </div>
     </div>

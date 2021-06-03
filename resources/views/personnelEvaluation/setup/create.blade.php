@@ -11,7 +11,8 @@
 
 			<div class="form-group text-center my-2">
 				<h4>Daftar Aspek Kinerja {{ $jobTitles->where('id', $setting->pluck('jobTitleId')->first())->first()->job_title }}</h4>
-				<h4>Kuartal {{ $setting->pluck('quarter')->first() }} Tahun {{ $setting->pluck('year')->first() }}</h4>
+                <h4>Kuartal {{ $setting->pluck('quarter')->first() }} Tahun {{ $setting->pluck('year')->first() }}</h4>
+                <h4>Lokasi : {{ $setting[0]->location ? $setting[0]->location->location_type : '' }}</h4>
 			</div>
 			
 			<div class="text-center">

@@ -1,5 +1,7 @@
 @extends('layouts.MaterialDashboard')
-
+@section('head')
+<script src="https://kit.fontawesome.com/e3a45180d4.js" crossorigin="anonymous"></script>
+@endsection
 @section('content')
 <div class="card">
 	<div class="card-header card-header-primary">
@@ -10,47 +12,40 @@
 	@include('personnelEvaluation.navbar')
 
 	<div class="row">		
-		<div class="col-md-3">
-			<select id="quarter" type="text" class="form-control" name="quarter" required autofocus>
-				<option value="1">Triwulan I</option>
-				<option value="2">Triwulan II</option>
-				<option value="3">Triwulan III</option>
-				<option value="4">Triwulan IV</option>
-				</select>
-			</div>
-		<div class="col-md-3">
-			<select id="year" type="text" class="form-control" name="year" required>
-				<option value="2020">2020</option>
-				<option value="2021">2021</option>
-				<option value="2022">2022</option>
-			</select>
+        <div class="col-md-12">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="text-center"><i class="fas fa-plus-circle"></i> Setting</th>
+                        <th>Triwulan</th>
+                        <th>Tahun</th>
+                        <th class="text-right">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    @foreach($settings as $setting)
+
+                    <tr>
+                        <td class="text-center">{{ $loop->iteration }}</td>
+                        <td>{{ $setting->quarter }}</td>
+                        <td>{{ $setting->year }}</td>
+                        <td class="td-actions text-right">
+                            <a href="/personnel-evaluation-setup-term/{{ $setting->quarter }}/{{ $setting->year }}">
+                                <button type="button" rel="tooltip" class="btn btn-info">
+                                    <i class="fas fa-expand-arrows-alt"></i>
+                                </button>
+                            </a>
+                       </td>
+                    </tr>
+
+                    @endforeach
+
+                </tbody>
+            </table>
 		</div>	
 	</div>
 
-	<table class="table table-striped table-bordered mt-3">
-		<thead>
-			<tr>
-				<th scope="col">#</th>
-				<th scope="col">Kwartal | Tahun </th>
-				<th scope="col">Posisi Yang Dievaluasi</th>
-				<th scope="col">Aksi</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<th colspan="4" style="background-color:#eafc99">BELUM DIBUAT</th>
-			</tr>
-			<tbody id="belumDibuat"></tbody>
-			<tr>
-				<th colspan="4" style="background-color:#eafc99">BELUM SIAP</th>
-			</tr>
-			<tbody id="belumSiap"></tbody>
-			<tr>
-				<th colspan="4" style="background-color:#eafc99">SIAP</th>
-			</tr>
-			<tbody id="siap"></tbody>
-		</tbody>
-	</table>
 </div>
 
 <script src="{{ asset('js/personnelEvaluation/jobTitles.js') }}"></script>

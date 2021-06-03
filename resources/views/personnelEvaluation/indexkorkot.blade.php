@@ -1,53 +1,67 @@
 @extends('layouts.MaterialDashboard')
 
+@section('head')
+<style>
+.evkinja-user-status{
+    border: 2px solid red; 
+    border-radius: 5px; 
+    padding: 20px;
+}
+</style>
+@endsection
+
 @section('content')
 <div class="card">
-	<div class="card-header card-header-primary">
-		<h4 class="card-title ">Evaluasi Kinerja</h4>
-		<p class="card-category"></p>
-	</div>
-	<div class="card-body">
-		@include('personnelEvaluation.navbar')		
-		
-		@if($my_job_desc->count() > 0)
-		
-		@if($myEvaluationValues->count() == 0 && $lastSetting->where('jobTitleId', Auth::user()->jobDesc()->get()->first()->job_title_id)->count() > 0 )
-		
-		{{ $lastSetting->where('jobTitleId', $my_job_desc->first()->job_title_id )->first()->id }}
-		
-		<div class="my-3 text-center" style="border: 2px solid red; border-radius: 5px; padding: 20px;">
-			<h5 style="color:red;">Anda Belum Mengisi Evaluasi Kinerja. </h5>
-			<a href="/personnel-evaluation-input/{{ $lastSetting->where('jobTitleId', $my_job_desc->first()->job_title_id )->first()->id }}/{{ Auth::user()->id }}"><button class="btn btn-danger">Isi sekarang</button></a>
-		</div>
+    <div class="card-header card-header-primary">
+        <h4 class="card-title ">Evaluasi Kinerja</h4>
+        <p class="card-category"></p>
+    </div>
+    <div class="card-body">
+        @include('personnelEvaluation.navbar')
 
-		@elseif($myEvaluationValues->count() > 0 )
 
-		<div class="my-3 text-center" style="border: 2px solid grey; border-radius: 5px; padding: 20px;">
-			<h5 style="color:grey;">
-				Evaluasi Kinerja Kuartal {{ $lastQuarter }} Tahun {{ $lastYear }}
-				@if($myEvaluationValues->get()->first()->ok_by_user == 1 )
-				Sudah Selesai
-				@else
-				<span style="color:red">Belum Selesai</span>
-				@endif
-				Diinput.
-			</h5>
-			<a href="/personnel-evaluation-input/{{ $myEvaluationSetting->pluck('id')->first() }}/{{ Auth::user()->id }}">
-				@if($myEvaluationValues->get()->first()->ok_by_user == 1 )
-				<button class="btn btn-primary">Lihat</button>
-				@else
-				<button class="btn btn-success">Selesaikan</button>
-				@endif
-			</a>
-		</div>
-		@endif
+        @if($status['isSetting'] == true && $status['isValue'] == true )
 
-		@if($evaluators->count() > 0)
-		<div class="table-responsive tableFixHead">
-			<table class="table table-bordered">
+            <div class="evkinja-user-status my-3 text-center">
+                <h5 style="color:grey;">
+                    Evaluasi Kinerja Kuartal {{ $data['thisQuarter'] }} Tahun {{ $data['thisYear'] }}
+
+                    @if($data['myValue']['ok_by_user'] == 1)
+    			    	Sudah Selesai
+                    @elseif($data['myValue']['ok_by_user'] == 0 )
+                        <span style="color:red">Belum Selesai</span>
+                    @endif 
+
+                    Diinput.
+                </h5>
+
+                <a href="/personnel-evaluation-input/{{ $data['mySetting']['id'] }}/{{$data['user']['user_id'] }}">
+
+                    @if($data['myValue']['ok_by_user'] == 1)
+                        <button class="btn btn-primary">Lihat</button>
+                    @elseif($data['myValue']['ok_by_user'] == 0 )
+                        <button class="btn btn-success">Selesaikan</button>
+                    @endif
+                </a>
+
+            </div>
+       
+        @elseif($status['isSetting'] == true && $status['isValue'] == false )
+        <div class="evkinja-user-status my-3 text-center">
+            <h5 style="color:red;">Anda Belum Mengisi Evaluasi Kinerja. </h5>
+            <a href="/personnel-evaluation-input/{{ $data['mySetting']['id'] }}/{{ $data['user']['user_id'] }}">
+                <button class="btn btn-danger">Isi sekarang</button>
+            </a>
+        </div>
+        @endif
+ 
+    </div>
+
+        @if($status['isAssessor'])
+        <div class="table-responsive tableFixHead">
+            <table class="table table-bordered">
 				<thead class=" text-primary text-center">
 					<tr class="text-center" style="background-color: purple; color:white;">
-						<!-- <th rowspan="2">Kuartal | Tahun</th> -->
 						<th rowspan="2">Posisi Yang Dievaluasi</th>
 						<th rowspan="2">Jumlah Personil</th>
 						<th colspan="3">Personil</th>
@@ -61,68 +75,71 @@
 						<th>Sedang Dievaluasi</th>
 						<th>Selesai Dievaluasi</th>
 					</tr>
-				</thead>
-				<tbody>
-					@foreach($zones->whereIn('level', 'Tim Faskel') as $zone)
-					<tr>
-						<td colspan="8" style="background-color:lightgreen;">
-							{{ $zone->kabupaten->NAMA_KAB }}
-						</td>
-					</tr>
-										
-					
-					@foreach($evaluators as $evaluator)
-					@if($evaluator->setting->where('year', $lastYear)->where('quarter', $lastQuarter)->count() )
-					@foreach($evaluator->setting->where('year', $lastYear)->where('quarter', $lastQuarter) as $setting)
-					
-					<tr>
-						<td> {{ $setting->jobTitle->job_title }} </td>
-						<td class="text-center">
-							<a href="/personnel-evaluation/assessor/timfaskel/allpersonnels/{{ $evaluator->jobId }}/{{$zone->district}}">
-								{{ $users->where('job_title_id', $setting->jobTitleId)->where('work_zone_id', $zone->id)->count() }}
-							</a>		
-						</td>
-						<td class="text-center">
-							<a href="/personnel-evaluation/assessor/timfaskel/belummengisi/{{ $evaluator->jobId }}/{{$zone->district}}">
-								{{ $setting->jobDesc->where('work_zone_id', $zone->id)->whereIn('user_id', $users->pluck('id'))->whereNotIn('user_id', $setting->evaluationValue->pluck('userId') )->count() }}
-							</a>
-						</td>
-						<td class=" text-center">
-							<a href="/personnel-evaluation/assessor/timfaskel/prosesmengisi/{{ $evaluator->jobId }}/{{$zone->district}}">
-								{{ $setting->evaluationValue->whereIn('userId', $setting->jobDesc->where('work_zone_id', $zone->id)->pluck('user_id'))->where('ok_by_user', 0)->count() }}
-							</a>
-						</td>
-						<td class="text-center">
-							<a href="/personnel-evaluation/assessor/timfaskel/selesaimengisi/{{ $evaluator->jobId }}/{{$zone->district}}">
-								{{ $setting->evaluationValue->whereIn('userId', $setting->jobDesc->where('work_zone_id', $zone->id)->pluck('user_id'))->where('ok_by_user', 1)->count() }}
-							</a>
-						</td>
-						<td class="text-center">				
-							<a href="/personnel-evaluation/assessor/timfaskel/siapevaluasi/{{ $evaluator->jobId }}/{{$zone->district}}">
-								{{ $setting->evaluationValue->whereIn('userId', $setting->jobDesc->where('work_zone_id', $zone->id)->pluck('user_id'))->where('ok_by_user', 1)->where('totalScore', '0.00')->count() }}
-							</a>
-						</td>
-						<td class=" text-center">
-							<a href="/personnel-evaluation/assessor/timfaskel/prosesevaluasi/{{ $evaluator->jobId }}/{{$zone->district}}">
-								{{ $setting->evaluationValue->whereIn('userId', $setting->jobDesc->where('work_zone_id', $zone->id)->pluck('user_id'))->where('ok_by_user', 1)->where('totalScore', '!=', '0.00')->where('ready', 0)->count() }}
-							</a>
-						</td>
-						<td class="text-center">
-							<a href="/personnel-evaluation/assessor/timfaskel/selesaievaluasi/{{ $evaluator->jobId }}/{{$zone->district}}">
-								{{ $setting->evaluationValue->whereIn('userId', $setting->jobDesc->where('work_zone_id', $zone->id)->pluck('user_id'))->where('ok_by_user', 1)->where('totalScore', '!=', '0.00')->where('ready', 1)->count() }}
-							</a>
-						</td>
-					</tr>
+                </thead>
+                <tbody>
+                    @foreach($data['being_assessed_by_me']->unique('kode_kab') as $district)
+                    <tr>
+                        <td colspan="8">{{ $district['kab'] }}</td>
+                    </tr> 
+                    @foreach($data['being_assessed_by_me']->unique('job_title_id') as $jobTitle)
 
-					@endforeach
-					@endif
-					@endforeach
-					@endforeach
-				</tbody>
-			</table>
-		</div>
-		@endif
-		@endif
-	</div>
+                    @php
+                        $fasilitators =  $data['being_assessed_by_me']->where( 'kode_kab', $district['kode_kab'])->where('job_title_id', $jobTitle['job_title_id']); 
+                        $values = $data['value_assessed_by_me']->whereIn('userId', $fasilitators->pluck('user_id')) ;
+                    @endphp
 
-	@endsection
+                    <tr>
+                        <td>{{ $jobTitle['job_title'] }}</td>
+
+                        <td class="text-center">
+                            <a href="/personnel-evaluation/assessor/timfaskel/allpersonnels/{{ $jobTitle['job_title_id'] }}/{{ $district['kode_kab'] }}">
+                                {{ $fasilitators->count() }}
+                            </a>
+                        </td>
+                        
+                        <td class="text-center">
+							<a href="/personnel-evaluation/assessor/timfaskel/belummengisi/{{ $jobTitle['job_title_id'] }}/{{$district['kode_kab']}}">
+                                {{ $fasilitators->count()-$values->count() }}
+                            </a>
+                        </td>
+
+                        <td class="text-center">
+                            <a href="/personnel-evaluation/assessor/timfaskel/prosesmengisi/{{ $jobTitle['job_title_id'] }}/{{ $district['kode_kab'] }}">
+                                {{ $values->where('ok_by_user', 0 )->count() }}
+                            </a>
+                        </td>
+
+                        <td class="text-center">
+							<a href="/personnel-evaluation/assessor/timfaskel/selesaimengisi/{{ $jobTitle['job_title_id'] }}/{{$district['kode_kab'] }}">
+                                {{ $values->where('ok_by_user', 1 )->count() }}
+                            </a>
+                        </td>
+
+                        <td class="text-center"> 
+							<a href="/personnel-evaluation/assessor/timfaskel/siapevaluasi/{{ $jobTitle['job_title_id'] }}/{{$district['kode_kab'] }}">
+                                {{ $values->where('ok_by_user', 1 )->where('totalScore', '0.00')->count() }}
+                            </a>
+                        </td>
+
+                        <td class="text-center">
+							<a href="/personnel-evaluation/assessor/timfaskel/prosesevaluasi/{{ $jobTitle['job_title_id'] }}/{{$district['kode_kab'] }}">
+                                {{ $values->where('ok_by_user', 1 )->where('totalScore','!=', '0.00')->where('ready', 0)->count() }}
+                            </a>
+                        </td>
+
+                        <td class="text-center">
+							<a href="/personnel-evaluation/assessor/timfaskel/selesaievaluasi/{{ $jobTitle['job_title_id'] }}/{{$district['kode_kab'] }}">
+                                {{ $values->where('ok_by_user', 1 )->where('totalScore','!=', '0.00')->where('ready', 1)->count() }}
+                            </a>
+                        </td>
+
+                    </tr>
+                    @endforeach
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+        @endif
+
+	
+@endsection

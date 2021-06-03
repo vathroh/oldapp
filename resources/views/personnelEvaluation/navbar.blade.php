@@ -5,8 +5,6 @@
 	<a class="nav-link" href="/personnel-evaluation-myevaluation">Evaluasi Saya</a>
 	@endif
 	
-
-	
 	@if(Auth::User()->job_desc->evaluator->count() > 0 )
 	<a class="nav-link" href="/personnel-evaluation/assessor/rekap">Rekap</a>
 	<a class="nav-link" href="/personnel-evaluation-edit">Permintaan Edit</a>

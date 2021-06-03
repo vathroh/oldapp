@@ -6,12 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class personnel_evaluation_setting extends Model
 {
-    protected $fillable = ['quarter', 'year', 'jobTitleId', 'evaluatorGroup', 'evaluator', 'status'];
+    protected $fillable = ['quarter', 'year', 'zone_location_id', 'jobTitleId', 'evaluatorGroup', 'evaluator', 'status', 'isActive'];
 
 
     public function jobTitle()
     {
-        return $this->belongsTo('App\job_title', 'jobTitleId');
+        return $this->belongsTo('App\job_title', 'jobTitleId')->orderBy('sort');
     }
 
     public function jobDesc()
@@ -34,5 +34,10 @@ class personnel_evaluation_setting extends Model
     public function evaluationValue()
     {
         return $this->hasMany('App\personnel_evaluation_value', 'settingId');
+    }
+
+    public function location()
+    {
+        return $this->belongsTo('App\zone_location', 'zone_location_id');
     }
 }

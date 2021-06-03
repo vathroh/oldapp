@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use App\personnel_evaluation_setting;
 use App\work_zone;
 use Carbon\Carbon;
+use App\Http\Controllers\EvkinjaController;
 
 class showPersonnelController extends Controller
 {
@@ -18,7 +19,96 @@ class showPersonnelController extends Controller
     {
         $this->middleware('auth');
     }
-    
+ 
+    public function evkinja(){
+        return new EvkinjaController;
+    }
+
+    public function data()
+    {
+        $data = [];
+        $data['user'] = $this->evkinja()->user_now(Auth::user()->id);
+        $data['fasilitators'] = $this->evkinja()->all_being_assessed_users_now()->sortBy('kode_kab');
+        $data['values'] = $this->evkinja()->all_values_now();
+        $data['thisQuarter'] = $this->evkinja()->this_quarter();
+        $data['thisYear'] = $this->evkinja()->this_year();
+
+        return $data;     
+    }
+
+    public function job_title($jobId){
+        return job_title::find($jobId)->job_title;
+    }
+
+    public function index()
+    {
+
+        $data = $this->data();
+        return view('personnelEvaluation.hrm.monitoring.index', compact('data'));
+    }
+
+    public function allpersonnels($jobId)
+    {
+        $data = $this->data();
+        $data['job_title']['job_title'] =  $this->job_title($jobId);
+        $data['fasilitators'] = $data['fasilitators']->where('job_title_id', $jobId);
+        return view('personnelEvaluation.assessor.personnels.allpersonnels', compact(['data']));
+    }
+
+    public function belumMengisi($jobId)
+    {
+        $data = $this->data($jobId);
+        $data['job_title']['job_title'] =  $this->job_title($jobId);
+        $data['fasilitators'] = $data['fasilitators']->where('job_title_id', $jobId)->whereNotIn('user_id', $data['values']->pluck('userId'));
+        return view('personnelEvaluation.assessor.personnels.belumMengisi', compact(['data']));
+    }
+
+    public function selesaiMengisi($jobId)
+    {
+        $data = $this->data($jobId);
+        $data['job_title']['job_title'] =  $this->job_title($jobId);
+        $data['values'] = $data['values']->where('ok_by_user', 1);
+        $data['fasilitators'] = $data['fasilitators']->where('job_title_id', $jobId)->whereIn('user_id', $data['values']->pluck('userId'));
+        return view('personnelEvaluation.assessor.personnels.selesaiMengisi', compact(['data']));
+    }
+
+    public function prosesMengisi($jobId)
+    {
+        $data = $this->data($jobId);
+        $data['job_title']['job_title'] =  $this->job_title($jobId);
+        $data['values'] = $data['values']->where('ok_by_user', 0);
+        $data['fasilitators'] = $data['fasilitators']->whereIn('user_id', $data['values']->pluck('userId'));
+        return view('personnelEvaluation.assessor.personnels.prosesMengisi', compact(['data']));
+    }
+
+    public function siapEvaluasi($jobId)
+    {
+        $data = $this->data($jobId);
+        $data['job_title']['job_title'] =  $this->job_title($jobId);
+        $data['values'] = $data['values']->where('ok_by_user', 1)->where('totalScore', '0.00');
+        $data['fasilitators'] = $data['fasilitators']->whereIn('user_id', $data['values']->pluck('userId'));
+        return view('personnelEvaluation.assessor.personnels.siapEvaluasi', compact(['data']));
+    }
+
+    public function prosesEvaluasi($jobId)
+    {
+        $data = $this->data($jobId);
+        $data['job_title']['job_title'] =  $this->job_title($jobId);
+        $data['values'] = $data['values']->where('ready', 0)->where('totalScore', '!=', '0.00');
+        $data['fasilitators'] = $data['fasilitators']->whereIn('user_id', $data['values']->pluck('userId'));
+        return view('personnelEvaluation.assessor.personnels.prosesEvaluasi', compact(['data']));
+    }
+
+    public function selesaiEvaluasi($jobId)
+    {
+        $data = $this->data($jobId);
+        $data['job_title']['job_title'] =  $this->job_title($jobId);
+        $data['values'] = $data['values']->where('ready', 1);
+        $data['fasilitators'] = $data['fasilitators']->where('job_title_id', $jobId)->whereIn('user_id', $data['values']->pluck('userId'));
+
+        return view('personnelEvaluation.assessor.personnels.selesaiEvaluasi', compact(['data']));
+    }
+/*   
     public function job_desc()
 	{
 		
@@ -129,5 +219,6 @@ class showPersonnelController extends Controller
         $lastSetting    = $this->setting($jobId);
         $values         = $this->setting($jobId)->evaluationValue->where('ok_by_user', 1)->where('totalScore', '!=', '0.00')->where('ready', 1);
         return view('personnelEvaluation.assessor.personnels.selesaiEvaluasi', compact(['users', 'values', 'lastSetting']));
-    }
+    }i
+*/
 }

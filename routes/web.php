@@ -26,21 +26,32 @@ Route::get('/home', 'DashboardController@index')->name('home');
 //Route::resource('/profil', 'profilController');
 
 //User Management Control
+Route::get('/users/{day}/{month}/{year}', 'UserController@users_at');
+Route::get('/user/{user_id}/{day}/{month}/{year}', 'UserController@user_at');
+
 Route::namespace('Admin')->prefix('admin')->name('admin.')->middleware('can:manage-users')->group(function () {
+
     Route::resource('/users', 'UsersController', ['except' => ['create', 'store']]);
     Route::get('users-index', 'UsersController@ajaxIndex');
+
+    //Fasilitator
+    Route::get('/fasilitators', 'FasilitatorController@index');
+    Route::get('/fasilitator/{user_id}/edit', 'FasilitatorController@edit');
+
     //Masa Kerja
     Route::resource('user-work-zones', 'UserWorkZoneController');
     
     //KABUPATEN
     Route::resource('/district', 'districtController');
+
     //AREA KERJA
     Route::resource('/areakerja/askotmandiri', 'askotMandiri\workZoneController');
     Route::resource('/areakerja/timfaskel', 'timFaskel\workZoneController');
     Route::resource('/areakerja/korkot', 'korkot\workZoneController');
     Route::resource('/areakerja/osp', 'osp\workZoneController');
     Route::resource('/areakerja', 'workZoneController');
-    //AREA KERJA - AJAX
+
+//AREA KERJA - AJAX
     Route::get('/job-title/areakerja', 'workZoneController@ajaxJobTitle');
     Route::get('/kabupaten/areakerja', 'workZoneController@ajaxKabupaten');
     Route::get('/kecamatan/areakerja', 'workZoneController@ajaxKecamatan');
@@ -304,7 +315,16 @@ Route::delete('/ajax-listing-delete', 'activityController@deleteAjax');
 Route::get('/ajax-listing-moveReg', 'activityController@moveReg');
 Route::get('/ajax-listing-ready', 'activityController@ready');
 
+
+
+
+
+
+
 //EVALUASI KINERJA 
+
+Route::get('/evkin/test', 'EvkinjaController@test');
+Route::get('/zone/test', 'ZoneController@test');
 
 Route::namespace('personnelEvaluation\beingAssessed')->prefix('personnel-evaluation/being-assessed')->name('beingAssessed')->group(function () {
     Route::get('/achievement/{valuId}/check', 'ajaxInputAchievementController@check');
@@ -369,6 +389,11 @@ Route::resource('personnel-evaluation', 'personnelEvaluation\evaluation');
 Route::resource('personnel-evaluation-setup', 'personnelEvaluation\setup');
 Route::resource('personnel-evaluation-aspect', 'personnelEvaluation\aspect');
 Route::resource('personnel-evaluation-criteria', 'personnelEvaluation\criteria');
+Route::get('personnel-evaluation-setup-term/{quarter}/{year}', 'personnelEvaluation\setup@setting_per_quarter');
+Route::post('personnel-evaluation-setup-activate/{id}', 'personnelEvaluation\setup@activate');
+Route::post('personnel-evaluation-setup-deactivate/{id}', 'personnelEvaluation\setup@deactivate');
+
+Route::get('/personnel-evaluation-setup-get-job-title', 'personnelEvaluation\setup@get_job_title');
 
 Route::get(
     'personnel-evaluation-upload/{valueId}',
@@ -432,3 +457,9 @@ Route::resource('gis', 'gis\gisController');
 
 //BDI
 Route::get('bdi/{any}', 'bdiController@index');
+
+
+//User Management New
+//Route::get('admin/users', 'UserController@user');
+//Route::get('admin/fasilitators', 'UserController@fasilitators');
+//Route::get('admin/fasilitator', 'UserController@fasilitator');

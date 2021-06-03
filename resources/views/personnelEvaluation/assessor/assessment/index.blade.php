@@ -33,7 +33,7 @@
                     <h6>Tim</h6>
                 </div>
                 <div class="col-md-9">
-                    <h6>: <input type="text" id="team" data-value="{{ $value->id }}" value="{{ $value->team }}"></h6>
+                    <h6>: <input type="text" id="team" data-value="{{ $value->id }}" value="@isset($job_desc[0]->areaKerja){{ $job_desc[0]->areaKerja->team}}  @endif"></h6>
                 </div>
             </div>
             <div class="row">

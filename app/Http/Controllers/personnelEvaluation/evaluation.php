@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\personnelEvaluation;
 
-
+use App\Http\Controllers\EvkinjaController;
 use App\personnel_evaluation_criteria;
 use App\personnel_evaluation_setting;
 use Illuminate\Support\Facades\Auth;
@@ -24,10 +24,32 @@ use PDF;
 
 class evaluation extends Controller
 {
-	public function __construct()
+    public function evkinja(){
+        return new EvkinjaController;
+    }
+
+
+    public function __construct()
 	{
 		$this->middleware('auth');
-	}
+    }
+
+    public function data(){
+        $user = $this->evkinja()->user_now(Auth::user()->id);
+        $being_assessed_by_me = $this->evkinja()->being_assessed_by_me($user['user_id']);
+        $value_assessed_by_me = $this->evkinja()->all_values_now()->whereIn('userId', $being_assessed_by_me->pluck('user_id')); 
+
+        $data = [
+            'user' => $user,
+            'mySetting' => $this->evkinja()->my_setting_now($user['job_title_id'], $user['location_id']),
+            'myValue' => $this->evkinja()->my_value_now($user['user_id']),
+            'thisQuarter' => $this->evkinja()->this_quarter(),
+            'thisYear' => $this->evkinja()->this_year(),
+            'being_assessed_by_me' => $being_assessed_by_me,
+            'value_assessed_by_me' => $value_assessed_by_me
+        ];
+        return $data;
+    }
 	
 	public function job_desc()
 	{
@@ -36,9 +58,43 @@ class evaluation extends Controller
 		
 		return job_desc::withoutGlobalScopes()->selectRaw('*, UNIX_TIMESTAMP(starting_date) as starting_timestamp, UNIX_TIMESTAMP(finishing_date) as finishing_timestamp')->get();
 		
-	}
+    }
 
-	public function index()
+    public function status(){
+        $data = $this->data();
+        $status = [];
+            
+        if($data['myValue'] != ''){
+            $status['isValue'] = true;
+        }else{
+            $status['isValue'] = false;
+        }
+
+        if($data['mySetting'] != ''){
+            $status['isSetting'] = true;
+        }else{
+            $status['isSetting'] = false;
+        }
+        
+        $status['isAssessor'] = $this->evkinja()->is_assessor(Auth::user()->id);
+
+        return $status;
+    }
+
+
+    public function index()
+    {
+        $data = $this->data();
+        $status = $this->status();
+            
+        if (Auth::user()->posisi->level == "OSP") {
+            return view('personnelEvaluation.indexosp', compact(['data', 'status']));
+        } else {
+            return view('personnelEvaluation.indexkorkot', compact(['data', 'status']));
+        }
+    }
+
+	public function old_index()
 	{
 			
 		$id 						= Auth::user()->id;
@@ -56,18 +112,12 @@ class evaluation extends Controller
 		$my_job_desc = $current_job_descs->where('user_id', auth()->user()->id );
 		
 
-		//$myEvaluationSetting 		= User::find($id)->evaluationSetting->where('year', $lastYear)->where('quarter', $lastQuarter);
 		$myEvaluationSetting = $lastSetting->where('jobTitleId', $my_job_desc->first()->job_title_id);
 		
-		
 		$myEvaluationValues			= User::find($id)->evaluationValue()->where('settingId', $myEvaluationSetting->pluck('id')->first());
-		
-		//$evaluators 				= personnel_evaluator::where('evaluator', User::find($id)->posisi()->latest()->first()->id)->get();
 			
 		$evaluators 				= personnel_evaluator::where('evaluator', $my_job_desc->first()->job_title_id)->get();
 		
-		// $evaluators 				= personnel_evaluator::where('evaluator', User::find($id)->posisi()->latest()->first()->id)->join('job_titles', 'job_titles.id', '=', 'personnel_evaluators.jobId')->orderBy('sort')->get(); 
-		//$myZones					= explode(', ', job_desc::where('user_id', $id)->first()->areaKerja->zone);
 		
 		$myZones					= explode(', ', $my_job_desc->first()->areaKerja->zone);
 		

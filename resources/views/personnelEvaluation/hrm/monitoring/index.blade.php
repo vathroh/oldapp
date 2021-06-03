@@ -30,80 +30,67 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($jobTitles as $jobTitle)
+
+                    @foreach($data['fasilitators']->unique('job_title_id')->sortBy('job_title_sort') as $jobTitle)
+
+                    @php
+                        $fasilitators = $data['fasilitators']->where('job_title_id', $jobTitle['job_title_id']);
+                        $values = $data['values']->whereIn('userId', $fasilitators->pluck('user_id'));
+                    @endphp
+
                     <tr>
                         <td>{{ $loop->iteration }}</td>
-                        <td>{{ $jobTitle->job_title }} </td>
+
+                        <td>
+                            {{ $jobTitle['job_title'] }}
+                        </td>
+                            
                         <td class="text-center">
-                            @if($lastSetting->where('jobTitleId', $jobTitle->id)->count() != null )
-                            <a href="/personnel-evaluation/hrm/personnels/allpersonnels/{{ $jobTitle->id }}">
-                                {{ $users->where('job_title_id', $jobTitle->id )->count() }}
+                            <a href="/personnel-evaluation/hrm/personnels/allpersonnels/{{ $jobTitle['job_title_id'] }}">
+                                {{ $fasilitators->count() }}
                             </a>
-                            @else
-                            {{ $users->where('job_title_id', $jobTitle->id )->count() }}
-                            @endif
                         </td>
+
                         <td class="text-center">
-                            @if($lastSetting->where('jobTitleId', $jobTitle->id)->count() != null )
-                            <a href="/personnel-evaluation/hrm/personnels/belummengisi/{{ $jobTitle->id }}">
-                                {{ $users->where('job_title_id', $jobTitle->id )->whereNotIn('user_id', $lastSetting->where('jobTitleId', $jobTitle->id)->first()->evaluationValue->pluck('userId'))->count() }}
+                            <a href="/personnel-evaluation/hrm/personnels/belummengisi/{{ $jobTitle['job_title_id'] }}">
+                                {{ $fasilitators->count() - $values->count() }}
                             </a>
-                            @else
-                            Belum Diset
-                            @endif
                         </td>
+
                         <td class="text-center">
-                            @if($lastSetting->where('jobTitleId', $jobTitle->id)->count() != null )
-                            <a href="/personnel-evaluation/hrm/personnels/prosesmengisi/{{ $jobTitle->id }}">
-                                {{ $lastSetting->where('jobTitleId', $jobTitle->id)->first()->evaluationValue->where('ok_by_user', 0)->count() }}
-                            </a>
-                            @else
-                            Belum Diset
-                            @endif
+                            <a href="/personnel-evaluation/hrm/personnels/prosesmengisi/{{ $jobTitle['job_title_id'] }}">
+                                {{ $values->where('ok_by_user', 0)->count() }}
                             </a>
                         </td>
+
                         <td class="text-center">
-                            @if($lastSetting->where('jobTitleId', $jobTitle->id)->count() != null )
-                            <a href="/personnel-evaluation/hrm/personnels/selesaimengisi/{{ $jobTitle->id }}">
-                                {{ $lastSetting->where('jobTitleId', $jobTitle->id)->first()->evaluationValue->where('ok_by_user', 1)->count() }}
-                            </a>
-                            @else
-                            Belum Diset
-                            @endif
+                            <a href="/personnel-evaluation/hrm/personnels/selesaimengisi/{{ $jobTitle['job_title_id'] }}">
+                                {{ $values->where('ok_by_user', 1)->count() }}
                             </a>
                         </td>
+
                         <td class="text-center">
-                            @if($lastSetting->where('jobTitleId', $jobTitle->id)->count() != null )
-                            <a href="/personnel-evaluation/hrm/personnels/siapevaluasi/{{ $jobTitle->id }}">
-                                {{ $lastSetting->where('jobTitleId', $jobTitle->id)->first()->evaluationValue->where('ok_by_user', 1)->where('totalScore', '0.00')->count() }}
-                            </a>
-                            @else
-                            Belum Diset
-                            @endif
+                            <a href="/personnel-evaluation/hrm/personnels/siapevaluasi/{{ $jobTitle['job_title_id'] }}">
+                                {{ $values->where('ok_by_user', 1)->where('totalScore', '0.00')->count() }}
                             </a>
                         </td>
-                        <td class=" text-center">
-                            @if($lastSetting->where('jobTitleId', $jobTitle->id)->count() != null )
-                            <a href="/personnel-evaluation/hrm/personnels/prosesevaluasi/{{ $jobTitle->id }}">
-                                {{ $lastSetting->where('jobTitleId', $jobTitle->id)->first()->evaluationValue->where('ok_by_user', 1)->where('totalScore', '!=', '0.00')->where('ready', 0)->count() }}
-                            </a>
-                            @else
-                            Belum Diset
-                            @endif
-                            </a>
-                        </td>
+
                         <td class="text-center">
-                            @if($lastSetting->where('jobTitleId', $jobTitle->id)->count() != null )
-                            <a href="/personnel-evaluation/hrm/personnels/selesaievaluasi/{{ $jobTitle->id }}">
-                                {{ $lastSetting->where('jobTitleId', $jobTitle->id)->first()->evaluationValue->where('ok_by_user', 1)->where('totalScore', '!=', '0.00')->where('ready', 1)->count() }}
-                            </a>
-                            @else
-                            Belum Diset
-                            @endif
+                            <a href="/personnel-evaluation/hrm/personnels/prosesevaluasi/{{ $jobTitle['job_title_id'] }}">
+                                {{ $values->where('ready', 0)->where('totalScore', '!=', '0.00')->count() }}
                             </a>
                         </td>
+
+                        <td class="text-center">
+                            <a href="/personnel-evaluation/hrm/personnels/selesaievaluasi/{{ $jobTitle['job_title_id'] }}">
+                                {{ $values->where('ready', 1)->count() }}
+                            </a>
+                        </td>
+
                     </tr>
+
                     @endforeach
+
                 </tbody>
             </table>
         </div>

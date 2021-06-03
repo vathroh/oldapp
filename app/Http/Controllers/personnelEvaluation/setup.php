@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\personnelEvaluation;
 
+use App\Http\Controllers\EvkinjaController;
+use App\Http\Controllers\ZoneController;
 use App\personnel_evaluation_criteria;
 use App\personnel_evaluation_setting;
 use App\Http\Controllers\Controller;
@@ -11,8 +13,11 @@ use App\personnel_evaluator;
 use Illuminate\Support\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use App\zone_location;
+use App\zone_level;
 use App\job_desc;
 use App\job_title;
+use App\work_zone;
 
 class setup extends Controller
 {
@@ -22,25 +27,55 @@ class setup extends Controller
     }
 
 
-    public function setupIndex()
-    {	
-		return view('personnelEvaluation.setup.index');
-	}
-    
-    
+    public function evkinja()
+    {
+        return new EvkinjaController;
+    }
+
+
+    public function zone()
+    {
+        return new ZoneController;
+    }
+
+
     public function index()
-    {	
-		$evaluators = personnel_evaluator::where('evaluator', job_desc::where('user_id', Auth::user()->id)->pluck('job_title_id')->first())->get();
-		$settings 		= personnel_evaluation_setting::orderBy('created_at', 'desc')->get();
-		$lastSettings	= personnel_evaluation_setting::where('year', $settings->pluck('year')->last())
-						->where('quarter', $settings->pluck('quarter')->last())->get();
-		
-		$jobTitles 		= job_title::whereNotIn('level', ['OSP'])->whereNotIn('job_title', ['Operator', 'Sekretaris'])->whereNotIn('id', $settings->pluck('jobTitleId') )->get();
-		$jobTitleAll	= job_title::all();
-		return view('personnelEvaluation.setup.index', compact(['jobTitles', 'jobTitleAll', 'settings', 'lastSettings', 'evaluators']));
-	}
-	
-	
+    {
+        $settings = personnel_evaluation_setting::groupBy('quarter')->groupBy('year')->orderByDesc('year')->orderByDesc('quarter')->get();
+        return view('personnelEvaluation.setup.index', compact('settings'));
+    }
+
+
+    public function setting_per_quarter($quarter, $year){
+        $settings = personnel_evaluation_setting::where('quarter', $quarter)->where('year', $year)->join('job_titles', 'job_titles.id', '=', 'jobTitleId')->select('personnel_evaluation_settings.*','sort')->orderBy('sort')->get();
+        
+        $levels = zone_level::whereNotIn('id', [1])->get();
+        
+        return view('personnelEvaluation.setup.settings_per_quarter', compact(['settings', 'levels']));
+    }
+
+
+    public function get_job_title(Request $request){
+        $jobTitles = job_title::where('zone_level_id', $request->level_id)->whereIn('level', ['Korkot','Tim Faskel','Askot Mandiri'])->whereNotIn('job_title', ['Sekretaris','Operator'])->get();
+        
+        $wz = work_zone::where('zone_level_id', $request->level_id)->where('year', $this->zone()->this_year())->groupBy('zone_location_id')->pluck('zone_location_id');
+        
+        $workZones = zone_location::find($wz);
+        return response()->json([$jobTitles, $workZones]);
+    }
+
+    public function activate($id){
+        personnel_evaluation_setting::find($id)->update(['isActive' => true ]);
+        return redirect ('/personnel-evaluation-setup-term/2/2021');
+    }
+
+
+    public function deactivate($id){
+        personnel_evaluation_setting::find($id)->update(['isActive' => false]);
+        return redirect ('/personnel-evaluation-setup-term/2/2021');
+    }
+
+
 	public function create()
 	{
 		$jobTitles	= job_title::get();
@@ -53,15 +88,17 @@ class setup extends Controller
 	}
 	
 	
-	public function store($quarter, $year, $jobTitleId)
-	{
-		personnel_evaluation_setting::create([
-			'quarter'		=> $quarter,
-			'year'			=> $year,
-			'jobTitleId'	=> $jobTitleId
+	public function store(Request $request)
+    {
+//        return $request;
+		$setting = personnel_evaluation_setting::create([
+			'quarter'		=> $request->quarter,
+			'year'			=> $request->year,
+            'jobTitleId'	=> $request->job_title,
+            'zone_location_id' => $request->location
 		]);
-		$id = personnel_evaluation_setting::max('id');
-		return redirect('/personnel-evaluation-setup/' . $id . '/edit');
+
+        return redirect('/personnel-evaluation-setup/' . $setting->id . '/edit');
 	}
 	
 	

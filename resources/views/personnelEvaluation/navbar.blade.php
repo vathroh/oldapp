@@ -7,10 +7,12 @@
 	
 
 	
+	@if(Auth::User()->job_desc )
 	@if(Auth::User()->job_desc->evaluator->count() > 0 )
 	<a class="nav-link" href="/personnel-evaluation/assessor/rekap">Rekap</a>
 	<a class="nav-link" href="/personnel-evaluation-edit">Permintaan Edit</a>
 	<a class="nav-link" href="/personnel-evaluation/assessor/cetak">Print</a>
+	@endif
 	@endif
 	
 	@if (Auth::user()->hasAnyRoles(['hrm']))

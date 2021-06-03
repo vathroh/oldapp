@@ -29,7 +29,7 @@
                             <th scope="row">{{ $loop->iteration }}</th>
                             <td>{{ $value->user->name }}</td>
                             <td>{{ $value->user->posisi->job_title }}</td>
-                            <td>{{ $value->user->job_desc->kabupaten->first()->NAMA_KAB }}</td>
+                            <td>{{ $value->user->job_desc ? $value->user->job_desc->kabupaten->first()->NAMA_KAB : '' }}</td>
                             <td><a href="/personnel-evaluation/assessor/assessment/input/{{$value->id}}">
                                     <button type="button" class="btn btn-primary">
                                         Lanjutkan Evaluasi

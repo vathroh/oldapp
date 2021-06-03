@@ -56,7 +56,7 @@ class setup extends Controller
 
 
     public function get_job_title(Request $request){
-        $jobTitles = job_title::where('zone_level_id', $request->level_id)->whereIn('level', ['Korkot','Tim Faskel','Askot Mandiri'])->whereNotIn('job_title', ['Sekretaris','Operator'])->get();
+        $jobTitles = job_title::where('zone_level_id', $request->level_id)->whereIn('level', ['Korkot','Tim Faskel','Askot Mandiri'])->whereNotIn('job_title', ['Sekretaris','Operator'])->orderBy('sort')->get();
         
         $wz = work_zone::where('zone_level_id', $request->level_id)->where('year', $this->zone()->this_year())->groupBy('zone_location_id')->pluck('zone_location_id');
         

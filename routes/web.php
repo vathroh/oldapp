@@ -64,6 +64,7 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->middleware('can:mana
 Route::get('hrm', 'hrmController@index');
 Route::get('hrm-rekap', 'hrmController@rekap');
 Route::get('hrm-users/{district}/{jobId}', 'hrmController@userList');
+
 //BLACKLIST
 Route::get('/evkinja/blacklist', 'Admin\blacklistController@evkinja');
 

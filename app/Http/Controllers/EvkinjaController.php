@@ -170,7 +170,10 @@ class EvkinjaController extends Controller
 
 
     public function is_assessor($user_id){
-        if($this->assessors()->where('user_id', $user_id)->count()){
+
+        $assessors =  personnel_evaluator::where('evaluator', $this->user_now($user_id)['job_title_id'])->get();
+
+        if($assessors->count()){
             $response = true;
         }else{
             $response = false;
@@ -222,6 +225,6 @@ class EvkinjaController extends Controller
 
     public function test()
     {
-        return $this->being_assessed_by_me(50);
+        return $this->is_assessor(50);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Arr;
@@ -28,7 +29,12 @@ class activityController extends Controller
 	public function __construct()
 	{
 		$this->middleware('auth');
-	}
+    }
+
+    public function users_at($day, $month, $year){
+        $controller = new UserController;
+        return $controller->users_at($day, $month, $year);
+    }
 
 	public function index()
 	{
@@ -279,30 +285,12 @@ class activityController extends Controller
 		$finish = activity::where('id', $activity_item)->pluck('finish_date')->first();
 		$role = activity_participant::where('user_id', Auth::user()->id)->get();
 		$period =  Carbon::parse($start)->diffInDays($finish) + 1;
-		/*			
-		$attendances = attendance_record::join('users', 'attendance_records.user_id', '=', 'users.id')->join('activity_participants', function($join){
-			$join->on('activity_participants.user_id', '=', 'attendance_records.user_id')
-					->on('activity_participants.activity_id', '=', 'attendance_records.activity_id');
-				})->where('attendance_records.activity_id', $activity_item)->where('role', 'PESERTA')->selectRaw('Date(attendance_records.created_at) as tanggal, users.name, users.id')->get();
- 	
-		
-    $attendances    = activity_participant::distinct()->join('users', 'activity_participants.user_id', '=', 'users.id')
-                      ->join('attendance_records', 'attendance_records.user_id', '=', 'users.id')->where('attendance_records.activity_id', $activity_item)
-                      ->selectRaw('Date(attendance_records.created_at) as tanggal, users.name, role, users.id')->get();
-*/
-		//    return activity_participant::where('role', 'PESERTA')->get();
 
 		$attendances   = attendance_record::where('activity_id', $activity_item)
 			->selectRaw('Date(created_at) as tanggal, user_id')->get();
 
 		$noAttendances = activity_participant::where('activity_id', $activity_item)->get();
 
-
-
-
-
-
-		//$noAttendances = activity_participant::join('users', 'activity_participants.user_id', '=', 'users.id')->leftjoin('attendance_records', 'attendance_records.user_id', '=', 'users.id')->where('activity_participants.activity_id', $activity_item)->where('role', 'PESERTA')->selectRaw('users.id, name, Date(attendance_records.created_at) as tanggal, role')->get();
 		$subjects = subject::all();
 		$evaluations = evaluation::join('users', 'users.id', '=', 'evaluations.user_id')->where('activity_id', $activity_item)->get();
 		$participants = activity_participant::join('users', 'users.id', '=', 'activity_participants.user_id')->where('activity_id', $activity_item)->get();
@@ -315,17 +303,23 @@ class activityController extends Controller
 	public function participants($activity, $activity_item)
 	{
 		$activities = activity::get();
-		$role = activity_participant::distinct()->where('user_id', Auth::user()->id)->get();
+        $role = activity_participant::distinct()->where('user_id', Auth::user()->id)->get();
 
-		//	 	$participants = User::distinct('users.id')->join('activity_participants', 'activity_participants.user_id', '=', 'users.id')->join('job_descs', 'users.id', '=', 'job_descs.user_id')->join('job_titles', 'job_descs.job_title_id', '=', 'job_titles.id')->join('work_zones', 'job_descs.work_zone_id', '=', 'work_zones.id')->leftjoin('allvillages', 'work_zones.district', '=', 'allvillages.KD_KAB')->where('activity_id', $activity_item)->where('role', 'PESERTA')->get(['users.id', 'name', 'job_title', 'NAMA_KAB']);
+        $activity_date = getdate(\Carbon\Carbon::parse(activity::find($activity_item)->start_date)->timestamp);
 
-		$participants = activity_participant::where('activity_id', $activity_item)->get();
+        $users = $this->users_at($activity_date['mday'],$activity_date['mon'],$activity_date['year']);
+
+		$participants = $users->whereIn('user_id', activity_participant::where('activity_id', $activity_item)->where('role', 'PESERTA')->pluck('user_id'))->sortBy('kode_kab');
+        
+        $instructors = $users->whereIn('user_id', activity_participant::where('activity_id', $activity_item)->where('role', 'PEMANDU')->pluck('user_id'))->sortBy('kode_kab');
+
+        $organizers = $users->whereIn('user_id', activity_participant::where('activity_id', $activity_item)->where('role', 'PANITIA')->pluck('user_id'))->sortBy('kode_kab');
 
 		$pemandu_pemandu = User::distinct('users.id')->join('activity_participants', 'activity_participants.user_id', '=', 'users.id')->join('job_descs', 'users.id', '=', 'job_descs.user_id')->join('job_titles', 'job_descs.job_title_id', '=', 'job_titles.id')->join('work_zones', 'job_descs.work_zone_id', '=', 'work_zones.id')->join('allvillages', 'work_zones.district', '=', 'allvillages.KD_KAB')->where('activity_id', $activity_item)->where('role', 'PEMANDU')->get(['users.id', 'name', 'job_title', 'NAMA_KAB']);
 
 		$panitia_panitia = User::distinct('users.id')->join('activity_participants', 'activity_participants.user_id', '=', 'users.id')->join('job_descs', 'users.id', '=', 'job_descs.user_id')->join('job_titles', 'job_descs.job_title_id', '=', 'job_titles.id')->join('work_zones', 'job_descs.work_zone_id', '=', 'work_zones.id')->leftjoin('allvillages', 'work_zones.district', '=', 'allvillages.KD_KAB')->where('activity_id', $activity_item)->where('role', 'PANITIA')->get(['users.id', 'name', 'job_title', 'NAMA_KAB']);
 
-		return view('activities.participants', compact(['role', 'participants', 'pemandu_pemandu', 'panitia_panitia', 'activity', 'activities', 'activity_item']));
+		return view('activities.participants', compact(['role', 'participants', 'pemandu_pemandu', 'panitia_panitia', 'activity', 'activities', 'activity_item', 'organizers', 'instructors']));
 	}
 
 	public function evaluation_check($activity, $activity_item)

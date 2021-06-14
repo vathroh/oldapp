@@ -16,6 +16,7 @@ use App\personnel_evaluator;
 use Illuminate\Support\Arr;
 use App\allvillage;
 use App\job_title;
+use App\zone_location;
 use App\work_zone;
 use App\job_desc;
 use App\User;

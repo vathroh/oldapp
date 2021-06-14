@@ -16,6 +16,9 @@
                     $day = $tanggal->addDays($i);
                     $day1 = $day->format('Y-m-d');
                     @endphp
+
+                    @if($day == Carbon\Carbon::parse($activity->break))
+                    @else
                     <h6 class="mt-5">{{ $day->format('l, d F Y') }}</h6>
                     <div>
                         <table class="table table-sm table-striped">
@@ -27,6 +30,7 @@
                                     <td>Jenis Kelamin</td>
                                     <td>Jabatan</td>
                                     <td>Kabupaten/Kota</td>
+                                    <td>Telp/WA</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -38,12 +42,14 @@
                                     <td>{{ $participant->user->biodata->gender ?? "" }}</td>
                                     <td>{{ $participant->job_desc ? $participant->job_desc->posisi->job_title : '' }}</td>
                                     <td>{{ $participant->user->jobDesc->first()->kabupaten[0]->NAMA_KAB ?? '-' }}</td>
+                                    <td>{{ $participant->user->biodata->HP ?? '-' }}</td>
                                 </tr>
                                 @endforeach
                             </tbody>
                         </table>
                     </div>
                     <hr>
+                    @endif
                     @endfor
             </div>
 
@@ -55,7 +61,9 @@
                     $day = $tanggal->addDays($i);
                     $day1 = $day->format('Y-m-d');
                     @endphp
-
+                    
+                    @if($day == Carbon\Carbon::parse($activity->break))
+                    @else
                     <h6 class="mt-5">{{ $day->format('l, d F Y') }}</h6>
                     <div>
                         <table class="table table-sm table-striped">
@@ -81,6 +89,7 @@
                         </table>
                     </div>
                     <hr>
+                    @endif
                     @endfor
             </div>
 

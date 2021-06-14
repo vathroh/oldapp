@@ -14,7 +14,10 @@
         @include('personnelEvaluation.navbar')
 
         <div id="ready" class="form-group text-center my-3" data-readyByUser="{{ $value->ok_by_user }}" data-ready="{{ $value->ready }}">
-            <h4>Evaluasi Kinerja {{ $value->evaluationSetting->jobTitle->job_title }}</h4>
+            <h4>Evaluasi Kinerja</h4><h4> {{ $value->evaluationSetting->jobTitle->job_title }}
+            @if($value->evaluationsetting->zone_location_id != 0)
+            Lokasi {{ $value->evaluationsetting->location->location_type }}</h4>
+            @endif
             <h4>Triwulan {{ $value->evaluationSetting->quarter }} Tahun {{ $value->evaluationSetting->year }}</h4>
         </div>
 

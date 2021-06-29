@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\allvillage;
@@ -15,6 +16,10 @@ class hrmController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+    }
+
+    public function fasilitators(){
+        return new UserController;
     }
 
     public function users()
@@ -49,5 +54,9 @@ class hrmController extends Controller
     {
         $users  = $this->users()[0][$district]->where('job_title_id', $jobTitleId);
         return view('admin.users.userDetails', compact(['users']));
+    }
+
+    public function hrm(){
+        return $this->fasilitators()->users_now();
     }
 }

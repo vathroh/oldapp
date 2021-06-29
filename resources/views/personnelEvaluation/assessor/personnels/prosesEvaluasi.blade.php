@@ -21,6 +21,7 @@
                             <th scope="col">No</th>
                             <th scope="col">Nama</th>
                             <th scope="col">Posisi</th>
+                            <th scope="col">Tim</th>
                             <th scope="col">Kabupaten/Kota</th>
                         </tr>
                     </thead>
@@ -31,6 +32,7 @@
                             <td> {{ $loop->iteration }} </td>
                             <td> {{ $fasilitator['name'] }} </td>
                             <td> {{ $fasilitator['job_title'] }} </td>
+                            <td> {{ $fasilitator['tim'] }} </td>
                             <td> {{ $fasilitator['kab'] }} </td>
                             <td>
                                 <a href="/personnel-evaluation/assessor/assessment/input/{{ $data['values']->where('userId', $fasilitator['user_id'])->first()->id }}">

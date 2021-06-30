@@ -24,10 +24,7 @@
                 <tr>
                     <td colspan="7" style="background-color: yellow;">{{ $district->nama_kab  }}</td>
                 </tr>
-                   
-                @foreach($fasilitators->where('kode_kab', $district->kode_kab)->unique('tim') as $index => $tim)
-
-                @foreach($fasilitators->where('kode_kab', $district->kode_kab)->where('tim', $tim['tim'])->sortBy('job_title_sort') as $fasilitator)
+                  @foreach($fasilitators->where('kode_kab', $district->kode_kab) as $key => $fasilitator) 
                 <tr>
                     <td class="text-center">{{ $loop->iteration }}</td>
                     <td>
@@ -38,7 +35,6 @@
                     <td>{{ $fasilitator['kab'] }}</td>
                     <td>{{ $fasilitator['term_start'] }} - {{ $fasilitator['term_end'] }}</td>
                 </tr>
-                @endforeach
                 @endforeach
                 @endforeach
             </tbody>

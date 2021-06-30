@@ -20,7 +20,7 @@ class FasilitatorController extends Controller
 
     public function index()
     {
-        $fasilitators = collect($this->fasilitators())->sortBy('tim');
+        $fasilitators = $this->fasilitators()->sortBy('tim');
         $districts = kabupaten::all();
 
         return view('admin.fasilitator.index', compact(['fasilitators', 'districts']));

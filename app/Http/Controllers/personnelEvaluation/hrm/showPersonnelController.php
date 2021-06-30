@@ -86,7 +86,7 @@ class showPersonnelController extends Controller
         $data = $this->data($jobId);
         $data['job_title']['job_title'] =  $this->job_title($jobId);
         $data['values'] = $data['values']->where('ok_by_user', 1)->where('totalScore', '0.00');
-        $data['fasilitators'] = $data['fasilitators']->whereIn('user_id', $data['values']->pluck('userId'));
+        $data['fasilitators'] = $data['fasilitators']->whereIn('user_id', $data['values']->pluck('userId'))->where('job_title_id', $jobId);
         return view('personnelEvaluation.assessor.personnels.siapEvaluasi', compact(['data']));
     }
 
@@ -95,7 +95,7 @@ class showPersonnelController extends Controller
         $data = $this->data($jobId);
         $data['job_title']['job_title'] =  $this->job_title($jobId);
         $data['values'] = $data['values']->where('ready', 0)->where('totalScore', '!=', '0.00');
-        $data['fasilitators'] = $data['fasilitators']->whereIn('user_id', $data['values']->pluck('userId'));
+        $data['fasilitators'] = $data['fasilitators']->whereIn('user_id', $data['values']->pluck('userId'))->where('job_title_id', $jobId);
         return view('personnelEvaluation.assessor.personnels.prosesEvaluasi', compact(['data']));
     }
 

@@ -10,7 +10,8 @@ use App\work_zone;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
+use iIlluminate\Support\Facades\DB;
+use App\Http\Controllers\EvkinjaController;
 
 class rekapController extends Controller
 {
@@ -19,10 +20,21 @@ class rekapController extends Controller
         $this->middleware('auth');
     }
 
+
+    public function evkinja(){
+        return new EvkinjaController();
+    }
+
     public function index()
     {
         $evaluationSettings = personnel_evaluation_setting::select('quarter', 'year', 'id')->groupBy('quarter')->groupBy('year')->orderByDesc('year')->limit(4)->get();
         return view('personnelEvaluation.assessor.rekap.index', compact('evaluationSettings'));
+    }
+
+    public function rekap($quarter, $year){
+        $users = $this->evkinja()->being_assessed_by_me_at(Auth::user()->id, $quarter, $year); 
+        $values = $this->evkinja()->all_values_at($quarter, $year)->whereIn('userId', $users->pluck('user_id'))->where('ready', 1)->where('ok_by_user', 1);
+        return view('personnelEvaluation.assessor.rekap.show', compact(['users', 'values', 'quarter', 'year']));
     }
 
     public function show($id)

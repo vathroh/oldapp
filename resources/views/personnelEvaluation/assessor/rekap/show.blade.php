@@ -11,14 +11,15 @@
         <div class="row">
             <div class="col">
                 <h5 class="mt-5 text-center">REKAP EVALUASI KINERJA PERSONIL</h5>
-                <h5 class="mb-5 text-center">TRIWULAN {{$evaluationSettings->first()->quarter}} TAHUN {{$evaluationSettings->first()->year}}</h5>
+                <h5 class="mb-5 text-center">TRIWULAN {{$quarter}} TAHUN {{$year}}</h5>
 
-                <table class=" table-striped" style="width:100%;">
+                <table class="table-bordered table-striped" style="width:100%;">
                     <thead>
                         <tr>
                             <th scope="col">No</th>
                             <th scope="col">Nama</th>
                             <th scope="col">Posisi</th>
+                            <th scope="col">Tim</th>
                             <th scope="col">Kabupaten/Kota</th>
                             <th scope="col">Nilai (%)</th>
                             <th scope="col">Kualifikasi</th>
@@ -27,18 +28,21 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($evaluationSettings as $key => $evaluationSetting)
-                        @foreach($evaluationSetting->evaluationValue->whereIn('userId', $userId->pluck('user_id'))->where('ready', 1) as $value)
+                        @foreach($users->unique('kode_kab') as $district)
                         <tr>
-                            <td></td>
-                            <td>{{ $value->user->name }}</td>
-                            <td>{{ $jobDesc->where('user_id', $value->user->id)->first()->posisi->job_title }}</td>
-                            <td>{{ $jobDesc->where('user_id', $value->user->id)->first()->kabupaten->first()->NAMA_KAB }}</td>
-                            <td>{{ $value->totalScore}}</td>
-                            <td>{{ $value->finalResult}}</td>
-                            <td>{{ $value->issue}}</td>
-                            <td>{{ $value->recommendation}}</td>
-
+                            <td colspan="9">{{ $district['kab'] }}</td>
+                        </tr>
+                        @foreach($users->where('kode_kab', $district['kode_kab']) as $user)
+                        <tr>
+                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ $user['name'] }}</td>
+                            <td>{{ $user['job_title'] }}</td>
+                            <td>{{ $user['tim'] }}</td>
+                            <td>{{ $user['kab'] }}</td>
+                            <td>{{ $values->where('userId', $user['user_id'])->first()->totalScore ??  '' }}</td>
+                            <td>{{ $values->where('userId', $user['user_id'])->first()->finalResult ?? ''}}</td>
+                            <td>{{ $values->where('userId', $user['user_id'])->first()->issue ??'' }}</td>
+                            <td>{{ $values->where('userId', $user['user_id'])->first()->recommendation ?? '' }}</td>
                         </tr>
                         @endforeach
                         @endforeach

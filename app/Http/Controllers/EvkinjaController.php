@@ -223,6 +223,15 @@ class EvkinjaController extends Controller
         return $this->users()->users_at(2, (3*$this->this_quarter()), $this->this_year())->whereIn('job_title_id', $jobTitleIdAssessedByMe)->whereIn('kode_kab', $myZoneDistricts);
     }
 
+    
+    public function being_assessed_by_me_at($user_id, $quarter, $year){
+
+        $myZoneDistricts = $this->zone()->my_zone_at($user_id, 2, $quarter*3, $year)['wilayah']->pluck('kode_kab');
+        $jobTitleId = $this->users()->user_at($user_id, 2, $quarter*3, $year)['job_title_id'];
+        $jobTitleIdAssessedByMe = personnel_evaluator::where('evaluator', $jobTitleId)->pluck('jobId');
+        return $this->users()->users_at(2, 3*$quarter, $year)->whereIn('job_title_id', $jobTitleIdAssessedByMe)->whereIn('kode_kab', $myZoneDistricts);
+    }
+
     public function test()
     {
         return $this->is_assessor(50);

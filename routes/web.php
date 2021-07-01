@@ -362,6 +362,7 @@ Route::namespace('personnelEvaluation\assessor')->prefix('personnel-evaluation/a
     Route::get('/assessment/input/{valueId}', 'inputAssessmentController@index');
     //Rekap
     Route::resource('/rekap', 'rekapController');
+    Route::get('/rekap/{quarter}/{year}', 'rekapController@rekap');
     //Print
     Route::resource('/cetak', 'printController');
     Route::get('/cetak-perjabatan/{jobTitleId}', 'printController@print');

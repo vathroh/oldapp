@@ -174,7 +174,7 @@
         @if($kppdatas->count() > 0)
         <span>{{ $kppdatas->links() }}</span>
         @endif
-        <a href = "/kpp-download-excel"><button class = "btn btn-primary">Download Data KPP</button></a>
+        <!--a href = "/kpp-download-excel"><button class = "btn btn-primary">Download Data KPP</button></a-->
       </div>
     </div>
   </div>

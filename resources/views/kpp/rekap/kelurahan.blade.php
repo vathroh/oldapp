@@ -143,7 +143,7 @@
     </div>
 	<div class="row text-center">
       <div class="col justify-content-center">
-        <a href = "/kpp-download-rekap-kelurahan/{{$kppdata->KD_KEC}}"><button class = "btn btn-primary">Download</button></a>
+        <!--a href = "/kpp-download-rekap-kelurahan/{{$kppdata->KD_KEC}}"><button class = "btn btn-primary">Download</button></a-->
       </div>
     </div>
   </div>

@@ -3,6 +3,8 @@
 namespace App\Exports;
 
 
+use Illuminate\Support\Arr;
+use App\Http\Controllers\ZoneController;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\withHeadings;
@@ -12,13 +14,15 @@ use App\kppdata;
 
 class UsersExport implements FromCollection
 {
+    public function zone(){
+        return new ZoneController;
+    }
     /**
     * @return \Illuminate\Support\Collection
     */
     public function collection()
     {
-
-        return kppdata::select('allvillages.NAMA_KAB', 'allvillages.NAMA_KEC', 'allvillages.NAMA_DESA', 'bkmdatas.bkm', 
+            return kppdata::select('allvillages.NAMA_KAB', 'allvillages.NAMA_KEC', 'allvillages.NAMA_DESA', 'bkmdatas.bkm', 
 			'kppdatas.lokasi_bdi_bpm', 'kppdatas.nama_kpp',
             \DB::raw('
             CASE
@@ -166,17 +170,7 @@ class UsersExport implements FromCollection
             ->join('bkmdatas', 'kppdatas.kode_desa', '=', 'bkmdatas.kelurahan_id')
             ->join('pengurus_kpps', 'kppdatas.kode_desa', '=', 'pengurus_kpps.kelurahan_id')
             ->join('users', 'kppdatas.user_id', '=', 'users.id')
-            ->whereIn('KD_KAB', explode(', ', str_replace(array('["',  '"]'),'', DB::table('work_zones')
-            ->where('id', function($query){
-                $query->select('work_zone_id')
-                      ->from('job_descs')
-                      ->where('user_id', Auth::user()->id)
-                      ->get()
-                      ->pluck('work_zone_id');
-				})->get()
-				->pluck('zone')
-				)))->get();
-					
+            ->whereIn('KD_KAB', Arr::pluck($this->zone()->my_zone_now(Auth::user()->id)['wilayah'], 'kode_kab'));
     }
     
     public function headings(): array

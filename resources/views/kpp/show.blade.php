@@ -12,6 +12,7 @@
     <p class="card-category"></p>
 </div>
 <div class="card-body">
+    @if(Auth::user()->job_desc)
     <h3>PROFIL KPP {{ $kppdata->nama_kpp }}</h3>
     <div class="data-group data-lokasi">
         <div class="data-group-title">
@@ -156,6 +157,7 @@
             @include('kpp.show.keterangan_tambahan')
         </div>
     </div>
+    @endif
 </div>
 
 

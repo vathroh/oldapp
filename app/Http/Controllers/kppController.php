@@ -60,7 +60,7 @@ class kppController extends Controller
     {
         $districts = $this->myzone();
 
-        $kppdatas = DB::table('kpp_data_view')->leftjoin('infrastruktures_maintenances', 'infrastruktures_maintenances.kelurahan_id', '=', 'kpp_data_view.kode_desa')->groupBy('kpp_data_view.kode_desa')->leftjoin('bkmdatas', 'bkmdatas.kelurahan_id', '=', 'kpp_data_view.kode_desa')->leftjoin('users', 'users.id', '=', 'kpp_data_view.user_id')->orderBy('kpp_data_view.updated_at', 'desc')->whereIn('KD_KAB', $districts)->paginate(10);
+        $kppdatas = DB::table('kpp_data_view')->leftjoin('infrastruktures_maintenances', 'infrastruktures_maintenances.kelurahan_id', '=', 'kpp_data_view.kode_desa')->groupBy('kpp_data_view.kode_desa')->leftjoin('bkmdatas', 'bkmdatas.kelurahan_id', '=', 'kpp_data_view.kode_desa')->leftjoin('users', 'users.id', '=', 'kpp_data_view.user_id')->orderBy('kpp_data_view.updated_at', 'desc')->whereIn('KD_KAB', $districts)->select('*','kpp_data_view.id as kpp_id')->paginate(10);
 
         $BOPs = kpp_operating_fund::get();
 
@@ -69,20 +69,7 @@ class kppController extends Controller
 
     public function find()
     {
-        $kabupaten = alldistrict::whereIn('kode_kab', explode(', ', str_replace(
-            array('["',  '"]'),
-            '',
-            DB::table('work_zones')
-                ->where('id', function ($query) {
-                    $query->select('work_zone_id')
-                        ->from('job_descs')
-                        ->where('user_id', Auth::user()->id)
-                        ->get()
-                        ->pluck('work_zone_id');
-                })->get()
-                ->pluck('zone')
-        )))->get();
-
+        $kabupaten = $this->myzone();
         return view('kpp.find', compact('kabupaten'));
     }
 
@@ -92,19 +79,7 @@ class kppController extends Controller
             case true:
 
                 $kelurahan = allvillage::get();
-                $kabupaten = alldistrict::whereIn('kode_kab', explode(', ', str_replace(
-                    array('["',  '"]'),
-                    '',
-                    DB::table('work_zones')
-                        ->where('id', function ($query) {
-                            $query->select('work_zone_id')
-                                ->from('job_descs')
-                                ->where('user_id', Auth::user()->id)
-                                ->get()
-                                ->pluck('work_zone_id');
-                        })->get()
-                        ->pluck('zone')
-                )))->get();
+                $kabupaten = $this->myzone();
                 $kppdatas = kppdata::get();
                 $bkmdatas = bkmdata::get();
                 $user = User::get();
@@ -282,52 +257,25 @@ class kppController extends Controller
     }
 
 
-    // ================================================= REKAP FUNCTION ===========================================================
+    // ================== REKAP FUNCTION ==================
 
 
 
     public function rekap_all()
     {
+        $kabupaten = $this->myzone();
         $rekapkpp =  $this->rekap1()->get();
-        $kppdatas = $this->rekap()->groupBy('KD_KAB')->get();
-
-        $kabupaten = alldistrict::whereIn('kode_kab', explode(', ', str_replace(
-            array('["',  '"]'),
-            '',
-            DB::table('work_zones')
-                ->where('id', function ($query) {
-                    $query->select('work_zone_id')
-                        ->from('job_descs')
-                        ->where('user_id', Auth::user()->id)
-                        ->get()
-                        ->pluck('work_zone_id');
-                })->get()
-                ->pluck('zone')
-        )))->get();
-
+        $kppdatas = $this->rekap()->whereIn('KD_KAB', $kabupaten)->groupBy('KD_KAB')->get();
 
         return view('kpp.rekap.kabupaten', compact(['kabupaten', 'kppdatas', 'rekapkpp']));
     }
 
     public function rekap_kecamatan($KD_KAB)
     {
+
+        $kabupaten = $this->myzone();
         $rekapkpp =  $this->rekap1()->groupBy('KD_KAB')->where('KD_KAB', $KD_KAB)->get();
         $kppdatas = $this->rekap()->groupBy('KD_KEC')->where('KD_KAB', $KD_KAB)->get();
-
-        $kabupaten = alldistrict::whereIn('kode_kab', explode(', ', str_replace(
-            array('["',  '"]'),
-            '',
-            DB::table('work_zones')
-                ->where('id', function ($query) {
-                    $query->select('work_zone_id')
-                        ->from('job_descs')
-                        ->where('user_id', Auth::user()->id)
-                        ->get()
-                        ->pluck('work_zone_id');
-                })->get()
-                ->pluck('zone')
-        )))->get();
-
 
         return view('kpp.rekap.kecamatan', compact(['kabupaten', 'kppdatas', 'rekapkpp']));
     }

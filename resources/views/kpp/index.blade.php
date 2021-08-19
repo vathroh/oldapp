@@ -67,7 +67,7 @@
                 <td scope="row">{{ (($kppdatas->currentPage()-1) *10 ) + $loop->iteration }}</td>
                 <td>{{ $kppdata->NAMA_KAB }}</td>
                 <td>{{ $kppdata->NAMA_KEC }}</td>
-                <td><a href = "/kpp/{{ $kppdata->id }}">{{ $kppdata->NAMA_DESA }}</a></td>
+                <td><a href = "/kpp/{{ $kppdata->kpp_id }}">{{ $kppdata->NAMA_DESA }}</a></td>
                 <td>{{ $kppdata->bkm }}</td>
                 <td>{{ $kppdata->lokasi_bdi_bpm }}</td>
                 <td>{{ $kppdata->nama_kpp }}</td>

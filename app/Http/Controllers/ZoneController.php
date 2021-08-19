@@ -56,6 +56,20 @@ class ZoneController extends Controller
 
     }
 
+    public function zone_districts_at($user_id){
+        return Arr::pluck($this->zone()->my_zone_at($user_id, $day, $month, $year)['wilayah'], 'kode_kab');
+    }
+
+
+    public function zone_districts_now($user_id){
+        return Arr::pluck($this->zone()->my_zone_now($user_id)['wilayah'], 'kode_kab');
+    }
+
+
+    public function villages($user_id){
+
+    }
+
 
     public function my_sub_zone($user_id)
     {

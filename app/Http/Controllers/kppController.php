@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\ZoneController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\TimeController;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,6 +16,7 @@ use App\Exports\Rekap_kpp_per_kabupaten;
 use App\Exports\Rekap_kpp_per_kecamatan;
 use App\Exports\Rekap_kpp_per_kelurahan;
 use App\infrastruktures_maintenance;
+use Illuminate\Support\Arr;
 use App\alldistrict;
 use App\allsubdistrict;
 use App\allvillage;
@@ -33,6 +37,20 @@ class kppController extends Controller
         $this->middleware('auth');
     }
 
+    public function user(){
+        return new UserController;
+    }
+
+    public function zone()
+    {
+        return new ZoneController;
+    }
+
+    public function myzone()
+    {
+        return Arr::pluck($this->zone()->my_zone_now(Auth::user()->id)['wilayah'], 'kode_kab');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -40,12 +58,9 @@ class kppController extends Controller
      */
     public function index()
     {
+        $districts = $this->myzone();
 
-        // $kppdatas = $this->coba2()->leftjoin('infrastruktures_maintenances', 'infrastruktures_maintenances.kelurahan_id', '=', 'kppdatas.kode_desa')->orderBy('kppdatas.updated_at', 'desc')->paginate(10);
-
-        $kppdatas = DB::table('kpp_data_view')->leftjoin('infrastruktures_maintenances', 'infrastruktures_maintenances.kelurahan_id', '=', 'kpp_data_view.kode_desa')->groupBy('kpp_data_view.kode_desa')->leftjoin('bkmdatas', 'bkmdatas.kelurahan_id', '=', 'kpp_data_view.kode_desa')->leftjoin('users', 'users.id', '=', 'kpp_data_view.user_id')->orderBy('kpp_data_view.updated_at', 'desc')->paginate(10);
-
-        // $kppdatas = $this->coba2()->leftjoin('infrastruktures_maintenances', 'infrastruktures_maintenances.kelurahan_id', '=', 'kppdatas.kode_desa')->groupBy('kppdatas.kode_desa')->orderBy('kppdatas.updated_at', 'desc')->paginate(10);
+        $kppdatas = DB::table('kpp_data_view')->leftjoin('infrastruktures_maintenances', 'infrastruktures_maintenances.kelurahan_id', '=', 'kpp_data_view.kode_desa')->groupBy('kpp_data_view.kode_desa')->leftjoin('bkmdatas', 'bkmdatas.kelurahan_id', '=', 'kpp_data_view.kode_desa')->leftjoin('users', 'users.id', '=', 'kpp_data_view.user_id')->orderBy('kpp_data_view.updated_at', 'desc')->whereIn('KD_KAB', $districts)->paginate(10);
 
         $BOPs = kpp_operating_fund::get();
 
@@ -132,22 +147,7 @@ class kppController extends Controller
 
     public function show($id)
     {
-        if (Auth::user()->hasAnyRoles(['admin', 'fasilitator'])) {
-
-            $kabupaten = alldistrict::whereIn('kode_kab', explode(', ', str_replace(
-                array('["',  '"]'),
-                '',
-                DB::table('work_zones')
-                    ->where('id', function ($query) {
-                        $query->select('work_zone_id')
-                            ->from('job_descs')
-                            ->where('user_id', Auth::user()->id)
-                            ->get()
-                            ->pluck('work_zone_id');
-                    })->get()
-                    ->pluck('zone')
-            )))->get();
-
+            $kabupaten = $this->myzone();
             $kppdata = kppdata::where('id', $id)->get()[0];
             $kelurahan = allvillage::where('KD_KEL', $kppdata->kode_desa)->get()[0];
             $bkmdata = bkmdata::where('kelurahan_id', $kppdata->kode_desa)->get()[0];
@@ -161,10 +161,6 @@ class kppController extends Controller
             $jumlah = DB::table('kpp_operating_funds')->select(DB::raw('SUM(jumlah) as jumlah'))->get();
 
             return view('kpp.show', compact(['kppdata', 'kelurahan', 'bkmdata', 'kabupaten', 'pengurus_kpp', 'kpp_pertemuans', 'kpp_operating_funds', 'user', 'data_pengecekan_fisiks', 'infrastruktures_maintenances', 'jumlah']));
-        } else {
-
-            return redirect('/kpp');
-        }
     }
 
     public function edit($id)
@@ -173,19 +169,7 @@ class kppController extends Controller
             $kppdata = kppdata::find($id);
             $kelurahan = allvillage::where('KD_KEL', $kppdata->kode_desa)->get();
             $bkmdata = bkmdata::where('kelurahan_id', $kppdata->kode_desa)->get();
-            $kabupaten = alldistrict::whereIn('kode_kab', explode(', ', str_replace(
-                array('["',  '"]'),
-                '',
-                DB::table('work_zones')
-                    ->where('id', function ($query) {
-                        $query->select('work_zone_id')
-                            ->from('job_descs')
-                            ->where('user_id', Auth::user()->id)
-                            ->get()
-                            ->pluck('work_zone_id');
-                    })->get()
-                    ->pluck('zone')
-            )))->get();
+            $kabupaten = $this->myzone();
             return view('kpp.edit', compact(['kppdata', 'bkmdata', 'kelurahan', 'kabupaten']));
         } else {
             return redirect('/kpp');
@@ -265,12 +249,12 @@ class kppController extends Controller
     }
 
 
-    // =========================================================== EXPORT TO EXCEL ========================================================
+    // ========================= EXPORT TO EXCEL ========================================
 
 
     public function export()
     {
-        return Excel::download(new UsersExport, 'Data_KPP_' . date('Y-m-d_H:i:s') . '.xlsx');
+        return Excel::download(new UsersExport(), 'Data_KPP_' . date('Y-m-d_H:i:s') . '.xlsx');
     }
 
 
@@ -352,21 +336,7 @@ class kppController extends Controller
     {
         $rekapkpp = $this->rekap1()->groupBy('KD_KEC')->where('KD_KEC', $KD_KEC)->get();
         $kppdatas = $this->rekap()->groupBy('KD_KEL')->where('KD_KEC', $KD_KEC)->get();
-
-        $kabupaten = alldistrict::whereIn('kode_kab', explode(', ', str_replace(
-            array('["',  '"]'),
-            '',
-            DB::table('work_zones')
-                ->where('id', function ($query) {
-                    $query->select('work_zone_id')
-                        ->from('job_descs')
-                        ->where('user_id', Auth::user()->id)
-                        ->get()
-                        ->pluck('work_zone_id');
-                })->get()
-                ->pluck('zone')
-        )))->get();
-
+        $kabupaten = $this->myzone();
 
         return view('kpp.rekap.kelurahan', compact(['kabupaten', 'kppdatas', 'rekapkpp']));
     }
@@ -413,7 +383,6 @@ class kppController extends Controller
 
     public function rekap()
     {
-        //return DB::table('kpp_data_view')->selectRaw('*, SUM(CASE WHEN kegiatan_pengecekan = "Sudah Dilakukan" THEN 1 ELSE 0 END) as jml_pengecekan_sudah_dilakukan');
 
         return DB::table('kpp_data_view')->selectRaw('*, count(*) as jml_kpp,
 				SUM(CASE WHEN Status  = "Perlu Perhatian" Then 1 ELSE 0 END) as perlu_perhatian, 

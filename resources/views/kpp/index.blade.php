@@ -61,7 +61,8 @@
           </tr>
         </tdead>
         <tbody style = "height : 300px; overflow-y: scroll;">
-          @foreach($kppdatas as $kppdata)
+            @if($kppdatas->count() > 0)
+            @foreach($kppdatas as $kppdata)
             <tr>
                 <td scope="row">{{ (($kppdatas->currentPage()-1) *10 ) + $loop->iteration }}</td>
                 <td>{{ $kppdata->NAMA_KAB }}</td>
@@ -163,13 +164,16 @@
                 <td>{{ $kppdata->keterangan_lain_lain }}</td>
                 <td>{{ $kppdata->name }}</td>
             </tr> 
-          @endforeach
+            @endforeach
+            @endif
         </tbody>
       </table>
     </div>
     <div id="indexKPPpagination" class="row text-center">
       <div class="col justify-content-center">
+        @if($kppdatas->count() > 0)
         <span>{{ $kppdatas->links() }}</span>
+        @endif
         <a href = "/kpp-download-excel"><button class = "btn btn-primary">Download Data KPP</button></a>
       </div>
     </div>

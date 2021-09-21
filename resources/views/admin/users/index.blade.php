@@ -8,7 +8,7 @@
 <form class="navbar-form">
     <div class="input-group no-border">
         <input type="text" id="search" value="" class="form-control" placeholder="Cari...">
-        <button type="submit" class="btn btn-white btn-round btn-just-icon">
+        <button type="submit" class="btn btn-white btn-round btn-just-icon btn-search">
             <i class="material-icons">search</i>
             <div class="ripple-container"></div>
         </button>
@@ -93,8 +93,25 @@
 </div>
 
 <script>
-    $("#search").keyup(function() {
-        var search = $(this).val();
+$(".btn-search").click(function(e){
+    e.preventDefault();
+    getSearch();
+    console.log('klik');
+})
+
+$('#search').keypress(function (e) {
+    let key = e.which;
+        if(key == 13)  // the enter key code
+        {
+            e.preventDefault();
+            getSearch();
+            console.log('enter');
+        }
+  });
+
+function getSearch() { 
+    let search = $("#search").val();
+        console.log(search);
 
         $.ajax({
             type: 'get',
@@ -126,7 +143,7 @@
             }
         });
 
-    });
+    };
 </script>
 
 @endsection

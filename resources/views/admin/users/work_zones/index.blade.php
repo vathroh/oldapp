@@ -96,7 +96,7 @@
 </div>
 
 <script>
-    $("#search").keyup(function() {
+    $("#search").input(function() {
         var search = $(this).val();
 
         $.ajax({

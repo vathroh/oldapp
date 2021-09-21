@@ -79,6 +79,7 @@
 				<div class="text-center my-3" id="formButton">
 					<input type="submit" class="btn btn-primary" value="upload">
 					<input type="file" name="file" class="file-input" id="file">
+          <p>Ukuran File Maks: 0.5 GB</p>
 				</div>
 
 			</form>
@@ -150,7 +151,7 @@
 
 </div>
 
-<script src="http://malsup.github.com/jquery.form.js"></script>
+<script src="{{ asset('js/jquery.form.min.js') }}"></script>
 <script>
 	$(document).ready(function() {
 

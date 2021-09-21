@@ -195,8 +195,6 @@
 		</a>
 	</li>
 	@endif
-</ul>
-<ul class="nav">
 	@if (Auth::user()->hasAnyRoles(['admin', 'osp']))
 	<li class="nav-item active dropdown">
 		<a class="nav-link" href="/activities-category">

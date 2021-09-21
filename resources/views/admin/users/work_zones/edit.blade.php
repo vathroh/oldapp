@@ -65,7 +65,7 @@
 					</div>
 					<div class="col-md-8">
 						<select class="form-control" id="select-district" name="district">
-						<option value="{{ $job_desc->areaKerja->district_id }}">{{ $job_desc->areaKerja->kabupaten->NAMA_KAB }}</option>
+						<option value="{{ $job_desc->areaKerja->district_id }}">{{ $job_desc->areaKerja->kabupaten->NAMA_KAB ??'' }}</option>
 						</select>
 					</div>
 				</div>		

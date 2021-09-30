@@ -56,15 +56,16 @@ class upload extends Controller
         $value  = $file->evaluationValue()->first();
 
         // use disk "public"
-        // Storage::disk('public')->delete($file->path . '/' . $file->file_name); 
+        Storage::disk('public')->delete($file->path . '/' . $file->file_name); 
 
+        /*
         //use Google Drive
         if ($file->google == "") {
         } else {
             Storage::disk('google')->delete($file->google->file_id);
             $file->google->delete();
         }
-
+         */
 
         $file->delete();
         return redirect('/personnel-evaluation-upload/' . $value->id);
@@ -103,23 +104,24 @@ class upload extends Controller
         $folder             = 'WEBAPP/Evkinja/' . 'Triwulan_' . $evaluationSetting->quarter . '_Tahun_' . $evaluationSetting->year . '/' . $kota . '/' . $userName;
 
         // use "Public" Disk
-        // $uploadedFileName   = Storage::disk('public')->putFileAs($folder, $image, $fileName);
-        // personnel_evaluation_upload::create([
-        //     'path'                              => $folder,
-        //     'file_name'                         => $fileName,
-        //     'personnel_evaluation_value_id'     => $request->valueId,
-        //     'personnel_evaluation_criteria_id'  => $request->criteriaId,
-        //     'personnel_evaluation_aspect_id'    => $request->aspectId
+        $uploadedFileName   = Storage::disk('public')->putFileAs($folder, $image, $fileName);
+         personnel_evaluation_upload::create([
+             'path'                              => $folder,
+             'file_name'                         => $fileName,
+             'personnel_evaluation_value_id'     => $request->valueId,
+             'personnel_evaluation_criteria_id'  => $request->criteriaId,
+             'personnel_evaluation_aspect_id'    => $request->aspectId
 
-        // ]);
+        ]);
 
         //end "Public Disk"
 
         // use Googgle Drive Disk ================================================================
+        /*
         $this->createGoogleDriveFolder($valueId);
         $folder_id   = google_folder::where('path_folder', $folder)->pluck('id_folder')->first();
         Storage::disk('google')->putFileAs($folder_id, $image, $fileName);
-
+         
         personnel_evaluation_upload::create([
             'path'                              => $folder,
             'file_name'                         => $fileName,
@@ -131,7 +133,7 @@ class upload extends Controller
 
         $this->googleFileId($folder_id);
         //end "Google Drive" =======================================================================
-
+         */
         $output         = array('success' => 'File sudah selesai diupload');
         $uploads        = personnel_evaluation_upload::where('personnel_evaluation_value_id', $request->valueId)->get();
         $criterias         = personnel_evaluation_criteria::orderBy('created_at', 'desc')->get();

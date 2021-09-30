@@ -225,7 +225,7 @@
 							'@if(is_null(' + fileObj.file_id + '))' +
 							'<a href="/personnel-evaluation-download-file/' + fileObj.id + '" >download</a>' +
 							'@else' +
-							'<a href="https://drive.google.com/file/d/' + fileObj.file_id + '/view" target="_blank"> lihat </a>' +
+							//'<a href="https://drive.google.com/file/d/' + fileObj.file_id + '/view" target="_blank"> lihat </a>' +
 							'@endif' +
 							'</div>'
 						);

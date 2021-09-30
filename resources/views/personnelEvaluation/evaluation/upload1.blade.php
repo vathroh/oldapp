@@ -79,7 +79,7 @@
 				<div class="text-center my-3" id="formButton">
 					<input type="submit" class="btn btn-primary" value="upload">
 					<input type="file" name="file" class="file-input" id="file">
-          <p>Ukuran File Maks: 0.5 GB</p>
+          <p>Ukuran File Maks: 100 MB</p>
 				</div>
 
 			</form>

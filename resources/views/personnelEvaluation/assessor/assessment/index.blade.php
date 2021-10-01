@@ -106,12 +106,13 @@
                     </td>
                     <td>
                         @foreach($files->where('personnel_evaluation_criteria_id', $criteria[0])->where('personnel_evaluation_aspect_id', $aspect) as $file)
-                        @if(is_null($file->google))
-                        @else
-                        <a href="https://drive.google.com/file/d/{{$file->google->file_id}}/view" target="_blank">
+                            @if(is_null($file->google))
+                                <a href="https://osp1.my.id/personnel-evaluation-download-file/{{ $file->id }}">file-{{ $loop->iteration }}</a>
+                            @else
+                            <a href="https://drive.google.com/file/d/{{$file->google->file_id}}/view" target="_blank">
+                                bukti-{{ $loop->iteration }}
+                            </a>
                             @endif
-                            bukti-{{ $loop->iteration }}
-                        </a>
                         @endforeach
                     </td>
                     <td class="eachAspectsButton"><button type="button" class="eachAspects btn btn-primary" data-id="{{ $criteria[0] }}-{{ $aspect }}" data-value="{{ $value->id }}" data-aspect="{{ $aspect }}" data-criteria="{{ $criteria[0] }}">Simpan</button></td>

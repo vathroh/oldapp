@@ -25,7 +25,7 @@
                             <thead>
                                 <tr>
                                     <td>No</td>
-                                    <td>Tanggal</td>
+                                    <td>Tanggal & Jam</td>
                                     <td>Nama</td>
                                     <td>Jenis Kelamin</td>
                                     <td>Jabatan</td>
@@ -34,16 +34,19 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($participants->where('date', $day->format('Y-m-d'))->unique('user_id') as $participant)
+                                @foreach($attendances->where('date', $day->format('Y-m-d'))->where('role', 'PESERTA')->unique('user_id') as $attendance)
+
+                                @foreach($participants->where('user_id', $attendance->user_id)->unique('user_id') as $participant)
                                 <tr>
-                                    <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $day->format('d F Y') }}</td>
-                                    <td>{{ $participant->user->name }}</td>
-                                    <td>{{ $participant->user->biodata->gender ?? "" }}</td>
-                                    <td>{{ $participant->job_desc ? $participant->job_desc->posisi->job_title : '' }}</td>
-                                    <td>{{ $participant->user->jobDesc->first()->kabupaten[0]->NAMA_KAB ?? '-' }}</td>
-                                    <td>{{ $participant->user->biodata->HP ?? '-' }}</td>
+                                    <td>{{ $loop->parent->iteration }}</td>
+                                    <td>{{ $attendance->created_at }}</td>
+                                    <td>{{ $participant->name }}</td>
+                                    <td>{{ $participant->gender }}</td>
+                                    <td>{{ $participant->job_title }}</td>
+                                    <td>{{ $participant->kab }}</td>
+                                    <td>{{ $participant->telp }}</td>
                                 </tr>
+                                @endforeach
                                 @endforeach
                             </tbody>
                         </table>
@@ -57,14 +60,6 @@
             <div class="my-3" style="border:1px solid black; padding: 20px;">
                 <h4 class="text-center">Rekap Peserta</h4>
                 <h4 class="text-center">Yang Sudah Mengisi Daftar Hadir</h4>
-                @for($i=0; $i<Carbon\Carbon::parse($activity->start_date)->diffInDays(Carbon\Carbon::parse($activity->finish_date)) + 1; $i++) @php $tanggal=Carbon\Carbon::parse($activity->start_date);
-                    $day = $tanggal->addDays($i);
-                    $day1 = $day->format('Y-m-d');
-                    @endphp
-                    
-                    @if($day == Carbon\Carbon::parse($activity->break))
-                    @else
-                    <h6 class="mt-5">{{ $day->format('l, d F Y') }}</h6>
                     <div>
                         <table class="table table-sm table-striped">
                             <thead>
@@ -77,21 +72,28 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
+                                @for($i=0; $i<Carbon\Carbon::parse($activity->start_date)->diffInDays(Carbon\Carbon::parse($activity->finish_date)) + 1; $i++) @php $tanggal=Carbon\Carbon::parse($activity->start_date);
+                                $day = $tanggal->addDays($i);
+                                $day1 = $day->format('Y-m-d');
+                                @endphp
+                    
+                                @if($day == Carbon\Carbon::parse($activity->break))
+                                @else
+                                 <tr>
                                     <td>{{ $i+1 }}</td>
                                     <td>{{ $day->format('l, d F Y') }}</td>
-                                    <td>{{ $participants->where('date', $day->format('Y-m-d'))->unique('user_id')->count() }}</td>
-                                    <td>{{ $participants->where('date', $day->format('Y-m-d'))->unique('user_id')->where('gender', 'Laki-Laki')->count() }}</td>
-                                    <td>{{ $participants->where('date', $day->format('Y-m-d'))->unique('user_id')->where('gender', 'Perempuan')->count() }}</td>
+                                    <td>{{ $attendances->where('date', $day->format('Y-m-d'))->where('role', 'PESERTA')->unique('user_id')->count() }}</td>
+                                    <td>{{ $attendances->where('date', $day->format('Y-m-d'))->where('role', 'PESERTA')->where('gender', 'Laki-Laki')->unique('user_id')->count() }}</td>
+                                    <td>{{ $attendances->where('date', $day->format('Y-m-d'))->where('role', 'PESERTA')->where('gender', 'Perempuan')->unique('user_id')->count() }}</td>
                                 </tr>
+                                @endif
+                                @endfor
 
                             </tbody>
                         </table>
                     </div>
                     <hr>
-                    @endif
-                    @endfor
-            </div>
+             </div>
 
 
             <div class="my-3" style="border:1px solid black; padding: 20px;">
@@ -115,14 +117,14 @@
                         </thead>
                         <tbody>
 
-                            @foreach( $activity->participants->where('role', 'PESERTA')->whereNotIn('user_id', $participants->where('date', $day->format('Y-m-d'))->unique('user_id')->pluck('user_id')) as $participant)
+                            @foreach( $participants->where('role', 'PESERTA')->whereNotIn('user_id', $attendances->where('date', $day->format('Y-m-d'))->unique('user_id')->pluck('user_id')) as $notAttendance)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $day->format('d F Y') }}</td>
-                                <td>{{ $participant->user->name ??  $participant->user_id }} </td>
-                                <td>{{ $participant->user->biodata->gender ?? "" }}</td>
-                                <td>{{ $participant->job_desc ? $participant->job_desc->posisi->job_title : '' }}</td>
-                                <td>{{ $participant->user->jobDesc->first()->kabupaten[0]->NAMA_KAB ?? '-' }}</td>
+                                <td>{{ $notAttendance->name }}</td>
+                                <td>{{ $notAttendance->gender }}</td>
+                                <td>{{ $notAttendance->job_title }}</td>
+                                <td>{{ $notAttendance->kab }}</td>
                             </tr>
                             @endforeach
 

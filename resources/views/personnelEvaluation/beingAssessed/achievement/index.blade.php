@@ -525,7 +525,7 @@
 
     });
 
-    $("select.capaian").input(function() {
+    $("select.capaian").change(function() {
         var criteria = $(this).data('criteria');
         var aspect = $(this).data('aspect');
         var value = $(this).data('value');

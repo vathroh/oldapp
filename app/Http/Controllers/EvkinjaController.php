@@ -234,6 +234,6 @@ class EvkinjaController extends Controller
 
     public function test()
     {
-        return $this->is_assessor(50);
+        return $this->users()->user_now(70);
     }
 }

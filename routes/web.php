@@ -464,7 +464,7 @@ Route::get('bdi/{any}', 'bdiController@index');
 //View & Save GoogleDrive Files & Folders
 Route::get('googledrive/{folder_id}', 'GoogleDriveController@view');
 Route::get('gd-tw-3-2021', function(){
-    return redirect('http://localhost:8000/googledrive/11zHcXQa6yhaPgd3DEK8fBWI9qte3x4Zl');
+    return redirect('/googledrive/11zHcXQa6yhaPgd3DEK8fBWI9qte3x4Zl');
 });
 
 

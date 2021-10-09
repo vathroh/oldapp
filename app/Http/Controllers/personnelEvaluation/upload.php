@@ -30,6 +30,11 @@ use Illuminate\Support\Arr;
 
 class upload extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function evidencePage($valueId)
     {
         $id = Auth::user()->id;

@@ -216,7 +216,7 @@
             <button id="check-button" data-value="{{ $value->id }}" type="submit" class="btn btn-primary">-- Lanjut --</button>
         </div>
         @elseif($value->ready == 1 && $value->edit == 0)
-        <form method="get" action="/personnel-evaluation/assessor/assessment/input/{{ $value->id }}" enctype="multipart/form-data">
+        <form method="post" action="/personnel-evaluation/assessor/assessment/input/{{ $value->id }}" enctype="multipart/form-data">
             @csrf
             <div class="text-center mt-5">
                 <button type="submit" class="btn btn-primary">AJUKAN PERMOHONAN EDIT</button>

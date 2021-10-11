@@ -609,8 +609,41 @@ class evaluation extends Controller
 		return redirect('personnel-evaluation');
 	}
 
+	public function editPermissionByAssessor()
+	{
+
+		$myZone	= explode(", ", User::join('job_descs', 'job_descs.user_id', '=',  'users.id')
+			->join('work_zones', 'work_zones.id', '=', 'job_descs.work_zone_id')
+			->where('users.id', Auth::user()->id)->pluck('zone')->first());
+
+		$evaluators = personnel_evaluator::where('evaluator', job_desc::where('user_id', Auth::user()->id)->pluck('job_title_id')->first())->pluck('jobId');
 
 
+		$myJobId	= job_desc::where('user_id', Auth::user()->id)->pluck('job_title_id')->first();
+
+
+		if (Auth::user()->hasAnyRoles(['hrm'])) {
+			$personnels = personnel_evaluation_value::where('edit_by_user', 1)->get();
+		} else {
+			foreach ($evaluators as $evaluator) {
+				$myEvaluationUsers[$evaluator] = job_title::find($evaluator)->user;
+			}
+			$myEvaluationUserIds = Arr::pluck(Arr::collapse($myEvaluationUsers), 'id');
+			$myWorkZones = work_zone::whereIn('district', $myZone)->get();
+
+			foreach ($myWorkZones as $myWorkZone) {
+				$myWorkZonesUsers[$myWorkZone->id] = $myWorkZone->user;
+			}
+			$myWorkZonesUsersIds = Arr::pluck(Arr::collapse($myWorkZonesUsers), 'id');
+			$usersId = array_intersect($myWorkZonesUsersIds, $myEvaluationUserIds);
+
+			$personnels = personnel_evaluation_value::whereIn('userId', $usersId)->where('edit', 1)->get();
+		}
+
+		return view('personnelEvaluation.hrm.edit', compact(['personnels', 'evaluators', 'myJobId', 'myZone']));
+	}
+
+//=====================================================================
 	public function editPermission()
 	{
 

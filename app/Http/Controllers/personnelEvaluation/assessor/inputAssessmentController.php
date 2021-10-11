@@ -44,7 +44,7 @@ class inputAssessmentController extends Controller
 
     public function edit($valueId)
     {
-        personnel_evaluation_value::where('id', $valueId)->update(['edit' => '1', 'ready' => '0']);
+        personnel_evaluation_value::where('id', $valueId)->update(['edit' => '1', 'ready' => '1']);
         return redirect('personnel-evaluation');
     }
 }

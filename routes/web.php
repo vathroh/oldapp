@@ -357,7 +357,7 @@ Route::namespace('personnelEvaluation\assessor')->prefix('personnel-evaluation/a
     Route::get('/assessment/input/{valueId}/check', 'ajaxInputAssessmentController@check');
     Route::get('/assessment/input/{valueId}/save', 'ajaxInputAssessmentController@store');
     Route::get('/assessment/input/{valueId}/team', 'ajaxInputAssessmentController@team');
-    Route::get('/assessment/input/{valueId}/edit', 'inputAssessmentController@edit');
+    Route::post('/assessment/input/{valueId}', 'inputAssessmentController@edit');
     Route::get('/assessment/input/{valueId}/ok', 'inputAssessmentController@ok');
     Route::get('/assessment/input/{valueId}', 'inputAssessmentController@index');
     //Rekap
@@ -377,12 +377,15 @@ Route::namespace('personnelEvaluation\hrm')->prefix('personnel-evaluation/hrm')-
     Route::get('/personnels/allpersonnels/{jobId}', 'showPersonnelController@allpersonnels');
     Route::get('/personnels/siapevaluasi/{jobId}', 'showPersonnelController@siapEvaluasi');
     Route::get('/personnels/belummengisi/{jobId}', 'showPersonnelController@belumMengisi');
+
     Route::get('/cetak-perjabatan/{jobTitleId}', 'printController@print');
     Route::get('monitoring',  'showPersonnelController@index');
     Route::resource('/rekap', 'rekapController');
     Route::resource('/cetak', 'printController');
 });
 
+
+Route::get('/personnel-evaluation/hrm/edit-permission',  'personnelEvaluation\evaluation@editPermissionByAssessor');
 
 Route::get('personnel-evaluation-monitoring',  'personnelEvaluation\evaluation@monitoring');
 

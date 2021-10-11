@@ -20,6 +20,7 @@
                             <th scope="col">Nama</th>
                             <th scope="col">Posisi</th>
                             <th scope="col">Kabupaten/Kota</th>
+                            <th scope="col">Lokasi</th>
                             <th scope="col">Nilai (%)</th>
                             <th scope="col">Kualifikasi</th>
                             <th scope="col">Isu</th>
@@ -30,13 +31,16 @@
                         @foreach($evaluationSettings as $key => $evaluationSetting)
                         <tr>
                             <td colspan="8" style="font-size:large; background-color: darkturquoise; font-weight:bold;">{{$evaluationSetting->jobTitle->job_title}}</td>
+                            <td colspan="8" style="font-size:large; background-color: darkturquoise; font-weight:bold;">{{$evaluationSetting->location->location_type ?? ''}}</td>
                         </tr>
                         @foreach($evaluationSetting->evaluationValue->where('ready', 1) as $value)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $value->user->name }}</td>
-                            <td>{{ $jobDesc->where('user_id', $value->user->id)->first()->posisi->job_title }}</td>
-                            <td>{{ $jobDesc->where('user_id', $value->user->id)->first()->kabupaten->first()->NAMA_KAB }}</td>
+                            <td>{{ $value->user->jobDesc->first()->posisi->job_title }}</td>
+                            <td>{{ $value->user->jobDesc->first()->kabupaten->first()->NAMA_KAB }}</td>
+
+                            <td>{{$evaluationSetting->location->location_type ?? ''}}</td>
                             <td>{{ $value->totalScore}}</td>
                             <td>{{ $value->finalResult}}</td>
                             <td>{{ $value->issue}}</td>

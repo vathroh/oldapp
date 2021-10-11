@@ -21,6 +21,7 @@
 	<a class="nav-link" href="/personnel-evaluation/hrm/monitoring">Monitoring</a>
 	<a class="nav-link" href="/personnel-evaluation/hrm/rekap">Rekap</a>
 	<a class="nav-link" href="/personnel-evaluation-edit">Permintaan Edit</a>
+	<a class="nav-link" href="/personnel-evaluation/hrm/edit-permission">Edit Oleh Penilai</a>
 	<a class="nav-link" href="/personnel-evaluator/">Tim Penilai</a>
 	<a class="nav-link" href="/personnel-evaluation-setup/">Setup</a>
 	<a class="nav-link" href="/personnel-evaluation-criteria/">Kriteria</a>

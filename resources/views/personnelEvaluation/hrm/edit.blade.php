@@ -28,7 +28,7 @@
 							<td>{{$personnel->user->posisi->job_title}}</td>
 							<td>{{$personnel->jobDesc->kabupaten->first()->NAMA_KAB}}</td>
 							<td class="text-center d-flex">
-								<form method="post" action="personnel-evaluation-edit-grant-user/{{$personnel->id}}">
+								<form method="post" action="/personnel-evaluation-edit-grant/{{$personnel->id}}">
 									@method('put')
 									@csrf							
 									<button class="btn btn-primary">Izinkan</button>

@@ -623,7 +623,7 @@ class evaluation extends Controller
 
 
 		if (Auth::user()->hasAnyRoles(['hrm'])) {
-			$personnels = personnel_evaluation_value::where('edit_by_user', 1)->get();
+			$personnels = personnel_evaluation_value::where('edit', 1)->get();
 		} else {
 			foreach ($evaluators as $evaluator) {
 				$myEvaluationUsers[$evaluator] = job_title::find($evaluator)->user;
@@ -686,7 +686,7 @@ class evaluation extends Controller
 			'ready' => 0
 		]);
 
-		return redirect('personnel-evaluation-monitoring');
+		return redirect('personnel-evaluation/hrm/edit-permission');
 	}
 
 	public function editDenied($valueId)

@@ -23,6 +23,8 @@ class suratKeputusanController extends Controller
 		
         $kppdata=kppdata::where('id', $id)->get()[0];
 
+        $time = \Carbon\Carbon::now()->timestamp;
+
         kppdata::where('id', $id)->update([
             'surat_keputusan'=>$request->surat_keputusan,
         ]);
@@ -30,7 +32,7 @@ class suratKeputusanController extends Controller
 
         if ($request->hasFile('scan_surat_keputusan')) {
             $extension = $request->scan_surat_keputusan->getClientOriginalExtension();
-            $fileName=$kppdata->kode_desa . ' ' . 'scan_surat_keputusan' . '.' . $extension;
+            $fileName=$kppdata->kode_desa . ' ' . 'scan_surat_keputusan' . $time . '.' . $extension;
             kppdata::where('id', $id)->update([
                 'scan_surat_keputusan' => $fileName
             ]);

@@ -19,6 +19,8 @@ class anggaranDasarController extends Controller
     {
         $kppdata=kppdata::where('id', $id)->get()[0];
         
+        $time = \Carbon\Carbon::now()->timestamp;
+
         kppdata::where('id', $id)->update([
             'anggaran_dasar'=>$request->anggaran_dasar,
         ]);
@@ -27,7 +29,7 @@ class anggaranDasarController extends Controller
         if ($request->hasFile('scan_anggaran_dasar')) {
 
             $extension = $request->scan_anggaran_dasar->getClientOriginalExtension();
-            $fileName=$kppdata->kode_desa . ' ' . 'scan_anggaran_dasar' . '.' . $extension;
+            $fileName=$kppdata->kode_desa . ' ' . 'scan_anggaran_dasar' . $time . '.' . $extension;
 
             kppdata::where('id', $id)->update([
                 'scan_anggaran_dasar' => $fileName

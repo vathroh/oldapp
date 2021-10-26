@@ -24,10 +24,11 @@ class dataPengecekanFisikController extends Controller
 		'foto_pengecekan_fisik' => 'required|mimes:jpeg,png,jpg,gif,svg',
 		]);
 		
+        $time = \Carbon\Carbon::now()->timestamp;
 		$kpp_id = kppdata::where('kode_desa', $request->kelurahan_id)->get()[0]['id'];
 		$extension = $request->foto_pengecekan_fisik->getClientOriginalExtension();
 		$foto_id = data_pengecekan_fisik::max('id') + 1;
-        $fileName=$request->kelurahan_id . '_' . 'foto_pengecekan_fisik' . '_'  . $foto_id . '.' . $extension;
+        $fileName=$request->kelurahan_id . '_' . 'foto_pengecekan_fisik' . '_'  . $foto_id . $time .'.' . $extension;
         
         Storage::disk('public')->putFileAs('kpp', $request->foto_pengecekan_fisik, $fileName);
         data_pengecekan_fisik::create([

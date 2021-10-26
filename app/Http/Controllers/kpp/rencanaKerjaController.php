@@ -26,10 +26,11 @@ class rencanaKerjaController extends Controller
             'rencana_kerja'=>$request->rencana_kerja,
         ]);
 
+        $time = \Carbon\Carbon::now()->timestamp;
 
         if ($request->hasFile('scan_rencana_kerja')) {
             $extension = $request->scan_rencana_kerja->getClientOriginalExtension();
-            $fileName=$kppdata->kode_desa . ' ' . 'scan_rencana_kerja' . '.' . $extension;
+            $fileName=$kppdata->kode_desa . ' ' . 'scan_rencana_kerja' . $time . '.' . $extension;
             kppdata::where('id', $id)->update([
                 'scan_rencana_kerja' => $fileName
             ]);

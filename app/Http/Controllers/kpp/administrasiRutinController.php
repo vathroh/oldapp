@@ -21,6 +21,8 @@ class administrasiRutinController extends Controller
     public function update(Request $request, $id)
     {
         $kppdata=kppdata::where('id', $id)->get()[0];
+.
+        $time = \Carbon\Carbon::now()->timestamp;
 
         kppdata::where('id', $id)->update([
             'administrasi_rutin'=>$request->administrasi_rutin,
@@ -29,8 +31,9 @@ class administrasiRutinController extends Controller
 
         if ($request->hasFile('scan_administrasi_rutin')) {
 
+
             $extension = $request->scan_administrasi_rutin->getClientOriginalExtension();
-            $fileName=$kppdata->kode_desa . ' ' . 'scan_administrasi_rutin' . '.' . $extension;
+            $fileName=$kppdata->kode_desa . ' ' . 'scan_administrasi_rutin' . $time '.' . $extension;
 
             kppdata::where('id', $id)->update([
                 'scan_administrasi_rutin' => $fileName

@@ -22,6 +22,8 @@ class bukuInventarisKegiatanController extends Controller
     {
         $kppdata=kppdata::where('id', $id)->get()[0];
 
+        $time = \Carbon\Carbon::now()->timestamp;
+
         kppdata::where('id', $id)->update([
             'buku_inventaris_kegiatan'=>$request->buku_inventaris_kegiatan,
         ]);
@@ -29,7 +31,7 @@ class bukuInventarisKegiatanController extends Controller
 
         if ($request->hasFile('scan_buku_inventaris_kegiatan')) {
             $extension = $request->scan_buku_inventaris_kegiatan->getClientOriginalExtension();
-            $fileName=$kppdata->kode_desa . ' ' . 'scan_buku_inventaris_kegiatan' . '.' . $extension;
+            $fileName=$kppdata->kode_desa . ' ' . 'scan_buku_inventaris_kegiatan' . $time . '.' . $extension;
 
             kppdata::where('id', $id)->update([
                 'scan_buku_inventaris_kegiatan' => $fileName

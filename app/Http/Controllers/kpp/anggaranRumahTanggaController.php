@@ -20,6 +20,8 @@ class anggaranRumahTanggaController extends Controller
     	
         $kppdata=kppdata::where('id', $id)->get()[0];
 
+        $time = \Carbon\Carbon::now()->timestamp;
+
         kppdata::where('id', $id)->update([
             'anggaran_rumah_tangga'=>$request->anggaran_rumah_tangga,
         ]);
@@ -28,7 +30,7 @@ class anggaranRumahTanggaController extends Controller
         if ($request->hasFile('scan_anggaran_rumah_tangga')) {
 
             $extension = $request->scan_anggaran_rumah_tangga->getClientOriginalExtension();
-            $fileName=$kppdata->kode_desa . ' ' . 'scan_anggaran_rumah_tangga' . '.' . $extension;
+            $fileName=$kppdata->kode_desa . ' ' . 'scan_anggaran_rumah_tangga' . $time . '.' . $extension;
 
             kppdata::where('id', $id)->update([
             'scan_anggaran_rumah_tangga' => $fileName

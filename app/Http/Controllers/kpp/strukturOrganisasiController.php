@@ -21,6 +21,8 @@ class strukturOrganisasiController extends Controller
     {
         $kppdata=kppdata::where('id', $id)->get()[0];
 
+        $time = \Carbon\Carbon::now()->timestamp;
+
         kppdata::where('id', $id)->update([
             'struktur_organisasi'=>$request->struktur_organisasi,
         ]);
@@ -28,7 +30,7 @@ class strukturOrganisasiController extends Controller
 
         if ($request->hasFile('scan_struktur_organisasi')) {
             $extension = $request->scan_struktur_organisasi->getClientOriginalExtension();
-            $fileName=$kppdata->kode_desa . ' ' . 'Scan_Struktur_Organisasi' . '.' . $extension;
+            $fileName=$kppdata->kode_desa . ' ' . 'Scan_Struktur_Organisasi' . $time . '.' . $extension;
             kppdata::where('id', $id)->update([
                 'scan_struktur_organisasi' => $fileName
             ]);

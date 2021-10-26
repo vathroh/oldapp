@@ -33,7 +33,7 @@ class administrasiRutinController extends Controller
 
 
             $extension = $request->scan_administrasi_rutin->getClientOriginalExtension();
-            $fileName=$kppdata->kode_desa . ' ' . 'scan_administrasi_rutin' . $time '.' . $extension;
+            $fileName=$kppdata->kode_desa . '_' . 'scan_administrasi_rutin' . $time . '.' . $extension;
 
             kppdata::where('id', $id)->update([
                 'scan_administrasi_rutin' => $fileName

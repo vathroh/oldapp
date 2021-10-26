@@ -21,7 +21,7 @@ class administrasiRutinController extends Controller
     public function update(Request $request, $id)
     {
         $kppdata=kppdata::where('id', $id)->get()[0];
-.
+
         $time = \Carbon\Carbon::now()->timestamp;
 
         kppdata::where('id', $id)->update([

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use App\work_zone;
+use App\alldistrict;
 
 class ZoneController extends Controller
 {
@@ -18,12 +19,14 @@ class ZoneController extends Controller
         $workZone = work_zone::find($work_zone_id);
         $zone = [];
 
-        if($workZone->level == "Korkot" || "Askot Mandiri"){
+        if($workZone->level === "Korkot"){
             $zone['wilayah'] = $workZone->districts;
-        }elseif($workZone->level == "OSP"){
+        }elseif($workZone->level === "Askot Mandiri"){
             $zone['wilayah'] = $workZone->districts;
-        }elseif($workZone->level == "Tim Faskel"){
-            $zone['wilayah'] = $workZone->villages;
+        }elseif($workZone->level === "OSP"){
+            $zone['wilayah'] = $workZone->districts;
+        }elseif($workZone->level === "Tim Faskel"){
+            $zone['wilayah'] = alldistrict::where('kode_kab', $workZone->district)->get();
         }
 
         return $zone;

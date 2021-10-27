@@ -69,7 +69,8 @@ class kppController extends Controller
 
     public function find()
     {
-        $kabupaten = $this->myzone();
+        $kabupaten = alldistrict::whereIn('kode_kab', $this->myzone())->get();
+
         return view('kpp.find', compact('kabupaten'));
     }
 

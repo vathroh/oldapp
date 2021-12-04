@@ -5,7 +5,7 @@
 $nama_desa=$kelurahan[0]->where('KD_KEL',$request->kelurahan)->get()[0]['NAMA_DESA'];
 $nama_kecamatan = $kelurahan[0]->where('KD_KEL',$request->kelurahan)->get()[0]['NAMA_KEC'];
 $nama_kabupaten = $kelurahan[0]->where('KD_KEL',$request->kelurahan)->get()[0]['NAMA_KAB'];
-$nama_bkm=$bkmdatas[0]->where('kelurahan_id', $request->kelurahan)->get()[0]['bkm'];
+$nama_bkm=$bkmdatas[0]->where('kelurahan_id', $request->kelurahan)->get()[0]['bkm'] ?? 'bkm belum diinput';
 @endphp
 
 <form method="post" action="/kpp" enctype="multipart/form-data">
@@ -17,7 +17,7 @@ $nama_bkm=$bkmdatas[0]->where('kelurahan_id', $request->kelurahan)->get()[0]['bk
     </div>
     <div class="card-body">
 
-        <input type="text" class="form-control" id="kelurahan" name="kelurahan" value="{{ $request->kelurahan }}" style="color: transparent; border: none" readonly>
+        <input type="hidden" class="form-control" id="kelurahan" name="kelurahan" value="{{ $request->kelurahan }}" style="color: transparent; border: none" readonly>
 
         <div class="data-group data-kpp">
 

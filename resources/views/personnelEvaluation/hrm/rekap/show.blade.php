@@ -37,8 +37,8 @@
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $value->user->name }}</td>
-                            <td>{{ $value->user->jobDesc->first()->posisi->job_title }}</td>
-                            <td>{{ $value->user->jobDesc->first()->kabupaten->first()->NAMA_KAB }}</td>
+                            <td>{{ $value->user->jobDesc->first() ? $value->user->jobDesc->first()->posisi->job_title : '' }}</td>
+                            <td>{{ $value->user->jobDesc->first() ? $value->user->jobDesc->first()->kabupaten->first()->NAMA_KAB : '' }}</td>
 
                             <td>{{$evaluationSetting->location->location_type ?? ''}}</td>
                             <td>{{ $value->totalScore}}</td>
